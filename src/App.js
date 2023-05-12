@@ -7,7 +7,6 @@ function App() {
       <Header />
       <Body />
       <Footer />
-      <h1>fafafa</h1>
     </div>
   );
 }
