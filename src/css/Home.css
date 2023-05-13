@@ -1,8 +1,8 @@
 #bodyBG {
   background-image: url("/src/img/bgpic.png");
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-repeat: no-repeat;
 }
 
 #titleP {
