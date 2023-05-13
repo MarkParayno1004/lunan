@@ -1,0 +1,7 @@
+#bground {
+  background-color: #7db9b6;
+}
+#navFocus:hover {
+  background-color: #f5e9cf;
+  border-radius: 15px;
+}
