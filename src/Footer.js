@@ -3,6 +3,7 @@ import bag from "./img/bag.png";
 import person from "./img/person.png";
 import like from "./img/like.png";
 import "./css/Footer.css";
+import footerbg from "./img/footerbg.png";
 export const Footer = () => {
   return (
     <div
