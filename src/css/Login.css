@@ -4,11 +4,18 @@
   min-height: 100vh;
   width: 100%;
   height: 100%;
+  opacity: 90%;
 }
 #loginInput {
   color: white;
   background: rgba(77, 69, 93, 0.4);
   min-height: 100vh;
-  flex-direction: column;
+  min-width: 101%;
   background-repeat: no-repeat;
+}
+.textsize {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 60px;
 }

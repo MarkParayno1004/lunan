@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import "./css/Navbar.css";
+import lunanHeader from "../src/img/lunanHeader.png";
 export const Navbar = () => {
   return (
     <div className="container-fluid" id="bground">
       <div className="row">
         {/* Logo */}
         <div className="col">
-          <img></img>
+          <img src={lunanHeader} style={{ width: 20 + "%" }}></img>
         </div>
         {/* Nav */}
         <div className="col">
