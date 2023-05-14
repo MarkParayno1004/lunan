@@ -1,5 +1,6 @@
 import "../css/Home.css";
-import { Footer } from "../Footer";
+import "../css/Footer.css";
+import { Footer } from "../Footer.js";
 export const Home = () => {
   return (
     <div className="container-fluid" id="bodyBG">
@@ -17,9 +18,7 @@ export const Home = () => {
           Get Started
         </button>
       </div>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

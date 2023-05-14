@@ -3,8 +3,6 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Navbar } from "./Navbar";
-import "./css/App.css";
-import { Footer } from "../src/Footer.js";
 function App() {
   return (
     <div className="App">
