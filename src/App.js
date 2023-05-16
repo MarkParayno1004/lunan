@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
+import { Home } from "./Home_pages/Home";
+import { Login } from "./Home_pages/Login";
 import { Navbar } from "./Navbar";
-import { AboutUs } from "./pages/AboutUs";
+import { AboutUs } from "./Home_pages/AboutUs";
 function App() {
   return (
     <div className="App">
