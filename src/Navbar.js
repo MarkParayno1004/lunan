@@ -25,9 +25,13 @@ export const Navbar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link fs-4 me-2" href="#">
+                  <Link
+                    to="/About Us"
+                    className="nav-link fs-4 me-2"
+                    aria-current="page"
+                  >
                     About Us
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link fs-4 me-5" href="#">
@@ -38,7 +42,6 @@ export const Navbar = () => {
                   <Link
                     to="/Login"
                     className="nav-link fs-4 ms-5"
-                    href="#"
                     id="navFocus"
                   >
                     Login
