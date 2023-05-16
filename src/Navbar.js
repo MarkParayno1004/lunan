@@ -19,7 +19,6 @@ export const Navbar = () => {
                     to="/"
                     className="nav-link fs-4 me-2"
                     aria-current="page"
-                    href="#"
                   >
                     Home
                   </Link>
