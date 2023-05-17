@@ -6,7 +6,7 @@ import "./css/Footer.css";
 import footerbg from "./img/footerbg.png";
 export const Footer = () => {
   return (
-    <div
+    <footer
       className="container-fluid d-flex justify-content-center"
       id="footerBG"
     >
@@ -112,6 +112,6 @@ export const Footer = () => {
           </button>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
