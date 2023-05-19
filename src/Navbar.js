@@ -38,18 +38,14 @@ export const Navbar = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    to="/Login"
-                    className="nav-link fs-4 ms-5"
-                    id="navFocus"
-                  >
+                  <Link to="/Login" className="nav-link fs-4 " id="navFocus">
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link fs-4" href="#" id="navFocus">
+                  <Link to="/Sign Up" className="nav-link fs-4 " id="navFocus">
                     Sign Up
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
