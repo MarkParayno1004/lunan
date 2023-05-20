@@ -3,11 +3,18 @@ export const CONTACT = (props) => {
     <div class="mt-3">
       <div class="container text-center">
         <div class="row justify-content-start">
+          <p class="d-flex justify-content-start">Local Address:</p>
           <div class="col">
             {/* Input Contact */}
             <input
               type="text"
-              class="form-control"
+              class="form-control  rounded-4 mb-3"
+              placeholder="Street and Number/ City / Region / Zip"
+              onChange={props.setLocalAddress}
+            />
+            <input
+              type="text"
+              class="form-control  rounded-4"
               placeholder="Home Phone/Cell Phone"
               onChange={props.setContact}
             />
@@ -15,7 +22,7 @@ export const CONTACT = (props) => {
               <span>May I leave a message through email or number?</span>
               <div class="form-check-inline">
                 <input
-                  class="form-check-input ms-2"
+                  class="form-check-input ms-2  "
                   type="radio"
                   name="Approval"
                   value="Yes"
@@ -25,7 +32,7 @@ export const CONTACT = (props) => {
               </div>
               <div class="form-check-inline">
                 <input
-                  class="form-check-input ms-2"
+                  class="form-check-input ms-2  "
                   type="radio"
                   name="Approval"
                   value="No"
@@ -39,7 +46,7 @@ export const CONTACT = (props) => {
           <div class="col ">
             <input
               type="text"
-              class="form-control"
+              class="form-control  rounded-4"
               placeholder="Email"
               onChange={props.setEmail}
             />
