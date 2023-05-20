@@ -6,7 +6,7 @@ export const BDAY = (props) => {
       <p>Birth date:</p>
       <input
         type="date"
-        class="form-control"
+        class="form-control  rounded-4"
         onChange={props.handleChangeDate}
         ref={props.dateInputRef}
       />
