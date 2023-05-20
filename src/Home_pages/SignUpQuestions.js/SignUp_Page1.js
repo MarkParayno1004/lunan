@@ -1,5 +1,5 @@
 import "../../css/SignUp.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BDAY } from "../SignUpQuestions.js/SignUp_BirthDay";
 import React, { useRef, useState } from "react";
 import { RBUTTON } from "../SignUpQuestions.js/SignUp_Radio";
@@ -92,6 +92,13 @@ export const SignUpPageOne = () => {
     setAssessmentBox(event.target.value);
   };
 
+  //*Button Navigation
+  const navigate = useNavigate();
+  const routeChange = () => {
+    let path = "/Sign Up=Page Two";
+    navigate(path);
+  };
+
   return (
     <>
       <h1 id="textHead" class="d-flex justify-content-center ">
@@ -142,7 +149,15 @@ export const SignUpPageOne = () => {
           />
         </div>
       </form>
-      <div class="d-flex justify-content-end mt-3 mb-3"></div>
+      <div class="d-flex justify-content-end mt-3 mb-3">
+        <button
+          class="fw-semibold rounded-4"
+          id="buttonNext"
+          onClick={routeChange}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };
