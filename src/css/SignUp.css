@@ -1,4 +1,7 @@
 #signupBG {
+  background-image: url("/src/img/BLOOMFIELDS_LOGO-03.png");
+  background-size: 80rem;
+  background-position: center center;
   background-color: rgba(255, 251, 225, 255);
   background-repeat: no-repeat;
   min-height: 100vh;
@@ -9,11 +12,12 @@
 #signupForm {
   background-color: #7db9b6;
   color: white;
+  width: auto;
+  height: auto;
 }
-#buttonNext {
-  width: 100px;
-  height: 30px;
+#buttonCard {
   background-color: rgba(255, 251, 225, 255);
   border: none;
   color: #7db9b6;
+  width: 5rem;
 }
