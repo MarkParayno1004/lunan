@@ -523,6 +523,17 @@ export const SIGNUPCARD = () => {
 
   //! 4th Card
   const Card4 = ({ onPrevious, onNext }) => {
+    //! If answer is yes in Romantic Relationship
+    const [showRomanticRelationship, setRomanticRelationship] = useState(false);
+    const handleRomanticRelationship = (event) => {
+      setRomanticRelationship(event.target.value === "true");
+    };
+
+    //! If answer is yes in Do you have a child?
+    const [showChildren, setChildren] = useState(false);
+    const handleChildren = (event) => {
+      setChildren(event.target.value === "true");
+    };
     return (
       <div>
         <div className="container-fluid d-flex justify-content-center mt-3">
@@ -634,6 +645,7 @@ export const SIGNUPCARD = () => {
               </li>
 
               {/* Series of Questions */}
+              {/* Romantic RelationShip Question */}
               <li class="list-group-item">
                 <span>Are you currently in a romantic relationship?</span>
                 <div className="form-check-inline ms-2">
@@ -641,7 +653,8 @@ export const SIGNUPCARD = () => {
                     className="form-check-input"
                     type="radio"
                     name="RomanticRelationship"
-                    value="Yes"
+                    value="true"
+                    onChange={handleRomanticRelationship}
                   />
                   <label className="form-check-label ms-1" for="exampleRadios1">
                     Yes
@@ -652,11 +665,45 @@ export const SIGNUPCARD = () => {
                     className="form-check-input"
                     type="radio"
                     name="RomanticRelationship"
-                    value="No"
+                    value="false"
+                    onChange={handleRomanticRelationship}
                   />
                   <label className="form-check-label " for="exampleRadios1">
                     No
                   </label>
+                </div>
+                <div class="input-group mt-3">
+                  {showRomanticRelationship && <RomanticRelationShipYes />}
+                </div>
+
+                {/* Do you have a child? */}
+                <span>Do you have a child?</span>
+                <div className="form-check-inline ms-2">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="DoYouHaveAChild"
+                    value="true"
+                    onChange={handleChildren}
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Yes
+                  </label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="DoYouHaveAChild"
+                    value="false"
+                    onChange={handleChildren}
+                  />
+                  <label className="form-check-label " for="exampleRadios1">
+                    No
+                  </label>
+                </div>
+                <div class="input-group mt-3">
+                  {showChildren && <ChildrenYes />}
                 </div>
               </li>
             </ul>
@@ -679,6 +726,58 @@ export const SIGNUPCARD = () => {
           </button>
         </div>
       </div>
+    );
+  };
+  const RomanticRelationShipYes = () => {
+    return (
+      <>
+        <span className="me-2 d-flex align-items-center">
+          If yes, for how long?
+        </span>
+        <input
+          type="text"
+          aria-label="DoctorPhone"
+          placeholder="Answer:"
+          class="form-control me-3 rounded-4"
+        />
+        <div class="input-group mt-3">
+          <p className="me-2 d-flex align-items-center">
+            If yes, on a scale of 1-10 (10=great), <br />
+            how would you rate the quality of your romantic relationship?
+          </p>
+          <input
+            type="number"
+            aria-label="CurrentRelationAnswer"
+            placeholder="Answer:"
+            class="form-control me-3 rounded-4"
+          />
+        </div>
+      </>
+    );
+  };
+
+  const ChildrenYes = () => {
+    return (
+      <>
+        <div class="input-group">
+          <span className="me-2 d-flex align-items-center">
+            If yes, how many?
+          </span>
+          <input
+            type="text"
+            aria-label="CurrentRelationAnswer"
+            placeholder="Answer:"
+            class="form-control me-3 rounded-4"
+          />
+          <span class="d-flex align-items-center">Age?</span>
+          <input
+            type="number"
+            aria-label="ChildAge"
+            placeholder="Answer:"
+            class="form-control ms-1 rounded-4"
+          />
+        </div>
+      </>
     );
   };
 
