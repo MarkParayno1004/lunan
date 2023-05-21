@@ -457,7 +457,10 @@ export const SIGNUPCARD = () => {
                     onChange={handleContactPersonNum}
                   />
                 </div>
-                {/* Doctor Info */}
+              </li>
+
+              {/* Doctor Info */}
+              <li class="list-group-item">
                 <p class="mt-3">Patient Care doctor:</p>
                 <div class="input-group mt-3">
                   <input
@@ -533,6 +536,12 @@ export const SIGNUPCARD = () => {
     const [showChildren, setChildren] = useState(false);
     const handleChildren = (event) => {
       setChildren(event.target.value === "true");
+    };
+
+    //! If answer is yes in psychotherapy
+    const [showPsychoTherapy, setPsychoTherapy] = useState(false);
+    const handlePsychoTherapy = (event) => {
+      setPsychoTherapy(event.target.value === "true");
     };
     return (
       <div>
@@ -705,6 +714,36 @@ export const SIGNUPCARD = () => {
                 <div class="input-group mt-3">
                   {showChildren && <ChildrenYes />}
                 </div>
+
+                {/* Previous psychotherapy */}
+                <span>Have you had previous psychotherapy?</span>
+                <div className="form-check-inline ms-2">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="psychoTherapy"
+                    value="true"
+                    onChange={handlePsychoTherapy}
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Yes
+                  </label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="psychoTherapy"
+                    value="false"
+                    onChange={handlePsychoTherapy}
+                  />
+                  <label className="form-check-label " for="exampleRadios1">
+                    No
+                  </label>
+                </div>
+                <div class="input-group mt-3">
+                  {showPsychoTherapy && <PsychoTherapy />}
+                </div>
               </li>
             </ul>
           </div>
@@ -729,16 +768,27 @@ export const SIGNUPCARD = () => {
     );
   };
   const RomanticRelationShipYes = () => {
+    //!Store the answer
+    const [getCurrentRelationAnswer, setCurrentRelationAnswer] = useState();
+    const handleCurrentRelation = (e) => {
+      setCurrentRelationAnswer(e.target.value);
+    };
+
+    const [getScale, setScale] = useState();
+    const handleScale = (e) => {
+      setScale(e.target.value);
+    };
     return (
       <>
         <span className="me-2 d-flex align-items-center">
           If yes, for how long?
         </span>
         <input
-          type="text"
-          aria-label="DoctorPhone"
+          type="number"
+          aria-label="CurrentRelationAnswer"
           placeholder="Answer:"
           class="form-control me-3 rounded-4"
+          onChange={handleCurrentRelation}
         />
         <div class="input-group mt-3">
           <p className="me-2 d-flex align-items-center">
@@ -750,6 +800,7 @@ export const SIGNUPCARD = () => {
             aria-label="CurrentRelationAnswer"
             placeholder="Answer:"
             class="form-control me-3 rounded-4"
+            onChange={handleScale}
           />
         </div>
       </>
@@ -757,6 +808,15 @@ export const SIGNUPCARD = () => {
   };
 
   const ChildrenYes = () => {
+    const [getChildren, setChildren] = useState();
+    const handleChildren = (e) => {
+      setChildren(e.target.value);
+    };
+
+    const [getChildrenAge, setChildrenAge] = useState();
+    const handleChildrenAge = (e) => {
+      setChildrenAge(e.target.value);
+    };
     return (
       <>
         <div class="input-group">
@@ -765,105 +825,447 @@ export const SIGNUPCARD = () => {
           </span>
           <input
             type="text"
-            aria-label="CurrentRelationAnswer"
+            aria-label="Patient's Child"
             placeholder="Answer:"
             class="form-control me-3 rounded-4"
+            onChange={handleChildren}
           />
           <span class="d-flex align-items-center">Age?</span>
           <input
             type="number"
-            aria-label="ChildAge"
+            aria-label="Patient's Child"
             placeholder="Answer:"
             class="form-control ms-1 rounded-4"
+            onChange={handleChildrenAge}
           />
         </div>
       </>
     );
   };
 
+  const PsychoTherapy = () => {
+    const [getWhyPsychoTherapy, setWhyPsychoTherapy] = useState(``);
+    const handleWhyPsychoTherapyR = (e) => {
+      setWhyPsychoTherapy(e.target.value);
+    };
+    const [getWhenPsychoTherapy, setWhenPsychoTherapy] = useState(``);
+    const handleWhenPsychoTherapy = (e) => {
+      setWhenPsychoTherapy(e.target.value);
+    };
+    return (
+      <>
+        <span className="me-2 d-flex align-items-center">If yes, why?</span>
+        <textarea
+          type="text"
+          aria-label="PsychoTherapyResult"
+          placeholder="Answer:"
+          class="form-control me-3 rounded-4"
+          onChange={handleWhyPsychoTherapyR}
+        />
+        <div class="input-group mt-3">
+          <p className="me-2 d-flex align-items-center">If yes, when?</p>
+          <textarea
+            type="text"
+            aria-label="PsychoTherapyResult"
+            placeholder="Answer:"
+            class="form-control me-3 rounded-4"
+            onChange={handleWhenPsychoTherapy}
+          />
+        </div>
+        <h1>
+          {getWhyPsychoTherapy} {getWhenPsychoTherapy}
+        </h1>
+      </>
+    );
+  };
+
   //!5th Card
   const Card5 = ({ onPrevious, onNext }) => {
+    const [showPsychiaTric, setPsychiaTric] = useState(false);
+    const handlePschiatric = (event) => {
+      setPsychiaTric(event.target.value === "true");
+    };
     return (
       <div>
-        <div class="card-header">
-          Please fill up this intake form: (This form will be your Sign Up form
-          or Register Form)
+        <div className="container-fluid d-flex justify-content-center mt-3">
+          <div class="card" style={{ width: 50 + "rem" }}>
+            <div class="card-header">
+              Please fill up this intake form: (This form will be your Sign Up
+              form or Register Form)
+            </div>
+            <ul class="list-group list-group-flush">
+              {/* Psychiatric Medications */}
+              <li class="list-group-item">
+                <div className="form-check-inline ">
+                  <span>
+                    Are you currently taking prescribed psychiatric medications
+                    <br /> (antidepressants or others)?
+                  </span>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="true"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="false"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                <div className="form-check-inline ">
+                  {showPsychiaTric ? (
+                    <PsychiatricMedsTrue />
+                  ) : (
+                    <PsychiatricMedsFalse />
+                  )}
+                </div>
+              </li>
+
+              {/* Future */}
+              <li class="list-group-item">
+                <div className="form-check-inline ">
+                  <span>Are you hopeful about your future?</span>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="Future"
+                    value="Yes"
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="Future"
+                    value="No"
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+              </li>
+
+              {/* Suicidal Thoughts */}
+              <li class="list-group-item">
+                <div className="form-check-inline ">
+                  <span>Are you having current suicidal thoughts?</span>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="SuicidalThoughts"
+                    value="true"
+                  />
+                  <label className="form-check-label ms-1">Frequently</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="SuicidalThoughts"
+                    value="No"
+                  />
+                  <label className="form-check-label ms-1">Sometimes</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="SuicidalThoughts"
+                    value="true"
+                  />
+                  <label className="form-check-label ms-1">Rarely</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="SuicidalThoughts"
+                    value="false"
+                  />
+                  <label className="form-check-label ms-1">Never</label>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul class="list-group list-group-flush">
-          {/* Input Patient's Full Name */}
-          <li class="list-group-item">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control rounded-4 me-1"
-                placeholder="Input Full Name:"
-              />
-              <input
-                type="number"
-                class="form-control rounded-4"
-                placeholder="Input Age:"
-              />
-            </div>
-          </li>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onPrevious}
+          >
+            Back
+          </button>
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onNext}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    );
+  };
 
-          {/* Input Date Today and Birth Date */}
-          <li class="list-group-item">
-            <p>Date today & your birth date:</p>
-            <div class="input-group">
-              <input type="date" class="form-control  rounded-4 me-1" day />
-              <input type="date" class="form-control  rounded-4" />
-            </div>
-          </li>
+  const PsychiatricMedsTrue = () => {
+    return (
+      <>
+        <div class="input-group mt-3 ms-3">
+          <p className="me-2 mt-2 d-flex align-items-center">
+            If Yes, please list names and doses:
+          </p>
+          <textarea
+            type="text"
+            aria-label="PsychiatricMedication"
+            placeholder="Answer:"
+            class="form-control rounded-4 me-2"
+          />
+        </div>
+        <div className="form-check-inline "></div>
+      </>
+    );
+  };
 
-          {/* Radio Button for Gender */}
-          <li class="list-group-item">
-            <div class="form-check-inline">
-              <p>Gender:</p>
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gender"
-                value="Male"
-              />
-              <label class="form-check-label ms-1" for="exampleRadios1">
-                Male
-              </label>
+  const PsychiatricMedsFalse = () => {
+    const [showPsychiatricFalse, setPsychiatricFalse] = useState("false");
+    const handlePsychiatricFalse = (event) => {
+      setPsychiatricFalse(event.target.value === "true");
+    };
+    return (
+      <>
+        <div className="form-check-inline ms-3">
+          <span className="">
+            If No, have you been previously prescribed psychiatric medication?
+          </span>
+          <input
+            className="form-check-input ms-2"
+            type="radio"
+            name="PsychiatricMedsFalse"
+            value="true"
+            onChange={handlePsychiatricFalse}
+          />
+          <label className="form-check-label ms-1">Yes</label>
+          <input
+            className="form-check-input ms-2"
+            type="radio"
+            name="PsychiatricMedsFalse"
+            value="false"
+            onChange={handlePsychiatricFalse}
+          />
+          <label className="form-check-label ms-1">No</label>
+        </div>
+        <div className="form-check-inline ">
+          {showPsychiatricFalse && <PrescribedMedication />}
+        </div>
+      </>
+    );
+  };
+
+  const PrescribedMedication = () => {
+    return (
+      <>
+        <div class="input-group mt-3 ms-3">
+          <p className="me-2 mt-2 d-flex align-items-center">
+            If Yes, please list names and dates:
+          </p>
+          <textarea
+            type="text"
+            aria-label="PrescribedMedication"
+            placeholder="Answer:"
+            class="form-control rounded-4"
+          />
+        </div>
+        <div className="form-check-inline "></div>
+      </>
+    );
+  };
+
+  //! Card 6
+  const Card6 = ({ onPrevious, onNext }) => {
+    const [showPsychiaTric, setPsychiaTric] = useState("false");
+    const handlePschiatric = (event) => {
+      setPsychiaTric(event.target.value === "true");
+    };
+    return (
+      <div>
+        <div className="container-fluid d-flex justify-content-center mt-3">
+          <div class="card" style={{ width: 50 + "rem" }}>
+            <div class="card-header">
+              Please fill up this intake form: (This form will be your Sign Up
+              form or Register Form)
             </div>
-            <div class="form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gender"
-                value="Female"
-              />
-              <label class="form-check-label ms-1" for="exampleRadios1">
-                Female
-              </label>
+            <ul class="list-group list-group-flush">
+              {/* Sexual Preference */}
+              <li class="list-group-item">
+                <div className="form-check-inline ">
+                  <span className="">
+                    Are you currently taking prescribed psychiatric medications
+                    <br /> (antidepressants or others)?
+                  </span>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="true"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="false"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                <div className="form-check-inline "></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onPrevious}
+          >
+            Back
+          </button>
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onNext}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  //! Card 7
+  const Card7 = ({ onPrevious, onNext }) => {
+    const [showPsychiaTric, setPsychiaTric] = useState("false");
+    const handlePschiatric = (event) => {
+      setPsychiaTric(event.target.value === "true");
+    };
+    return (
+      <div>
+        <div className="container-fluid d-flex justify-content-center mt-3">
+          <div class="card" style={{ width: 50 + "rem" }}>
+            <div class="card-header">
+              Please fill up this intake form: (This form will be your Sign Up
+              form or Register Form)
             </div>
-            <div class="form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gender"
-                value="Transgender"
-              />
-              <label class="form-check-label ms-1" for="exampleRadios1">
-                Transgender
-              </label>
+            <ul class="list-group list-group-flush">
+              {/* Sexual Preference */}
+              <li class="list-group-item">
+                <div className="form-check-inline ">
+                  <span className="">
+                    Are you currently taking prescribed psychiatric medications
+                    <br /> (antidepressants or others)?
+                  </span>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="true"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="false"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                <div className="form-check-inline "></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onPrevious}
+          >
+            Back
+          </button>
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onNext}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  //!Card 8
+  const Card8 = ({ onPrevious, onNext }) => {
+    const [showPsychiaTric, setPsychiaTric] = useState("false");
+    const handlePschiatric = (event) => {
+      setPsychiaTric(event.target.value === "true");
+    };
+    return (
+      <div>
+        <div className="container-fluid d-flex justify-content-center mt-3">
+          <div class="card" style={{ width: 50 + "rem" }}>
+            <div class="card-header">
+              Please fill up this intake form: (This form will be your Sign Up
+              form or Register Form)
             </div>
-            <div class="form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gender"
-                value="Other"
-              />
-              <label class="form-check-label ms-1" for="exampleRadios1">
-                Other
-              </label>
-            </div>
-          </li>
-        </ul>
+            <ul class="list-group list-group-flush">
+              {/* Sexual Preference */}
+              <li class="list-group-item">
+                <div className="form-check-inline ">
+                  <span className="">
+                    Are you currently taking prescribed psychiatric medications
+                    <br /> (antidepressants or others)?
+                  </span>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="true"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-check-input ms-2"
+                    type="radio"
+                    name="PsychiatricMeds"
+                    value="false"
+                    onChange={handlePschiatric}
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                <div className="form-check-inline "></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onPrevious}
+          >
+            Back
+          </button>
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={onNext}
+          >
+            Next
+          </button>
+        </div>
       </div>
     );
   };
@@ -873,8 +1275,12 @@ export const SIGNUPCARD = () => {
       {card === 2 && <Card2 onPrevious={handlePrevious} onNext={handleNext} />}
       {card === 3 && <Card3 onPrevious={handlePrevious} onNext={handleNext} />}
       {card === 4 && <Card4 onPrevious={handlePrevious} onNext={handleNext} />}
-      {card === 5 && (
-        <Card5 onPrevious={handlePrevious} onSubmit={handleSubmit} />
+      {card === 5 && <Card5 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 6 && <Card6 onPrevious={handlePrevious} onNext={handleNext} />}
+
+      {card === 7 && <Card7 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 8 && (
+        <Card8 onPrevious={handlePrevious} onSubmit={handleSubmit} />
       )}
     </div>
   );
