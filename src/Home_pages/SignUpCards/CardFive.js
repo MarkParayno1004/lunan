@@ -220,7 +220,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                 <label className="form-check-label ms-1">No</label>
               </div>
               <br />
-              <div className="form-check-inline ">
+              <div class="input-group">
                 {showPreviousHomicidal && <PreviouslyHomicideThoughts />}
               </div>
             </li>
@@ -259,13 +259,16 @@ const PsychiatricMedsTrue = () => {
         <p className="me-2 mt-2 d-flex align-items-center">
           If Yes, please list names and doses:
         </p>
-        <textarea
-          type="text"
-          aria-label="PsychiatricMedication"
-          placeholder="Answer:"
-          class="form-control rounded-4 me-2"
-          onChange={handleNamesAndDosesTrue}
-        />
+        <div class="form-floating">
+          <textarea
+            class="form-control rounded-4"
+            placeholder="Answer"
+            id="floatingTextarea2"
+            style={{ height: 100 + "px", width: 30 + "rem" }}
+            onChange={handleNamesAndDosesTrue}
+          ></textarea>
+          <label for="floatingTextarea2">Answer:</label>
+        </div>
       </div>
       <div className="form-check-inline "></div>
     </>
@@ -321,13 +324,16 @@ const PrescribedMedication = () => {
         <p className="me-2 mt-2 d-flex align-items-center">
           If Yes, please list names and doses:
         </p>
-        <textarea
-          type="text"
-          aria-label="PrescribedMedication"
-          placeholder="Answer:"
-          class="form-control rounded-4"
-          onChange={handleNamesAndDosesFalse}
-        />
+        <div class="form-floating">
+          <textarea
+            class="form-control rounded-4"
+            placeholder="Answer"
+            id="floatingTextarea2"
+            style={{ height: 100 + "px", width: 30 + "rem" }}
+            onChange={handleNamesAndDosesFalse}
+          ></textarea>
+          <label for="floatingTextarea2">Answer:</label>
+        </div>
       </div>
       <div className="form-check-inline "></div>
     </>
@@ -410,16 +416,19 @@ const PreviouslyHomicideThoughts = () => {
     setThoughts(e.target.value);
   };
   return (
-    <div className="form-check-inline ms-3 mt-2">
+    <div class="input-group">
       <div>
         <span className="">If yes, when?</span>
-        <textarea
-          className="form-control rounded-4"
-          name="PreviouslyHomicideThoughts"
-          placeholder="Answer:"
-          onChange={handleThoughts}
-          style={{ width: 20 + "rem" }}
-        />
+        <div class="form-floating">
+          <textarea
+            class="form-control rounded-4"
+            placeholder="Answer"
+            id="floatingTextarea2"
+            style={{ height: 100 + "px", width: 40 + "rem" }}
+            onChange={handleThoughts}
+          ></textarea>
+          <label for="floatingTextarea2">Answer:</label>
+        </div>
       </div>
     </div>
   );
