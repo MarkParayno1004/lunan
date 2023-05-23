@@ -5,7 +5,16 @@ import { CardThree } from "./SignUpCards/CardThree";
 import { CardFour } from "./SignUpCards/CardFour";
 import { CardFive } from "./SignUpCards/CardFive";
 import { CardSix } from "./SignUpCards/CardSix";
+
 import { CardSixPoint2 } from "./SignUpCards/CardSixPoint2";
+
+import { CardSeven } from "./SignUpCards/CardSeven";
+import { CardEight } from "./SignUpCards/CardEight";
+import { CardNine } from "./SignUpCards/CardNine"; 
+import { CardTen } from "./SignUpCards/CardTen";
+import { CardEleven } from "./SignUpCards/CardEleven";
+import { CardTwelve } from "./SignUpCards/CardTwelve";
+
 
 export const SIGNUPCARD = () => {
   //!Logic of next and Previous Button
@@ -58,113 +67,33 @@ export const SIGNUPCARD = () => {
   };
   //! Seventh Card
   const Card7 = ({ onPrevious, onNext }) => {
-    return (
-      <div>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div class="card" style={{ width: 50 + "rem" }}>
-            <div class="card-header">
-              Please fill up this intake form: (This form will be your Sign Up
-              form or Register Form)
-            </div>
-            <ul class="list-group list-group-flush">
-              {/* Sexual Preference */}
-              <li class="list-group-item">
-                <div className="form-check-inline ">
-                  <span className="">Card 7</span>
-                  <input
-                    className="form-check-input ms-2"
-                    type="radio"
-                    name="PsychiatricMeds"
-                    value="true"
-                  />
-                  <label className="form-check-label ms-1">Yes</label>
-                  <input
-                    className="form-check-input ms-2"
-                    type="radio"
-                    name="PsychiatricMeds"
-                    value="false"
-                  />
-                  <label className="form-check-label ms-1">No</label>
-                </div>
-                <div className="form-check-inline "></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="d-flex justify-content-end">
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-            onClick={onPrevious}
-          >
-            Back
-          </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-            onClick={onNext}
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    );
+    return <CardSeven ButtonBack={onPrevious} ButtonNext={onNext} />;
   };
 
   //! Eight Card
   const Card8 = ({ onPrevious, onNext }) => {
-    return (
-      <div>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div class="card" style={{ width: 50 + "rem" }}>
-            <div class="card-header">
-              Please fill up this intake form: (This form will be your Sign Up
-              form or Register Form)
-            </div>
-            <ul class="list-group list-group-flush">
-              {/* Sexual Preference */}
-              <li class="list-group-item">
-                <div className="form-check-inline ">
-                  <span className="">Card 8</span>
-                  <input
-                    className="form-check-input ms-2"
-                    type="radio"
-                    name="PsychiatricMeds"
-                    value="true"
-                  />
-                  <label className="form-check-label ms-1">Yes</label>
-                  <input
-                    className="form-check-input ms-2"
-                    type="radio"
-                    name="PsychiatricMeds"
-                    value="false"
-                  />
-                  <label className="form-check-label ms-1">No</label>
-                </div>
-                <div className="form-check-inline "></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="d-flex justify-content-end">
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-            onClick={onPrevious}
-          >
-            Back
-          </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-            onClick={onNext}
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    );
+    return <CardEight ButtonBack={onPrevious} ButtonNext={onNext} />;
   };
+
+  //! Ninth Card 
+  const Card9 = ({ onPrevious, onNext }) => {
+    return <CardNine ButtonBack={onPrevious} ButtonNext={onNext} />;
+  }
+
+  //! Tenth Card
+  const Card10 = ({ onPrevious, onNext }) => {
+    return <CardTen ButtonBack={onPrevious} ButtonNext={onNext} />;
+  }
+
+  //! Eleventh Card
+  const Card11 = ({ onPrevious, onNext }) => {
+    return <CardEleven ButtonBack={onPrevious} ButtonNext={onNext} />;
+  }
+
+  //! Twelfth Card
+  const Card12 = ({ onPrevious, onNext }) => {
+    return <CardTwelve ButtonBack={onPrevious} ButtonNext={onNext} />;
+  }
   return (
     <div className="container-fluid">
       {card === 1 && <Card1 onNext={handleNext} />}
@@ -177,10 +106,12 @@ export const SIGNUPCARD = () => {
         <Card6point2 onPrevious={handlePrevious} onNext={handleNext} />
       )}
       {card === 8 && <Card7 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 9 && <Card8 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 10 && <Card9 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 11 && <Card10 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 12 && <Card11 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 13 && <Card12 onPrevious={handlePrevious} onNext={handleSubmit} />}
 
-      {card === 9 && (
-        <Card8 onPrevious={handlePrevious} onSubmit={handleSubmit} />
-      )}
     </div>
   );
 };
