@@ -17,6 +17,17 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
   const handlePsychoTherapy = (event) => {
     setPsychoTherapy(event.target.value === "true");
   };
+  //! Get value of Radio Button ofSexual Preference
+  const [getSexualPref, setSexualPref] = useState("");
+  const handleSexualPref = (e) => {
+    setSexualPref(e.target.value);
+  };
+
+  //! Get Value of Radio Button of Marital Status
+  const [getMaritalStatus, setMaritalStatus] = useState("");
+  const handleMaritalStatus = (e) => {
+    setMaritalStatus(e.target.value);
+  };
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -35,6 +46,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="SexPreference"
                   value="Men"
+                  onChange={handleSexualPref}
                 />
                 <label className="form-check-label ms-1">Men</label>
               </div>
@@ -44,6 +56,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="SexPreference"
                   value="Women"
+                  onChange={handleSexualPref}
                 />
                 <label className="form-check-label ms-1">Women</label>
               </div>
@@ -53,6 +66,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="SexPreference"
                   value="Both"
+                  onChange={handleSexualPref}
                 />
                 <label className="form-check-label ms-1" for="exampleRadios1">
                   Both
@@ -69,6 +83,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="MaritalStatus"
                   value="Never Married"
+                  onChange={handleMaritalStatus}
                 />
                 <label className="form-check-label ms-1">Never Married</label>
               </div>
@@ -78,6 +93,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="MaritalStatus"
                   value="Partnered"
+                  onChange={handleMaritalStatus}
                 />
                 <label className="form-check-label ms-1">Partnered</label>
               </div>
@@ -87,6 +103,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="MaritalStatus"
                   value="Married"
+                  onChange={handleMaritalStatus}
                 />
                 <label className="form-check-label ms-1" for="exampleRadios1">
                   Married
@@ -98,6 +115,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="MaritalStatus"
                   value="Separated"
+                  onChange={handleMaritalStatus}
                 />
                 <label className="form-check-label ms-1" for="exampleRadios1">
                   Separated
@@ -109,6 +127,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="MaritalStatus"
                   value="Divorced"
+                  onChange={handleMaritalStatus}
                 />
                 <label className="form-check-label ms-1" for="exampleRadios1">
                   Divorced
@@ -120,6 +139,7 @@ export const CardFour = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="MaritalStatus"
                   value="Widowed"
+                  onChange={handleMaritalStatus}
                 />
                 <label className="form-check-label " for="exampleRadios1">
                   Widowed
