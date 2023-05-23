@@ -15,7 +15,7 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
   };
 
   //! List of any chronic Health
-  const [getChronicHealt, setChronicHealth] = useState(``);
+  const [getChronicHealth, setChronicHealth] = useState(``);
   const handleChronicHealth = (e) => {
     setChronicHealth(e.target.value);
   };
