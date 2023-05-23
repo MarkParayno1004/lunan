@@ -32,9 +32,9 @@ export const CardOne = ({ ButtonNext }) => {
   };
 
   return (
-    <div>
+    <>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
+        <div class="card " style={{ width: 50 + "rem" }}>
           <div class="card-header">
             Please fill up this intake form: (This form will be your Sign Up
             form or Register Form)
@@ -142,6 +142,6 @@ export const CardOne = ({ ButtonNext }) => {
           Next
         </button>
       </div>
-    </div>
+    </>
   );
 };

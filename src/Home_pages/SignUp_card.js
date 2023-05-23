@@ -5,6 +5,7 @@ import { CardThree } from "./SignUpCards/CardThree";
 import { CardFour } from "./SignUpCards/CardFour";
 import { CardFive } from "./SignUpCards/CardFive";
 import { CardSix } from "./SignUpCards/CardSix";
+import { CardSixPoint2 } from "./SignUpCards/CardSixPoint2";
 
 export const SIGNUPCARD = () => {
   //!Logic of next and Previous Button
@@ -52,6 +53,9 @@ export const SIGNUPCARD = () => {
     return <CardSix ButtonBack={onPrevious} ButtonNext={onNext} />;
   };
 
+  const Card6point2 = ({ onPrevious, onNext }) => {
+    return <CardSixPoint2 ButtonBack={onPrevious} ButtonNext={onNext} />;
+  };
   //! Seventh Card
   const Card7 = ({ onPrevious, onNext }) => {
     return (
@@ -162,16 +166,19 @@ export const SIGNUPCARD = () => {
     );
   };
   return (
-    <div>
+    <div className="container-fluid">
       {card === 1 && <Card1 onNext={handleNext} />}
       {card === 2 && <Card2 onPrevious={handlePrevious} onNext={handleNext} />}
       {card === 3 && <Card3 onPrevious={handlePrevious} onNext={handleNext} />}
       {card === 4 && <Card4 onPrevious={handlePrevious} onNext={handleNext} />}
       {card === 5 && <Card5 onPrevious={handlePrevious} onNext={handleNext} />}
       {card === 6 && <Card6 onPrevious={handlePrevious} onNext={handleNext} />}
+      {card === 7 && (
+        <Card6point2 onPrevious={handlePrevious} onNext={handleNext} />
+      )}
+      {card === 8 && <Card7 onPrevious={handlePrevious} onNext={handleNext} />}
 
-      {card === 7 && <Card7 onPrevious={handlePrevious} onNext={handleNext} />}
-      {card === 8 && (
+      {card === 9 && (
         <Card8 onPrevious={handlePrevious} onSubmit={handleSubmit} />
       )}
     </div>
