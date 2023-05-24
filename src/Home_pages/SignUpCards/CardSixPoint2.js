@@ -268,8 +268,8 @@ const SleepHabits = () => {
 //! if patient answer is yes, in question: Do you exercise regularly?
 const ERCOMPONENT = () => {
   return (
-    <div class="input-group mt-1">
-      <div class="input-group">
+    <>
+      <div class="input-group mt-1">
         <span class="d-flex align-items-center">
           If yes, how many times per week do you exercise?
         </span>
@@ -281,7 +281,7 @@ const ERCOMPONENT = () => {
         <span class="d-flex align-items-center">If yes, what do you do?</span>
         <input type="number" class="form-control rounded-4 ms-1" />
       </div>
-    </div>
+    </>
   );
 };
 
