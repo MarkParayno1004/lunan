@@ -3,33 +3,19 @@ import { useState } from "react";
 export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
   //!Sleep Habit with Conditional Statement
   const [showSleepHabits, setSleepHabits] = useState("false");
-  const handleSetSleepHabits = (event) => {
-    setSleepHabits(event.target.value === "true");
-  };
 
   //!Handle Exercise Regularly with Conditional Statement
-  const [showER, setER] = useState("false");
-  const handleER = (event) => {
-    setER(event.target.value === "true");
-  };
+  const [showER, setER] = useState("No");
 
   //!Eating Habits with Conditional Statement
   const [showEatingHabits, setEatingHabits] = useState("false");
-  const handleEatingHabits = (event) => {
-    setEatingHabits(event.target.value === "true");
-  };
 
   //!Regular use of alcohol with Conditional Statement
   const [showUseAlcohol, setUseAlcohol] = useState("false");
-  const handleUseAlcohol = (event) => {
-    setUseAlcohol(event.target.value === "true");
-  };
 
   //!Engage in recreational drug use
   const [showDrugUse, setDrugUse] = useState("false");
-  const handleDrugUse = (event) => {
-    setDrugUse(event.target.value === "true");
-  };
+
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -41,19 +27,23 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
               <div class="input-group">
                 <span>Are you having any problems with your sleep habits?</span>
                 <input
-                  className="form-input ms-2 rounded-5"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="true"
-                  onChange={handleSetSleepHabits}
+                  onChange={(e) => {
+                    setSleepHabits(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-input ms-2 rounded-5"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="false"
-                  onChange={handleSetSleepHabits}
+                  onChange={(e) => {
+                    setSleepHabits(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -69,7 +59,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="ExerciseRegularly"
                   value="true"
-                  onChange={handleER}
+                  onChange={(e) => {
+                    setER(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
@@ -77,7 +69,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="ExerciseRegularly"
                   value="false"
-                  onChange={handleER}
+                  onChange={(e) => {
+                    setER(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -91,19 +85,23 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   Are you having any difficulty with appetite or eating habits?
                 </span>
                 <input
-                  className="form-input ms-2 rounded-5"
+                  className="form-input ms-2 "
                   type="radio"
                   name="DifficultEatingHabits"
                   value="true"
-                  onChange={handleEatingHabits}
+                  onChange={(e) => {
+                    setEatingHabits(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-input ms-2 rounded-5"
+                  className="form-input ms-2 "
                   type="radio"
                   name="DifficultEatingHabits"
                   value="false"
-                  onChange={handleEatingHabits}
+                  onChange={(e) => {
+                    setEatingHabits(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -118,14 +116,14 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   months?
                 </span>
                 <input
-                  className="form-input ms-2 rounded-5"
+                  className="form-input ms-2"
                   type="radio"
                   name="WeightChange"
                   value="Yes"
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-input ms-2 rounded-5"
+                  className="form-input ms-2"
                   type="radio"
                   name="WeightChange"
                   value="No"
@@ -143,6 +141,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="true"
+                  onChange={(e) => {
+                    setUseAlcohol(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
@@ -150,6 +151,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="false"
+                  onChange={(e) => {
+                    setUseAlcohol(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -165,7 +169,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="true"
-                  onChange={handleDrugUse}
+                  onChange={(e) => {
+                    setDrugUse(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Daily</label>
                 <input
@@ -173,7 +179,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="true"
-                  onChange={handleDrugUse}
+                  onChange={(e) => {
+                    setDrugUse(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Weekly</label>
                 <input
@@ -181,7 +189,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="true"
-                  onChange={handleDrugUse}
+                  onChange={(e) => {
+                    setDrugUse(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Monthly</label>
                 <input
@@ -189,7 +199,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="true"
-                  onChange={handleDrugUse}
+                  onChange={(e) => {
+                    setDrugUse(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
                 <input
@@ -197,7 +209,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="false"
-                  onChange={handleDrugUse}
+                  onChange={(e) => {
+                    setDrugUse(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
@@ -228,6 +242,8 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
 
 //! if patients answer is yes, in question: Are you having any problems with your sleep habits?
 const SleepHabits = () => {
+  //!Get value of fradio buttons in Sleep Habits
+  const [getSleepHabits, setSleepHabits] = useState("");
   return (
     <div className="form-check-inline ">
       <span>If yes, check where applicable:</span>
@@ -237,6 +253,9 @@ const SleepHabits = () => {
           type="radio"
           name="SleepHabits"
           value="Sleeping too little"
+          onChange={(e) => {
+            setSleepHabits(e.target.value);
+          }}
         />
         <label className="form-check-label ms-1">Sleeping too little</label>
         <input
@@ -244,6 +263,9 @@ const SleepHabits = () => {
           type="radio"
           name="SleepHabits"
           value="Sleeping too much"
+          onChange={(e) => {
+            setSleepHabits(e.target.value);
+          }}
         />
         <label className="form-check-label ms-1">Sleeping too much</label>
         <input
@@ -251,6 +273,9 @@ const SleepHabits = () => {
           type="radio"
           name="SleepHabits"
           value="Can't fall asleep"
+          onChange={(e) => {
+            setSleepHabits(e.target.value);
+          }}
         />
         <label className="form-check-label ms-1">Can't fall asleep</label>
         <input
@@ -258,6 +283,9 @@ const SleepHabits = () => {
           type="radio"
           name="SleepHabits"
           value="Can't stay asleep"
+          onChange={(e) => {
+            setSleepHabits(e.target.value);
+          }}
         />
         <label className="form-check-label ms-1">Can't stay asleep</label>
       </div>
@@ -267,19 +295,45 @@ const SleepHabits = () => {
 
 //! if patient answer is yes, in question: Do you exercise regularly?
 const ERCOMPONENT = () => {
+  //! If yes, how many times per week do you exercise?
+  const [getPerWeek, setPerWeek] = useState();
+
+  //! If yes, for how long?
+  const [getHowLong, setHowLong] = useState();
+
+  //! If yes, what do you do?
+  const [getWhatYouDo, setWhatYouDo] = useState(``);
   return (
     <>
       <div class="input-group mt-1">
         <span class="d-flex align-items-center">
           If yes, how many times per week do you exercise?
         </span>
-        <input type="number" class="form-control rounded-4 ms-1" />
+        <input
+          type="number"
+          class="form-control rounded-4 ms-1"
+          onChange={(e) => {
+            setPerWeek(e.target.value);
+          }}
+        />
         <span class="d-flex align-items-center ms-1">For how long?</span>
-        <input type="number" class="form-control rounded-4 ms-1" />
+        <input
+          type="number"
+          class="form-control rounded-4 ms-1"
+          onChange={(e) => {
+            setHowLong(e.target.value);
+          }}
+        />
       </div>
       <div class="input-group mt-2">
         <span class="d-flex align-items-center">If yes, what do you do?</span>
-        <input type="number" class="form-control rounded-4 ms-1" />
+        <input
+          type="number"
+          class="form-control rounded-4 ms-1"
+          onChange={(e) => {
+            setWhatYouDo(e.target.value);
+          }}
+        />
       </div>
     </>
   );
@@ -287,6 +341,8 @@ const ERCOMPONENT = () => {
 
 //! if patient answer is yes, in question: Are you having any difficulty with appetite or eating habits?
 const EatingHabits = () => {
+  //! Get value of Eating Habits
+  const [getEatingHabits, setEatingHabits] = useState("");
   return (
     <div className="form-check-inline mt-2">
       <span>If yes, check where applicable:</span>
@@ -295,6 +351,9 @@ const EatingHabits = () => {
         type="radio"
         name="DifficultEatingHabits"
         value="Eating less"
+        onChange={(e) => {
+          setEatingHabits(e.target.value);
+        }}
       />
       <label className="form-check-label ms-1">Eating less</label>
       <input
@@ -302,6 +361,9 @@ const EatingHabits = () => {
         type="radio"
         name="DifficultEatingHabits"
         value="Eating more"
+        onChange={(e) => {
+          setEatingHabits(e.target.value);
+        }}
       />
       <label className="form-check-label ms-1">Eating more</label>
       <input
@@ -309,6 +371,9 @@ const EatingHabits = () => {
         type="radio"
         name="DifficultEatingHabits"
         value="Bingeing"
+        onChange={(e) => {
+          setEatingHabits(e.target.value);
+        }}
       />
       <label className="form-check-label ms-1">Bingeing</label>
       <input
@@ -316,6 +381,9 @@ const EatingHabits = () => {
         type="radio"
         name="DifficultEatingHabits"
         value="Purging"
+        onChange={(e) => {
+          setEatingHabits(e.target.value);
+        }}
       />
       <label className="form-check-label ms-1">Purging</label>
     </div>
@@ -324,6 +392,9 @@ const EatingHabits = () => {
 
 //! if patient answer is yes, in question: Do you regularly use alcohol?
 const UseAlochol = () => {
+  //! Get value of alcohol frequency
+  const [getFrequency, setFrequency] = useState("");
+
   return (
     <>
       <div className="form-check-inline mt-2">
@@ -333,6 +404,9 @@ const UseAlochol = () => {
           type="radio"
           name="RegularUseOfAlcohol"
           value="Eating less"
+          onChange={(e) => {
+            setFrequency(e.target.value);
+          }}
         />
         <label className="form-check-label ms-1">Once a month</label>
         <input
@@ -340,6 +414,9 @@ const UseAlochol = () => {
           type="radio"
           name="RegularUseOfAlcohol"
           value="Eating more"
+          onChange={(e) => {
+            setFrequency(e.target.value);
+          }}
         />
         <label className="form-check-label ms-1">Once a week</label>
         <input
@@ -347,8 +424,11 @@ const UseAlochol = () => {
           type="radio"
           name="RegularUseOfAlcohol"
           value="Bingeing"
+          onChange={(e) => {
+            setFrequency(e.target.value);
+          }}
         />
-        <label className="form-check-label ms-1">daily</label>
+        <label className="form-check-label ms-1">Daily</label>
       </div>
       <div className="form-check-inline mt-2">
         <input
@@ -356,15 +436,21 @@ const UseAlochol = () => {
           type="radio"
           name="RegularUseOfAlcohol"
           value="Purging"
+          onChange={(e) => {
+            setFrequency(e.target.value);
+          }}
         />
-        <label className="form-check-label ms-1">daily, 3 or more</label>
+        <label className="form-check-label ms-1">Daily, 3 or more</label>
         <input
           className="form-input ms-2 rounded-5"
           type="radio"
           name="RegularUseOfAlcohol"
-          value="Purging"
+          value="Intoxicated daily"
+          onChange={(e) => {
+            setFrequency(e.target.value);
+          }}
         />
-        <label className="form-check-label ms-1">intoxicated daily</label>
+        <label className="form-check-label ms-1">Intoxicated daily</label>
       </div>
     </>
   );
@@ -372,6 +458,8 @@ const UseAlochol = () => {
 
 //! if patient answer is yes, in question: How often do you engage in recreational drug use?
 const RecreationalDrug = () => {
+  //! Get value of drugs
+  const [getDrugs, setDrugs] = useState("");
   return (
     <div className="form-check-inline mt-2">
       <span>
@@ -382,6 +470,9 @@ const RecreationalDrug = () => {
           type="text"
           class="form-control rounded-4 ms-1"
           style={{ width: 45 + "rem" }}
+          onChange={(e) => {
+            setDrugs(e.target.value);
+          }}
         />
       </div>
     </div>
