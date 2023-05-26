@@ -1,131 +1,145 @@
-import { useState } from "react";
-import { useRef } from "react";
-export const CardOne = ({ ButtonNext }) => {
-  //! Get Patient's Full Name , Age and Handle Full Name Inputed
-  const [getFname, setFname] = useState("");
-  const handleFname = (event) => {
-    setFname(event.target.value);
+import { useState, useEffect } from "react";
+
+export const CardOne = ({ ButtonNext, ButtonBack, handleInputChange, formData }) => {
+  const [localFormData, setLocalFormData] = useState({
+    Fname: "",
+    Age: "",
+    DateToday: new Date().toISOString().split("T")[0],
+    BirthDate: "",
+    Gender: ""
+  });
+
+  useEffect(() => {
+    setLocalFormData(formData);
+  }, [formData]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "BirthDate") {
+      const birthDate = new Date(value);
+      const today = new Date();
+      const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+      setLocalFormData((prevFormData) => ({
+        ...prevFormData,
+        Age: age.toString(),
+        [name]: value
+      }));
+    } else {
+      setLocalFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value
+      }));
+    }
   };
 
-  const [getAge, setAge] = useState();
-  const handleAge = (event) => {
-    setAge(event.target.value);
-  };
-
-  //! Get Patient's Birth Date and Handle Date Inputed
-  const [getBirhdate, setBirthDate] = useState("");
-  const birthDateInputRef = useRef(null);
-  const handleBirthDate = (e) => {
-    setBirthDate(e.target.value);
-  };
-
-  const [getdateToday, setdateToday] = useState("");
-  const dateTodayInputRef = useRef(null);
-  const handleDateToday = (e) => {
-    setdateToday(e.target.value);
-  };
-
-  //! Get Patient's Gender
-  const [getGender, setGender] = useState("");
-  const handleGender = (e) => {
-    setGender(e.target.value);
+  const handleNext = () => {
+    console.log(localFormData); // Log form data
+    ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
 
   return (
     <>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card " style={{ width: 50 + "rem" }}>
-          <div class="card-header">
-            Please fill up this intake form: (This form will be your Sign Up
-            form or Register Form)
+        <div className="card" style={{ width: "50rem" }}>
+          <div className="card-header">
+            Please fill up this intake form: (This form will be your Sign Up form or Register Form)
           </div>
-          <ul class="list-group list-group-flush">
+          <ul className="list-group list-group-flush">
             {/* Input Patient's Full Name */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <input
                   type="text"
-                  class="form-control rounded-4 me-1"
+                  name="Fname"
+                  className="form-control rounded-4 me-1"
                   placeholder="Full Name:"
-                  onChange={handleFname}
+                  onChange={handleInputChange}
+                  value={localFormData.Fname}
                 />
                 <input
                   type="number"
-                  class="form-control rounded-4"
+                  name="Age"
+                  className="form-control rounded-4"
                   placeholder="Age:"
-                  onChange={handleAge}
+                  value={localFormData.Age}
+                  readOnly
                 />
               </div>
             </li>
 
             {/* Input Date Today and Birth Date */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <p>Date today & your birth date:</p>
-              <div class="input-group">
+              <div className="input-group">
                 <input
                   type="date"
-                  class="form-control  rounded-4 me-1"
-                  day
-                  ref={dateTodayInputRef}
-                  onChange={handleDateToday}
+                  name="DateToday"
+                  className="form-control rounded-4 me-1"
+                  value={localFormData.DateToday}
+                  readOnly
                 />
                 <input
                   type="date"
-                  class="form-control  rounded-4"
-                  ref={birthDateInputRef}
-                  onChange={handleBirthDate}
+                  name="BirthDate"
+                  className="form-control rounded-4"
+                  onChange={handleChange}
+                  value={localFormData.BirthDate}
                 />
               </div>
             </li>
 
             {/* Radio Button for Gender */}
-            <li class="list-group-item">
-              <div class="form-check-inline">
+            <li className="list-group-item">
+              <div className="form-check-inline">
                 <p>Gender:</p>
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="radio"
-                  name="gender"
+                  name="Gender"
                   value="Male"
-                  onChange={handleGender}
+                  onChange={handleChange}
+                  checked={localFormData.Gender === "Male"}
                 />
-                <label class="form-check-label ms-1" for="exampleRadios1">
+                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
                   Male
                 </label>
               </div>
-              <div class="form-check-inline">
+              <div className="form-check-inline">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="radio"
-                  name="gender"
+                  name="Gender"
                   value="Female"
-                  onChange={handleGender}
+                  onChange={handleChange}
+                  checked={localFormData.Gender === "Female"}
                 />
-                <label class="form-check-label ms-1" for="exampleRadios1">
+                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
                   Female
                 </label>
               </div>
-              <div class="form-check-inline">
+              <div className="form-check-inline">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="radio"
-                  name="gender"
+                  name="Gender"
                   value="Transgender"
-                  onChange={handleGender}
+                  onChange={handleChange}
+                  checked={localFormData.Gender === "Transgender"}
                 />
-                <label class="form-check-label ms-1" for="exampleRadios1">
+                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
                   Transgender
                 </label>
               </div>
-              <div class="form-check-inline">
+              <div className="form-check-inline">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="radio"
-                  name="gender"
+                  name="Gender"
                   value="Other"
-                  onChange={handleGender}
+                  onChange={handleChange}
+                  checked={localFormData.Gender === "Other"}
                 />
-                <label class="form-check-label ms-1" for="exampleRadios1">
+                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
                   Other
                 </label>
               </div>
@@ -133,15 +147,13 @@ export const CardOne = ({ ButtonNext }) => {
           </ul>
         </div>
       </div>
-      <div className="d-flex justify-content-end">
         <button
           className="nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
           id="buttonCard"
-          onClick={ButtonNext}
+          onClick={handleNext}
         >
           Next
         </button>
-      </div>
     </>
   );
 };
