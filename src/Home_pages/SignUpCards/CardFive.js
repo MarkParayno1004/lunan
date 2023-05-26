@@ -1,7 +1,38 @@
 import { useState } from "react";
 export const CardFive = ({ ButtonBack, ButtonNext }) => {
+  // const [localFormData, setLocalFormData] = useState({
+  //   SexualPref: "",
+  //   MaritalStatus: "",
+  //   RelStatus: "",
+  //   HowLong: "",
+  //   QualRel: "",
+  //   Child: "",
+  //   CountChild:"",
+  //   ChildAge:"",
+  //   TherapyStatus: "",
+  //   WhyTherapy:"",
+  //   WhenTherapy:"",
+  //   showRomanticRelationship: false
+  // });
+  // useEffect(() => {
+  //   setLocalFormData(
+  //     formData ?? {
+  //       SexualPref: "",
+  //       MaritalStatus: "",
+  //       RelStatus: "",
+  //       HowLong: "",
+  //       QualRel: "",
+  //       Child: "",
+  //       CountChild:"",
+  //       ChildAge:"",
+  //       TherapyStatus: "",
+  //       WhyTherapy:"",
+  //       WhenTherapy:""
+  //     }
+  //   );
+  // }, [formData]);
   //!For the question psychiatric
-  const [showPsychiaTric, setPsychiaTric] = useState(false);
+  const [showPsychiaTric, setPsychiaTric] = useState(true);
   const handlePschiatric = (event) => {
     setPsychiaTric(event.target.value === "true");
   };
@@ -249,7 +280,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
 
 //! if patient chooses Yes, in the question: Are you currently taking prescribed psychiatric medications
 const PsychiatricMedsTrue = () => {
-  const [getNamesandDosesTrue, setNamesAndDosesTrue] = useState(``);
+  const [getNamesandDosesTrue, setNamesAndDosesTrue] = useState(false);
   const handleNamesAndDosesTrue = (e) => {
     setNamesAndDosesTrue(e.target.value);
   };
@@ -286,7 +317,7 @@ const PsychiatricMedsFalse = () => {
     <>
       <div className="form-check-inline ms-3">
         <span className="">
-          If No, have you been previously prescribed psychiatric medication?
+          Have you been previously prescribed psychiatric medication?
         </span>
         <input
           className="form-check-input ms-2"
@@ -314,9 +345,9 @@ const PsychiatricMedsFalse = () => {
 
 //! if patient chooses Yes, in the question: have you been previously prescribed psychiatric medication?
 const PrescribedMedication = () => {
-  const [getNamesAndDosesFalse, setNamesAndDosesFalse] = useState(``);
+  const [getNamesAndDosesFalse, setNamesAndDosesFalse] = useState(true);
   const handleNamesAndDosesFalse = (e) => {
-    setNamesAndDosesFalse(e.target.value);
+    setNamesAndDosesFalse(e.target.value === "true");
   };
   return (
     <>
