@@ -3,39 +3,21 @@ import { useRef } from "react";
 export const CardSix = ({ ButtonBack, ButtonNext }) => {
   //!Radio Button for Physical Health
   const [getCurrentPhysicalHealth, setCurrentPhysicalHealth] = useState("");
-  const handleCurrentPhysicalHealth = (e) => {
-    setCurrentPhysicalHealth(e.target.value);
-  };
 
   //! Date of last physicalExamniation
   const [getLastPhysicalExamniation, setLastPhysicalExamniation] = useState("");
-  const dateLastPhysicalExamniation = useRef(null);
-  const handleLastPhysicalExamniation = (e) => {
-    setLastPhysicalExamniation(e.target.value);
-  };
 
   //! List of any chronic Health
   const [getChronicHealth, setChronicHealth] = useState(``);
-  const handleChronicHealth = (e) => {
-    setChronicHealth(e.target.value);
-  };
+
+  //! Radio Button for Any Allergies with Conditional Statements
+  const [showAllergies, setAllergies] = useState("false");
 
   //! List of any Medication
   const [getMedication, setMedication] = useState(``);
-  const handleMedication = (e) => {
-    setMedication(e.target.value);
-  };
 
   //! Hours of Sleep
   const [getHourSleep, setHourSleep] = useState();
-  const handleHourSleep = (e) => {
-    setHourSleep(e.target.value);
-  };
-  //! Radio Button for Any Allergies with Logical Statements
-  const [showAllergies, setAllergies] = useState("false");
-  const handleAllergies = (e) => {
-    setAllergies(e.target.value === "true");
-  };
 
   return (
     <div>
@@ -50,45 +32,55 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                   How is your physical health currently? (please choose)
                 </span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="Poor"
-                  onChange={handleCurrentPhysicalHealth}
+                  onChange={(e) => {
+                    setCurrentPhysicalHealth(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">Poor</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="Unsatisfactory"
-                  onChange={handleCurrentPhysicalHealth}
+                  onChange={(e) => {
+                    setCurrentPhysicalHealth(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">Unsatisfactory</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="Satisfactory"
-                  onChange={handleCurrentPhysicalHealth}
+                  onChange={(e) => {
+                    setCurrentPhysicalHealth(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">Satisfactory</label>
               </div>
               <div>
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="Unsatisfactory"
-                  onChange={handleCurrentPhysicalHealth}
+                  onChange={(e) => {
+                    setCurrentPhysicalHealth(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">Good</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="Satisfactory"
-                  onChange={handleCurrentPhysicalHealth}
+                  onChange={(e) => {
+                    setCurrentPhysicalHealth(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">Very Good</label>
               </div>
@@ -104,8 +96,10 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                   type="date"
                   class="form-control  rounded-4 me-1 ms-2"
                   day
-                  ref={dateLastPhysicalExamniation}
-                  onChange={handleLastPhysicalExamniation}
+                  ref={useRef(null)}
+                  onChange={(e) => {
+                    setLastPhysicalExamniation(e.target.value);
+                  }}
                 />
               </div>
             </li>
@@ -124,7 +118,9 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                     placeholder="Answer"
                     id="floatingTextarea2"
                     style={{ height: 70 + "px", width: 45 + "rem" }}
-                    onChange={handleChronicHealth}
+                    onChange={(e) => {
+                      setChronicHealth(e.target.value);
+                    }}
                   ></textarea>
                   <label for="floatingTextarea2">Answer:</label>
                 </div>
@@ -136,19 +132,23 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
               <div class="input-group">
                 <span>Any Allergies?</span>
                 <input
-                  className="form-check-input ms-2 rounded-5"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="true"
-                  onChange={handleAllergies}
+                  onChange={(e) => {
+                    setAllergies(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-check-input ms-2 rounded-5"
+                  className="form-input ms-2"
                   type="radio"
                   name="currentPhysicalHealth"
                   value="false"
-                  onChange={handleAllergies}
+                  onChange={(e) => {
+                    setAllergies(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
                 {showAllergies && <Allergies />}
@@ -164,7 +164,9 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                     class="form-control rounded-4"
                     placeholder="Answer"
                     id="floatingTextarea2"
-                    onChange={handleMedication}
+                    onChange={(e) => {
+                      setMedication(e.target.value);
+                    }}
                     style={{ height: 70 + "px", width: 40 + "rem" }}
                   ></textarea>
                   <label for="floatingTextarea2">Answer:</label>
@@ -176,7 +178,9 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                   <input
                     type="number"
                     class="form-control rounded-4 mt-2"
-                    onChange={handleHourSleep}
+                    onChange={(e) => {
+                      setHourSleep(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -206,6 +210,7 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
 
 //! If yes is the answer, in question: Any Allergies?
 const Allergies = () => {
+  const [getAllergies, setAllergies] = useState(``);
   return (
     <div class="input-group mt-1">
       <span class="d-flex align-items-center me-2">If yes, please list: </span>
@@ -215,6 +220,9 @@ const Allergies = () => {
           placeholder="Answer"
           id="floatingTextarea2"
           style={{ height: 70 + "px", width: 20 + "rem" }}
+          onChange={(e) => {
+            setAllergies(e.target.value);
+          }}
         ></textarea>
         <label for="floatingTextarea2">Answer:</label>
       </div>

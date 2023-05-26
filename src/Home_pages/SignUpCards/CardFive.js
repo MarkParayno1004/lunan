@@ -1,63 +1,22 @@
 import { useState } from "react";
+
 export const CardFive = ({ ButtonBack, ButtonNext }) => {
-  // const [localFormData, setLocalFormData] = useState({
-  //   SexualPref: "",
-  //   MaritalStatus: "",
-  //   RelStatus: "",
-  //   HowLong: "",
-  //   QualRel: "",
-  //   Child: "",
-  //   CountChild:"",
-  //   ChildAge:"",
-  //   TherapyStatus: "",
-  //   WhyTherapy:"",
-  //   WhenTherapy:"",
-  //   showRomanticRelationship: false
-  // });
-  // useEffect(() => {
-  //   setLocalFormData(
-  //     formData ?? {
-  //       SexualPref: "",
-  //       MaritalStatus: "",
-  //       RelStatus: "",
-  //       HowLong: "",
-  //       QualRel: "",
-  //       Child: "",
-  //       CountChild:"",
-  //       ChildAge:"",
-  //       TherapyStatus: "",
-  //       WhyTherapy:"",
-  //       WhenTherapy:""
-  //     }
-  //   );
-  // }, [formData]);
-  //!For the question psychiatric
-  const [showPsychiaTric, setPsychiaTric] = useState(true);
-  const handlePschiatric = (event) => {
-    setPsychiaTric(event.target.value === "true");
-  };
+  //! Psychiatric Radio Radio Buttons
+  const [showPsychiatric, setShowPsychiatric] = useState(true);
 
-  //!For the question Suicidal Thoughts
-  const [showSuicidal, setSuicidal] = useState(false);
-  const handleSuicidal = (event) => {
-    setSuicidal(event.target.value === "true");
-  };
+  //! Suicidal Radio Buttons
+  const [showSuicidal, setShowSuicidal] = useState(false);
 
-  //!For the question Past Suicidal Thoughts
-  const [showpastSuicidal, setpastSuicidal] = useState(false);
-  const handlepastSuicidal = (event) => {
-    setpastSuicidal(event.target.value === "true");
-  };
+  //! Past Suicidal Thoughts Radio Button
+  const [showPastSuicidal, setShowPastSuicidal] = useState(false);
 
-  //!For the question previous homicidal thoughts
-  const [showPreviousHomicidal, setPreviousHomicidal] = useState(false);
-  const handlePreviousHomicidal = (event) => {
-    setPreviousHomicidal(event.target.value === "true");
-  };
+  //! Previous Homicidal Radio Buttons
+  const [showPreviousHomicidal, setShowPreviousHomicidal] = useState(false);
+
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
+        <div class="card" style={{ width: "50rem" }}>
           <div class="card-header">
             Please fill up this intake form: (This form will be your Sign Up
             form or Register Form)
@@ -71,24 +30,28 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   <br /> (antidepressants or others)?
                 </span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="PsychiatricMeds"
                   value="true"
-                  onChange={handlePschiatric}
+                  onChange={(event) => {
+                    setShowPsychiatric(event.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="PsychiatricMeds"
                   value="false"
-                  onChange={handlePschiatric}
+                  onChange={(event) => {
+                    setShowPsychiatric(event.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
               <div className="form-check-inline ">
-                {showPsychiaTric ? (
+                {showPsychiatric ? (
                   <PsychiatricMedsTrue />
                 ) : (
                   <PsychiatricMedsFalse />
@@ -101,14 +64,14 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
               <div className="form-check-inline ">
                 <span>Are you hopeful about your future?</span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="Future"
                   value="Yes"
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="Future"
                   value="No"
@@ -122,35 +85,43 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
               <div className="form-check-inline ">
                 <span>Are you having current suicidal thoughts?</span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="true"
-                  onChange={handleSuicidal}
+                  onChange={(e) => {
+                    setShowSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Frequently</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="true"
-                  onChange={handleSuicidal}
+                  onChange={(e) => {
+                    setShowSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Sometimes</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="true"
-                  onChange={handleSuicidal}
+                  onChange={(e) => {
+                    setShowSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="false"
-                  onChange={handleSuicidal}
+                  onChange={(e) => {
+                    setShowSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
@@ -164,40 +135,48 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
               <div className="form-check-inline ">
                 <span>Have you had suicidal thoughts in the past?</span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="true"
-                  onChange={handlepastSuicidal}
+                  onChange={(e) => {
+                    setShowPastSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Frequently</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="true"
-                  onChange={handlepastSuicidal}
+                  onChange={(e) => {
+                    setShowPastSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Sometimes</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="true"
-                  onChange={handlepastSuicidal}
+                  onChange={(e) => {
+                    setShowPastSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
                   value="false"
-                  onChange={handlepastSuicidal}
+                  onChange={(e) => {
+                    setShowPastSuicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
               <div className="form-check-inline ">
-                {showpastSuicidal ? (
+                {showPastSuicidal ? (
                   <SuicidalThoughtsPast />
                 ) : (
                   <SuicidalThoughtsPastNever />
@@ -213,14 +192,14 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   hurting someone else)?
                 </span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="Future"
                   value="Yes"
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="Future"
                   value="No"
@@ -229,24 +208,28 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
               </div>
             </li>
 
-            {/* Previous had Homicdial Thoughs */}
+            {/* Previous had Homicidal Thoughts */}
             <li class="list-group-item">
               <div className="form-check-inline ">
                 <span>Have you previously had homicidal thoughts?</span>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="HadPreviousHomicide"
                   value="true"
-                  onChange={handlePreviousHomicidal}
+                  onChange={(e) => {
+                    setShowPreviousHomicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
-                  className="form-check-input ms-2"
+                  className="form-input ms-2"
                   type="radio"
                   name="HadPreviousHomicide"
                   value="false"
-                  onChange={handlePreviousHomicidal}
+                  onChange={(e) => {
+                    setShowPreviousHomicidal(e.target.value === "true");
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -281,9 +264,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
 //! if patient chooses Yes, in the question: Are you currently taking prescribed psychiatric medications
 const PsychiatricMedsTrue = () => {
   const [getNamesandDosesTrue, setNamesAndDosesTrue] = useState(false);
-  const handleNamesAndDosesTrue = (e) => {
-    setNamesAndDosesTrue(e.target.value);
-  };
+
   return (
     <>
       <div class="input-group mt-3 ms-3">
@@ -296,7 +277,9 @@ const PsychiatricMedsTrue = () => {
             placeholder="Answer"
             id="floatingTextarea2"
             style={{ height: 100 + "px", width: 30 + "rem" }}
-            onChange={handleNamesAndDosesTrue}
+            onChange={(e) => {
+              setNamesAndDosesTrue(e.target.value);
+            }}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
         </div>
@@ -309,9 +292,6 @@ const PsychiatricMedsTrue = () => {
 //! if patient chooses No, in the question: Are you currently taking prescribed psychiatric medications?
 const PsychiatricMedsFalse = () => {
   const [showPsychiatricFalse, setPsychiatricFalse] = useState("false");
-  const handlePsychiatricFalse = (event) => {
-    setPsychiatricFalse(event.target.value === "true");
-  };
 
   return (
     <>
@@ -320,19 +300,23 @@ const PsychiatricMedsFalse = () => {
           Have you been previously prescribed psychiatric medication?
         </span>
         <input
-          className="form-check-input ms-2"
+          className="form-input ms-2"
           type="radio"
           name="PsychiatricMedsFalse"
           value="true"
-          onChange={handlePsychiatricFalse}
+          onChange={(e) => {
+            setPsychiatricFalse(e.target.value === "true");
+          }}
         />
         <label className="form-check-label ms-1">Yes</label>
         <input
-          className="form-check-input ms-2"
+          className="form-input ms-2"
           type="radio"
           name="PsychiatricMedsFalse"
           value="false"
-          onChange={handlePsychiatricFalse}
+          onChange={(e) => {
+            setPsychiatricFalse(e.target.value === "true");
+          }}
         />
         <label className="form-check-label ms-1">No</label>
       </div>
@@ -346,9 +330,7 @@ const PsychiatricMedsFalse = () => {
 //! if patient chooses Yes, in the question: have you been previously prescribed psychiatric medication?
 const PrescribedMedication = () => {
   const [getNamesAndDosesFalse, setNamesAndDosesFalse] = useState(true);
-  const handleNamesAndDosesFalse = (e) => {
-    setNamesAndDosesFalse(e.target.value === "true");
-  };
+
   return (
     <>
       <div class="input-group mt-3 ms-3">
@@ -361,7 +343,9 @@ const PrescribedMedication = () => {
             placeholder="Answer"
             id="floatingTextarea2"
             style={{ height: 100 + "px", width: 30 + "rem" }}
-            onChange={handleNamesAndDosesFalse}
+            onChange={(e) => {
+              setNamesAndDosesFalse(e.target.value === "true");
+            }}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
         </div>
@@ -379,14 +363,14 @@ const SuicidalThoughts = () => {
         If yes, have you recently done anything to hurt yourself?
       </span>
       <input
-        className="form-check-input ms-2"
+        className="form-input ms-2"
         type="radio"
         name="SuicidalThoughts"
         value="Yes"
       />
       <label className="form-check-label ms-1">Yes</label>
       <input
-        className="form-check-input ms-2"
+        className="form-input ms-2"
         type="radio"
         name="SuicidalThoughts"
         value="No"
@@ -402,14 +386,14 @@ const SuicidalThoughtsPast = () => {
     <div className="form-check-inline ms-3">
       <span className="">Did you ever act on them?</span>
       <input
-        className="form-check-input ms-2"
+        className="form-input ms-2"
         type="radio"
         name="SuicidalThoughtsPast"
         value="Yes"
       />
       <label className="form-check-label ms-1">Yes</label>
       <input
-        className="form-check-input ms-2"
+        className="form-input ms-2"
         type="radio"
         name="SuicidalThoughtsPast"
         value="No"
@@ -422,9 +406,6 @@ const SuicidalThoughtsPast = () => {
 //!If patient chooses Never in question : Have you had suicidal thoughts in the past?
 const SuicidalThoughtsPastNever = () => {
   const [getThoughts, setThoughts] = useState(``);
-  const handleThoughts = (e) => {
-    setThoughts(e.target.value);
-  };
   return (
     <div className="form-check-inline ms-3 mt-2">
       <span className="">
@@ -435,17 +416,17 @@ const SuicidalThoughtsPastNever = () => {
         className="form-control rounded-4"
         name="SuicidalThoughtsPastNever"
         placeholder="Answer:"
-        onChange={handleThoughts}
+        onChange={(e) => {
+          setThoughts(e.target.value);
+        }}
       />
     </div>
   );
 };
 
+//!If patient chooses yes, in question : Have you previously had homicidal thoughts?
 const PreviouslyHomicideThoughts = () => {
   const [getThoughts, setThoughts] = useState(``);
-  const handleThoughts = (e) => {
-    setThoughts(e.target.value);
-  };
   return (
     <div class="input-group">
       <div>
@@ -456,7 +437,9 @@ const PreviouslyHomicideThoughts = () => {
             placeholder="Answer"
             id="floatingTextarea2"
             style={{ height: 100 + "px", width: 40 + "rem" }}
-            onChange={handleThoughts}
+            onChange={(e) => {
+              setThoughts(e.target.value);
+            }}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
         </div>
