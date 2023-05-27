@@ -3,7 +3,7 @@ import "./css/Navbar.css";
 import lunanHeader from "../src/img/lunanHeader.png";
 export const Navbar = () => {
   return (
-    <div className="container-fluid" id="bground">
+    <div className="container-fluid sticky-top" id="navbar">
       <div className="row">
         {/* Logo */}
         <div className="col">
