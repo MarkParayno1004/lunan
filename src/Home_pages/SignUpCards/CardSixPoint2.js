@@ -170,7 +170,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2 rounded-5"
                   type="radio"
-                  name="WeightChange"
+                  name="DrugUse"
                   value="Daily"
                   onChange={(e) => {
                     setDrugUse(e.target.value);
@@ -180,7 +180,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2 rounded-5"
                   type="radio"
-                  name="WeightChange"
+                  name="DrugUse"
                   value="Weekly"
                   onChange={(e) => {
                     setDrugUse(e.target.value);
@@ -190,7 +190,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2 rounded-5"
                   type="radio"
-                  name="WeightChange"
+                  name="DrugUse"
                   value="Monthly"
                   onChange={(e) => {
                     setDrugUse(e.target.value);
@@ -200,7 +200,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2 rounded-5"
                   type="radio"
-                  name="WeightChange"
+                  name="DrugUse"
                   value="Rarely"
                   onChange={(e) => {
                     setDrugUse(e.target.value);
@@ -210,7 +210,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2 rounded-5"
                   type="radio"
-                  name="WeightChange"
+                  name="DrugUse"
                   value="Never"
                   checked={showDrugUse === "Never"}
                   onChange={(e) => {
@@ -255,7 +255,7 @@ const SleepHabits = () => {
         <input
           className="form-input ms-2 rounded-5"
           type="radio"
-          name="SleepHabits"
+          name="Applicable"
           value="Sleeping too little"
           onChange={(e) => {
             setSleepHabits(e.target.value);
@@ -265,7 +265,7 @@ const SleepHabits = () => {
         <input
           className="form-input ms-2 rounded-5"
           type="radio"
-          name="SleepHabits"
+          name="Applicable"
           value="Sleeping too much"
           onChange={(e) => {
             setSleepHabits(e.target.value);
@@ -275,7 +275,7 @@ const SleepHabits = () => {
         <input
           className="form-input ms-2 rounded-5"
           type="radio"
-          name="SleepHabits"
+          name="Applicable"
           value="Can't fall asleep"
           onChange={(e) => {
             setSleepHabits(e.target.value);
@@ -285,7 +285,7 @@ const SleepHabits = () => {
         <input
           className="form-input ms-2"
           type="radio"
-          name="SleepHabits"
+          name="Applicable"
           value="Can't stay asleep"
           onChange={(e) => {
             setSleepHabits(e.target.value);
@@ -353,7 +353,7 @@ const EatingHabits = () => {
       <input
         className="form-input ms-2 rounded-5"
         type="radio"
-        name="DifficultEatingHabits"
+        name="ApplicableEatingHabits"
         value="Eating less"
         onChange={(e) => {
           setEatingHabits(e.target.value);
@@ -363,7 +363,7 @@ const EatingHabits = () => {
       <input
         className="form-input ms-2 rounded-5"
         type="radio"
-        name="DifficultEatingHabits"
+        name="ApplicableEatingHabits"
         value="Eating more"
         onChange={(e) => {
           setEatingHabits(e.target.value);
@@ -373,7 +373,7 @@ const EatingHabits = () => {
       <input
         className="form-input ms-2 rounded-5"
         type="radio"
-        name="DifficultEatingHabits"
+        name="ApplicableEatingHabits"
         value="Bingeing"
         onChange={(e) => {
           setEatingHabits(e.target.value);
@@ -383,7 +383,7 @@ const EatingHabits = () => {
       <input
         className="form-input ms-2 rounded-5"
         type="radio"
-        name="DifficultEatingHabits"
+        name="ApplicableEatingHabits"
         value="Purging"
         onChange={(e) => {
           setEatingHabits(e.target.value);

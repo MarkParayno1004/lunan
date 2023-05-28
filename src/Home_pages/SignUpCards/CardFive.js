@@ -13,6 +13,8 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
   //! Previous Homicidal Radio Buttons
   const [showPreviousHomicidal, setShowPreviousHomicidal] = useState(false);
 
+  //! Current Homicidal Thoughts
+  const [getHomicidalThoughts, setHomicidalThoughts] = useState("");
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -135,7 +137,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2"
                   type="radio"
-                  name="SuicidalThoughts"
+                  name="ThoughtsPast"
                   value="Frequently"
                   checked={showPastSuicidal === "Frequently"}
                   onChange={(e) => {
@@ -146,7 +148,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2"
                   type="radio"
-                  name="SuicidalThoughts"
+                  name="ThoughtsPast"
                   value="Sometimes"
                   checked={showPastSuicidal === "Sometimes"}
                   onChange={(e) => {
@@ -157,7 +159,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2"
                   type="radio"
-                  name="SuicidalThoughts"
+                  name="ThoughtsPast"
                   value="Rarely"
                   checked={showPastSuicidal === "Rarely"}
                   onChange={(e) => {
@@ -168,7 +170,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2"
                   type="radio"
-                  name="SuicidalThoughts"
+                  name="ThoughtsPast"
                   value="Never"
                   onChange={(e) => {
                     setShowPastSuicidal(e.target.value);
@@ -200,15 +202,21 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                 <input
                   className="form-input ms-2"
                   type="radio"
-                  name="Future"
+                  name="CurrentHomicidal"
                   value="Yes"
+                  onChange={(e) => {
+                    setHomicidalThoughts(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
                   className="form-input ms-2"
                   type="radio"
-                  name="Future"
+                  name="CurrentHomicidal"
                   value="No"
+                  onChange={(e) => {
+                    setHomicidalThoughts(e.target.value);
+                  }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
