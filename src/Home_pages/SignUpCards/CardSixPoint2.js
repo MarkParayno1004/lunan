@@ -2,19 +2,19 @@ import { useState } from "react";
 
 export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
   //!Sleep Habit with Conditional Statement
-  const [showSleepHabits, setSleepHabits] = useState("false");
+  const [showSleepHabits, setSleepHabits] = useState("");
 
   //!Handle Exercise Regularly with Conditional Statement
-  const [showER, setER] = useState("No");
+  const [showER, setER] = useState("");
 
   //!Eating Habits with Conditional Statement
-  const [showEatingHabits, setEatingHabits] = useState("false");
+  const [showEatingHabits, setEatingHabits] = useState("");
 
   //!Regular use of alcohol with Conditional Statement
-  const [showUseAlcohol, setUseAlcohol] = useState("false");
+  const [showUseAlcohol, setUseAlcohol] = useState("");
 
   //!Engage in recreational drug use
-  const [showDrugUse, setDrugUse] = useState("false");
+  const [showDrugUse, setDrugUse] = useState("");
 
   return (
     <div>
@@ -31,8 +31,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="currentPhysicalHealth"
                   value="true"
+                  checked={showSleepHabits === "true"}
                   onChange={(e) => {
-                    setSleepHabits(e.target.value === "true");
+                    setSleepHabits(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
@@ -42,12 +43,12 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   name="currentPhysicalHealth"
                   value="false"
                   onChange={(e) => {
-                    setSleepHabits(e.target.value === "true");
+                    setSleepHabits(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
-              {showSleepHabits && <SleepHabits />}
+              {showSleepHabits === "true" && <SleepHabits />}
             </li>
 
             {/* Exercise Regularly */}
@@ -89,8 +90,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="DifficultEatingHabits"
                   value="true"
+                  checked={showEatingHabits === "true"}
                   onChange={(e) => {
-                    setEatingHabits(e.target.value === "true");
+                    setEatingHabits(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
@@ -100,12 +102,12 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   name="DifficultEatingHabits"
                   value="false"
                   onChange={(e) => {
-                    setEatingHabits(e.target.value === "true");
+                    setEatingHabits(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
-              {showEatingHabits && <EatingHabits />}
+              {showEatingHabits === "true" && <EatingHabits />}
             </li>
 
             {/* Weight Change */}
@@ -141,8 +143,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="WeightChange"
                   value="true"
+                  checked={showUseAlcohol === "true"}
                   onChange={(e) => {
-                    setUseAlcohol(e.target.value === "true");
+                    setUseAlcohol(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
@@ -152,12 +155,12 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   name="WeightChange"
                   value="false"
                   onChange={(e) => {
-                    setUseAlcohol(e.target.value === "true");
+                    setUseAlcohol(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
-              {showUseAlcohol && <UseAlochol />}
+              {showUseAlcohol === "true" && <UseAlochol />}
             </li>
 
             {/* Engage of Drugs */}
@@ -168,9 +171,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2 rounded-5"
                   type="radio"
                   name="WeightChange"
-                  value="true"
+                  value="Daily"
                   onChange={(e) => {
-                    setDrugUse(e.target.value === "true");
+                    setDrugUse(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Daily</label>
@@ -178,9 +181,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2 rounded-5"
                   type="radio"
                   name="WeightChange"
-                  value="true"
+                  value="Weekly"
                   onChange={(e) => {
-                    setDrugUse(e.target.value === "true");
+                    setDrugUse(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Weekly</label>
@@ -188,9 +191,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2 rounded-5"
                   type="radio"
                   name="WeightChange"
-                  value="true"
+                  value="Monthly"
                   onChange={(e) => {
-                    setDrugUse(e.target.value === "true");
+                    setDrugUse(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Monthly</label>
@@ -198,9 +201,9 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2 rounded-5"
                   type="radio"
                   name="WeightChange"
-                  value="true"
+                  value="Rarely"
                   onChange={(e) => {
-                    setDrugUse(e.target.value === "true");
+                    setDrugUse(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
@@ -208,14 +211,15 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2 rounded-5"
                   type="radio"
                   name="WeightChange"
-                  value="false"
+                  value="Never"
+                  checked={showDrugUse === "Never"}
                   onChange={(e) => {
-                    setDrugUse(e.target.value === "true");
+                    setDrugUse(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
-              {showDrugUse && <RecreationalDrug />}
+              {showDrugUse === "Never" && <RecreationalDrug />}
             </li>
           </ul>
         </div>
@@ -397,61 +401,58 @@ const UseAlochol = () => {
 
   return (
     <>
-      <div className="form-check-inline mt-2">
-        <span>If yes, what is your frequency?</span>
-        <input
-          className="form-input ms-2 rounded-5"
-          type="radio"
-          name="RegularUseOfAlcohol"
-          value="Eating less"
-          onChange={(e) => {
-            setFrequency(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">Once a month</label>
-        <input
-          className="form-input ms-2 rounded-5"
-          type="radio"
-          name="RegularUseOfAlcohol"
-          value="Eating more"
-          onChange={(e) => {
-            setFrequency(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">Once a week</label>
-        <input
-          className="form-input ms-2 rounded-5"
-          type="radio"
-          name="RegularUseOfAlcohol"
-          value="Bingeing"
-          onChange={(e) => {
-            setFrequency(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">Daily</label>
-      </div>
-      <div className="form-check-inline mt-2">
-        <input
-          className="form-input ms-2 rounded-5"
-          type="radio"
-          name="RegularUseOfAlcohol"
-          value="Purging"
-          onChange={(e) => {
-            setFrequency(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">Daily, 3 or more</label>
-        <input
-          className="form-input ms-2 rounded-5"
-          type="radio"
-          name="RegularUseOfAlcohol"
-          value="Intoxicated daily"
-          onChange={(e) => {
-            setFrequency(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">Intoxicated daily</label>
-      </div>
+      <p class="mt-2">If yes, what is your frequency?</p>
+      <input
+        className="form-input ms-2 rounded-5"
+        type="radio"
+        name="RegularUseOfAlcohol"
+        value="Eating less"
+        onChange={(e) => {
+          setFrequency(e.target.value);
+        }}
+      />
+      <label className="form-check-label ms-1">Once a month</label>
+      <input
+        className="form-input ms-2 rounded-5"
+        type="radio"
+        name="RegularUseOfAlcohol"
+        value="Eating more"
+        onChange={(e) => {
+          setFrequency(e.target.value);
+        }}
+      />
+      <label className="form-check-label ms-1">Once a week</label>
+      <input
+        className="form-input ms-2 rounded-5"
+        type="radio"
+        name="RegularUseOfAlcohol"
+        value="Bingeing"
+        onChange={(e) => {
+          setFrequency(e.target.value);
+        }}
+      />
+      <label className="form-check-label ms-1">Daily</label>
+
+      <input
+        className="form-input ms-2 rounded-5"
+        type="radio"
+        name="RegularUseOfAlcohol"
+        value="Purging"
+        onChange={(e) => {
+          setFrequency(e.target.value);
+        }}
+      />
+      <label className="form-check-label ms-1">Daily, 3 or more</label>
+      <input
+        className="form-input ms-2 rounded-5"
+        type="radio"
+        name="RegularUseOfAlcohol"
+        value="Intoxicated daily"
+        onChange={(e) => {
+          setFrequency(e.target.value);
+        }}
+      />
+      <label className="form-check-label ms-1">Intoxicated daily</label>
     </>
   );
 };

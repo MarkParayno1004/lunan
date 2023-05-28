@@ -7,12 +7,12 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
     HowLong: "",
     QualRel: "",
     Child: "",
-    CountChild:"",
-    ChildAge:"",
+    CountChild: "",
+    ChildAge: "",
     TherapyStatus: "",
-    WhyTherapy:"",
-    WhenTherapy:"",
-    showRomanticRelationship: false
+    WhyTherapy: "",
+    WhenTherapy: "",
+    showRomanticRelationship: false,
   });
   useEffect(() => {
     setLocalFormData(
@@ -23,15 +23,15 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
         HowLong: "",
         QualRel: "",
         Child: "",
-        CountChild:"",
-        ChildAge:"",
+        CountChild: "",
+        ChildAge: "",
         TherapyStatus: "",
-        WhyTherapy:"",
-        WhenTherapy:""
+        WhyTherapy: "",
+        WhenTherapy: "",
       }
     );
   }, [formData]);
- 
+
   //! If answer is yes in Romantic Relationship
   const [showRomanticRelationship, setRomanticRelationship] = useState(false);
   const handleRomanticRelationship = (event) => {
@@ -39,7 +39,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = event.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -50,7 +50,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = event.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -61,7 +61,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = event.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   //! Get value of Radio Button ofSexual Preference
@@ -71,7 +71,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -82,7 +82,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   const handleNext = () => {
@@ -103,7 +103,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               <span className="">Sexual Preference:</span>
               <div className="form-check-inline ms-2">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="SexualPref"
                   value="Men"
@@ -114,7 +114,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="SexualPref"
                   value="Women"
@@ -125,7 +125,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="SexualPref"
                   value="Both"
@@ -143,7 +143,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               <span className="">Marital Status:</span>
               <div className="form-check-inline ms-2">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="MaritalStatus"
                   value="Never Married"
@@ -154,7 +154,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="MaritalStatus"
                   value="Partnered"
@@ -165,7 +165,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="MaritalStatus"
                   value="Married"
@@ -178,7 +178,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="MaritalStatus"
                   value="Separated"
@@ -191,7 +191,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="MaritalStatus"
                   value="Divorced"
@@ -204,7 +204,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="MaritalStatus"
                   value="Widowed"
@@ -223,7 +223,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
               <span>Are you currently in a romantic relationship?</span>
               <div className="form-check-inline ms-2">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="RelStatus"
                   value="Yes"
@@ -234,28 +234,32 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
                   Yes
                 </label>
               </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="RelStatus"
-                  value="No"
-                  checked={localFormData.RelStatus === "No"}
-                  onChange={handleRomanticRelationship}
-                />
-                <label className="form-check-label " for="exampleRadios1">
-                  No
-                </label>
-              </div>
-              <div class="input-group mt-3">
-                {showRomanticRelationship && <RomanticRelationShipYes setLocalFormData={setLocalFormData} localFormData={localFormData} />}
-              </div>
 
-              {/* Do you have a child? */}
+              <input
+                className="form-input"
+                type="radio"
+                name="RelStatus"
+                value="No"
+                checked={localFormData.RelStatus === "No"}
+                onChange={handleRomanticRelationship}
+              />
+              <label className="form-check-label " for="exampleRadios1">
+                No
+              </label>
+              {showRomanticRelationship && (
+                <RomanticRelationShipYes
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
+            </li>
+
+            {/* Do you have a child? */}
+            <li class="list-group-item">
               <span>Do you have a child?</span>
               <div className="form-check-inline ms-2">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="Child"
                   value="Yes"
@@ -265,29 +269,32 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
                 <label className="form-check-label ms-1" for="exampleRadios1">
                   Yes
                 </label>
-              </div>
-              <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input ms-2"
                   type="radio"
                   name="Child"
                   value="No"
                   checked={localFormData.Child === "No"}
                   onChange={handleChildren}
                 />
-                <label className="form-check-label " for="exampleRadios1">
+                <label className="form-check-label ms-1" for="exampleRadios1">
                   No
                 </label>
               </div>
-              <div class="input-group mt-3">
-                {showChildren && <ChildrenYes setLocalFormData={setLocalFormData} localFormData={localFormData}/>}
-              </div>
+              {showChildren && (
+                <ChildrenYes
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
+            </li>
 
-              {/* Previous psychotherapy */}
-              <span>Have you had previous psychotherapy?</span>
-              <div className="form-check-inline ms-2">
+            {/* Previous psychotherapy */}
+            <li class="list-group-item">
+              <div className="form-check-inline ">
+                <span>Have you had previous psychotherapy?</span>
                 <input
-                  className="form-check-input"
+                  className="form-input ms-2"
                   type="radio"
                   name="TherapyStatus"
                   value="Yes"
@@ -297,23 +304,25 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
                 <label className="form-check-label ms-1" for="exampleRadios1">
                   Yes
                 </label>
-              </div>
-              <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input ms-2"
                   type="radio"
                   name="TherapyStatus"
                   value="No"
                   checked={localFormData.TherapyStatus === "No"}
                   onChange={handlePsychoTherapy}
                 />
-                <label className="form-check-label " for="exampleRadios1">
+                <label className="form-check-label ms-1 " for="exampleRadios1">
                   No
                 </label>
               </div>
-              <div class="input-group mt-3">
-                {showPsychoTherapy && <PsychoTherapy setLocalFormData={setLocalFormData} localFormData={localFormData} />}
-              </div>
+
+              {showPsychoTherapy && (
+                <PsychoTherapy
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
             </li>
           </ul>
         </div>
@@ -339,7 +348,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
 };
 
 //! if patient chooses yes, in the question: Are you currently in a romantic relationship?
-const RomanticRelationShipYes = ({setLocalFormData, localFormData}) => {
+const RomanticRelationShipYes = ({ setLocalFormData, localFormData }) => {
   //!Store the answer
   const [getCurrentRelationAnswer, setCurrentRelationAnswer] = useState();
   const handleCurrentRelation = (e) => {
@@ -347,7 +356,7 @@ const RomanticRelationShipYes = ({setLocalFormData, localFormData}) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -357,7 +366,7 @@ const RomanticRelationShipYes = ({setLocalFormData, localFormData}) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   return (
@@ -369,7 +378,7 @@ const RomanticRelationShipYes = ({setLocalFormData, localFormData}) => {
         type="number"
         aria-label="CurrentRelationAnswer"
         placeholder="Answer:"
-        name = "HowLong"
+        name="HowLong"
         value={localFormData.HowLong}
         class="form-control me-3 rounded-4"
         onChange={handleCurrentRelation}
@@ -383,7 +392,7 @@ const RomanticRelationShipYes = ({setLocalFormData, localFormData}) => {
           type="number"
           aria-label="CurrentRelationAnswer"
           placeholder="Answer:"
-          name = "QualRel"
+          name="QualRel"
           value={localFormData.QualRel}
           class="form-control me-3 rounded-4"
           onChange={handleScale}
@@ -394,14 +403,14 @@ const RomanticRelationShipYes = ({setLocalFormData, localFormData}) => {
 };
 
 //! if patient chooses yes, in the question: Do you have a child??
-const ChildrenYes = ({setLocalFormData, localFormData}) => {
+const ChildrenYes = ({ setLocalFormData, localFormData }) => {
   const [getChildren, setChildren] = useState();
   const handleChildren = (e) => {
     setChildren(e.target.value);
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -411,7 +420,7 @@ const ChildrenYes = ({setLocalFormData, localFormData}) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   return (
@@ -424,7 +433,7 @@ const ChildrenYes = ({setLocalFormData, localFormData}) => {
           type="text"
           aria-label="Patient's Child"
           placeholder="Answer:"
-          name = "CountChild"
+          name="CountChild"
           value={localFormData.CountChild}
           class="form-control me-3 rounded-4"
           onChange={handleChildren}
@@ -434,7 +443,7 @@ const ChildrenYes = ({setLocalFormData, localFormData}) => {
           type="number"
           aria-label="Patient's Child"
           placeholder="Answer:"
-          name = "ChildAge"
+          name="ChildAge"
           value={localFormData.ChildAge}
           class="form-control ms-1 rounded-4"
           onChange={handleChildrenAge}
@@ -445,14 +454,14 @@ const ChildrenYes = ({setLocalFormData, localFormData}) => {
 };
 
 //! if patient chooses yes, in the question: Have you had previous psychotherapy?
-const PsychoTherapy = ({setLocalFormData, localFormData}) => {
+const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
   const [getWhyPsychoTherapy, setWhyPsychoTherapy] = useState(``);
   const handleWhyPsychoTherapyR = (e) => {
     setWhyPsychoTherapy(e.target.value);
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   const [getWhenPsychoTherapy, setWhenPsychoTherapy] = useState(``);
@@ -461,7 +470,7 @@ const PsychoTherapy = ({setLocalFormData, localFormData}) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
   return (
@@ -471,7 +480,7 @@ const PsychoTherapy = ({setLocalFormData, localFormData}) => {
         type="text"
         aria-label="PsychoTherapyResult"
         placeholder="Answer:"
-        name = "WhyTherapy"
+        name="WhyTherapy"
         value={localFormData.WhyTherapy}
         class="form-control me-3 rounded-4"
         onChange={handleWhyPsychoTherapyR}
@@ -482,8 +491,8 @@ const PsychoTherapy = ({setLocalFormData, localFormData}) => {
           type="text"
           aria-label="PsychoTherapyResult"
           placeholder="Answer:"
-          name = "WhenTherapy"
-        value={localFormData.WhenTherapy}
+          name="WhenTherapy"
+          value={localFormData.WhenTherapy}
           class="form-control me-3 rounded-4"
           onChange={handleWhenPsychoTherapy}
         />

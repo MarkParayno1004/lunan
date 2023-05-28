@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 
-export const CardOne = ({ ButtonNext, ButtonBack, handleInputChange, formData }) => {
+export const CardOne = ({
+  ButtonNext,
+  ButtonBack,
+  handleInputChange,
+  formData,
+}) => {
   const [localFormData, setLocalFormData] = useState({
     Fname: "",
     Age: "",
     DateToday: new Date().toISOString().split("T")[0],
     BirthDate: "",
-    Gender: ""
+    Gender: "",
   });
 
   useEffect(() => {
@@ -18,16 +23,18 @@ export const CardOne = ({ ButtonNext, ButtonBack, handleInputChange, formData })
     if (name === "BirthDate") {
       const birthDate = new Date(value);
       const today = new Date();
-      const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+      const age = Math.floor(
+        (today - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
+      );
       setLocalFormData((prevFormData) => ({
         ...prevFormData,
         Age: age.toString(),
-        [name]: value
+        [name]: value,
       }));
     } else {
       setLocalFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -42,7 +49,8 @@ export const CardOne = ({ ButtonNext, ButtonBack, handleInputChange, formData })
       <div className="container-fluid d-flex justify-content-center mt-3">
         <div className="card" style={{ width: "50rem" }}>
           <div className="card-header">
-            Please fill up this intake form: (This form will be your Sign Up form or Register Form)
+            Please fill up this intake form: (This form will be your Sign Up
+            form or Register Form)
           </div>
           <ul className="list-group list-group-flush">
             {/* Input Patient's Full Name */}
@@ -93,53 +101,65 @@ export const CardOne = ({ ButtonNext, ButtonBack, handleInputChange, formData })
               <div className="form-check-inline">
                 <p>Gender:</p>
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="Gender"
                   value="Male"
                   onChange={handleChange}
                   checked={localFormData.Gender === "Male"}
                 />
-                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
+                <label
+                  className="form-check-label ms-1"
+                  htmlFor="exampleRadios1"
+                >
                   Male
                 </label>
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="Gender"
                   value="Female"
                   onChange={handleChange}
                   checked={localFormData.Gender === "Female"}
                 />
-                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
+                <label
+                  className="form-check-label ms-1"
+                  htmlFor="exampleRadios1"
+                >
                   Female
                 </label>
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="Gender"
                   value="Transgender"
                   onChange={handleChange}
                   checked={localFormData.Gender === "Transgender"}
                 />
-                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
+                <label
+                  className="form-check-label ms-1"
+                  htmlFor="exampleRadios1"
+                >
                   Transgender
                 </label>
               </div>
               <div className="form-check-inline">
                 <input
-                  className="form-check-input"
+                  className="form-input"
                   type="radio"
                   name="Gender"
                   value="Other"
                   onChange={handleChange}
                   checked={localFormData.Gender === "Other"}
                 />
-                <label className="form-check-label ms-1" htmlFor="exampleRadios1">
+                <label
+                  className="form-check-label ms-1"
+                  htmlFor="exampleRadios1"
+                >
                   Other
                 </label>
               </div>
@@ -147,13 +167,13 @@ export const CardOne = ({ ButtonNext, ButtonBack, handleInputChange, formData })
           </ul>
         </div>
       </div>
-        <button
-          className="nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-          id="buttonCard"
-          onClick={handleNext}
-        >
-          Next
-        </button>
+      <button
+        className="nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+        id="buttonCard"
+        onClick={handleNext}
+      >
+        Next
+      </button>
     </>
   );
 };
