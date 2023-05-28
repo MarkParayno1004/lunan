@@ -2,13 +2,13 @@ import { useState } from "react";
 
 export const CardFive = ({ ButtonBack, ButtonNext }) => {
   //! Psychiatric Radio Radio Buttons
-  const [showPsychiatric, setShowPsychiatric] = useState(true);
+  const [showPsychiatric, setShowPsychiatric] = useState("");
 
   //! Suicidal Radio Buttons
   const [showSuicidal, setShowSuicidal] = useState(false);
 
   //! Past Suicidal Thoughts Radio Button
-  const [showPastSuicidal, setShowPastSuicidal] = useState(false);
+  const [showPastSuicidal, setShowPastSuicidal] = useState();
 
   //! Previous Homicidal Radio Buttons
   const [showPreviousHomicidal, setShowPreviousHomicidal] = useState(false);
@@ -34,8 +34,9 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="PsychiatricMeds"
                   value="true"
+                  checked={showPsychiatric === "true"}
                   onChange={(event) => {
-                    setShowPsychiatric(event.target.value === "true");
+                    setShowPsychiatric(event.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
@@ -45,17 +46,14 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   name="PsychiatricMeds"
                   value="false"
                   onChange={(event) => {
-                    setShowPsychiatric(event.target.value === "true");
+                    setShowPsychiatric(event.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
               <div className="form-check-inline ">
-                {showPsychiatric ? (
-                  <PsychiatricMedsTrue />
-                ) : (
-                  <PsychiatricMedsFalse />
-                )}
+                {(showPsychiatric === "true" && <PsychiatricMedsTrue />) ||
+                  (showPsychiatric === "false" && <PsychiatricMedsFalse />)}
               </div>
             </li>
 
@@ -138,9 +136,10 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="true"
+                  value="Frequently"
+                  checked={showPastSuicidal === "Frequently"}
                   onChange={(e) => {
-                    setShowPastSuicidal(e.target.value === "true");
+                    setShowPastSuicidal(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Frequently</label>
@@ -148,9 +147,10 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="true"
+                  value="Sometimes"
+                  checked={showPastSuicidal === "Sometimes"}
                   onChange={(e) => {
-                    setShowPastSuicidal(e.target.value === "true");
+                    setShowPastSuicidal(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Sometimes</label>
@@ -158,9 +158,10 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="true"
+                  value="Rarely"
+                  checked={showPastSuicidal === "Rarely"}
                   onChange={(e) => {
-                    setShowPastSuicidal(e.target.value === "true");
+                    setShowPastSuicidal(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
@@ -168,19 +169,24 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="false"
+                  value="Never"
                   onChange={(e) => {
-                    setShowPastSuicidal(e.target.value === "true");
+                    setShowPastSuicidal(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
               <div className="form-check-inline ">
-                {showPastSuicidal ? (
+                {(showPastSuicidal === "Frequently" && (
                   <SuicidalThoughtsPast />
-                ) : (
-                  <SuicidalThoughtsPastNever />
-                )}
+                )) ||
+                  (showPastSuicidal === "Sometimes" && (
+                    <SuicidalThoughtsPast />
+                  )) ||
+                  (showPastSuicidal === "Rarely" && <SuicidalThoughtsPast />) ||
+                  (showPastSuicidal === "Never" && (
+                    <SuicidalThoughtsPastNever />
+                  ))}
               </div>
             </li>
 
@@ -291,7 +297,7 @@ const PsychiatricMedsTrue = () => {
 
 //! if patient chooses No, in the question: Are you currently taking prescribed psychiatric medications?
 const PsychiatricMedsFalse = () => {
-  const [showPsychiatricFalse, setPsychiatricFalse] = useState("false");
+  const [showPsychiatricFalse, setPsychiatricFalse] = useState("");
 
   return (
     <>
@@ -304,8 +310,9 @@ const PsychiatricMedsFalse = () => {
           type="radio"
           name="PsychiatricMedsFalse"
           value="true"
+          checked={showPsychiatricFalse === "true"}
           onChange={(e) => {
-            setPsychiatricFalse(e.target.value === "true");
+            setPsychiatricFalse(e.target.value);
           }}
         />
         <label className="form-check-label ms-1">Yes</label>
@@ -315,14 +322,13 @@ const PsychiatricMedsFalse = () => {
           name="PsychiatricMedsFalse"
           value="false"
           onChange={(e) => {
-            setPsychiatricFalse(e.target.value === "true");
+            setPsychiatricFalse(e.target.value);
           }}
         />
         <label className="form-check-label ms-1">No</label>
       </div>
-      <div className="form-check-inline ">
-        {showPsychiatricFalse && <PrescribedMedication />}
-      </div>
+
+      {showPsychiatricFalse === "true" && <PrescribedMedication />}
     </>
   );
 };
@@ -335,7 +341,7 @@ const PrescribedMedication = () => {
     <>
       <div class="input-group mt-3 ms-3">
         <p className="me-2 mt-2 d-flex align-items-center">
-          If Yes, please list names and doses:
+          If Yes, please current medication:
         </p>
         <div class="form-floating">
           <textarea
@@ -365,14 +371,14 @@ const SuicidalThoughts = () => {
       <input
         className="form-input ms-2"
         type="radio"
-        name="SuicidalThoughts"
+        name="SuicidalThoughtsYes"
         value="Yes"
       />
       <label className="form-check-label ms-1">Yes</label>
       <input
         className="form-input ms-2"
         type="radio"
-        name="SuicidalThoughts"
+        name="SuicidalThoughtsYes"
         value="No"
       />
       <label className="form-check-label ms-1">No</label>

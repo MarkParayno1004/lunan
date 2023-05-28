@@ -12,7 +12,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
     Email: "",
     MessageHome: "",
     MessageCall: "",
-    checkEmail: ""
+    checkEmail: "",
   });
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
         Email: "",
         MessageHome: "",
         MessageCall: "",
-        checkEmail: ""
+        checkEmail: "",
       }
     );
   }, [formData]);
@@ -37,7 +37,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -51,7 +51,8 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
       <div className="container-fluid d-flex justify-content-center mt-3">
         <div className="card" style={{ width: "50rem" }}>
           <div className="card-header">
-            Please fill up this intake form: (This form will be your Sign Up form or Register Form)
+            Please fill up this intake form: (This form will be your Sign Up
+            form or Register Form)
           </div>
           <ul className="list-group list-group-flush">
             {/* Input Patient's Local Address */}
@@ -118,7 +119,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                 <div className="form-check-inline">
                   <span>May I leave a message?:</span>
                   <input
-                    className="form-check-input ms-2"
+                    className="form-input ms-2"
                     type="radio"
                     name="MessageHome"
                     value="Yes"
@@ -127,7 +128,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                   />
                   <label className="form-check-label ms-1">Yes</label>
                   <input
-                    className="form-check-input ms-2"
+                    className="form-input ms-2"
                     type="radio"
                     name="MessageHome"
                     value="No"
@@ -151,7 +152,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                 <div className="form-check-inline mt-2">
                   <span>May I leave a message?:</span>
                   <input
-                    className="form-check-input ms-2"
+                    className="form-input ms-2"
                     type="radio"
                     name="MessageCall"
                     value="Yes"
@@ -160,7 +161,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                   />
                   <label className="form-check-label ms-1">Yes</label>
                   <input
-                    className="form-check-input ms-2"
+                    className="form-input ms-2"
                     type="radio"
                     name="MessageCall"
                     value="No"
@@ -184,7 +185,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                 <div className="form-check-inline ms-5 align-items-start">
                   <span>May I email you?:</span>
                   <input
-                    className="form-check-input ms-2"
+                    className="form-input ms-2"
                     type="radio"
                     name="checkEmail"
                     value="Yes"
@@ -193,7 +194,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                   />
                   <label className="form-check-label ms-1">Yes</label>
                   <input
-                    className="form-check-input ms-2"
+                    className="form-input ms-2"
                     type="radio"
                     name="checkEmail"
                     value="No"

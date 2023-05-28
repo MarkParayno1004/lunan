@@ -1,17 +1,19 @@
 import { useState } from "react";
 export const CardSeven = ({ ButtonBack, ButtonNext }) => {
   //! Radio Button for Do you Smoke
-  const [showSmoke, setSmoke] = useState("false");
+  const [showSmoke, setSmoke] = useState("");
 
   //! Radio Button for Do you drink Caffeinated Drinks
-  const [showCaffeinatedDrinks, setCaffeinatedDrinks] = useState("false");
+  const [showCaffeinatedDrinks, setCaffeinatedDrinks] = useState("");
 
   //! Radio Button for Have you ever had a Head Injury
-  const [showHeadInjury, setHeadInjury] = useState("false");
+  const [showHeadInjury, setHeadInjury] = useState("");
 
   //! Changes or Stressors
   const [getChangesorStressors, setChangesorStressors] = useState("");
 
+  //! Radio Button for any significat change or stressors
+  const [showSignificantChanges, setSignificantChanges] = useState("");
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -27,8 +29,9 @@ export const CardSeven = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="Smoke"
                   value="true"
+                  checked={showSmoke === "true"}
                   onChange={(e) => {
-                    setSmoke(e.target.value === "true");
+                    setSmoke(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
@@ -38,11 +41,11 @@ export const CardSeven = ({ ButtonBack, ButtonNext }) => {
                   name="Smoke"
                   value="false"
                   onChange={(e) => {
-                    setSmoke(e.target.value === "true");
+                    setSmoke(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
-                {showSmoke && <SmokeYes />}
+                {showSmoke === "true" && <SmokeYes />}
               </div>
             </li>
 
@@ -108,15 +111,39 @@ export const CardSeven = ({ ButtonBack, ButtonNext }) => {
                   In the last year, have you ever experienced any significant
                   changes or stressors?
                 </span>
-                <textarea
-                  class="form-control rounded-4"
-                  placeholder="Answer: "
-                  id="floatingTextarea2"
-                  style={{ height: 70 + "px", width: 45 + "rem" }}
+                <input
+                  className="form-input ms-2 rounded-5"
+                  type="radio"
+                  name="HeadInjury"
+                  value="true"
                   onChange={(e) => {
-                    setChangesorStressors(e.target.value);
+                    setSignificantChanges(e.target.value === "true");
                   }}
-                ></textarea>
+                />
+                <label class="form-check-label ms-1">Yes</label>
+                <input
+                  className="form-input ms-2 rounded-5"
+                  type="radio"
+                  name="HeadInjury"
+                  value="false"
+                  onChange={(e) => {
+                    setSignificantChanges(e.target.value === "true");
+                  }}
+                />
+                <label class="form-check-label ms-1">No</label>
+                {showSignificantChanges && (
+                  <>
+                    <textarea
+                      class="form-control rounded-4"
+                      placeholder="Answer: "
+                      id="floatingTextarea2"
+                      style={{ height: 70 + "px", width: 45 + "rem" }}
+                      onChange={(e) => {
+                        setChangesorStressors(e.target.value);
+                      }}
+                    ></textarea>
+                  </>
+                )}
               </div>
             </li>
           </ul>

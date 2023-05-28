@@ -19,6 +19,11 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
   //! Hours of Sleep
   const [getHourSleep, setHourSleep] = useState();
 
+  //! List of any chronic problems
+  const [showListChProblem, setListChProblem] = useState();
+
+  //! List of medications
+  const [showListMedication, setListMedication] = useState();
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -28,61 +33,63 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
             {/* Physical Health Currently */}
             <li class="list-group-item">
               <div className="form-check-inline ">
-                <span className="">
+                <p className="">
                   How is your physical health currently? (please choose)
-                </span>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="currentPhysicalHealth"
-                  value="Poor"
-                  onChange={(e) => {
-                    setCurrentPhysicalHealth(e.target.value);
-                  }}
-                />
-                <label className="form-check-label ms-1">Poor</label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="currentPhysicalHealth"
-                  value="Unsatisfactory"
-                  onChange={(e) => {
-                    setCurrentPhysicalHealth(e.target.value);
-                  }}
-                />
-                <label className="form-check-label ms-1">Unsatisfactory</label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="currentPhysicalHealth"
-                  value="Satisfactory"
-                  onChange={(e) => {
-                    setCurrentPhysicalHealth(e.target.value);
-                  }}
-                />
-                <label className="form-check-label ms-1">Satisfactory</label>
-              </div>
-              <div>
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="currentPhysicalHealth"
-                  value="Unsatisfactory"
-                  onChange={(e) => {
-                    setCurrentPhysicalHealth(e.target.value);
-                  }}
-                />
-                <label className="form-check-label ms-1">Good</label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="currentPhysicalHealth"
-                  value="Satisfactory"
-                  onChange={(e) => {
-                    setCurrentPhysicalHealth(e.target.value);
-                  }}
-                />
-                <label className="form-check-label ms-1">Very Good</label>
+                </p>
+                <label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="currentPhysicalHealth"
+                    value="Poor"
+                    onChange={(e) => {
+                      setCurrentPhysicalHealth(e.target.value);
+                    }}
+                  />
+                  <label className="form-check-label ms-1">Poor</label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="currentPhysicalHealth"
+                    value="Unsatisfactory"
+                    onChange={(e) => {
+                      setCurrentPhysicalHealth(e.target.value);
+                    }}
+                  />
+                  <label className="form-check-label ms-1">
+                    Unsatisfactory
+                  </label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="currentPhysicalHealth"
+                    value="Satisfactory"
+                    onChange={(e) => {
+                      setCurrentPhysicalHealth(e.target.value);
+                    }}
+                  />
+                  <label className="form-check-label ms-1">Satisfactory</label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="currentPhysicalHealth"
+                    value="Unsatisfactory"
+                    onChange={(e) => {
+                      setCurrentPhysicalHealth(e.target.value);
+                    }}
+                  />
+                  <label className="form-check-label ms-1">Good</label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="currentPhysicalHealth"
+                    value="Satisfactory"
+                    onChange={(e) => {
+                      setCurrentPhysicalHealth(e.target.value);
+                    }}
+                  />
+                  <label className="form-check-label ms-1">Very Good</label>
+                </label>
               </div>
             </li>
 
@@ -107,22 +114,49 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
             {/* list any chronic health problems or concerns */}
             <li class="list-group-item">
               <div class="input-group">
-                <span class="d-flex align-items-center">
-                  Please list any chronic health problems or concerns (e.g.
-                  asthma, hypertension, diabetes, headaches, stomach pain,
-                  seizures, etc.):
-                </span>
-                <div class="form-floating">
-                  <textarea
-                    class="form-control rounded-4"
-                    placeholder="Answer"
-                    id="floatingTextarea2"
-                    style={{ height: 70 + "px", width: 45 + "rem" }}
-                    onChange={(e) => {
-                      setChronicHealth(e.target.value);
-                    }}
-                  ></textarea>
-                  <label for="floatingTextarea2">Answer:</label>
+                <div className="form-check-inline">
+                  <span>
+                    Do you want to list any chronic health problems or concerns?
+                    (e.g. asthma, hypertension, diabetes, headaches, stomach
+                    pain, seizures, etc.):
+                  </span>
+                  <label>
+                    <input
+                      className="form-input ms-2"
+                      type="radio"
+                      name="PsychiatricMeds"
+                      value="true"
+                      checked={showListChProblem === "true"}
+                      onChange={(event) => {
+                        setListChProblem(event.target.value);
+                      }}
+                    />
+                    <label className="form-check-label ms-1">Yes</label>
+                    <input
+                      className="form-input ms-2"
+                      type="radio"
+                      name="PsychiatricMeds"
+                      value="false"
+                      onChange={(event) => {
+                        setListChProblem(event.target.value);
+                      }}
+                    />
+                    <label className="form-check-label ms-1">No</label>
+                    {showListChProblem === "true" && (
+                      <div class="form-floating">
+                        <textarea
+                          class="form-control rounded-4"
+                          placeholder="Answer"
+                          id="floatingTextarea2"
+                          style={{ height: 70 + "px", width: 45 + "rem" }}
+                          onChange={(e) => {
+                            setChronicHealth(e.target.value);
+                          }}
+                        ></textarea>
+                        <label for="floatingTextarea2">Answer:</label>
+                      </div>
+                    )}
+                  </label>
                 </div>
               </div>
             </li>
@@ -136,8 +170,9 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="currentPhysicalHealth"
                   value="true"
+                  checked={showAllergies === "true"}
                   onChange={(e) => {
-                    setAllergies(e.target.value === "true");
+                    setAllergies(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">Yes</label>
@@ -147,30 +182,57 @@ export const CardSix = ({ ButtonBack, ButtonNext }) => {
                   name="currentPhysicalHealth"
                   value="false"
                   onChange={(e) => {
-                    setAllergies(e.target.value === "true");
+                    setAllergies(e.target.value);
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
-                {showAllergies && <Allergies />}
+                {showAllergies === "true" && <Allergies />}
               </div>
             </li>
 
             {/* Medications and Per hour night sleep*/}
             <li class="list-group-item">
               <div class="input-group">
-                <span class="d-flex align-items-center me-2">Medications:</span>
-                <div class="form-floating">
-                  <textarea
-                    class="form-control rounded-4"
-                    placeholder="Answer"
-                    id="floatingTextarea2"
+                <div class="input-group">
+                  <span class="d-flex align-items-center me-2">
+                    Do you want to put list of your medications:
+                  </span>
+                  <input
+                    className="form-input "
+                    type="radio"
+                    name="ListMedication"
+                    value="true"
+                    checked={showListMedication === "true"}
                     onChange={(e) => {
-                      setMedication(e.target.value);
+                      setListMedication(e.target.value);
                     }}
-                    style={{ height: 70 + "px", width: 40 + "rem" }}
-                  ></textarea>
-                  <label for="floatingTextarea2">Answer:</label>
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="ListMedication"
+                    value="false"
+                    onChange={(e) => {
+                      setListMedication(e.target.value);
+                    }}
+                  />
+                  <label className="form-check-label ms-1">No</label>
                 </div>
+                {showListMedication === "true" && (
+                  <div class="form-floating">
+                    <textarea
+                      class="form-control rounded-4"
+                      placeholder="Answer"
+                      id="floatingTextarea2"
+                      onChange={(e) => {
+                        setMedication(e.target.value);
+                      }}
+                      style={{ height: 90 + "px", width: 48 + "rem" }}
+                    ></textarea>
+                    <label for="floatingTextarea2">Answer:</label>
+                  </div>
+                )}
                 <div class="input-group">
                   <span class="d-flex align-items-center me-2">
                     Hours per night you normally sleep
