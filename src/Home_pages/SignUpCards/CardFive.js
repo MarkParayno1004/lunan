@@ -349,14 +349,14 @@ const PrescribedMedication = () => {
     <>
       <div class="input-group mt-3 ms-3">
         <p className="me-2 mt-2 d-flex align-items-center">
-          If Yes, please current medication:
+          If Yes, please list previously medication:
         </p>
         <div class="form-floating">
           <textarea
             class="form-control rounded-4"
             placeholder="Answer"
             id="floatingTextarea2"
-            style={{ height: 100 + "px", width: 30 + "rem" }}
+            style={{ height: 100 + "px", width: 28 + "rem" }}
             onChange={(e) => {
               setNamesAndDosesFalse(e.target.value === "true");
             }}
