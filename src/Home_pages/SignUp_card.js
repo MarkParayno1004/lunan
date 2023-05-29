@@ -21,17 +21,13 @@ import { CardTwelve } from "./SignUpCards/CardTwelve";
 export const SIGNUPCARD = () => {
   const [card, setCard] = useState(1);
   const [formData, setFormData] = useState({});
-
-
   const upload = async (data) => {
     try {
       const userAccRef = collection(firestore, 'Users');
       const intakeRef = collection(firestore, 'IntakeForms');
-
       // Upload user data
       await addDoc(userAccRef, {
         firstName: data.Fname,
-        age: data.Age,
         dateToday: data.DateCreated,
       });
 
