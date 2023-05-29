@@ -26,10 +26,12 @@ export const CardEleven = ({ ButtonBack, ButtonNext }) => {
     setSiblingAges(e.target.value);
   };
 
-  const [showFamilySupport, setFamilySupport] = useState("false");
-  const handleFamilySupport = (e) => {
-    setFamilySupport(e.target.value === "true");
-  };
+
+    const [showFamilySupport, setFamilySupport] = useState(false);
+    const handleFamilySupport = (e) => {
+        setFamilySupport(e.target.value === "true");
+    };
+
 
   //! Conditional Statement for radio button Divorced and Deceased
   const renderComponent = () => {

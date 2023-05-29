@@ -1,4 +1,3 @@
-import { FOCUSABLE_SELECTOR } from "@testing-library/user-event/dist/utils";
 import { useState } from "react";
 export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
     const [difficulty, setDifficulty] = useState({
@@ -59,7 +58,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="depression_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -96,7 +94,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="bipolar_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -133,7 +130,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="anxiety_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -170,7 +166,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="panic_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -206,7 +201,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="schizophrenia_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -243,7 +237,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="alcoholOrSubstanceAbuse_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -280,7 +273,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="eatingDisorder_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -317,7 +309,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="learningDisability_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -354,7 +345,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="traumaHistory_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -391,7 +381,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="suicideAttempts_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>
@@ -428,7 +417,6 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                             type="text"
                                             class="form-control rounded-4 me-1"
                                             name="psychiatricHospitalization_name"
-                                            onChange={handleDifficulty}
                                             required
                                         />
                                     </div>

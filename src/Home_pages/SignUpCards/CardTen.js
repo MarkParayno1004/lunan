@@ -1,13 +1,13 @@
 import { useState } from "react";
 export const CardTen = ({ ButtonBack, ButtonNext }) => {
     //! Radio Button for Are you Employed
-    const [showEmployed, setEmployed] = useState("false");
+    const [showEmployed, setEmployed] = useState(false);
     const handleEmployed = (e) => {
         setEmployed(e.target.value === "true");
     };
 
     //! Radio Button for Do you have financial concerns
-    const [showFinancial, setFinancial] = useState("false");
+    const [showFinancial, setFinancial] = useState(false);
     const handleFinancial = (e) => {
         setFinancial(e.target.value === "true");
     };
@@ -18,18 +18,18 @@ export const CardTen = ({ ButtonBack, ButtonNext }) => {
         setEducation(e.target.value);
     };
 
-    const [getMilitary, setMilitary] = useState("false");
+    const [getMilitary, setMilitary] = useState(false);
     const handleMilitary = (e) => {
         setMilitary(e.target.value === "true");
     };
 
-    const [getPrevMilitary, setPrevMilitary] = useState("false");
+    const [getPrevMilitary, setPrevMilitary] = useState(false);
     const handlePrevMilitary = (e) => {
         setPrevMilitary(e.target.value === "true");
     };
 
     //! Radio Button for Do you have any Legal Concerns
-    const [showLegal, setLegal] = useState("false");
+    const [showLegal, setLegal] = useState(false);
     const handleLegal = (e) => {
         setLegal(e.target.value === "true");
     };
