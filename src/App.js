@@ -5,6 +5,7 @@ import { Login } from "./Home_pages/Login";
 import { Navbar } from "./Navbar";
 import { AboutUs } from "./Home_pages/AboutUs";
 import { SignUp } from "./Home_pages/SignUp";
+
 function App() {
   return (
     <div className="App">

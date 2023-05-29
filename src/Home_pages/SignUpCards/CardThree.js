@@ -1,42 +1,41 @@
-import { useState } from "react";
-export const CardThree = ({ ButtonBack, ButtonNext }) => {
-  const [getContactPersonFname, setContactPersonFname] = useState("");
-  const handleContactPersonFname = (e) => {
-    setContactPersonFname(e.target.value);
-  };
+import { useState, useEffect } from "react";
 
-  const [getRelationship, setRelationship] = useState("");
-  const handleRelationship = (e) => {
-    setRelationship(e.target.value);
-  };
+export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
+  const [localFormData, setLocalFormData] = useState({
+    CPFname: "",
+    Rel: "",
+    CPNum: "",
+    DocFname: "",
+    DocNum: "",
+    CommLearn: "",
+    CommAssess:"",
+  });
+  useEffect(() => {
+    setLocalFormData(
+      formData ?? {
+    CPFname: "",
+    Rel: "",
+    CPNum: "",
+    DocFname: "",
+    DocNum: "",
+    CommLearn: "",
+    CommAssess:"",
+      }
+    );
+  }, [formData]);
 
-  const [getContactPersonNum, setContactPersonNum] = useState();
-  const handleContactPersonNum = (e) => {
-    setContactPersonNum(e.target.value);
-  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setLocalFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  }
 
-  //!Patient's Care Doctor Full Name and Phone Number
-  const [getDoctorFName, setDoctorFname] = useState("");
-  const handleDoctorFname = (e) => {
-    setDoctorFname(e.target.value);
+  const handleNext = () => {
+    console.log(localFormData); // Log form data
+    ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
-
-  const [getDoctorNum, setDoctorNum] = useState();
-  const handleDoctorNum = (e) => {
-    setDoctorNum(e.target.value);
-  };
-
-  //!Patient's Comment
-  const [getCommentLearn, setCommentLearn] = useState("");
-  const handlesetCommentLearn = (e) => {
-    setCommentLearn(e.target.value);
-  };
-
-  const [getCommentAssessment, setCommentAssessment] = useState("");
-  const handlesetCommentAssessment = (e) => {
-    setCommentAssessment(e.target.value);
-  };
-
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -55,22 +54,28 @@ export const CardThree = ({ ButtonBack, ButtonNext }) => {
                   type="text"
                   aria-label="EmergencyFullName"
                   placeholder="Full Name:"
+                  name = "CPFname"
                   class="form-control me-3 rounded-4"
-                  onChange={handleContactPersonFname}
+                  value = {localFormData.CPFname}
+                  onChange={handleInputChange}
                 />
                 <input
                   type="text"
                   aria-label="Relationship"
                   placeholder="Relationship to client"
+                  name="Rel"
                   class="form-control me-3 rounded-4"
-                  onChange={handleRelationship}
+                  value = {localFormData.Rel}
+                  onChange={handleInputChange}
                 />
                 <input
                   type="text"
                   aria-label="Phone"
                   placeholder="Phone Number:"
+                  name = "CPNum"
+                  value = {localFormData.CPNum}
                   class="form-control rounded-4"
-                  onChange={handleContactPersonNum}
+                  onChange={handleInputChange}
                 />
               </div>
             </li>
@@ -83,24 +88,30 @@ export const CardThree = ({ ButtonBack, ButtonNext }) => {
                   type="text"
                   aria-label="DoctorFullName"
                   placeholder="Full Name:"
+                  name = "DocFname"
+                  value = {localFormData.DocFname}
                   class="form-control me-3 rounded-4"
-                  onChange={handleDoctorFname}
+                  onChange={handleInputChange}
                 />
                 <input
                   type="text"
                   aria-label="DoctorPhone"
                   placeholder="Phone Number:"
+                  name = "DocNum"
+                  value = {localFormData.DocNum}
                   class="form-control me-3 rounded-4"
-                  onChange={handleDoctorNum}
+                  onChange={handleInputChange}
                 />
               </div>
               <p class="mt-3">How did you learn about me? :</p>
               <div class="form-floating ">
                 <textarea
                   class="form-control"
+                  name = "CommLearn"
                   placeholder="Leave a comment here"
                   id="floatingTextarea"
-                  onChange={handlesetCommentLearn}
+                  value = {localFormData.CommLearn}
+                  onChange={handleInputChange}
                 ></textarea>
                 <label for="floatingTextarea">Comments</label>
               </div>
@@ -110,9 +121,11 @@ export const CardThree = ({ ButtonBack, ButtonNext }) => {
               <div class="form-floating ">
                 <textarea
                   class="form-control"
+                  name = "CommAssess"
                   placeholder="Leave a comment here"
+                  value = {localFormData.CommAssess}
                   id="floatingTextarea"
-                  onChange={handlesetCommentAssessment}
+                  onChange={handleInputChange}
                 ></textarea>
                 <label for="floatingTextarea">Comments</label>
               </div>
@@ -131,7 +144,7 @@ export const CardThree = ({ ButtonBack, ButtonNext }) => {
         <button
           className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
           id="buttonCard"
-          onClick={ButtonNext}
+          onClick={handleNext}
         >
           Next
         </button>

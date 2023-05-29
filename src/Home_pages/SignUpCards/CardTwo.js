@@ -1,195 +1,207 @@
-import { useState } from "react";
-export const CardTwo = ({ ButtonBack, ButtonNext }) => {
-  //!Get Patient's Address
-  const [getStreetNum, setStreeNum] = useState("");
-  const handleStreetNum = (e) => {
-    setStreeNum(e.target.value);
+import { useState, useEffect } from "react";
+
+export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
+  const [localFormData, setLocalFormData] = useState({
+    StreetNum: "",
+    Barangay: "",
+    City: "",
+    Region: "",
+    Zip: "",
+    HomePhone: "",
+    CellPhone: "",
+    Email: "",
+    MessageHome: "",
+    MessageCall: "",
+    checkEmail: "",
+  });
+
+  useEffect(() => {
+    setLocalFormData(
+      formData ?? {
+        StreetNum: "",
+        Barangay: "",
+        City: "",
+        Region: "",
+        Zip: "",
+        HomePhone: "",
+        CellPhone: "",
+        Email: "",
+        MessageHome: "",
+        MessageCall: "",
+        checkEmail: "",
+      }
+    );
+  }, [formData]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setLocalFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const [getBarangay, setBarangay] = useState("");
-  const handleBarangay = (e) => {
-    setBarangay(e.target.value);
+  const handleNext = () => {
+    console.log(localFormData); // Log form data
+    ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
 
-  const [getCity, setCity] = useState("");
-  const handleCity = (e) => {
-    setCity(e.target.value);
-  };
-
-  const [getRegion, setRegion] = useState("");
-  const handleRegion = (e) => {
-    setRegion(e.target.value);
-  };
-
-  const [getZip, setZip] = useState("");
-  const handleZip = (e) => {
-    setZip(e.target.value);
-  };
-
-  //!Patient Current Number and Verification of checkboxes
-  const [getHomePhone, setHomePhone] = useState();
-  const handleHomePhone = (e) => {
-    setHomePhone(e.target.value);
-  };
-
-  const [getCellPhone, setCellPhone] = useState();
-  const handleCellPhone = (e) => {
-    setCellPhone(e.target.value);
-  };
-
-  const [getEmail, setEmail] = useState("");
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const [checkMessageHome, setgetMessageHome] = useState("");
-  const handleMessageHome = (e) => {
-    setgetMessageHome(e.target.value);
-  };
-
-  const [checkMessageCell, setMessageCell] = useState("");
-  const handleMessageCell = (e) => {
-    setMessageCell(e.target.value);
-  };
-
-  const [checkEmail, setMessageEmail] = useState("");
-  const handleMessageEmail = (e) => {
-    setMessageEmail(e.target.value);
-  };
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
-          <div class="card-header">
+        <div className="card" style={{ width: "50rem" }}>
+          <div className="card-header">
             Please fill up this intake form: (This form will be your Sign Up
             form or Register Form)
           </div>
-          <ul class="list-group list-group-flush">
+          <ul className="list-group list-group-flush">
             {/* Input Patient's Local Address */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <p>Current Address:</p>
-              <div class="input-group">
+              <div className="input-group">
                 <input
                   type="text"
-                  class="form-control rounded-4 me-1"
+                  className="form-control rounded-4 me-1"
+                  name="StreetNum"
                   placeholder="Street and Number:"
-                  onChange={handleStreetNum}
+                  value={localFormData.StreetNum}
+                  onChange={handleInputChange}
                 />
                 <input
                   type="text"
-                  class="form-control rounded-4 me-1"
+                  className="form-control rounded-4 me-1"
+                  name="Barangay"
                   placeholder="Barangay:"
-                  onChange={handleBarangay}
+                  value={localFormData.Barangay}
+                  onChange={handleInputChange}
                 />
                 <input
                   type="text"
-                  class="form-control rounded-4"
+                  className="form-control rounded-4"
+                  name="City"
                   placeholder="City:"
-                  onChange={handleCity}
+                  value={localFormData.City}
+                  onChange={handleInputChange}
                 />
               </div>
-              <div class="input-group">
+              <div className="input-group">
                 <input
                   type="text"
-                  class="form-control rounded-4 mt-2 me-1"
+                  className="form-control rounded-4 mt-2 me-1"
+                  name="Region"
                   placeholder="Region:"
-                  onChange={handleRegion}
+                  value={localFormData.Region}
+                  onChange={handleInputChange}
                 />
                 <input
                   type="number"
-                  class="form-control rounded-4 mt-2"
+                  className="form-control rounded-4 mt-2"
+                  name="Zip"
                   placeholder="Zip:"
-                  onChange={handleZip}
+                  value={localFormData.Zip}
+                  onChange={handleInputChange}
                 />
               </div>
             </li>
 
             {/* Home Phone , Cell Phone, Email and Checkboxes*/}
             {/* Home Phone*/}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <input
                   type="number"
-                  class="form-control  rounded-4 me-1"
+                  className="form-control  rounded-4 me-1"
+                  name="HomePhone"
                   placeholder="Home Phone Number:"
-                  onChange={handleHomePhone}
+                  value={localFormData.HomePhone}
+                  onChange={handleInputChange}
                 />
-                <div class="form-check-inline">
+                <div className="form-check-inline">
                   <span>May I leave a message?:</span>
                   <input
-                    class="form-check-input ms-2  "
+                    className="form-input ms-2"
                     type="radio"
-                    name="Approval"
+                    name="MessageHome"
                     value="Yes"
-                    onChange={handleMessageHome}
+                    checked={localFormData.MessageHome === "Yes"}
+                    onChange={handleInputChange}
                   />
-                  <label class="form-check-label ms-1">Yes</label>
+                  <label className="form-check-label ms-1">Yes</label>
                   <input
-                    class="form-check-input ms-2  "
+                    className="form-input ms-2"
                     type="radio"
-                    name="Approval"
+                    name="MessageHome"
                     value="No"
-                    onChange={handleMessageHome}
+                    checked={localFormData.MessageHome === "No"}
+                    onChange={handleInputChange}
                   />
-                  <label class="form-check-label ms-1">No</label>
+                  <label className="form-check-label ms-1">No</label>
                 </div>
               </div>
 
               {/* Cell Phone Number */}
-              <div class="input-group">
+              <div className="input-group">
                 <input
                   type="number"
-                  class="form-control  rounded-4 me-1 mt-2"
+                  className="form-control  rounded-4 me-1 mt-2"
+                  name="CellPhone"
                   placeholder="Cell Phone Number:"
-                  onChange={handleCellPhone}
+                  value={localFormData.CellPhone}
+                  onChange={handleInputChange}
                 />
-                <div class="form-check-inline mt-2">
+                <div className="form-check-inline mt-2">
                   <span>May I leave a message?:</span>
                   <input
-                    class="form-check-input ms-2  "
+                    className="form-input ms-2"
                     type="radio"
-                    name="Approval"
+                    name="MessageCall"
                     value="Yes"
-                    onChange={handleMessageCell}
+                    checked={localFormData.MessageCall === "Yes"}
+                    onChange={handleInputChange}
                   />
-                  <label class="form-check-label ms-1">Yes</label>
+                  <label className="form-check-label ms-1">Yes</label>
                   <input
-                    class="form-check-input ms-2  "
+                    className="form-input ms-2"
                     type="radio"
-                    name="Approval"
+                    name="MessageCall"
                     value="No"
-                    onChange={handleMessageCell}
+                    checked={localFormData.MessageCall === "No"}
+                    onChange={handleInputChange}
                   />
-                  <label class="form-check-label ms-1">No</label>
+                  <label className="form-check-label ms-1">No</label>
                 </div>
               </div>
 
               {/* Email */}
-              <div class="input-group mt-2">
+              <div className="input-group mt-2">
                 <input
                   type="text"
-                  class="form-control  rounded-4 me-1"
+                  className="form-control  rounded-4 me-1"
+                  name="Email"
                   placeholder="Email:"
-                  onChange={handleEmail}
+                  value={localFormData.Email}
+                  onChange={handleInputChange}
                 />
-                <div class="form-check-inline ms-5 align-items-start">
+                <div className="form-check-inline ms-5 align-items-start">
                   <span>May I email you?:</span>
                   <input
-                    class="form-check-input ms-2  "
+                    className="form-input ms-2"
                     type="radio"
-                    name="Approval"
+                    name="checkEmail"
                     value="Yes"
-                    onChange={handleMessageEmail}
+                    checked={localFormData.checkEmail === "Yes"}
+                    onChange={handleInputChange}
                   />
-                  <label class="form-check-label ms-1">Yes</label>
+                  <label className="form-check-label ms-1">Yes</label>
                   <input
-                    class="form-check-input ms-2  "
+                    className="form-input ms-2"
                     type="radio"
-                    name="Approval"
+                    name="checkEmail"
                     value="No"
-                    onChange={handleMessageEmail}
+                    checked={localFormData.checkEmail === "No"}
+                    onChange={handleInputChange}
                   />
-                  <label class="form-check-label ms-1">No</label>
+                  <label className="form-check-label ms-1">No</label>
                 </div>
               </div>
             </li>
@@ -207,7 +219,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext }) => {
         <button
           className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
           id="buttonCard"
-          onClick={ButtonNext}
+          onClick={handleNext}
         >
           Next
         </button>
