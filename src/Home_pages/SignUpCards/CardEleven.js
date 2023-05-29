@@ -26,7 +26,7 @@ export const CardEleven = ({ ButtonBack, ButtonNext}) => {
         setSiblingAges(e.target.value);
     };
 
-    const [showFamilySupport, setFamilySupport] = useState("false");
+    const [showFamilySupport, setFamilySupport] = useState(false);
     const handleFamilySupport = (e) => {
         setFamilySupport(e.target.value === "true");
     };

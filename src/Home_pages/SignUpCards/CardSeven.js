@@ -1,19 +1,19 @@
 import { useState } from "react";
 export const CardSeven = ({ ButtonBack, ButtonNext }) => {
     //! Radio Button for Do you Smoke
-    const [showSmoke, setSmoke] = useState("false");
+    const [showSmoke, setSmoke] = useState(false);
     const handleSmoke = (e) => {
         setSmoke(e.target.value === "true");
     };
 
     //! Radio Button for Do you drink Caffeinated Drinks
-    const [showCaffeinatedDrinks, setCaffeinatedDrinks] = useState("false");
+    const [showCaffeinatedDrinks, setCaffeinatedDrinks] = useState(false);
     const handleCaffeinatedDrinks = (e) => {
         setCaffeinatedDrinks(e.target.value === "true");
     };
 
     //! Radio Button for Have you ever had a Head Injury
-    const [showHeadInjury, setHeadInjury] = useState("false");
+    const [showHeadInjury, setHeadInjury] = useState(false);
     const handleHeadInjury = (e) => {
         setHeadInjury(e.target.value === "true");
     };
