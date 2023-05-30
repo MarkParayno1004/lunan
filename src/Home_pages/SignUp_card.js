@@ -105,10 +105,42 @@ export const SIGNUPCARD = () => {
         formData={formData}
       />
     )}
-      {card === 5 && <CardFive ButtonBack={handlePrevious} ButtonNext={handleNext} />}
-      {card === 6 && <CardSix ButtonBack={handlePrevious} ButtonNext={handleNext} />}
-      {card === 7 && <CardSixPoint2 ButtonBack={handlePrevious} ButtonNext={handleNext} />}
-      {card === 8 && <CardSeven ButtonBack={handlePrevious} ButtonNext={handleNext} />}
+      {card === 5 && (
+        <CardFive
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
+      {card === 6 && (
+        <CardSix
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
+      {card === 7 && (
+        <CardSixPoint2
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
+      {card === 8 && (
+        <CardSeven
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
       {card === 9 && <CardEight ButtonBack={handlePrevious} ButtonNext={handleNext} />}
       {card === 10 && <CardNine ButtonBack={handlePrevious} ButtonNext={handleNext} />}
       {card === 11 && <CardTen ButtonBack={handlePrevious} ButtonNext={handleNext} />}
