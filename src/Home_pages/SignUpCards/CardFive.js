@@ -1,11 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export const CardFive = ({ ButtonBack, ButtonNext }) => {
+export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
+  const [localFormData, setLocalFormData] = useState({
+    PsychiatricMeds: "",
+    CurrPsychMeds: "",
+    PrevPsychMedSel: "",
+    PrevPsychMeds: "",
+    SuicidalThoughtsPast: "",
+    SelfHarm: "",
+    SuicidalThoughts: "",
+    SuicidalThoughtsPastTime: "",
+    CurrentHomicidal: "",
+    HadPreviousHomicide: "",
+    PastHomicidalTime: "",
+  });
+
+  useEffect(() => {
+    setLocalFormData(
+      formData ?? {
+    PsychiatricMeds: "",
+    CurrPsychMeds: "",
+    PrevPsychMedSel: "",
+    PrevPsychMeds: "",
+    SuicidalThoughtsPast: "",
+    SelfHarm: "",
+    SuicidalThoughts: "",
+    SuicidalThoughtsPastTime: "",
+    CurrentHomicidal: "",
+    HadPreviousHomicide: "",
+    PastHomicidalTime: "",
+      }
+    );
+  }, [formData]);
+
   //! Psychiatric Radio Radio Buttons
   const [showPsychiatric, setShowPsychiatric] = useState("");
 
   //! Suicidal Radio Buttons
-  const [showSuicidal, setShowSuicidal] = useState(false);
+  const [showSuicidal, setShowSuicidal] = useState();
 
   //! Past Suicidal Thoughts Radio Button
   const [showPastSuicidal, setShowPastSuicidal] = useState();
@@ -15,6 +47,12 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
 
   //! Current Homicidal Thoughts
   const [getHomicidalThoughts, setHomicidalThoughts] = useState("");
+
+  const handleNext = () => {
+    console.log(localFormData); // Log form data
+    ButtonNext(localFormData); // Call the ButtonNext function with form data
+  };
+
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
@@ -29,33 +67,46 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
               <div className="form-check-inline ">
                 <span>
                   Are you currently taking prescribed psychiatric medications
-                  <br /> (antidepressants or others)?
+                  <br/> (antidepressants or others)?
                 </span>
                 <input
                   className="form-input ms-2"
                   type="radio"
                   name="PsychiatricMeds"
-                  value="true"
-                  checked={showPsychiatric === "true"}
+                  value="Yes"
                   onChange={(event) => {
                     setShowPsychiatric(event.target.value);
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.PsychiatricMeds === "Yes"}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
                   className="form-input ms-2"
                   type="radio"
                   name="PsychiatricMeds"
-                  value="false"
+                  value="No"
+                  checked={localFormData.PsychiatricMeds === "No"}
                   onChange={(event) => {
                     setShowPsychiatric(event.target.value);
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
               <div className="form-check-inline ">
-                {(showPsychiatric === "true" && <PsychiatricMedsTrue />) ||
-                  (showPsychiatric === "false" && <PsychiatricMedsFalse />)}
+                {(showPsychiatric === "Yes" && <PsychiatricMedsTrue setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />) ||
+                  (showPsychiatric === "No" && <PrevPsychMedFalse setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />)}
               </div>
             </li>
 
@@ -68,6 +119,14 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="Future"
                   value="Yes"
+                  onChange={(event) => {
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
+                  }}
+                  checked={localFormData.Future === "Yes"}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
@@ -75,6 +134,14 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="Future"
                   value="No"
+                  onChange={(event) => {
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
+                  }}
+                  checked={localFormData.Future === "No"}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -88,45 +155,78 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="true"
-                  onChange={(e) => {
-                    setShowSuicidal(e.target.value === "true");
+                  value="Frequently"
+                  onChange={(event) => {
+                    setShowSuicidal(event.target.value);
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.SuicidalThoughts === "Frequently"}
                 />
-                <label className="form-check-label ms-1">Frequently</label>
+                <label className="form-check-label ms-1">Frequently</label> 
                 <input
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="true"
-                  onChange={(e) => {
-                    setShowSuicidal(e.target.value === "true");
+                  value="Sometimes"
+                  onChange={(event) => {
+                    setShowSuicidal(event.target.value);
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.SuicidalThoughts === "Sometimes"}
                 />
                 <label className="form-check-label ms-1">Sometimes</label>
                 <input
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="true"
-                  onChange={(e) => {
-                    setShowSuicidal(e.target.value === "true");
+                  value="Rarely"
+                  onChange={(event) => {
+                    setShowSuicidal(event.target.value);
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.SuicidalThoughts === "Rarely"}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
                 <input
                   className="form-input ms-2"
                   type="radio"
                   name="SuicidalThoughts"
-                  value="false"
-                  onChange={(e) => {
-                    setShowSuicidal(e.target.value === "true");
+                  value="Never"
+                  onChange={(event) => {
+                    setShowSuicidal(event.target.value);
+                    const { name, value } = event.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.SuicidalThoughts === "Never"}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
               <div className="form-check-inline ">
-                {showSuicidal && <SuicidalThoughts />}
+                  {(showSuicidal === "Frequently" && (
+                  <SuicidalThoughts setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />
+                )) ||
+                  (showSuicidal === "Sometimes" && (
+                    <SuicidalThoughts setLocalFormData={setLocalFormData}
+                    localFormData={localFormData} />
+                  )) ||
+                  (showSuicidal === "Rarely" && <SuicidalThoughts setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />)}
               </div>
             </li>
 
@@ -139,10 +239,15 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="ThoughtsPast"
                   value="Frequently"
-                  checked={showPastSuicidal === "Frequently"}
                   onChange={(e) => {
                     setShowPastSuicidal(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.ThoughtsPast === "Frequently"}
                 />
                 <label className="form-check-label ms-1">Frequently</label>
                 <input
@@ -150,10 +255,15 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="ThoughtsPast"
                   value="Sometimes"
-                  checked={showPastSuicidal === "Sometimes"}
                   onChange={(e) => {
                     setShowPastSuicidal(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.ThoughtsPast === "Sometimes"}
                 />
                 <label className="form-check-label ms-1">Sometimes</label>
                 <input
@@ -161,10 +271,15 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   type="radio"
                   name="ThoughtsPast"
                   value="Rarely"
-                  checked={showPastSuicidal === "Rarely"}
                   onChange={(e) => {
                     setShowPastSuicidal(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.ThoughtsPast === "Rarely"}
                 />
                 <label className="form-check-label ms-1">Rarely</label>
                 <input
@@ -174,21 +289,27 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   value="Never"
                   onChange={(e) => {
                     setShowPastSuicidal(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.ThoughtsPast === "Never"}
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
               <div className="form-check-inline ">
                 {(showPastSuicidal === "Frequently" && (
-                  <SuicidalThoughtsPast />
+                  <SuicidalThoughtsPast setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />
                 )) ||
                   (showPastSuicidal === "Sometimes" && (
-                    <SuicidalThoughtsPast />
+                    <SuicidalThoughtsPast setLocalFormData={setLocalFormData}
+                    localFormData={localFormData} />
                   )) ||
-                  (showPastSuicidal === "Rarely" && <SuicidalThoughtsPast />) ||
-                  (showPastSuicidal === "Never" && (
-                    <SuicidalThoughtsPastNever />
-                  ))}
+                  (showPastSuicidal === "Rarely" && <SuicidalThoughtsPast setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />)}
               </div>
             </li>
 
@@ -206,7 +327,13 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   value="Yes"
                   onChange={(e) => {
                     setHomicidalThoughts(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.CurrentHomicidal === "Yes"}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
@@ -216,7 +343,13 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   value="No"
                   onChange={(e) => {
                     setHomicidalThoughts(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.CurrentHomicidal === "No"}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
@@ -230,26 +363,39 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
                   className="form-input ms-2"
                   type="radio"
                   name="HadPreviousHomicide"
-                  value="true"
+                  value="Yes"
                   onChange={(e) => {
-                    setShowPreviousHomicidal(e.target.value === "true");
+                    setShowPreviousHomicidal(e.target.value === "Yes");
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.HadPreviousHomicide === "Yes"}
                 />
                 <label className="form-check-label ms-1">Yes</label>
                 <input
                   className="form-input ms-2"
                   type="radio"
                   name="HadPreviousHomicide"
-                  value="false"
+                  value="No"
                   onChange={(e) => {
-                    setShowPreviousHomicidal(e.target.value === "true");
+                    setShowPreviousHomicidal(e.target.value === "Yes");
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
+                  checked={localFormData.HadPreviousHomicide === "No"}
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
               <br />
               <div class="input-group">
-                {showPreviousHomicidal && <PreviouslyHomicideThoughts />}
+                {showPreviousHomicidal && <PreviouslyHomicideThoughts setLocalFormData={setLocalFormData}
+                  localFormData={localFormData} />}
               </div>
             </li>
           </ul>
@@ -266,7 +412,7 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
         <button
           className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
           id="buttonCard"
-          onClick={ButtonNext}
+          onClick={handleNext}
         >
           Next
         </button>
@@ -276,24 +422,31 @@ export const CardFive = ({ ButtonBack, ButtonNext }) => {
 };
 
 //! if patient chooses Yes, in the question: Are you currently taking prescribed psychiatric medications
-const PsychiatricMedsTrue = () => {
+const PsychiatricMedsTrue = ( {setLocalFormData, localFormData} ) => {
   const [getNamesandDosesTrue, setNamesAndDosesTrue] = useState(false);
 
   return (
     <>
       <div class="input-group mt-3 ms-3">
         <p className="me-2 mt-2 d-flex align-items-center">
-          If Yes, please list names and doses:
+          Please list names and doses:
         </p>
         <div class="form-floating">
           <textarea
             class="form-control rounded-4"
             placeholder="Answer"
             id="floatingTextarea2"
+            name="CurrPsychMeds"
             style={{ height: 100 + "px", width: 30 + "rem" }}
             onChange={(e) => {
               setNamesAndDosesTrue(e.target.value);
+              const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
             }}
+            value={localFormData.CurrPsychMeds}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
         </div>
@@ -304,7 +457,7 @@ const PsychiatricMedsTrue = () => {
 };
 
 //! if patient chooses No, in the question: Are you currently taking prescribed psychiatric medications?
-const PsychiatricMedsFalse = () => {
+const PrevPsychMedFalse = ({ setLocalFormData, localFormData}) => {
   const [showPsychiatricFalse, setPsychiatricFalse] = useState("");
 
   return (
@@ -314,51 +467,69 @@ const PsychiatricMedsFalse = () => {
           Have you been previously prescribed psychiatric medication?
         </span>
         <input
-          className="form-input ms-2"
-          type="radio"
-          name="PsychiatricMedsFalse"
-          value="true"
-          checked={showPsychiatricFalse === "true"}
-          onChange={(e) => {
-            setPsychiatricFalse(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">Yes</label>
-        <input
-          className="form-input ms-2"
-          type="radio"
-          name="PsychiatricMedsFalse"
-          value="false"
-          onChange={(e) => {
-            setPsychiatricFalse(e.target.value);
-          }}
-        />
-        <label className="form-check-label ms-1">No</label>
-      </div>
+                  className="form-input ms-2"
+                  type="radio"
+                  name="PrevPsychMedSel"
+                  value="Yes"
+                  onChange={(e) => {
+                    setPsychiatricFalse(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
+                  }}
+                  checked={localFormData.PrevPsychMedSel === "Yes"}
+                />
+                <label className="form-check-label ms-1">Yes</label>
+                <input
+                  className="form-input ms-2"
+                  type="radio"
+                  name="PrevPsychMedSel"
+                  value="No"
+                  onChange={(e) => {
+                    setPsychiatricFalse(e.target.value);
+                    const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
+                  }}
+                  checked={localFormData.PrevPsychMedSel === "No"}
+                />
+                <label className="form-check-label ms-1">No</label>
+              </div>
 
-      {showPsychiatricFalse === "true" && <PrescribedMedication />}
+      {showPsychiatricFalse === "Yes" && <PrescribedMedication setLocalFormData={setLocalFormData} localFormData={localFormData}/>}
     </>
   );
 };
 
 //! if patient chooses Yes, in the question: have you been previously prescribed psychiatric medication?
-const PrescribedMedication = () => {
+const PrescribedMedication = ( { setLocalFormData, localFormData} ) => {
   const [getNamesAndDosesFalse, setNamesAndDosesFalse] = useState(true);
 
   return (
     <>
       <div class="input-group mt-3 ms-3">
         <p className="me-2 mt-2 d-flex align-items-center">
-          If Yes, please list previously medication:
+          Please list previously medication:
         </p>
         <div class="form-floating">
           <textarea
             class="form-control rounded-4"
             placeholder="Answer"
+            name="PrevPsychMeds"
             id="floatingTextarea2"
+            value={localFormData.PrevPsychMeds}
             style={{ height: 100 + "px", width: 28 + "rem" }}
             onChange={(e) => {
               setNamesAndDosesFalse(e.target.value === "true");
+              const { name, value } = e.target;
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
             }}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
@@ -370,24 +541,43 @@ const PrescribedMedication = () => {
 };
 
 //!If patient chooses Frequently, Sometimes, and Rarely in question : Are you having current suicidal thoughts?
-const SuicidalThoughts = () => {
+const SuicidalThoughts = ( { setLocalFormData, localFormData} ) => {
+  const [getThoughts, setThoughts] = useState(``);
   return (
     <div className="form-check-inline ms-3">
       <span className="">
-        If yes, have you recently done anything to hurt yourself?
+        Have you recently done anything to hurt yourself?
       </span>
       <input
         className="form-input ms-2"
         type="radio"
-        name="SuicidalThoughtsYes"
+        name="SelfHarm"
         value="Yes"
+        onChange={(e) => {
+          setThoughts(e.target.value);
+          const { name, value } = e.target;
+                setLocalFormData((prevData) => ({
+                  ...prevData,
+                  [name]: value,
+                }));
+        }}
+        checked={localFormData.SelfHarm === "Yes"}
       />
       <label className="form-check-label ms-1">Yes</label>
       <input
         className="form-input ms-2"
         type="radio"
-        name="SuicidalThoughtsYes"
+        name="SelfHarm"
         value="No"
+        onChange={(e) => {
+          const { name, value } = e.target;
+          setThoughts(e.target.value);
+                setLocalFormData((prevData) => ({
+                  ...prevData,
+                  [name]: value,
+                }));
+        }}
+        checked={localFormData.SelfHarm === "No"}
       />
       <label className="form-check-label ms-1">No</label>
     </div>
@@ -395,7 +585,8 @@ const SuicidalThoughts = () => {
 };
 
 //!If patient chooses Frequently, Sometimes, and Rarely in question : Have you had suicidal thoughts in the past?
-const SuicidalThoughtsPast = () => {
+const SuicidalThoughtsPast = ({ setLocalFormData, localFormData}) => {
+  const [getThoughts, setThoughts] = useState(``);
   return (
     <div className="form-check-inline ms-3">
       <span className="">Did you ever act on them?</span>
@@ -404,6 +595,14 @@ const SuicidalThoughtsPast = () => {
         type="radio"
         name="SuicidalThoughtsPast"
         value="Yes"
+        onChange={(e) => {
+          const { name, value } = e.target;
+                setLocalFormData((prevData) => ({
+                  ...prevData,
+                  [name]: value,
+                }));
+        }}
+        checked={localFormData.SuicidalThoughtsPast === "Yes"}
       />
       <label className="form-check-label ms-1">Yes</label>
       <input
@@ -411,49 +610,63 @@ const SuicidalThoughtsPast = () => {
         type="radio"
         name="SuicidalThoughtsPast"
         value="No"
+        onChange={(e) => {
+          setThoughts(e.target.value);
+          const { name, value } = e.target;
+                setLocalFormData((prevData) => ({
+                  ...prevData,
+                  [name]: value,
+                }));
+        }}
+        checked={localFormData.SuicidalThoughtsPast === "No"}
       />
       <label className="form-check-label ms-1">No</label>
-    </div>
-  );
-};
-
-//!If patient chooses Never in question : Have you had suicidal thoughts in the past?
-const SuicidalThoughtsPastNever = () => {
-  const [getThoughts, setThoughts] = useState(``);
-  return (
-    <div className="form-check-inline ms-3 mt-2">
+      <br></br>
       <span className="">
         If you checked any box other than “never”, when did you have these
         thoughts?
       </span>
       <textarea
         className="form-control rounded-4"
-        name="SuicidalThoughtsPastNever"
+        name="SuicidalThoughtsPastTime"
         placeholder="Answer:"
         onChange={(e) => {
           setThoughts(e.target.value);
+            const { name, value } = e.target;
+                  setLocalFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                  }));
         }}
+        value={localFormData.SuicidalThoughtsPastTime}
       />
     </div>
   );
 };
 
 //!If patient chooses yes, in question : Have you previously had homicidal thoughts?
-const PreviouslyHomicideThoughts = () => {
+const PreviouslyHomicideThoughts = ({ setLocalFormData, localFormData}) => {
   const [getThoughts, setThoughts] = useState(``);
   return (
     <div class="input-group">
       <div>
-        <span className="">If yes, when?</span>
+        <span className="">When did you had these homicidal thoughts?</span>
         <div class="form-floating">
           <textarea
             class="form-control rounded-4"
             placeholder="Answer"
             id="floatingTextarea2"
+            name="PastHomicidalTime"
             style={{ height: 100 + "px", width: 40 + "rem" }}
             onChange={(e) => {
               setThoughts(e.target.value);
+              const { name, value } = e.target;
+                  setLocalFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                  }));
             }}
+            value={localFormData.PastHomicidalTime}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
         </div>
