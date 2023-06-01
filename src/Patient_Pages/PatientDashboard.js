@@ -10,26 +10,30 @@ import { ModalComponent } from "./ModalComponent";
 export const PatientDashboard = () => {
   return (
     <>
-      <div class="d-flex align-items-center " id="pdBG">
-        <div class="container text-center ">
-          <div class="row align-items-start ">
+      <div className="d-flex align-items-center " id="pdBG">
+        <div className="container text-center ">
+          <div className="row align-items-start ">
             {/* Wellness Form */}
             <ModalComponent />
-            <div class="col d-flex justify-content-end">
+            <div className="col d-flex justify-content-end">
               <Link to="" style={{ textDecoration: "none" }}>
                 <div>
                   <div
-                    class="card rounded-5"
+                    className="card rounded-5"
                     style={{ width: 18 + "rem" }}
                     id="cardBG"
                   >
-                    <p class="card-text mt-3" style={{ fontSize: 36 + "px" }}>
+                    <p
+                      className="card-text mt-3"
+                      style={{ fontSize: 36 + "px" }}
+                    >
                       Wellness Form
                     </p>
-                    <div class="card-body">
+                    <div className="card-body">
                       <img
+                        alt="wellLogo"
                         src={wellFormLogo}
-                        class="card-img-bottom"
+                        className="card-img-bottom"
                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                       />
                     </div>
@@ -39,21 +43,25 @@ export const PatientDashboard = () => {
             </div>
 
             {/* Assignment */}
-            <div class="col d-flex justify-content-center">
+            <div className="col d-flex justify-content-center">
               <Link to="" style={{ textDecoration: "none" }}>
                 <div>
                   <div
-                    class="card rounded-5"
+                    className="card rounded-5"
                     style={{ width: 18 + "rem" }}
                     id="cardBG"
                   >
-                    <p class="card-text mt-3" style={{ fontSize: 36 + "px" }}>
+                    <p
+                      className="card-text mt-3"
+                      style={{ fontSize: 36 + "px" }}
+                    >
                       Assignment
                     </p>
-                    <div class="card-body">
+                    <div className="card-body">
                       <img
+                        alt="assignment"
                         src={assLogo}
-                        class="card-img-bottom"
+                        className="card-img-bottom"
                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                       />
                     </div>
@@ -63,21 +71,25 @@ export const PatientDashboard = () => {
             </div>
 
             {/* Weekly Form */}
-            <div class="col d-flex justify-content-start">
+            <div className="col d-flex justify-content-start">
               <Link to="" style={{ textDecoration: "none" }}>
                 <div>
                   <div
-                    class="card rounded-5"
+                    className="card rounded-5"
                     style={{ width: 18 + "rem" }}
                     id="cardBG"
                   >
-                    <p class="card-text mt-3" style={{ fontSize: 36 + "px" }}>
+                    <p
+                      className="card-text mt-3"
+                      style={{ fontSize: 36 + "px" }}
+                    >
                       Weekly Forms
                     </p>
-                    <div class="card-body">
+                    <div className="card-body">
                       <img
+                        alt="weekFormLogo"
                         src={weekFormLogo}
-                        class="card-img-bottom"
+                        className="card-img-bottom"
                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                       />
                     </div>
@@ -88,22 +100,26 @@ export const PatientDashboard = () => {
           </div>
 
           {/* Wellness Guide */}
-          <div class="row align-items-start mt-5">
-            <div class="col d-flex justify-content-end">
+          <div className="row align-items-start mt-5">
+            <div className="col d-flex justify-content-end">
               <Link to="" style={{ textDecoration: "none" }}>
                 <div>
                   <div
-                    class="card rounded-5"
+                    className="card rounded-5"
                     style={{ width: 18 + "rem" }}
                     id="cardBG"
                   >
-                    <p class="card-text mt-3" style={{ fontSize: 36 + "px" }}>
+                    <p
+                      className="card-text mt-3"
+                      style={{ fontSize: 36 + "px" }}
+                    >
                       Wellness Guide
                     </p>
-                    <div class="card-body">
+                    <div className="card-body">
                       <img
+                        alt="wellGuide"
                         src={wellGuideLogo}
-                        class="card-img-bottom"
+                        className="card-img-bottom"
                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                       />
                     </div>
@@ -113,24 +129,25 @@ export const PatientDashboard = () => {
             </div>
 
             {/* Schedule */}
-            <div class="col d-flex justify-content-start ms-5">
+            <div className="col d-flex justify-content-start ms-5">
               <Link to="" style={{ textDecoration: "none" }}>
                 <div>
                   <div
-                    class="card rounded-5"
+                    className="card rounded-5"
                     style={{ width: 18 + "rem" }}
                     id="cardBG"
                   >
                     <span
-                      class="card-text mt-3"
+                      className="card-text mt-3"
                       style={{ fontSize: 36 + "px" }}
                     >
                       Schedule
                     </span>
-                    <div class="card-body">
+                    <div className="card-body">
                       <img
+                        alt="scheduleLogo"
                         src={scheduleLogo}
-                        class="card-img-bottom pb-4"
+                        className="card-img-bottom pb-4"
                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                       />
                     </div>

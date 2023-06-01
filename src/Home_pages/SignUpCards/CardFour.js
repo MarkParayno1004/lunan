@@ -92,14 +92,14 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
-          <div class="card-header">
+        <div className="card" style={{ width: 50 + "rem" }}>
+          <div className="card-header">
             Please fill up this intake form: (This form will be your Sign Up
             form or Register Form)
           </div>
-          <ul class="list-group list-group-flush">
+          <ul className="list-group list-group-flush">
             {/* Sexual Preference */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <span className="">Sexual Preference:</span>
               <div className="form-check-inline ms-2">
                 <input
@@ -139,7 +139,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Marital Status */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <span className="">Marital Status:</span>
               <div className="form-check-inline ms-2">
                 <input
@@ -219,7 +219,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
 
             {/* Series of Questions */}
             {/* Romantic RelationShip Question */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <span>Are you currently in a romantic relationship?</span>
               <div className="form-check-inline ms-2">
                 <input
@@ -255,7 +255,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Do you have a child? */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <span>Do you have a child?</span>
               <div className="form-check-inline ms-2">
                 <input
@@ -290,7 +290,7 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Previous psychotherapy */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>Have you had previous psychotherapy?</span>
                 <input
@@ -380,10 +380,10 @@ const RomanticRelationShipYes = ({ setLocalFormData, localFormData }) => {
         placeholder="Answer:"
         name="HowLong"
         value={localFormData.HowLong}
-        class="form-control me-3 rounded-4"
+        className="form-control me-3 rounded-4"
         onChange={handleCurrentRelation}
       />
-      <div class="input-group mt-3">
+      <div className="input-group mt-3">
         <p className="me-2 d-flex align-items-center">
           If yes, on a scale of 1-10 (10=great), <br />
           how would you rate the quality of your romantic relationship?
@@ -394,7 +394,7 @@ const RomanticRelationShipYes = ({ setLocalFormData, localFormData }) => {
           placeholder="Answer:"
           name="QualRel"
           value={localFormData.QualRel}
-          class="form-control me-3 rounded-4"
+          className="form-control me-3 rounded-4"
           onChange={handleScale}
         />
       </div>
@@ -425,7 +425,7 @@ const ChildrenYes = ({ setLocalFormData, localFormData }) => {
   };
   return (
     <>
-      <div class="input-group">
+      <div className="input-group">
         <span className="me-2 d-flex align-items-center">
           If yes, how many?
         </span>
@@ -435,17 +435,17 @@ const ChildrenYes = ({ setLocalFormData, localFormData }) => {
           placeholder="Answer:"
           name="CountChild"
           value={localFormData.CountChild}
-          class="form-control me-3 rounded-4"
+          className="form-control me-3 rounded-4"
           onChange={handleChildren}
         />
-        <span class="d-flex align-items-center">Age?</span>
+        <span className="d-flex align-items-center">Age?</span>
         <input
           type="number"
           aria-label="Patient's Child"
           placeholder="Answer:"
           name="ChildAge"
           value={localFormData.ChildAge}
-          class="form-control ms-1 rounded-4"
+          className="form-control ms-1 rounded-4"
           onChange={handleChildrenAge}
         />
       </div>
@@ -482,10 +482,10 @@ const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
         placeholder="Answer:"
         name="WhyTherapy"
         value={localFormData.WhyTherapy}
-        class="form-control me-3 rounded-4"
+        className="form-control me-3 rounded-4"
         onChange={handleWhyPsychoTherapyR}
       />
-      <div class="input-group mt-3">
+      <div className="input-group mt-3">
         <p className="me-2 d-flex align-items-center">If yes, when?</p>
         <textarea
           type="text"
@@ -493,7 +493,7 @@ const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
           placeholder="Answer:"
           name="WhenTherapy"
           value={localFormData.WhenTherapy}
-          class="form-control me-3 rounded-4"
+          className="form-control me-3 rounded-4"
           onChange={handleWhenPsychoTherapy}
         />
       </div>

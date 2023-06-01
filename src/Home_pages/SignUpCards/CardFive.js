@@ -18,17 +18,17 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
   useEffect(() => {
     setLocalFormData(
       formData ?? {
-    PsychiatricMeds: "",
-    CurrPsychMeds: "",
-    PrevPsychMedSel: "",
-    PrevPsychMeds: "",
-    SuicidalThoughtsPast: "",
-    SelfHarm: "",
-    SuicidalThoughts: "",
-    SuicidalThoughtsPastTime: "",
-    CurrentHomicidal: "",
-    HadPreviousHomicide: "",
-    PastHomicidalTime: "",
+        PsychiatricMeds: "",
+        CurrPsychMeds: "",
+        PrevPsychMedSel: "",
+        PrevPsychMeds: "",
+        SuicidalThoughtsPast: "",
+        SelfHarm: "",
+        SuicidalThoughts: "",
+        SuicidalThoughtsPastTime: "",
+        CurrentHomicidal: "",
+        HadPreviousHomicide: "",
+        PastHomicidalTime: "",
       }
     );
   }, [formData]);
@@ -56,18 +56,18 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: "50rem" }}>
-          <div class="card-header">
+        <div className="card" style={{ width: "50rem" }}>
+          <div className="card-header">
             Please fill up this intake form: (This form will be your Sign Up
             form or Register Form)
           </div>
-          <ul class="list-group list-group-flush">
+          <ul className="list-group list-group-flush">
             {/* Psychiatric Medications */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>
                   Are you currently taking prescribed psychiatric medications
-                  <br/> (antidepressants or others)?
+                  <br /> (antidepressants or others)?
                 </span>
                 <input
                   className="form-input ms-2"
@@ -103,15 +103,23 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
                 <label className="form-check-label ms-1">No</label>
               </div>
               <div className="form-check-inline ">
-                {(showPsychiatric === "Yes" && <PsychiatricMedsTrue setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />) ||
-                  (showPsychiatric === "No" && <PrevPsychMedFalse setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />)}
+                {(showPsychiatric === "Yes" && (
+                  <PsychiatricMedsTrue
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )) ||
+                  (showPsychiatric === "No" && (
+                    <PrevPsychMedFalse
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  ))}
               </div>
             </li>
 
             {/* Future */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>Are you hopeful about your future?</span>
                 <input
@@ -148,7 +156,7 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Suicidal Thoughts */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>Are you having current suicidal thoughts?</span>
                 <input
@@ -166,7 +174,7 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
                   }}
                   checked={localFormData.SuicidalThoughts === "Frequently"}
                 />
-                <label className="form-check-label ms-1">Frequently</label> 
+                <label className="form-check-label ms-1">Frequently</label>
                 <input
                   className="form-input ms-2"
                   type="radio"
@@ -217,21 +225,29 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
                 <label className="form-check-label ms-1">Never</label>
               </div>
               <div className="form-check-inline ">
-                  {(showSuicidal === "Frequently" && (
-                  <SuicidalThoughts setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />
+                {(showSuicidal === "Frequently" && (
+                  <SuicidalThoughts
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
                 )) ||
                   (showSuicidal === "Sometimes" && (
-                    <SuicidalThoughts setLocalFormData={setLocalFormData}
-                    localFormData={localFormData} />
+                    <SuicidalThoughts
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
                   )) ||
-                  (showSuicidal === "Rarely" && <SuicidalThoughts setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />)}
+                  (showSuicidal === "Rarely" && (
+                    <SuicidalThoughts
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  ))}
               </div>
             </li>
 
             {/* Past Suicidal Thoughts */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>Have you had suicidal thoughts in the past?</span>
                 <input
@@ -301,20 +317,28 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               <div className="form-check-inline ">
                 {(showPastSuicidal === "Frequently" && (
-                  <SuicidalThoughtsPast setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />
+                  <SuicidalThoughtsPast
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
                 )) ||
                   (showPastSuicidal === "Sometimes" && (
-                    <SuicidalThoughtsPast setLocalFormData={setLocalFormData}
-                    localFormData={localFormData} />
+                    <SuicidalThoughtsPast
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
                   )) ||
-                  (showPastSuicidal === "Rarely" && <SuicidalThoughtsPast setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />)}
+                  (showPastSuicidal === "Rarely" && (
+                    <SuicidalThoughtsPast
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  ))}
               </div>
             </li>
 
             {/* Current Homicidal Thoughts */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>
                   Are you having current homicidal thoughts (i.e., thoughts of
@@ -356,7 +380,7 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Previous had Homicidal Thoughts */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <span>Have you previously had homicidal thoughts?</span>
                 <input
@@ -393,9 +417,13 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
                 <label className="form-check-label ms-1">No</label>
               </div>
               <br />
-              <div class="input-group">
-                {showPreviousHomicidal && <PreviouslyHomicideThoughts setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />}
+              <div className="input-group">
+                {showPreviousHomicidal && (
+                  <PreviouslyHomicideThoughts
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
               </div>
             </li>
           </ul>
@@ -422,18 +450,18 @@ export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
 };
 
 //! if patient chooses Yes, in the question: Are you currently taking prescribed psychiatric medications
-const PsychiatricMedsTrue = ( {setLocalFormData, localFormData} ) => {
+const PsychiatricMedsTrue = ({ setLocalFormData, localFormData }) => {
   const [getNamesandDosesTrue, setNamesAndDosesTrue] = useState(false);
 
   return (
     <>
-      <div class="input-group mt-3 ms-3">
+      <div className="input-group mt-3 ms-3">
         <p className="me-2 mt-2 d-flex align-items-center">
           Please list names and doses:
         </p>
-        <div class="form-floating">
+        <div className="form-floating">
           <textarea
-            class="form-control rounded-4"
+            className="form-control rounded-4"
             placeholder="Answer"
             id="floatingTextarea2"
             name="CurrPsychMeds"
@@ -441,10 +469,10 @@ const PsychiatricMedsTrue = ( {setLocalFormData, localFormData} ) => {
             onChange={(e) => {
               setNamesAndDosesTrue(e.target.value);
               const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+              setLocalFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+              }));
             }}
             value={localFormData.CurrPsychMeds}
           ></textarea>
@@ -457,7 +485,7 @@ const PsychiatricMedsTrue = ( {setLocalFormData, localFormData} ) => {
 };
 
 //! if patient chooses No, in the question: Are you currently taking prescribed psychiatric medications?
-const PrevPsychMedFalse = ({ setLocalFormData, localFormData}) => {
+const PrevPsychMedFalse = ({ setLocalFormData, localFormData }) => {
   const [showPsychiatricFalse, setPsychiatricFalse] = useState("");
 
   return (
@@ -467,57 +495,62 @@ const PrevPsychMedFalse = ({ setLocalFormData, localFormData}) => {
           Have you been previously prescribed psychiatric medication?
         </span>
         <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="PrevPsychMedSel"
-                  value="Yes"
-                  onChange={(e) => {
-                    setPsychiatricFalse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                  checked={localFormData.PrevPsychMedSel === "Yes"}
-                />
-                <label className="form-check-label ms-1">Yes</label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="PrevPsychMedSel"
-                  value="No"
-                  onChange={(e) => {
-                    setPsychiatricFalse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                  checked={localFormData.PrevPsychMedSel === "No"}
-                />
-                <label className="form-check-label ms-1">No</label>
-              </div>
+          className="form-input ms-2"
+          type="radio"
+          name="PrevPsychMedSel"
+          value="Yes"
+          onChange={(e) => {
+            setPsychiatricFalse(e.target.value);
+            const { name, value } = e.target;
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
+          }}
+          checked={localFormData.PrevPsychMedSel === "Yes"}
+        />
+        <label className="form-check-label ms-1">Yes</label>
+        <input
+          className="form-input ms-2"
+          type="radio"
+          name="PrevPsychMedSel"
+          value="No"
+          onChange={(e) => {
+            setPsychiatricFalse(e.target.value);
+            const { name, value } = e.target;
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
+          }}
+          checked={localFormData.PrevPsychMedSel === "No"}
+        />
+        <label className="form-check-label ms-1">No</label>
+      </div>
 
-      {showPsychiatricFalse === "Yes" && <PrescribedMedication setLocalFormData={setLocalFormData} localFormData={localFormData}/>}
+      {showPsychiatricFalse === "Yes" && (
+        <PrescribedMedication
+          setLocalFormData={setLocalFormData}
+          localFormData={localFormData}
+        />
+      )}
     </>
   );
 };
 
 //! if patient chooses Yes, in the question: have you been previously prescribed psychiatric medication?
-const PrescribedMedication = ( { setLocalFormData, localFormData} ) => {
+const PrescribedMedication = ({ setLocalFormData, localFormData }) => {
   const [getNamesAndDosesFalse, setNamesAndDosesFalse] = useState(true);
 
   return (
     <>
-      <div class="input-group mt-3 ms-3">
+      <div className="input-group mt-3 ms-3">
         <p className="me-2 mt-2 d-flex align-items-center">
           Please list previously medication:
         </p>
-        <div class="form-floating">
+        <div className="form-floating">
           <textarea
-            class="form-control rounded-4"
+            className="form-control rounded-4"
             placeholder="Answer"
             name="PrevPsychMeds"
             id="floatingTextarea2"
@@ -526,10 +559,10 @@ const PrescribedMedication = ( { setLocalFormData, localFormData} ) => {
             onChange={(e) => {
               setNamesAndDosesFalse(e.target.value === "true");
               const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+              setLocalFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+              }));
             }}
           ></textarea>
           <label for="floatingTextarea2">Answer:</label>
@@ -541,7 +574,7 @@ const PrescribedMedication = ( { setLocalFormData, localFormData} ) => {
 };
 
 //!If patient chooses Frequently, Sometimes, and Rarely in question : Are you having current suicidal thoughts?
-const SuicidalThoughts = ( { setLocalFormData, localFormData} ) => {
+const SuicidalThoughts = ({ setLocalFormData, localFormData }) => {
   const [getThoughts, setThoughts] = useState(``);
   return (
     <div className="form-check-inline ms-3">
@@ -556,10 +589,10 @@ const SuicidalThoughts = ( { setLocalFormData, localFormData} ) => {
         onChange={(e) => {
           setThoughts(e.target.value);
           const { name, value } = e.target;
-                setLocalFormData((prevData) => ({
-                  ...prevData,
-                  [name]: value,
-                }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
         checked={localFormData.SelfHarm === "Yes"}
       />
@@ -572,10 +605,10 @@ const SuicidalThoughts = ( { setLocalFormData, localFormData} ) => {
         onChange={(e) => {
           const { name, value } = e.target;
           setThoughts(e.target.value);
-                setLocalFormData((prevData) => ({
-                  ...prevData,
-                  [name]: value,
-                }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
         checked={localFormData.SelfHarm === "No"}
       />
@@ -585,7 +618,7 @@ const SuicidalThoughts = ( { setLocalFormData, localFormData} ) => {
 };
 
 //!If patient chooses Frequently, Sometimes, and Rarely in question : Have you had suicidal thoughts in the past?
-const SuicidalThoughtsPast = ({ setLocalFormData, localFormData}) => {
+const SuicidalThoughtsPast = ({ setLocalFormData, localFormData }) => {
   const [getThoughts, setThoughts] = useState(``);
   return (
     <div className="form-check-inline ms-3">
@@ -597,10 +630,10 @@ const SuicidalThoughtsPast = ({ setLocalFormData, localFormData}) => {
         value="Yes"
         onChange={(e) => {
           const { name, value } = e.target;
-                setLocalFormData((prevData) => ({
-                  ...prevData,
-                  [name]: value,
-                }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
         checked={localFormData.SuicidalThoughtsPast === "Yes"}
       />
@@ -613,10 +646,10 @@ const SuicidalThoughtsPast = ({ setLocalFormData, localFormData}) => {
         onChange={(e) => {
           setThoughts(e.target.value);
           const { name, value } = e.target;
-                setLocalFormData((prevData) => ({
-                  ...prevData,
-                  [name]: value,
-                }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
         checked={localFormData.SuicidalThoughtsPast === "No"}
       />
@@ -632,11 +665,11 @@ const SuicidalThoughtsPast = ({ setLocalFormData, localFormData}) => {
         placeholder="Answer:"
         onChange={(e) => {
           setThoughts(e.target.value);
-            const { name, value } = e.target;
-                  setLocalFormData((prevData) => ({
-                    ...prevData,
-                    [name]: value,
-                  }));
+          const { name, value } = e.target;
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
         value={localFormData.SuicidalThoughtsPastTime}
       />
@@ -645,15 +678,15 @@ const SuicidalThoughtsPast = ({ setLocalFormData, localFormData}) => {
 };
 
 //!If patient chooses yes, in question : Have you previously had homicidal thoughts?
-const PreviouslyHomicideThoughts = ({ setLocalFormData, localFormData}) => {
+const PreviouslyHomicideThoughts = ({ setLocalFormData, localFormData }) => {
   const [getThoughts, setThoughts] = useState(``);
   return (
-    <div class="input-group">
+    <div className="input-group">
       <div>
         <span className="">When did you had these homicidal thoughts?</span>
-        <div class="form-floating">
+        <div className="form-floating">
           <textarea
-            class="form-control rounded-4"
+            className="form-control rounded-4"
             placeholder="Answer"
             id="floatingTextarea2"
             name="PastHomicidalTime"
@@ -661,10 +694,10 @@ const PreviouslyHomicideThoughts = ({ setLocalFormData, localFormData}) => {
             onChange={(e) => {
               setThoughts(e.target.value);
               const { name, value } = e.target;
-                  setLocalFormData((prevData) => ({
-                    ...prevData,
-                    [name]: value,
-                  }));
+              setLocalFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+              }));
             }}
             value={localFormData.PastHomicidalTime}
           ></textarea>

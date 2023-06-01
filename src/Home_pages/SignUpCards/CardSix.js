@@ -4,11 +4,11 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
     currentPhysicalHealth: "",
     LastPhysicalExam: "",
     chronicIllnessSel: "",
-    ChronicIll:"",
+    ChronicIll: "",
     AllergiesSel: "",
     Sleep: "",
     MaintMeds: "",
-    MaintMedsSel:"",
+    MaintMedsSel: "",
     AllergyList: "",
   });
 
@@ -16,17 +16,16 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
     setLocalFormData(
       formData ?? {
         currentPhysicalHealth: "",
-    LastPhysicalExam: "",
-    chronicIllnessSel: "",
-    ChronicIll:"",
-    AllergiesSel: "",
-    Sleep: "",
-    MaintMeds: "",
-    AllergyList: "",
+        LastPhysicalExam: "",
+        chronicIllnessSel: "",
+        ChronicIll: "",
+        AllergiesSel: "",
+        Sleep: "",
+        MaintMeds: "",
+        AllergyList: "",
       }
     );
   }, [formData]);
-
 
   //!Radio Button for Physical Health
   const [getCurrentPhysicalHealth, setCurrentPhysicalHealth] = useState("");
@@ -57,19 +56,17 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
     ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
   return (
-
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
-          <div class="card-header">Health Information</div>
-          <ul class="list-group list-group-flush">
+        <div className="card" style={{ width: 50 + "rem" }}>
+          <div className="card-header">Health Information</div>
+          <ul className="list-group list-group-flush">
             {/* Physical Health Currently */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline ">
                 <p className="">
                   How is your physical health currently? (please choose)
                 </p>
-
 
                 <label>
                   <input
@@ -80,15 +77,14 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={(e) => {
                       setCurrentPhysicalHealth(e.target.value);
                       const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
                     }}
                     checked={localFormData.currentPhysicalHealth === "Poor"}
                   />
                   <label className="form-check-label ms-1">Poor</label>
-
 
                   <input
                     className="form-input ms-2"
@@ -98,17 +94,18 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={(e) => {
                       setCurrentPhysicalHealth(e.target.value);
                       const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
                     }}
-                    checked={localFormData.currentPhysicalHealth === "Unsatisfactory"}
+                    checked={
+                      localFormData.currentPhysicalHealth === "Unsatisfactory"
+                    }
                   />
                   <label className="form-check-label ms-1">
                     Unsatisfactory
                   </label>
-
 
                   <input
                     className="form-input ms-2"
@@ -118,16 +115,17 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={(e) => {
                       setCurrentPhysicalHealth(e.target.value);
                       const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
                     }}
-                    checked={localFormData.currentPhysicalHealth === "Satisfactory"}
+                    checked={
+                      localFormData.currentPhysicalHealth === "Satisfactory"
+                    }
                   />
                   <label className="form-check-label ms-1">Satisfactory</label>
 
-                  
                   <input
                     className="form-input ms-2"
                     type="radio"
@@ -136,15 +134,14 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={(e) => {
                       setCurrentPhysicalHealth(e.target.value);
                       const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
                     }}
                     checked={localFormData.currentPhysicalHealth === "Good"}
                   />
                   <label className="form-check-label ms-1">Good</label>
-
 
                   <input
                     className="form-input ms-2"
@@ -154,12 +151,14 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={(e) => {
                       setCurrentPhysicalHealth(e.target.value);
                       const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
                     }}
-                    checked={localFormData.currentPhysicalHealth === "Very Good"}
+                    checked={
+                      localFormData.currentPhysicalHealth === "Very Good"
+                    }
                   />
                   <label className="form-check-label ms-1">Very Good</label>
                 </label>
@@ -167,14 +166,14 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Date of last physical examination */}
-            <li class="list-group-item">
-              <div class="input-group">
-                <span class="d-flex align-items-center">
+            <li className="list-group-item">
+              <div className="input-group">
+                <span className="d-flex align-items-center">
                   Date of last physical examination
                 </span>
                 <input
                   type="date"
-                  class="form-control  rounded-4 me-1 ms-2"
+                  className="form-control  rounded-4 me-1 ms-2"
                   day
                   name="LastPhysicalExam"
                   ref={useRef(null)}
@@ -192,8 +191,8 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* list any chronic health problems or concerns */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <div className="form-check-inline">
                   <span>
                     Do you want to list any chronic health problems or concerns?
@@ -210,15 +209,13 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                       onChange={(event) => {
                         setListChProblem(event.target.value);
                         const { name, value } = event.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+                        setLocalFormData((prevData) => ({
+                          ...prevData,
+                          [name]: value,
+                        }));
                       }}
-                      
                     />
                     <label className="form-check-label ms-1">Yes</label>
-
 
                     <input
                       className="form-input ms-2"
@@ -228,19 +225,18 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                       checked={localFormData.chronicIllnessSel === "No"}
                       onChange={(event) => {
                         setListChProblem(event.target.value);
-                          const { name, value } = event.target;
-                      setLocalFormData((prevData) => ({
-                        ...prevData,
-                        [name]: value,
-                      }));
+                        const { name, value } = event.target;
+                        setLocalFormData((prevData) => ({
+                          ...prevData,
+                          [name]: value,
+                        }));
                       }}
-                      
                     />
                     <label className="form-check-label ms-1">No</label>
                     {showListChProblem === "Yes" && (
-                      <div class="form-floating">
+                      <div className="form-floating">
                         <textarea
-                          class="form-control rounded-4"
+                          className="form-control rounded-4"
                           placeholder="Answer"
                           id="floatingTextarea2"
                           name="ChronicIll"
@@ -248,10 +244,10 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                           onChange={(e) => {
                             setChronicHealth(e.target.value);
                             const { name, value } = e.target;
-                      setLocalFormData((prevData) => ({
-                        ...prevData,
-                        [name]: value,
-                      }));
+                            setLocalFormData((prevData) => ({
+                              ...prevData,
+                              [name]: value,
+                            }));
                           }}
                           value={localFormData.ChronicIll}
                         ></textarea>
@@ -264,8 +260,8 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Any Allergies Radio Button */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>Any Allergies?</span>
                 <input
                   className="form-input ms-2"
@@ -276,15 +272,13 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                   onChange={(e) => {
                     setAllergies(e.target.value);
                     const { name, value } = e.target;
-                      setLocalFormData((prevData) => ({
-                        ...prevData,
-                        [name]: value,
-                      }));
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
-                  
                 />
                 <label className="form-check-label ms-1">Yes</label>
-
 
                 <input
                   className="form-input ms-2"
@@ -295,10 +289,10 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                   onChange={(e) => {
                     setAllergies(e.target.value);
                     const { name, value } = e.target;
-                      setLocalFormData((prevData) => ({
-                        ...prevData,
-                        [name]: value,
-                      }));
+                    setLocalFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
@@ -307,10 +301,10 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Medications and Per hour night sleep*/}
-            <li class="list-group-item">
-              <div class="input-group">
-                <div class="input-group">
-                  <span class="d-flex align-items-center me-2">
+            <li className="list-group-item">
+              <div className="input-group">
+                <div className="input-group">
+                  <span className="d-flex align-items-center me-2">
                     Do you have any maintenance?
                   </span>
                   <input
@@ -330,7 +324,6 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                   />
                   <label className="form-check-label ms-1">Yes</label>
 
-
                   <input
                     className="form-input ms-2"
                     type="radio"
@@ -349,39 +342,37 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                   <label className="form-check-label ms-1">No</label>
                 </div>
 
-
                 {showListMedication === "Yes" && (
-                  <div class="form-floating">
-                    <span class="d-flex align-items-center me-2">
+                  <div className="form-floating">
+                    <span className="d-flex align-items-center me-2">
                       List down your maintenance medicine:
                     </span>
                     <textarea
-                      class="form-control rounded-4"
+                      className="form-control rounded-4"
                       id="floatingTextarea2"
                       name="MaintMeds"
                       onChange={(e) => {
                         setMedication(e.target.value);
                         const { name, value } = e.target;
-                      setLocalFormData((prevData) => ({
-                        ...prevData,
-                        [name]: value,
-                      }));
+                        setLocalFormData((prevData) => ({
+                          ...prevData,
+                          [name]: value,
+                        }));
                       }}
                       style={{ height: 90 + "px", width: 48 + "rem" }}
-                      value = {localFormData.MaintMeds}
+                      value={localFormData.MaintMeds}
                     ></textarea>
                   </div>
                 )}
 
-
-                <div class="input-group">
-                  <span class="d-flex align-items-center me-2">
+                <div className="input-group">
+                  <span className="d-flex align-items-center me-2">
                     Hours per night you normally sleep
                   </span>
                   <input
                     type="number"
                     name="Sleep"
-                    class="form-control rounded-4 mt-2"
+                    className="form-control rounded-4 mt-2"
                     onChange={(e) => {
                       setHourSleep(e.target.value);
                       const { name, value } = e.target;
@@ -422,11 +413,13 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
 const Allergies = () => {
   const [getAllergies, setAllergies] = useState(``);
   return (
-    <div class="input-group mt-1">
-      <span class="d-flex align-items-center me-2">If yes, please list: </span>
-      <div class="form-floating">
+    <div className="input-group mt-1">
+      <span className="d-flex align-items-center me-2">
+        If yes, please list:{" "}
+      </span>
+      <div className="form-floating">
         <textarea
-          class="form-control rounded-4"
+          className="form-control rounded-4"
           placeholder="Answer"
           id="floatingTextarea2"
           name="AllergyList"

@@ -36,15 +36,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
 
     return (
         <div>
-            <div class="container-fluid d-flex justify-content-center mt-3">
-                <div class="card" style={{width: 50 + "rem"}}>
+            <div className="container-fluid d-flex justify-content-center mt-3">
+                <div className="card" style={{width: 50 + "rem"}}>
                     {/* Experience Now */}
-                    <div class="card-header">Are you now experiencing:</div>
-                    <ul class="list-group list-group-flush">
+                    <div className="card-header">Are you now experiencing:</div>
+                    <ul className="list-group list-group-flush">
 
                         {/* Depressed Mood/Sadness */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Depressed Mood or Sadness:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -54,7 +54,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.depressedMood}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -63,16 +63,16 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.depressedMood}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 
                                 {ExpNow.depressedMood && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="depressedMoodRating"
                                             min="1"
                                             max="10"
@@ -84,8 +84,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Irritability/Anger */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Irritability or Anger:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -95,7 +95,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.irritability}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -104,15 +104,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.irritability}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.irritability && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="irritabilityRating"
                                             min="1"
                                             max="10"
@@ -124,8 +124,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Mood Swings */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Mood Swings:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -135,7 +135,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.moodSwings}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -144,15 +144,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.moodSwings}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.moodSwings && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="moodSwingsRating"
                                             min="1"
                                             max="10"
@@ -164,8 +164,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Rapid Speech */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Rapid Speech:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -175,7 +175,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.rapidSpeech}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -184,15 +184,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.rapidSpeech}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.rapidSpeech && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="rapidSpeechRating"
                                             min="1"
                                             max="10"
@@ -204,8 +204,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Racing Thoughts */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Racing Thoughts:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -215,7 +215,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.racingThoughts}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -224,15 +224,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.racingThoughts}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.racingThoughts && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):    
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="racingThoughtsRating"
                                             min="1"
                                             max="10"
@@ -244,8 +244,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Anxiety */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Anxiety:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -255,7 +255,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.anxiety}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -264,15 +264,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.anxiety}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.anxiety && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="anxietyRating"
                                             min="1"
                                             max="10"
@@ -284,8 +284,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Constant Worry */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Constant Worry:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -295,7 +295,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.constantWorry}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -304,15 +304,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.constantWorry}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.constantWorry && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="constantWorryRating"
                                             min="1"
                                             max="10"
@@ -324,8 +324,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Panic Attacks */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Panic Attacks:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -335,7 +335,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.panicAttacks}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -344,15 +344,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.panicAttacks}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.panicAttacks && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="panicAttacksRating"
                                             min="1"
                                             max="10"
@@ -364,8 +364,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Phobias */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Phobias:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -375,7 +375,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.phobias}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -384,15 +384,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.phobias}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.phobias && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="phobiasRating"
                                             min="1"
                                             max="10"
@@ -404,8 +404,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Sleep Disturbances */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Sleep Disturbances:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -415,7 +415,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.sleepDisturbances}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -424,15 +424,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.sleepDisturbances}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.sleepDisturbances && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="sleepDisturbancesRating"
                                             min="1"
                                             max="10"
@@ -444,8 +444,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Hallucinations */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Hallucinations:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -455,7 +455,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.hallucinations}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -464,15 +464,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.hallucinations}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.hallucinations && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="hallucinationsRating"
                                             min="1"
                                             max="10"
@@ -484,8 +484,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Paranoia */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Paranoia:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -495,7 +495,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.paranoia}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -504,15 +504,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.paranoia}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.paranoia && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="paranoiaRating"
                                             min="1"
                                             max="10"
@@ -524,8 +524,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Poor Concentration */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Poor Concentration:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -535,7 +535,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.poorConcentration}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -544,15 +544,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.poorConcentration}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.poorConcentration && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="poorConcentrationRating"
                                             min="1"
                                             max="10"
@@ -564,8 +564,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Alcohol Substance Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Alcohol Substance Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -575,7 +575,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.alcoholSubstanceAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -584,15 +584,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.alcoholSubstanceAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.alcoholSubstanceAbuse && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="alcoholSubstanceAbuseRating"
                                             min="1"
                                             max="10"
@@ -604,8 +604,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Frequent Body Complaints */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Frequent Body Complaints:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -615,7 +615,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.frequentBodyComplaints}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -624,15 +624,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.frequentBodyComplaints}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.frequentBodyComplaints && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="frequentBodyComplaintsRating"
                                             min="1"
                                             max="10"
@@ -644,8 +644,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Eating Disorder */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Eating Disorder:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -655,7 +655,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.eatingDisorder}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -664,15 +664,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.eatingDisorder}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.eatingDisorder && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="eatingDisorderRating"
                                             min="1"
                                             max="10"
@@ -684,8 +684,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Body Image Problems */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Body Image Problems:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -695,7 +695,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.bodyImageProblems}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -704,15 +704,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.bodyImageProblems}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.bodyImageProblems && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="bodyImageProblemsRating"
                                             min="1"
                                             max="10"
@@ -724,8 +724,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Repetitive Thoughts */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Repetitive Thoughts:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -735,7 +735,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.repetitiveThoughts}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -744,15 +744,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.repetitiveThoughts}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.repetitiveThoughts && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="repetitiveThoughtsRating"
                                             min="1"
                                             max="10"
@@ -764,8 +764,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Repetitive Behaviors */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Repetitive Behaviors:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -775,7 +775,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.repetitiveBehaviors}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -784,15 +784,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.repetitiveBehaviors}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.repetitiveBehaviors && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="repetitiveBehaviorsRating"
                                             min="1"
                                             max="10"
@@ -804,8 +804,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Poor Impulse Control */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Poor Impulse Control:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -815,7 +815,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.poorImpulseControl}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -824,15 +824,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.poorImpulseControl}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.poorImpulseControl && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="poorImpulseControlRating"
                                             min="1"
                                             max="10"
@@ -844,8 +844,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Self Mutilation */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Self Mutilation:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -855,7 +855,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.selfMutilation}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -864,15 +864,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.selfMutilation}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.selfMutilation && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="selfMutilationRating"
                                             min="1"
                                             max="10"
@@ -884,8 +884,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Sexual Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Sexual Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -895,7 +895,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.sexualAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -904,15 +904,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.sexualAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.sexualAbuse && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="sexualAbuseRating"
                                             min="1"
                                             max="10"
@@ -924,8 +924,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Physical Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Physical Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -935,7 +935,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.physicalAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -944,15 +944,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.physicalAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.physicalAbuse && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="physicalAbuseRating"
                                             min="1"
                                             max="10"
@@ -964,8 +964,8 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                         </li>
 
                         {/* Emotional Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Emotional Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -975,7 +975,7 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={ExpNow.emotionalAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -984,15 +984,15 @@ export const CardEight = ({ ButtonBack, ButtonNext }) => {
                                     checked={!ExpNow.emotionalAbuse}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 {ExpNow.emotionalAbuse && (
-                                    <div class="input-group">
-                                        <span class="me-2 d-flex align-items-center">
+                                    <div className="input-group">
+                                        <span className="me-2 d-flex align-items-center">
                                             Rating Scale 1-10 (10 = worst):
                                         </span>
                                         <input
                                             type="number"
-                                            class="form-control rounded-4 mt-2"
+                                            className="form-control rounded-4 mt-2"
                                             name="emotionalAbuseRating"
                                             min="1"
                                             max="10"

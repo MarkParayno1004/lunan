@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/ModalComponent.css";
-import Image from "react-bootstrap/Image";
 import pouting from "../Patient_Pages/img/pouting.png";
 import cryingFace from "../Patient_Pages/img/cryingFace.png";
 import frowningFace from "../Patient_Pages/img/frowningFace.png";
 import neutralFace from "../Patient_Pages/img/neutralFace.png";
+import slightlySmile from "../Patient_Pages/img/slightlySmile.png";
+import smilingFace from "../Patient_Pages/img/smilingFace.png";
+import hugging from "../Patient_Pages/img/hugging.png";
 import { Link } from "react-router-dom";
 
 export const ModalComponent = () => {
   const [showModal, setShowModal] = useState(false);
+  const [getValueEmoji, setValueEmoji] = useState("");
 
   useEffect(() => {
     const modalShownBefore = localStorage.getItem("modalShownBefore");
@@ -20,31 +23,13 @@ export const ModalComponent = () => {
     }
   }, []);
 
-  const handleClose = () => setShowModal(false);
+  const handleClose = (e) => {
+    setShowModal(false);
+    setValueEmoji(e.target.alt);
+  };
 
   return (
     <div className="container-fluid">
-      {/* <Modal className="my-modal-content" show={showModal} onHide={handle
-      Close}>
-        <Modal.Title className="my-modal-body">
-          This is the modal content.
-          <div>
-            <Link onClick={handleClose}>
-              <img src={pouting} style={{ width: 30 + "px" }} />
-            </Link>
-            <Link class="ms-3" onClick={handleClose}>
-              <img src={cryingFace} style={{ width: 30 + "px" }} />
-            </Link>
-            <Link class="ms-3" onClick={handleClose}>
-              <img src={frowningFace} style={{ width: 30 + "px" }} />
-            </Link>
-            <Link class="ms-3" onClick={handleClose}>
-              <img src={frowningFace} style={{ width: 30 + "px" }} />
-            </Link>
-          </div>
-        </Modal.Title>
-      </Modal> */}
-
       <Modal
         show={showModal}
         onHide={handleClose}
@@ -52,18 +37,71 @@ export const ModalComponent = () => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
+        <Modal.Header className="myModal" closeButton>
+          <Modal.Title className="fw-light" id="contained-modal-title-vcenter">
+            Welcome Back, User!
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <h4>Centered Modal</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </p>
+        <Modal.Body className="myModal text-center">
+          <p className="fw-light fs-5">How are you feeling today?</p>
+          <div>
+            <Link className="ms-3">
+              <img
+                src={pouting}
+                style={{ width: 30 + "px" }}
+                alt="pout"
+                onClick={handleClose}
+              />
+            </Link>
+            <Link className="ms-3">
+              <img
+                src={cryingFace}
+                alt="cryface"
+                style={{ width: 30 + "px" }}
+                onClick={handleClose}
+              />
+            </Link>
+            <Link className="ms-3">
+              <img
+                src={frowningFace}
+                alt="frownface"
+                style={{ width: 30 + "px" }}
+                onClick={handleClose}
+              />
+            </Link>
+            <Link className="ms-3">
+              <img
+                src={neutralFace}
+                alt="neutral"
+                style={{ width: 30 + "px" }}
+                onClick={handleClose}
+              />
+            </Link>
+            <Link className="ms-3">
+              <img
+                src={slightlySmile}
+                style={{ width: 30 + "px" }}
+                alt="slightsmile"
+                onClick={handleClose}
+              />
+            </Link>
+            <Link className="ms-3">
+              <img
+                src={smilingFace}
+                style={{ width: 30 + "px" }}
+                alt="smileFace"
+                onClick={handleClose}
+              />
+            </Link>
+            <Link className="ms-3">
+              <img
+                src={hugging}
+                alt="hug"
+                style={{ width: 30 + "px" }}
+                onClick={handleClose}
+              />
+            </Link>
+          </div>
         </Modal.Body>
       </Modal>
     </div>
