@@ -3,38 +3,37 @@ import { useState, useEffect } from "react";
 export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
   const [localFormData, setLocalFormData] = useState({
     SleepProbSel: "",
-    SleepHabitProb:"",
+    SleepHabitProb: "",
     ExerciseSel: "",
     ExerciseTimes: "",
     ExerciseDur: "",
     ExerciseRou: "",
     AppetiteSel: "",
-    Appetite:"",
-    WeightChange:"",
-    AlcoholIntSel:"",
-    AlcoholInt:"",
-    DrugUseSel:"",
+    Appetite: "",
+    WeightChange: "",
+    AlcoholIntSel: "",
+    AlcoholInt: "",
+    DrugUseSel: "",
   });
 
   useEffect(() => {
     setLocalFormData(
       formData ?? {
         SleepProbSel: "",
-        SleepHabitProb:"",
+        SleepHabitProb: "",
         ExerciseSel: "",
         ExerciseTimes: "",
         ExerciseDur: "",
         ExerciseRou: "",
         AppetiteSel: "",
-        Appetite:"",
-        WeightChange:"",
-        AlcoholIntSel:"",
-        AlcoholInt:"",
-        DrugUseSel:"",
+        Appetite: "",
+        WeightChange: "",
+        AlcoholIntSel: "",
+        AlcoholInt: "",
+        DrugUseSel: "",
       }
     );
   }, [formData]);
-
 
   //!Sleep Habit with Conditional Statement
   const [showSleepHabits, setSleepHabits] = useState("");
@@ -51,22 +50,20 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
   //!Engage in recreational drug use
   const [showDrugUse, setDrugUse] = useState("");
 
-
   const handleNext = () => {
     console.log(localFormData); // Log form data
     ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
 
-
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
-          <div class="card-header">Health Information</div>
-          <ul class="list-group list-group-flush">
+        <div className="card" style={{ width: 50 + "rem" }}>
+          <div className="card-header">Health Information</div>
+          <ul className="list-group list-group-flush">
             {/* Sleeping Habits */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>Are you having any problems with your sleep habits?</span>
                 <input
                   className="form-input ms-2"
@@ -85,7 +82,6 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                 />
                 <label className="form-check-label ms-1">Yes</label>
 
-
                 <input
                   className="form-input ms-2"
                   type="radio"
@@ -103,13 +99,17 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
-              {showSleepHabits === "Yes" && <SleepHabits setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}/>}
+              {showSleepHabits === "Yes" && (
+                <SleepHabits
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
             </li>
 
             {/* Exercise Regularly */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>Do you exercise regularly?</span>
                 <input
                   className="form-input ms-2 rounded-5"
@@ -145,13 +145,17 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
-              {showER === "Yes" && <ERCOMPONENT setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />}
+              {showER === "Yes" && (
+                <ERCOMPONENT
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
             </li>
 
             {/* Eating Habits */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>
                   Are you having any difficulty with appetite or eating habits?
                 </span>
@@ -189,13 +193,17 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                 />
                 <label className="form-check-label ms-1">No</label>
               </div>
-              {showEatingHabits === "Yes" && <EatingHabits setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />}
+              {showEatingHabits === "Yes" && (
+                <EatingHabits
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
             </li>
 
             {/* Weight Change */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>
                   Have you experienced significant weight change in the last 2
                   months?
@@ -235,8 +243,8 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
             </li>
 
             {/* Use of Alcohol */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>Do you regularly use alcohol?</span>
                 <input
                   className="form-input ms-2 rounded-5"
@@ -271,15 +279,18 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                   }}
                 />
                 <label className="form-check-label ms-1">No</label>
-
               </div>
-              {showUseAlcohol === "Yes" && <UseAlochol setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />}
+              {showUseAlcohol === "Yes" && (
+                <UseAlochol
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )}
             </li>
 
             {/* Engage of Drugs */}
-            <li class="list-group-item">
-              <div class="input-group">
+            <li className="list-group-item">
+              <div className="input-group">
                 <span>How often do you engage in recreational drug use?</span>
                 <input
                   className="form-input ms-2 rounded-5"
@@ -297,7 +308,6 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                   }}
                 />
                 <label className="form-check-label ms-1">Daily</label>
-
 
                 <input
                   className="form-input ms-2 rounded-5"
@@ -367,14 +377,30 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
                 />
                 <label className="form-check-label ms-1">Never</label>
               </div>
-              {(showDrugUse  === "Daily" && <RecreationalDrug  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />) ||
-                  (showDrugUse === "Weekly" && <RecreationalDrug  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />) ||
-                  (showDrugUse === "Monthly" && <RecreationalDrug  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />)||
-                  (showDrugUse === "Rarely" && <RecreationalDrug  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData} />)}
+              {(showDrugUse === "Daily" && (
+                <RecreationalDrug
+                  setLocalFormData={setLocalFormData}
+                  localFormData={localFormData}
+                />
+              )) ||
+                (showDrugUse === "Weekly" && (
+                  <RecreationalDrug
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )) ||
+                (showDrugUse === "Monthly" && (
+                  <RecreationalDrug
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )) ||
+                (showDrugUse === "Rarely" && (
+                  <RecreationalDrug
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                ))}
             </li>
           </ul>
         </div>
@@ -400,7 +426,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
 };
 
 //! if patients answer is yes, in question: Are you having any problems with your sleep habits?
-const SleepHabits = ( {setLocalFormData, localFormData} ) => {
+const SleepHabits = ({ setLocalFormData, localFormData }) => {
   //!Get value of fradio buttons in Sleep Habits
   const [getSleepHabits, setSleepHabits] = useState("");
   return (
@@ -416,10 +442,10 @@ const SleepHabits = ( {setLocalFormData, localFormData} ) => {
           onChange={(e) => {
             setSleepHabits(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
         <label className="form-check-label ms-1">Sleeping too little</label>
@@ -433,10 +459,10 @@ const SleepHabits = ( {setLocalFormData, localFormData} ) => {
           onChange={(e) => {
             setSleepHabits(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
         <label className="form-check-label ms-1">Sleeping too much</label>
@@ -450,10 +476,10 @@ const SleepHabits = ( {setLocalFormData, localFormData} ) => {
           onChange={(e) => {
             setSleepHabits(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
         <label className="form-check-label ms-1">Can't fall asleep</label>
@@ -466,10 +492,10 @@ const SleepHabits = ( {setLocalFormData, localFormData} ) => {
           onChange={(e) => {
             setSleepHabits(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
         <label className="form-check-label ms-1">Can't stay asleep</label>
@@ -479,7 +505,7 @@ const SleepHabits = ( {setLocalFormData, localFormData} ) => {
 };
 
 //! if patient answer is yes, in question: Do you exercise regularly?
-const ERCOMPONENT = ({setLocalFormData, localFormData}) => {
+const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
   //! If yes, how many times per week do you exercise?
   const [getPerWeek, setPerWeek] = useState();
 
@@ -490,56 +516,58 @@ const ERCOMPONENT = ({setLocalFormData, localFormData}) => {
   const [getWhatYouDo, setWhatYouDo] = useState(``);
   return (
     <>
-      <div class="input-group mt-1">
-        <span class="d-flex align-items-center">
+      <div className="input-group mt-1">
+        <span className="d-flex align-items-center">
           If yes, how many times per week do you exercise?
         </span>
         <input
           type="number"
           name="ExerciseTimes"
-          class="form-control rounded-4 ms-1"
+          className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseTimes}
           onChange={(e) => {
             setPerWeek(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
 
-        <span class="d-flex align-items-center ms-1">For how long?</span>
+        <span className="d-flex align-items-center ms-1">For how long?</span>
         <input
           type="number"
           name="ExerciseDur"
-          class="form-control rounded-4 ms-1"
+          className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseDur}
           onChange={(e) => {
             setHowLong(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
       </div>
 
-      <div class="input-group mt-2">
-        <span class="d-flex align-items-center">If yes, what do you do?</span>
+      <div className="input-group mt-2">
+        <span className="d-flex align-items-center">
+          If yes, what do you do?
+        </span>
         <input
           type="text"
           name="ExerciseRou"
-          class="form-control rounded-4 ms-1"
+          className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseRou}
           onChange={(e) => {
             setWhatYouDo(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
       </div>
@@ -548,7 +576,7 @@ const ERCOMPONENT = ({setLocalFormData, localFormData}) => {
 };
 
 //! if patient answer is yes, in question: Are you having any difficulty with appetite or eating habits?
-const EatingHabits = ( {setLocalFormData, localFormData} ) => {
+const EatingHabits = ({ setLocalFormData, localFormData }) => {
   //! Get value of Eating Habits
   const [getEatingHabits, setEatingHabits] = useState("");
   return (
@@ -559,14 +587,14 @@ const EatingHabits = ( {setLocalFormData, localFormData} ) => {
         type="radio"
         name="Appetite"
         value="Eating less"
-        checked={localFormData.Appetite==="Eating less"}
+        checked={localFormData.Appetite === "Eating less"}
         onChange={(e) => {
           setEatingHabits(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Eating less</label>
@@ -576,14 +604,14 @@ const EatingHabits = ( {setLocalFormData, localFormData} ) => {
         type="radio"
         name="Appetite"
         value="Eating more"
-        checked={localFormData.Appetite==="Eating more"}
+        checked={localFormData.Appetite === "Eating more"}
         onChange={(e) => {
           setEatingHabits(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Eating more</label>
@@ -593,32 +621,31 @@ const EatingHabits = ( {setLocalFormData, localFormData} ) => {
         type="radio"
         name="Appetite"
         value="Bingeing"
-        checked={localFormData.Appetite==="Bingeing"}
+        checked={localFormData.Appetite === "Bingeing"}
         onChange={(e) => {
           setEatingHabits(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Bingeing</label>
-
 
       <input
         className="form-input ms-2 rounded-5"
         type="radio"
         name="Appetite"
         value="Purging"
-        checked={localFormData.Appetite==="Purging"}
+        checked={localFormData.Appetite === "Purging"}
         onChange={(e) => {
           setEatingHabits(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Purging</label>
@@ -627,13 +654,13 @@ const EatingHabits = ( {setLocalFormData, localFormData} ) => {
 };
 
 //! if patient answer is yes, in question: Do you regularly use alcohol?
-const UseAlochol = ({setLocalFormData, localFormData}) => {
+const UseAlochol = ({ setLocalFormData, localFormData }) => {
   //! Get value of alcohol frequency
   const [getFrequency, setFrequency] = useState("");
 
   return (
     <>
-      <p class="mt-2">If yes, what is your frequency?</p>
+      <p className="mt-2">If yes, what is your frequency?</p>
       <input
         className="form-input ms-2 rounded-5"
         type="radio"
@@ -643,10 +670,10 @@ const UseAlochol = ({setLocalFormData, localFormData}) => {
         onChange={(e) => {
           setFrequency(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Once a month</label>
@@ -660,10 +687,10 @@ const UseAlochol = ({setLocalFormData, localFormData}) => {
         onChange={(e) => {
           setFrequency(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Once a week</label>
@@ -677,10 +704,10 @@ const UseAlochol = ({setLocalFormData, localFormData}) => {
         onChange={(e) => {
           setFrequency(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Daily</label>
@@ -694,10 +721,10 @@ const UseAlochol = ({setLocalFormData, localFormData}) => {
         onChange={(e) => {
           setFrequency(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">3 or more times a week</label>
@@ -710,10 +737,10 @@ const UseAlochol = ({setLocalFormData, localFormData}) => {
         onChange={(e) => {
           setFrequency(e.target.value);
           const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+          setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }}
       />
       <label className="form-check-label ms-1">Intoxicated daily</label>
@@ -722,7 +749,7 @@ const UseAlochol = ({setLocalFormData, localFormData}) => {
 };
 
 //! if patient answer is yes, in question: How often do you engage in recreational drug use?
-const RecreationalDrug = ({setLocalFormData, localFormData}) => {
+const RecreationalDrug = ({ setLocalFormData, localFormData }) => {
   //! Get value of drugs
   const [getDrugs, setDrugs] = useState("");
   return (
@@ -733,17 +760,17 @@ const RecreationalDrug = ({setLocalFormData, localFormData}) => {
       <div>
         <textarea
           type="text"
-          class="form-control rounded-4 ms-1"
+          className="form-control rounded-4 ms-1"
           name="DrugUse"
           value={localFormData.DrugUse}
           style={{ width: 45 + "rem" }}
           onChange={(e) => {
             setDrugs(e.target.value);
             const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
+            setLocalFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
           }}
         />
       </div>

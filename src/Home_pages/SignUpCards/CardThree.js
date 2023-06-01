@@ -8,18 +8,18 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
     DocFname: "",
     DocNum: "",
     CommLearn: "",
-    CommAssess:"",
+    CommAssess: "",
   });
   useEffect(() => {
     setLocalFormData(
       formData ?? {
-    CPFname: "",
-    Rel: "",
-    CPNum: "",
-    DocFname: "",
-    DocNum: "",
-    CommLearn: "",
-    CommAssess:"",
+        CPFname: "",
+        Rel: "",
+        CPNum: "",
+        DocFname: "",
+        DocNum: "",
+        CommLearn: "",
+        CommAssess: "",
       }
     );
   }, [formData]);
@@ -28,9 +28,9 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
     const { name, value } = e.target;
     setLocalFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
-  }
+  };
 
   const handleNext = () => {
     console.log(localFormData); // Log form data
@@ -39,24 +39,24 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
-          <div class="card-header">
+        <div className="card" style={{ width: 50 + "rem" }}>
+          <div className="card-header">
             Please fill up this intake form: (This form will be your Sign Up
             form or Register Form)
           </div>
-          <ul class="list-group list-group-flush">
+          <ul className="list-group list-group-flush">
             {/* Input Patient's Local Address */}
-            <li class="list-group-item">
+            <li className="list-group-item">
               {/* Person to contact if emergency */}
-              <p class="mt-3">Person to contact in case of an emergency:</p>
-              <div class="input-group">
+              <p className="mt-3">Person to contact in case of an emergency:</p>
+              <div className="input-group">
                 <input
                   type="text"
                   aria-label="EmergencyFullName"
                   placeholder="Full Name:"
-                  name = "CPFname"
-                  class="form-control me-3 rounded-4"
-                  value = {localFormData.CPFname}
+                  name="CPFname"
+                  className="form-control me-3 rounded-4"
+                  value={localFormData.CPFname}
                   onChange={handleInputChange}
                 />
                 <input
@@ -64,66 +64,66 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                   aria-label="Relationship"
                   placeholder="Relationship to client"
                   name="Rel"
-                  class="form-control me-3 rounded-4"
-                  value = {localFormData.Rel}
+                  className="form-control me-3 rounded-4"
+                  value={localFormData.Rel}
                   onChange={handleInputChange}
                 />
                 <input
                   type="text"
                   aria-label="Phone"
                   placeholder="Phone Number:"
-                  name = "CPNum"
-                  value = {localFormData.CPNum}
-                  class="form-control rounded-4"
+                  name="CPNum"
+                  value={localFormData.CPNum}
+                  className="form-control rounded-4"
                   onChange={handleInputChange}
                 />
               </div>
             </li>
 
             {/* Doctor Info */}
-            <li class="list-group-item">
-              <p class="mt-3">Patient Care doctor:</p>
-              <div class="input-group mt-3">
+            <li className="list-group-item">
+              <p className="mt-3">Patient Care doctor:</p>
+              <div className="input-group mt-3">
                 <input
                   type="text"
                   aria-label="DoctorFullName"
                   placeholder="Full Name:"
-                  name = "DocFname"
-                  value = {localFormData.DocFname}
-                  class="form-control me-3 rounded-4"
+                  name="DocFname"
+                  value={localFormData.DocFname}
+                  className="form-control me-3 rounded-4"
                   onChange={handleInputChange}
                 />
                 <input
                   type="text"
                   aria-label="DoctorPhone"
                   placeholder="Phone Number:"
-                  name = "DocNum"
-                  value = {localFormData.DocNum}
-                  class="form-control me-3 rounded-4"
+                  name="DocNum"
+                  value={localFormData.DocNum}
+                  className="form-control me-3 rounded-4"
                   onChange={handleInputChange}
                 />
               </div>
-              <p class="mt-3">How did you learn about me? :</p>
-              <div class="form-floating ">
+              <p className="mt-3">How did you learn about me? :</p>
+              <div className="form-floating ">
                 <textarea
-                  class="form-control"
-                  name = "CommLearn"
+                  className="form-control"
+                  name="CommLearn"
                   placeholder="Leave a comment here"
                   id="floatingTextarea"
-                  value = {localFormData.CommLearn}
+                  value={localFormData.CommLearn}
                   onChange={handleInputChange}
                 ></textarea>
                 <label for="floatingTextarea">Comments</label>
               </div>
-              <p class="mt-3">
+              <p className="mt-3">
                 What prompted you to seek therapy or an assessment? :
               </p>
-              <div class="form-floating ">
+              <div className="form-floating ">
                 <textarea
-                  class="form-control"
-                  name = "CommAssess"
+                  className="form-control"
+                  name="CommAssess"
                   placeholder="Leave a comment here"
-                  value = {localFormData.CommAssess}
+                  value={localFormData.CommAssess}
                   id="floatingTextarea"
                   onChange={handleInputChange}
                 ></textarea>
