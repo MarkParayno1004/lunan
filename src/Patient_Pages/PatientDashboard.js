@@ -16,7 +16,7 @@ export const PatientDashboard = () => {
             {/* Wellness Form */}
             <ModalComponent />
             <div className="col d-flex justify-content-end">
-              <Link to="" style={{ textDecoration: "none" }}>
+              <Link to="/Wellness Form" style={{ textDecoration: "none" }}>
                 <div>
                   <div
                     className="card rounded-5"
