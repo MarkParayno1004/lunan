@@ -1,23 +1,65 @@
-import { useState } from "react";
-export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
-    const [difficulty, setDifficulty] = useState({
-        depression: false,
-        bipolarDisorder: false,
-        anxietyDisorder: false,
-        panicAttacks: false,
-        schizophrenia: false,
-        alcoholOrSubstanceAbuse: false,
-        eatingDisorder: false,
-        learningDisability: false,
-        traumaHistory: false,
-        suicideAttempts: false,
-        psychiatricHospitalization: false,
-    });
+import { useState, useRef, useEffect } from "react";
+export const CardTwelve = ({ ButtonBack, ButtonNext, formData }) => {
+    const [localFormData, setLocalFormData] = useState({
+        DepressionSel:"",
+        DepressionMem:"",
+        BipolarSel:"",
+        AnxietySel:"",
+        BipolarMem:"",
+        AnxietyMem:"",
+        PanicSel:"",
+        PanicMem:"",
+        SchizoSel:"",
+        SchizoMem:"",
+        AlcoholMem:"",
+        EatingSel:"",
+        EatingMem:"",
+        LearningSel:"",
+        LearningMem:"",
+        TraumaSel:"",
+        TraumaMem:"",
+        SuicideSel:"",
+        SuicideMem:"",
+        PsychiatricSel:"",
+        PsychiatricMem:"",
+      });
+    
+      useEffect(() => {
+        setLocalFormData(
+          formData ?? {
+            DepressionSel:"",
+        DepressionMem:"",
+        BipolarSel:"",
+        AnxietySel:"",
+        BipolarMem:"",
+        AnxietyMem:"",
+        PanicSel:"",
+        PanicMem:"",
+        SchizoSel:"",
+        SchizoMem:"",
+        AlcoholMem:"",
+        EatingSel:"",
+        EatingMem:"",
+        LearningSel:"",
+        LearningMem:"",
+        TraumaSel:"",
+        TraumaMem:"",
+        SuicideSel:"",
+        SuicideMem:"",
+        PsychiatricSel:"",
+        PsychiatricMem:"",
+          }
+        );
+      }, [formData]);
+
     const handleDifficulty = (event) => {
         const { name, value } = event.target;
-        const updatedDifficulty = { ...difficulty };
+        const updatedDifficulty = { ...localFormData };
         updatedDifficulty[name] = value === 'yes';
-        setDifficulty(updatedDifficulty);
+        setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
     };
     return (
         <div>
@@ -34,22 +76,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="depression"
-                                    value="yes"
-                                    checked={difficulty.depression}
+                                    name="DepressionSel"
+                                    value="Yes"
+                                    checked={localFormData.DepressionSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="depression"
-                                    value="no"
-                                    checked={difficulty.depression}
+                                    name="DepressionSel"
+                                    value="No"
+                                    checked={localFormData.DepressionSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.depression && (
+                                {localFormData.DepressionSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -57,7 +99,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="depression_name"
+                                            name="DepressionMem"
+                                            value={localFormData.DepressionMem}
                                             required
                                         />
                                     </div>
@@ -70,22 +113,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="bipolarDisorder"
-                                    value="yes"
-                                    checked={difficulty.bipolarDisorder}
+                                    name="BipolarSel"
+                                    value="Yes"
+                                    checked={localFormData.BipolarSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="bipolarDisorder"
-                                    value="no"
-                                    checked={difficulty.bipolarDisorder}
+                                    name="BipolarSel"
+                                    value="No"
+                                    checked={localFormData.BipolarSel==="No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.bipolarDisorder && (
+                                {localFormData.BipolarSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -93,7 +136,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="bipolar_name"
+                                            name="BipolarMem"
+                                            value={localFormData.BipolarMem}
                                             required
                                         />
                                     </div>
@@ -106,22 +150,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="anxietyDisorder"
-                                    value="yes"
-                                    checked={difficulty.anxietyDisorder}
+                                    name="AnxietySel"
+                                    value="Yes"
+                                    checked={localFormData.AnxietySel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="anxietyDisorder"
-                                    value="no"
-                                    checked={difficulty.anxietyDisorder}
+                                    name="AnxietySel"
+                                    value="No"
+                                    checked={localFormData.AnxietySel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.anxietyDisorder && (
+                                {localFormData.AnxietySel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -129,7 +173,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="anxiety_name"
+                                            name="AnxietyMem"
+                                            value={localFormData.AnxietyMem}
                                             required
                                         />
                                     </div>
@@ -142,22 +187,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="panicAttacks"
-                                    value="yes"
-                                    checked={difficulty.panicAttacks}
+                                    name="PanicSel"
+                                    value="Yes"
+                                    checked={localFormData.PanicSel==="Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="panicAttacks"
-                                    value="no"
-                                    checked={difficulty.panicAttacks}
+                                    name="PanicSel"
+                                    value="No"
+                                    checked={localFormData.PanicSel==="No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.panicAttacks && (
+                                {localFormData.panicAttacks === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -165,7 +210,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="panic_name"
+                                            name="PanicMem"
+                                            value={localFormData.PanicMem}
                                             required
                                         />
                                     </div>
@@ -177,22 +223,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="schizophrenia"
-                                    value="yes"
-                                    checked={difficulty.schizophrenia}
+                                    name="SchizoSel"
+                                    value="Yes"
+                                    checked={localFormData.SchizoSel ==="Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="schizophrenia"
-                                    value="no"
-                                    checked={difficulty.schizophrenia}
+                                    name="SchizoSel"
+                                    value="No"
+                                    checked={localFormData.SchizoSel ==="No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.schizophrenia && (
+                                {localFormData.SchizoSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -200,7 +246,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="schizophrenia_name"
+                                            name="SchizoMem"
+                                            value={localFormData.SchizoMem}
                                             required
                                         />
                                     </div>
@@ -213,30 +260,31 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="alcoholOrSubstanceAbuse"
-                                    value="yes"
-                                    checked={difficulty.alcoholOrSubstanceAbuse}
+                                    name="AlcoholSel"
+                                    value="Yes"
+                                    checked={localFormData.AlcoholSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="alcoholOrSubstanceAbuse"
-                                    value="no"
-                                    checked={difficulty.alcoholOrSubstanceAbuse}
+                                    name="AlcoholSel"
+                                    value="No"
+                                    checked={localFormData.AlcoholSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.alcoholOrSubstanceAbuse && (
+                                {localFormData.AlcoholSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
                                         </span>
                                         <input 
                                             type="text"
+                                            name="AlcoholMem"
+                                            value={localFormData.AlcoholMem}
                                             class="form-control rounded-4 me-1"
-                                            name="alcoholOrSubstanceAbuse_name"
                                             required
                                         />
                                     </div>
@@ -249,30 +297,31 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="eatingDisorder"
-                                    value="yes"
-                                    checked={difficulty.eatingDisorder}
+                                    name="EatingSel"
+                                    value="Yes"
+                                    checked={localFormData.EatingSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="eatingDisorder"
-                                    value="no"
-                                    checked={difficulty.eatingDisorder}
+                                    name="EatingSel"
+                                    value="No"
+                                    checked={localFormData.EatingSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.eatingDisorder && (
+                                {localFormData.EatingSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
                                         </span>
                                         <input 
                                             type="text"
+                                            name="EatingMem"
+                                            value={localFormData.EatingMem}
                                             class="form-control rounded-4 me-1"
-                                            name="eatingDisorder_name"
                                             required
                                         />
                                     </div>
@@ -285,22 +334,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="learningDisability"
-                                    value="yes"
-                                    checked={difficulty.learningDisability}
+                                    name="LearningSel"
+                                    value="Yes"
+                                    checked={localFormData.LearningSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="learningDisability"
-                                    value="no"
-                                    checked={difficulty.learningDisability}
+                                    name="LearningSel"
+                                    value="No"
+                                    checked={localFormData.LearningSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.learningDisability && (
+                                {localFormData.LearningSel === "Yes"&& (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -308,7 +357,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="learningDisability_name"
+                                            name="LearningMem"
+                                            value={localFormData.LearningMem}
                                             required
                                         />
                                     </div>
@@ -321,22 +371,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="traumaHistory"
-                                    value="yes"
-                                    checked={difficulty.traumaHistory}
+                                    name="TraumaSel"
+                                    value="Yes"
+                                    checked={localFormData.TraumaSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="traumaHistory"
-                                    value="no"
-                                    checked={difficulty.traumaHistory}
+                                    name="TraumaSel"
+                                    value="No"
+                                    checked={localFormData.TraumaSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.traumaHistory && (
+                                {localFormData.TraumaSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -344,7 +394,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="traumaHistory_name"
+                                            name="TraumaMem"
+                                            value={localFormData.TraumaMem}
                                             required
                                         />
                                     </div>
@@ -357,22 +408,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="suicideAttempts"
-                                    value="yes"
-                                    checked={difficulty.suicideAttempts}
+                                    name="SuicideSel"
+                                    value="Yes"
+                                    checked={localFormData.SuicideSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="suicideAttempts"
-                                    value="no"
-                                    checked={difficulty.suicideAttempts}
+                                    name="SuicideSel"
+                                    value="No"
+                                    checked={localFormData.SuicideSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.suicideAttempts && (
+                                {localFormData.SuicideSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -380,7 +431,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="suicideAttempts_name"
+                                            name="SuicideMem"
+                                            value={localFormData.SuicideMem}
                                             required
                                         />
                                     </div>
@@ -393,22 +445,22 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="psychiatricHospitalization"
-                                    value="yes"
-                                    checked={difficulty.psychiatricHospitalization}
+                                    name="PsychiatricSel"
+                                    value="Yes"
+                                    checked={localFormData.PsychiatricSel === "Yes"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="psychiatricHospitalization"
-                                    value="no"
-                                    checked={difficulty.psychiatricHospitalization}
+                                    name="PsychiatricSel"
+                                    value="No"
+                                    checked={localFormData.PsychiatricSel === "No"}
                                     onChange={handleDifficulty}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {difficulty.psychiatricHospitalization && (
+                                {localFormData.PsychiatricSel==="Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
                                             Family Member(s)
@@ -416,7 +468,8 @@ export const CardTwelve = ({ ButtonBack, ButtonNext }) => {
                                         <input 
                                             type="text"
                                             class="form-control rounded-4 me-1"
-                                            name="psychiatricHospitalization_name"
+                                            name="PsychiatricMem"
+                                            value={localFormData.PsychiatricMem}
                                             required
                                         />
                                     </div>

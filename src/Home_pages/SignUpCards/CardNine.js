@@ -1,39 +1,122 @@
-import { useState } from "react";
-export const CardNine = ({ ButtonBack, ButtonNext }) => {
-    //! Radio Button for Experiences
-    const [PastExp, setPastExp] = useState({
-        depressedMood: false,
-        irritability: false,
-        moodSwings: false,
-        rapidSpeech: false,
-        racingThoughts: false,
-        anxiety: false,
-        constantWorry: false,
-        panicAttacks: false,
-        phobias: false,
-        sleepDisturbances: false,
-        hallucinations: false,
-        paranoia: false,
-        poorConcentration: false,
-        alcoholSubstanceAbuse: false,
-        frequentBodyComplaints: false,
-        eatingDisorder: false,
-        bodyImageProblems: false,
-        repetitiveThoughts: false,
-        repetitiveBehaviors: false,
-        poorImpulseControl: false,
-        selfMutilation: false,
-        sexualAbuse: false,
-        physicalAbuse: false,
-        emotionalAbuse: false,
-    });
-    const handleChange2 = (event) => {
+import { useState, useEffect } from "react";
+export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
+    // Radio Button for Experiences
+    const [localFormData, setLocalFormData] = useState({
+        depressedMoodPastSel: "",
+        depressedMoodRatingPast: "",
+        irritabilitySelPast: "",
+        irritabilityRatingPast: "",
+        moodSwingsSelPast: "",
+        moodSwingsRatingPast: "",
+        rapidSpeechSelPast: "",
+        rapidSpeechRatingPast:"",
+        racingThoughtsSelPast: "",
+        racingThoughtsRatingPast: "",
+        anxietySelPast: "",
+        anxietyRatingPast:"",
+        constantWorrySelPast:"",
+        constantWorryRatingPast:"",
+        panicAttacksSelPast:"",
+        panicAttacksRatingPast:"",
+        phobiasSelPast:"",
+        phobiasRatingPast:"",
+        sleepDisturbancesSelPast:"",
+        sleepDisturbancesRatingPast:"",
+        hallucinationsSelPast:"",
+        hallucinationsRatingPast:"",
+        paranoiaSelPast:"",
+        paranoiaRatingPast:"",
+        poorConcentrationSelPast:"",
+        poorConcentrationRatingPast:"",
+        alcoholSubstanceAbuseSelPast:"",
+        alcoholSubstanceAbuseRatingPast:"",
+        frequentBodyComplaintsSelPast:"",
+        frequentBodyComplaintsRatingPast:"",
+        eatingDisorderSelPast:"",
+        eatingDisorderRatingPast:"",
+        bodyImageProblemsSelPast:"",
+        bodyImageProblemsRatingPast:"",
+        repetitiveThoughtsSelPast:"",
+        repetitiveThoughtsRatingPast:"",
+        repetitiveBehaviorsSelPast:"",
+        repetitiveBehaviorsRatingPast:"",
+        poorImpulseControlSelPast:"",
+        poorImpulseControlRatingPast:"",
+        selfMutilationSelPast:"",
+        selfMutilationRatingPast:"",
+        sexualAbuseSelPast:"",
+        sexualAbuseRatingPast:"",
+        physicalAbuseSelPast:"",
+        physicalAbuseRatingPast:"",
+        emotionalAbuseSelPast:"",
+        emotionalAbuseRatingPast:"",
+      });
+    
+      useEffect(() => {
+        setLocalFormData(
+          formData ?? {
+            depressedMoodPastSel: "",
+            depressedMoodRatingPast: "",
+            irritabilitySelPast: "",
+            irritabilityRatingPast: "",
+            moodSwingsSelPast: "",
+            moodSwingsRatingPast: "",
+            rapidSpeechSelPast: "",
+            rapidSpeechRatingPast:"",
+            racingThoughtsSelPast: "",
+            racingThoughtsRatingPast: "",
+            anxietySelPast: "",
+            anxietyRatingPast:"",
+            constantWorrySelPast:"",
+            constantWorryRatingPast:"",
+            panicAttacksSelPast:"",
+            panicAttacksRatingPast:"",
+            phobiasSelPast:"",
+            phobiasRatingPast:"",
+            sleepDisturbancesSelPast:"",
+            sleepDisturbancesRatingPast:"",
+            hallucinationsSelPast:"",
+            hallucinationsRatingPast:"",
+            paranoiaSelPast:"",
+            paranoiaRatingPast:"",
+            poorConcentrationSelPast:"",
+            poorConcentrationRatingPast:"",
+            alcoholSubstanceAbuseSelPast:"",
+            alcoholSubstanceAbuseRatingPast:"",
+            frequentBodyComplaintsSelPast:"",
+            frequentBodyComplaintsRatingPast:"",
+            eatingDisorderSelPast:"",
+            eatingDisorderRatingPast:"",
+            bodyImageProblemsSelPast:"",
+            bodyImageProblemsRatingPast:"",
+            repetitiveThoughtsSelPast:"",
+            repetitiveThoughtsRatingPast:"",
+            repetitiveBehaviorsSelPast:"",
+            repetitiveBehaviorsRatingPast:"",
+            poorImpulseControlSelPast:"",
+            poorImpulseControlRatingPast:"",
+            selfMutilationSelPast:"",
+            selfMutilationRatingPast:"",
+            sexualAbuseSelPast:"",
+            sexualAbuseRatingPast:"",
+            physicalAbuseSelPast:"",
+            physicalAbuseRatingPast:"",
+            emotionalAbuseSelPast:"",
+            emotionalAbuseRatingPast:"",
+        }
+        );
+      }, [formData]);
+      const handleChange = (event) => {
         const { name, value } = event.target;
-        const updatedPastExp = { ...PastExp };
-        updatedPastExp[name] = value === 'yes';
-        setPastExp(updatedPastExp);
+        setLocalFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
     };
-
+    const handleNext = () => {
+        console.log(localFormData); // Log form data
+        ButtonNext(localFormData); // Call the ButtonNext function with form data
+      };
     return (
         <div>
             <div class="container-fluid d-flex justify-content-center mt-3">
@@ -49,33 +132,35 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="depressedMood"
-                                    value="yes"
-                                    checked={PastExp.depressedMood}
-                                    onChange={handleChange2}
+                                    name="depressedMoodPastSel"
+                                    value="Yes"
+                                    checked={localFormData.depressedMoodPastSel === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="depressedMood"
-                                    value="no"
-                                    checked={!PastExp.depressedMood}
-                                    onChange={handleChange2}
+                                    name="depressedMoodPastSel"
+                                    value="No"
+                                    checked={localFormData.depressedMoodPastSel === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
                                 
-                                {PastExp.depressedMood && (
+                                {localFormData.depressedMoodPastSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.depressedMoodRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="depressedMoodRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="depressedMoodRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.depressedMoodRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -90,32 +175,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="irritability"
-                                    value="yes"
-                                    checked={PastExp.irritability}
-                                    onChange={handleChange2}
+                                    name="irritabilitySelPast"
+                                    value="Yes"
+                                    checked={localFormData.irritabilitySelPast==="Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="irritability"
-                                    value="no"
-                                    checked={!PastExp.irritability}
-                                    onChange={handleChange2}
+                                    name="irritabilitySelPast"
+                                    value="No"
+                                    checked={localFormData.irritabilitySelPast==="No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.irritability && (
+                                {localFormData.irritabilitySelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.irritabilityRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="irritabilityRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="irritabilityRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.irritabilityRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -130,32 +217,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="moodSwings"
-                                    value="yes"
-                                    checked={PastExp.moodSwings}
-                                    onChange={handleChange2}
+                                    name="moodSwingsSelPast"
+                                    value="Yes" 
+                                    checked={localFormData.moodSwingsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="moodSwings"
-                                    value="no"
-                                    checked={!PastExp.moodSwings}
-                                    onChange={handleChange2}
+                                    name="moodSwingsSelPast"
+                                    value="No"
+                                    checked={localFormData.moodSwingsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.moodSwings && (
+                                {localFormData.moodSwingsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.moodSwingsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="moodSwingsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="moodSwingsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.moodSwingsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -170,32 +259,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="rapidSpeech"
-                                    value="yes"
-                                    checked={PastExp.rapidSpeech}
-                                    onChange={handleChange2}
+                                    name="rapidSpeechSelPast"
+                                    value="Yes"
+                                    checked={localFormData.rapidSpeechSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="rapidSpeech"
-                                    value="no"
-                                    checked={!PastExp.rapidSpeech}
-                                    onChange={handleChange2}
+                                    name="rapidSpeechSelPast"
+                                    value="No"
+                                    checked={localFormData.rapidSpeechSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.rapidSpeech && (
+                                {localFormData.rapidSpeechSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.rapidSpeechRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="rapidSpeechRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="rapidSpeechRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.rapidSpeechRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -210,32 +301,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="racingThoughts"
-                                    value="yes"
-                                    checked={PastExp.racingThoughts}
-                                    onChange={handleChange2}
+                                    name="racingThoughtsSelPast"
+                                    value="Yes"
+                                    checked={localFormData.racingThoughtsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="racingThoughts"
-                                    value="no"
-                                    checked={!PastExp.racingThoughts}
-                                    onChange={handleChange2}
+                                    name="racingThoughtsSelPast"
+                                    value="No"
+                                    checked={localFormData.racingThoughtsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.racingThoughts && (
+                                {localFormData.racingThoughtsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):    
+                                            Rating Scale 1-10 (10 = worst): {localFormData.racingThoughtsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="racingThoughtsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="racingThoughtsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.racingThoughtsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -250,32 +343,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="anxiety"
-                                    value="yes"
-                                    checked={PastExp.anxiety}
-                                    onChange={handleChange2}
+                                    name="anxietySelPast"
+                                    value="Yes"
+                                    checked={localFormData.anxietySelPast=== "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="anxiety"
-                                    value="no"
-                                    checked={!PastExp.anxiety}
-                                    onChange={handleChange2}
+                                    name="anxietySelPast"
+                                    value="No"
+                                    checked={localFormData.anxietySelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.anxiety && (
+                                {localFormData.anxietySelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.anxietyRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="anxietyRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="anxietyRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.anxietyRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -290,32 +385,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="constantWorry"
-                                    value="yes"
-                                    checked={PastExp.constantWorry}
-                                    onChange={handleChange2}
+                                    name="constantWorrySelPast"
+                                    value="Yes"
+                                    checked={localFormData.constantWorrySelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="constantWorry"
-                                    value="no"
-                                    checked={!PastExp.constantWorry}
-                                    onChange={handleChange2}
+                                    name="constantWorrySelPast"
+                                    value="No"
+                                    checked={localFormData.constantWorrySelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.constantWorry && (
+                                {localFormData.constantWorrySelPast === "Yes"&& (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.constantWorryRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="constantWorryRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="constantWorryRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.constantWorryRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -330,32 +427,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="panicAttacks"
-                                    value="yes"
-                                    checked={PastExp.panicAttacks}
-                                    onChange={handleChange2}
+                                    name="panicAttacksSelPast"
+                                    value="Yes"
+                                    checked={localFormData.panicAttacksSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="panicAttacks"
-                                    value="no"
-                                    checked={!PastExp.panicAttacks}
-                                    onChange={handleChange2}
+                                    name="panicAttacksSelPast"
+                                    value="No"
+                                    checked={localFormData.panicAttacksSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.panicAttacks && (
+                                {localFormData.panicAttacksSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.panicAttacksRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="panicAttacksRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="panicAttacksRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.panicAttacksRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -370,32 +469,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="phobias"
-                                    value="yes"
-                                    checked={PastExp.phobias}
-                                    onChange={handleChange2}
+                                    name="phobiasSelPast"
+                                    value="Yes"
+                                    checked={localFormData.phobiasSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="phobias"
-                                    value="no"
-                                    checked={!PastExp.phobias}
-                                    onChange={handleChange2}
+                                    name="phobiasSelPast"
+                                    value="No"
+                                    checked={localFormData.phobiasSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.phobias && (
+                                {localFormData.phobiasSelPast === "Yes"&& (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst):{localFormData.phobiasRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="phobiasRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="phobiasRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.phobiasRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -410,32 +511,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="sleepDisturbances"
-                                    value="yes"
-                                    checked={PastExp.sleepDisturbances}
-                                    onChange={handleChange2}
+                                    name="sleepDisturbancesSelPast"
+                                    value="Yes"
+                                    checked={localFormData.sleepDisturbancesSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="sleepDisturbances"
-                                    value="no"
-                                    checked={!PastExp.sleepDisturbances}
-                                    onChange={handleChange2}
+                                    name="sleepDisturbancesSelPast"
+                                    value="No"
+                                    checked={localFormData.sleepDisturbancesSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.sleepDisturbances && (
+                                {localFormData.sleepDisturbancesSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.sleepDisturbancesRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="sleepDisturbancesRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="sleepDisturbancesRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.sleepDisturbancesRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -450,32 +553,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="hallucinations"
-                                    value="yes"
-                                    checked={PastExp.hallucinations}
-                                    onChange={handleChange2}
+                                    name="hallucinationsSelPast"
+                                    value="Yes"
+                                    checked={localFormData.hallucinationsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="hallucinations"
-                                    value="no"
-                                    checked={!PastExp.hallucinations}
-                                    onChange={handleChange2}
+                                    name="hallucinationsSelPast"
+                                    value="No"
+                                    checked={localFormData.hallucinationsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.hallucinations && (
+                                {localFormData.hallucinationsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.hallucinationsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="hallucinationsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="hallucinationsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.hallucinationsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -490,32 +595,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="paranoia"
-                                    value="yes"
-                                    checked={PastExp.paranoia}
-                                    onChange={handleChange2}
+                                    name="paranoiaSelPast"
+                                    value="Yes"
+                                    checked={localFormData.paranoiaSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="paranoia"
-                                    value="no"
-                                    checked={!PastExp.paranoia}
-                                    onChange={handleChange2}
+                                    name="paranoiaSelPast"
+                                    value="No"
+                                    checked={localFormData.paranoiaSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.paranoia && (
+                                {localFormData.paranoiaSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.paranoiaRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="paranoiaRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="paranoiaRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.paranoiaRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -530,32 +637,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="poorConcentration"
-                                    value="yes"
-                                    checked={PastExp.poorConcentration}
-                                    onChange={handleChange2}
+                                    name="poorConcentrationSelPast"
+                                    value="Yes"
+                                    checked={localFormData.poorConcentrationSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="poorConcentration"
-                                    value="no"
-                                    checked={!PastExp.poorConcentration}
-                                    onChange={handleChange2}
+                                    name="poorConcentrationSelPast"
+                                    value="No"
+                                    checked={localFormData.poorConcentrationSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.poorConcentration && (
+                                {localFormData.poorConcentrationSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.poorConcentrationRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="poorConcentrationRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="poorConcentrationRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.poorConcentrationRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -570,32 +679,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="alcoholSubstanceAbuse"
-                                    value="yes"
-                                    checked={PastExp.alcoholSubstanceAbuse}
-                                    onChange={handleChange2}
+                                    name="alcoholSubstanceAbuseSelPast"
+                                    value="Yes"
+                                    checked={localFormData.alcoholSubstanceAbuseSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="alcoholSubstanceAbuse"
-                                    value="no"
-                                    checked={!PastExp.alcoholSubstanceAbuse}
-                                    onChange={handleChange2}
+                                    name="alcoholSubstanceAbuseSelPast"
+                                    value="No"
+                                    checked={localFormData.alcoholSubstanceAbuseSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.alcoholSubstanceAbuse && (
+                                {localFormData.alcoholSubstanceAbuseSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.alcoholSubstanceAbuseRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="alcoholSubstanceAbuseRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="alcoholSubstanceAbuseRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.alcoholSubstanceAbuseRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -610,32 +721,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="frequentBodyComplaints"
-                                    value="yes"
-                                    checked={PastExp.frequentBodyComplaints}
-                                    onChange={handleChange2}
+                                    name="frequentBodyComplaintsSelPast"
+                                    value="Yes"
+                                    checked={localFormData.frequentBodyComplaintsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="frequentBodyComplaints"
-                                    value="no"
-                                    checked={!PastExp.frequentBodyComplaints}
-                                    onChange={handleChange2}
+                                    name="frequentBodyComplaintsSelPast"
+                                    value="No"
+                                    checked={localFormData.frequentBodyComplaintsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.frequentBodyComplaints && (
+                                {localFormData.frequentBodyComplaintsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.frequentBodyComplaintsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="frequentBodyComplaintsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="frequentBodyComplaintsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.frequentBodyComplaintsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -650,32 +763,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="eatingDisorder"
-                                    value="yes"
-                                    checked={PastExp.eatingDisorder}
-                                    onChange={handleChange2}
+                                    name="eatingDisorderSelPast"
+                                    value="Yes"
+                                    checked={localFormData.eatingDisorderSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="eatingDisorder"
-                                    value="no"
-                                    checked={!PastExp.eatingDisorder}
-                                    onChange={handleChange2}
+                                    name="eatingDisorderSelPast"
+                                    value="No"
+                                    checked={localFormData.eatingDisorderSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.eatingDisorder && (
+                                {localFormData.eatingDisorderSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.eatingDisorderRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="eatingDisorderRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="eatingDisorderRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.eatingDisorderRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -690,32 +805,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="bodyImageProblems"
-                                    value="yes"
-                                    checked={PastExp.bodyImageProblems}
-                                    onChange={handleChange2}
+                                    name="bodyImageProblemsSelPast"
+                                    value="Yes"
+                                    checked={localFormData.bodyImageProblemsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="bodyImageProblems"
-                                    value="no"
-                                    checked={!PastExp.bodyImageProblems}
-                                    onChange={handleChange2}
+                                    name="bodyImageProblemsSelPast"
+                                    value="No"
+                                    checked={localFormData.bodyImageProblemsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.bodyImageProblems && (
+                                {localFormData.bodyImageProblemsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.bodyImageProblemsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="bodyImageProblemsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="bodyImageProblemsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.bodyImageProblemsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -730,32 +847,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="repetitiveThoughts"
-                                    value="yes"
-                                    checked={PastExp.repetitiveThoughts}
-                                    onChange={handleChange2}
+                                    name="repetitiveThoughtsSelPast"
+                                    value="Yes"
+                                    checked={localFormData.repetitiveThoughtsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="repetitiveThoughts"
-                                    value="no"
-                                    checked={!PastExp.repetitiveThoughts}
-                                    onChange={handleChange2}
+                                    name="repetitiveThoughtsSelPast"
+                                    value="No"
+                                    checked={localFormData.repetitiveThoughtsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.repetitiveThoughts && (
+                                {localFormData.repetitiveThoughtsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.repetitiveThoughtsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="repetitiveThoughtsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="repetitiveThoughtsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.repetitiveThoughtsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -770,32 +889,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="repetitiveBehaviors"
-                                    value="yes"
-                                    checked={PastExp.repetitiveBehaviors}
-                                    onChange={handleChange2}
+                                    name="repetitiveBehaviorsSelPast"
+                                    value="Yes"
+                                    checked={localFormData.repetitiveBehaviorsSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="repetitiveBehaviors"
-                                    value="no"
-                                    checked={!PastExp.repetitiveBehaviors}
-                                    onChange={handleChange2}
+                                    name="repetitiveBehaviorsSelPast"
+                                    value="No"
+                                    checked={localFormData.repetitiveBehaviorsSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.repetitiveBehaviors && (
+                                {localFormData.repetitiveBehaviorsSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.repetitiveBehaviorsRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="repetitiveBehaviorsRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="repetitiveBehaviorsRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.repetitiveBehaviorsRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -810,32 +931,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="poorImpulseControl"
-                                    value="yes"
-                                    checked={PastExp.poorImpulseControl}
-                                    onChange={handleChange2}
+                                    name="poorImpulseControlSelPast"
+                                    value="Yes"
+                                    checked={localFormData.poorImpulseControlSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="poorImpulseControl"
-                                    value="no"
-                                    checked={!PastExp.poorImpulseControl}
-                                    onChange={handleChange2}
+                                    name="poorImpulseControlSelPast"
+                                    value="No"
+                                    checked={localFormData.poorImpulseControlSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.poorImpulseControl && (
+                                {localFormData.poorImpulseControlSelPast && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.poorImpulseControlRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="poorImpulseControlRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="poorImpulseControlRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.poorImpulseControlRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -850,32 +973,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="selfMutilation"
-                                    value="yes"
-                                    checked={PastExp.selfMutilation}
-                                    onChange={handleChange2}
+                                    name="selfMutilationSelPast"
+                                    value="Yes"
+                                    checked={localFormData.selfMutilationSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="selfMutilation"
-                                    value="no"
-                                    checked={!PastExp.selfMutilation}
-                                    onChange={handleChange2}
+                                    name="selfMutilationSelPast"
+                                    value="No"
+                                    checked={localFormData.selfMutilationSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.selfMutilation && (
+                                {localFormData.selfMutilationSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.selfMutilationRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="selfMutilationRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="selfMutilationRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.selfMutilationRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -890,32 +1015,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="sexualAbuse"
-                                    value="yes"
-                                    checked={PastExp.sexualAbuse}
-                                    onChange={handleChange2}
+                                    name="sexualAbuseSelPast"
+                                    value="Yes"
+                                    checked={localFormData.sexualAbuseSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="sexualAbuse"
-                                    value="no"
-                                    checked={!PastExp.sexualAbuse}
-                                    onChange={handleChange2}
+                                    name="sexualAbuseSelPast"
+                                    value="No"
+                                    checked={localFormData.sexualAbuseSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.sexualAbuse && (
+                                {localFormData.sexualAbuseSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.sexualAbuseRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="sexualAbuseRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="sexualAbuseRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.sexualAbuseRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -930,32 +1057,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="physicalAbuse"
-                                    value="yes"
-                                    checked={PastExp.physicalAbuse}
-                                    onChange={handleChange2}
+                                    name="physicalAbuseSelPast"
+                                    value="Yes"
+                                    checked={localFormData.physicalAbuseSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="physicalAbuse"
-                                    value="no"
-                                    checked={!PastExp.physicalAbuse}
-                                    onChange={handleChange2}
+                                    name="physicalAbuseSelPast"
+                                    value="No"
+                                    checked={localFormData.physicalAbuseSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.physicalAbuse && (
+                                {localFormData.physicalAbuseSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.physicalAbuseRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="physicalAbuseRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="physicalAbuseRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.physicalAbuseRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -970,32 +1099,34 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="emotionalAbuse"
-                                    value="yes"
-                                    checked={PastExp.emotionalAbuse}
-                                    onChange={handleChange2}
+                                    name="emotionalAbuseSelPast"
+                                    value="Yes"
+                                    checked={localFormData.emotionalAbuseSelPast === "Yes"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
-                                    name="emotionalAbuse"
-                                    value="no"
-                                    checked={!PastExp.emotionalAbuse}
-                                    onChange={handleChange2}
+                                    name="emotionalAbuseSelPast"
+                                    value="No"
+                                    checked={localFormData.emotionalAbuseSelPast === "No"}
+                                    onChange={handleChange}
                                 />
                                 <label class="form-check-label ms-1">No</label>
-                                {PastExp.emotionalAbuse && (
+                                {localFormData.emotionalAbuseSelPast === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
-                                            Rating Scale 1-10 (10 = worst):
+                                            Rating Scale 1-10 (10 = worst): {localFormData.emotionalAbuseRatingPast}
                                         </span>
                                         <input
-                                            type="number"
-                                            class="form-control rounded-4 mt-2"
-                                            name="emotionalAbuseRating"
+                                            type="range"
+                                            class="form-range custom-range"
+                                            name="emotionalAbuseRatingPast"
                                             min="1"
                                             max="10"
+                                            value={localFormData.emotionalAbuseRatingPast}
+                                            onChange={handleChange}
                                             required
                                         />
                                     </div>
@@ -1016,7 +1147,7 @@ export const CardNine = ({ ButtonBack, ButtonNext }) => {
                 <button
                     className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
                     id="buttonCard"
-                    onClick={ButtonNext}
+                    onClick={handleNext}
                 >
                     Next
                 </button>

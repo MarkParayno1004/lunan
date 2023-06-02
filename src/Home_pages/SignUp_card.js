@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../css/Slider.css";
 import { collection, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, firestore } from '../firebase/firebase-config';
@@ -141,10 +142,43 @@ export const SIGNUPCARD = () => {
       />
       )}
 
-      {card === 9 && <CardEight ButtonBack={handlePrevious} ButtonNext={handleNext} />}
-      {card === 10 && <CardNine ButtonBack={handlePrevious} ButtonNext={handleNext} />}
-      {card === 11 && <CardTen ButtonBack={handlePrevious} ButtonNext={handleNext} />}
-      {card === 12 && <CardEleven ButtonBack={handlePrevious} ButtonNext={handleNext} />}
+      {card === 9 && (
+        <CardEight
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
+
+      {card === 10 && (
+        <CardNine
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
+      {card === 11 && (
+        <CardTen
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+      
+      {card === 12 && (
+        <CardEleven
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
+      )}
+
       {card === 13 && <CardTwelve ButtonBack={handlePrevious} ButtonNext={handleSubmit} />}
     </div>
   );
