@@ -58,7 +58,6 @@ export const Footer = () => {
             </p>
           </div>
           <div className="col">
-            {" "}
             <div className="card mb-3" id="cardbg">
               <div className="row g-0">
                 <div className="col-md-4">

@@ -1,11 +1,10 @@
 import { useState } from "react";
 
 import "../css/Slider.css";
-import { collection, addDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, firestore } from '../firebase/firebase-config';
-import firebase from 'firebase/compat/app';
-
+import { collection, addDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, firestore } from "../firebase/firebase-config";
+import firebase from "firebase/compat/app";
 
 import { CardOne } from "./SignUpCards/CardOne";
 import { CardTwo } from "./SignUpCards/CardTwo";
@@ -145,42 +144,43 @@ export const SIGNUPCARD = () => {
 
       {card === 9 && (
         <CardEight
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
-
 
       {card === 10 && (
         <CardNine
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 11 && (
         <CardTen
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
-      )}
-      
-      {card === 12 && (
-        <CardEleven
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
-      {card === 13 && <CardTwelve ButtonBack={handlePrevious} ButtonNext={handleSubmit} />}
+      {card === 12 && (
+        <CardEleven
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
+      )}
+
+      {card === 13 && (
+        <CardTwelve ButtonBack={handlePrevious} ButtonSubmit={handleSubmit} />
+      )}
     </div>
   );
 };

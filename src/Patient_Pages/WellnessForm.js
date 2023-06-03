@@ -1,10 +1,11 @@
 import "../css/WellnessForm.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 export const WellnessFrom = () => {
   const [getRangeQ1, setRangeQ1] = useState(1);
-  const [getRangeQ2, setRangeQ2] = useState(2);
-  const [getRangeQ3, setRangeQ3] = useState(3);
-  const [getRangeQ4, setRangeQ4] = useState(4);
+  const [getRangeQ2, setRangeQ2] = useState(1);
+  const [getRangeQ3, setRangeQ3] = useState(1);
+  const [getRangeQ4, setRangeQ4] = useState(1);
 
   return (
     <div class="container-fluid d-flex justify-content-center " id="WellnessBG">
@@ -159,6 +160,16 @@ export const WellnessFrom = () => {
             Scoring: Compute the mean across responses to all four questions;
             item #4 is reverse coded.
           </p>
+          <div className="d-flex justify-content-start">
+            <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
+              <button
+                className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+                id="buttonCard"
+              >
+                Back
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
