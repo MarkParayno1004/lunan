@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 export const CardTen = ({ ButtonBack, ButtonNext, formData }) => {
 
@@ -318,12 +319,9 @@ const EmployedYes = ({setLocalFormData, localFormData}) => {
                     placeholder="Answer:"
                     value={localFormData.Employer}
                     onChange={handleEmployed}
+
                 />
-            </div>
-            <span className="me-2 d-flex align-items-center">
-                Are you happy with your current position?
-            </span>
-            <div class="input-group">
+                <label className="form-check-label ms-1">Yes</label>
                 <input
                     type="text"
                     class="form-control rounded-4 me-1"
@@ -528,3 +526,4 @@ const LegalYes = ({setLocalFormData, localFormData}) => {
         </>
     );
 };
+

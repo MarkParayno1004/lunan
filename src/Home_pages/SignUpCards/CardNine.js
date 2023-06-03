@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
     // Radio Button for Experiences
@@ -1153,6 +1154,23 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                 </button>
             </div>
         </div>
-    )
-}
-
+      </div>
+      <div className="d-flex justify-content-end">
+        <button
+          className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+          id="buttonCard"
+          onClick={ButtonBack}
+        >
+          Back
+        </button>
+        <button
+          className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+          id="buttonCard"
+          onClick={ButtonNext}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};

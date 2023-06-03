@@ -1,9 +1,11 @@
 import { useState } from "react";
+
 import "../css/Slider.css";
 import { collection, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, firestore } from '../firebase/firebase-config';
 import firebase from 'firebase/compat/app';
+
 
 import { CardOne } from "./SignUpCards/CardOne";
 import { CardTwo } from "./SignUpCards/CardTwo";
@@ -24,8 +26,8 @@ export const SIGNUPCARD = () => {
   const [formData, setFormData] = useState({});
   const upload = async (data) => {
     try {
-      const userAccRef = collection(firestore, 'Users');
-      const intakeRef = collection(firestore, 'IntakeForms');
+      const userAccRef = collection(firestore, "Users");
+      const intakeRef = collection(firestore, "IntakeForms");
       // Upload user data
       await addDoc(userAccRef, {
         firstName: data.Fname,
@@ -38,9 +40,9 @@ export const SIGNUPCARD = () => {
         gender: data.Gender,
       });
 
-      console.log('Data uploaded successfully!');
+      console.log("Data uploaded successfully!");
     } catch (error) {
-      console.error('Error uploading data:', error);
+      console.error("Error uploading data:", error);
     }
   };
 
@@ -64,7 +66,6 @@ export const SIGNUPCARD = () => {
     setCard(card - 1);
   };
 
-
   const handleSubmit = () => {
     upload(formData); // Call the upload function with form data
     alert("Form submitted!");
@@ -74,72 +75,72 @@ export const SIGNUPCARD = () => {
     <div className="container-fluid">
       {card === 1 && (
         <CardOne
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          formData={formData}
+        />
       )}
 
       {card === 2 && (
         <CardTwo
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 3 && (
         <CardThree
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 4 && (
         <CardFour
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
-    )}
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
+      )}
       {card === 5 && (
         <CardFive
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 6 && (
         <CardSix
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 7 && (
         <CardSixPoint2
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 8 && (
         <CardSeven
-        handleInputChange={handleInputChange}
-        ButtonNext={handleNext}
-        ButtonBack={handlePrevious}
-        formData={formData}
-      />
+          handleInputChange={handleInputChange}
+          ButtonNext={handleNext}
+          ButtonBack={handlePrevious}
+          formData={formData}
+        />
       )}
 
       {card === 9 && (

@@ -148,15 +148,15 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
 
     return (
         <div>
-            <div class="container-fluid d-flex justify-content-center mt-3">
-                <div class="card" style={{width: 50 + "rem"}}>
+            <div className="container-fluid d-flex justify-content-center mt-3">
+                <div className="card" style={{width: 50 + "rem"}}>
                     {/* Experience Now */}
-                    <div class="card-header">Are you now experiencing:</div>
-                    <ul class="list-group list-group-flush">
+                    <div className="card-header">Are you now experiencing:</div>
+                    <ul className="list-group list-group-flush">
 
                         {/* Depressed Mood/Sadness */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Depressed Mood or Sadness:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -166,7 +166,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.depressedMoodNowSel === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -175,8 +175,9 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.depressedMoodNowSel === "No"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">No</label>
+                                <label className="form-check-label ms-1">No</label>
                                 
+
                                 {localFormData.depressedMoodNowSel === "Yes" && (
                                     <div class="input-group">
                                         <span class="me-2 d-flex align-items-center">
@@ -186,6 +187,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             type="range"
                                             class="form-range custom-range"
                                             name="depressedMoodRatingNow"
+
                                             min="1"
                                             max="10"
                                             value={localFormData.depressedMoodRatingNow}
@@ -198,8 +200,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Irritability/Anger */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Irritability or Anger:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -209,7 +211,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.irritabilitySelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -218,6 +220,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.irritabilitySelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.irritabilitySelNow === "Yes" && (
                                     <div class="input-group">
@@ -240,8 +243,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Mood Swings */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Mood Swings:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -251,7 +254,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.moodSwingsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -260,6 +263,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.moodSwingsSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.moodSwingsSelNow === "Yes" && (
                                     <div class="input-group">
@@ -282,8 +286,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Rapid Speech */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Rapid Speech:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -293,7 +297,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.rapidSpeechSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -324,8 +328,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Racing Thoughts */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Racing Thoughts:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -335,7 +339,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.racingThoughtsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -344,6 +348,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.racingThoughtsSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.racingThoughtsSelNow === "Yes" && (
                                     <div class="input-group">
@@ -354,6 +359,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             type="range"
                                             class="form-range custom-range"
                                             name="racingThoughtsRatingNow"
+
                                             min="1"
                                             max="10"
                                             value = {localFormData.racingThoughtsRatingNow}
@@ -366,8 +372,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Anxiety */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Anxiety:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -377,7 +383,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked = {localFormData.anxietySelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -386,6 +392,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked = {localFormData.anxietySelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.anxietySelNow === "Yes" && (
                                     <div class="input-group">
@@ -408,8 +415,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Constant Worry */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Constant Worry:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -419,7 +426,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked = {localFormData.constantWorrySelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -428,6 +435,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.constantWorrySelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.constantWorrySelNow === "Yes" && (
                                     <div class="input-group">
@@ -450,8 +458,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Panic Attacks */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Panic Attacks:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -461,7 +469,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.panicAttacksSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -492,8 +500,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Phobias */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Phobias:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -503,7 +511,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.phobiasSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -512,6 +520,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.phobiasSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.phobiasSelNow === "Yes" && (
                                     <div class="input-group">
@@ -534,8 +543,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Sleep Disturbances */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Sleep Disturbances:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -545,7 +554,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.sleepDisturbancesSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -554,6 +563,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.sleepDisturbancesSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.sleepDisturbancesSelNow === "Yes" && (
                                     <div class="input-group">
@@ -576,8 +586,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Hallucinations */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Hallucinations:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -587,7 +597,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.hallucinationsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -596,6 +606,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.hallucinationsSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.hallucinationsSelNow === "Yes" && (
                                     <div class="input-group">
@@ -618,8 +629,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Paranoia */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Paranoia:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -629,7 +640,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.paranoiaSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -638,6 +649,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.paranoiaSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.paranoiaSelNow === "Yes" && (
                                     <div class="input-group">
@@ -660,8 +672,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Poor Concentration */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Poor Concentration:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -671,7 +683,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.poorConcentrationSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -702,8 +714,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Alcohol Substance Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Alcohol Substance Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -713,7 +725,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.alcoholSubstanceAbuseSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -722,6 +734,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.alcoholSubstanceAbuseSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.alcoholSubstanceAbuseSelNow === "Yes" && (
                                     <div class="input-group">
@@ -744,8 +757,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Frequent Body Complaints */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Frequent Body Complaints:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -755,7 +768,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.frequentBodyComplaintsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -764,6 +777,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.frequentBodyComplaintsSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.frequentBodyComplaintsSelNow === "Yes" && (
                                     <div class="input-group">
@@ -774,6 +788,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             type="range"
                                             class="form-range custom-range"
                                             name="frequentBodyComplaintsRatingNow"
+
                                             min="1"
                                             max="10"
                                             value={localFormData.frequentBodyComplaintsRatingNow}
@@ -786,8 +801,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Eating Disorder */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Eating Disorder:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -797,7 +812,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.eatingDisorderSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -806,6 +821,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.eatingDisorderSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.eatingDisorderSelNow === "Yes" && (
                                     <div class="input-group">
@@ -816,6 +832,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             type="range"
                                             class="form-range custom-range"
                                             name="eatingDisorderRatingNow"
+
                                             min="1"
                                             max="10"
                                             value={localFormData.eatingDisorderRatingNow}
@@ -828,8 +845,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Body Image Problems */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Body Image Problems:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -839,7 +856,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.bodyImageProblemsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -848,6 +865,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.bodyImageProblemsSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.bodyImageProblemsSelNow === "Yes" && (
                                     <div class="input-group">
@@ -870,8 +888,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Repetitive Thoughts */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Repetitive Thoughts:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -881,7 +899,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.repetitiveThoughtsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -912,8 +930,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Repetitive Behaviors */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Repetitive Behaviors:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -923,7 +941,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.repetitiveBehaviorsSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -954,8 +972,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Poor Impulse Control */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Poor Impulse Control:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -965,7 +983,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.poorImpulseControlSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -974,6 +992,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.poorImpulseControlSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.poorImpulseControlSelNow === "Yes" && (
                                     <div class="input-group">
@@ -996,8 +1015,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Self Mutilation */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Self Mutilation:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -1007,7 +1026,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.selfMutilationSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -1038,8 +1057,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Sexual Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Sexual Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -1049,7 +1068,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.sexualAbuseSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -1080,8 +1099,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Physical Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Physical Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -1091,7 +1110,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.physicalAbuseSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -1122,8 +1141,8 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                         </li>
 
                         {/* Emotional Abuse */}
-                        <li class="list-group-item">
-                            <div class="form-check form-check-inline">
+                        <li className="list-group-item">
+                            <div className="form-check form-check-inline">
                                 <span>Emotional Abuse:</span>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
@@ -1133,7 +1152,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.emotionalAbuseSelNow === "Yes"}
                                     onChange={handleChange}
                                 />
-                                <label class="form-check-label ms-1">Yes</label>
+                                <label className="form-check-label ms-1">Yes</label>
                                 <input
                                     className="form-check--input ms-2 rounded-5"
                                     type="radio"
@@ -1142,6 +1161,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                     checked={localFormData.emotionalAbuseSelNow === "No"}
                                     onChange={handleChange}
                                 />
+
                                 <label class="form-check-label ms-1">No</label>
                                 {localFormData.emotionalAbuseSelNow === "Yes" && (
                                     <div class="input-group">

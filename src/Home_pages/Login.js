@@ -15,7 +15,10 @@ export const Login = () => {
         >
           <div className=" mb-5">
             <img src={loginInputImg} style={{ width: 80 + "%" }} />
-            <p style={{ color: "white" }} className=" fs-1">
+            <p
+              style={{ color: "white", fontSize: 50 + "px" }}
+              className=" fs-1"
+            >
               Login
             </p>
             <div className="input-group flex-nowrap">
@@ -38,13 +41,22 @@ export const Login = () => {
                 aria-describedby="addon-wrapping"
               />
             </div>
-            <Link
-              to=""
-              className="d-flex justify-content-end"
-              style={{ color: "white" }}
-            >
-              Forgot Password
-            </Link>
+            <div className="d-flex justify-content-end">
+              <Link to="" style={{ color: "white", textDecoration: "none  " }}>
+                Forgot Password
+              </Link>
+            </div>
+            <div className="d-flex justify-content-center">
+              <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
+                <button
+                  href="/Patient Dashboard"
+                  className="d-flex align-items-center d-flex justify-content-center"
+                  id="LoginButton"
+                >
+                  Login
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

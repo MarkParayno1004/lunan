@@ -62,6 +62,7 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
   };
 
 
+
     const [showFamilySupport, setFamilySupport] = useState(false);
     const handleFamilySupport = (e) => {
         setFamilySupport(e.target.value === "Yes");
@@ -75,6 +76,7 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
       console.log(localFormData); // Log form data
       ButtonNext(localFormData); // Call the ButtonNext function with form data
     };
+
 
   //! Conditional Statement for radio button Divorced and Deceased
   const renderComponent = () => {
@@ -106,15 +108,15 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <div className="container-fluid d-flex justify-content-center mt-3">
-        <div class="card" style={{ width: 50 + "rem" }}>
-          <div class="card-header">Family History:</div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+        <div className="card" style={{ width: 50 + "rem" }}>
+          <div className="card-header">Family History:</div>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
               {/* Parent Status */}
               <span className="me-2 d-flex align-items-center">
                 Are your parents:
               </span>
-              <div class="form-check-inline">
+              <div className="form-check-inline">
                 <input
                   name="ParentStatus"
                   type="radio"
@@ -163,7 +165,7 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
               </div>
               {renderComponent()}
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline">
                 <span>Number of Siblings:</span>
                 <input
@@ -183,7 +185,7 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
                 />
               </div>
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <div className="form-check-inline">
                 <span>Do you have good family support?</span>
                 <input
@@ -242,13 +244,14 @@ const SupportYes = ({setLocalFormData, localFormData}) => {
   };
   return (
     <>
-      <div class="input-group">
-        <span class="me-2 d-flex align-items-center">From whom:</span>
+      <div className="input-group">
+        <span className="me-2 d-flex align-items-center">From whom:</span>
         <input
           type="text"
           name="SupWhom"
           value={localFormData.SupWhom}
           class="form-control rounded-4 me-1"
+
           onChange={handleFamilySupport}
         />
       </div>
@@ -269,11 +272,11 @@ const DivorcedYes = ({setLocalFormData, localFormData}) => {
                     }));
   };
   return (
-    <div class="input-group mt-2">
-      <span class="d-flex align-items-center me-2">When:</span>
+    <div className="input-group mt-2">
+      <span className="d-flex align-items-center me-2">When:</span>
       <input
         type="date"
-        class="form-control  rounded-4 me-1"
+        className="form-control  rounded-4 me-1"
         day
         name="DivorceDate"
         value={localFormData.DivorceDate}
@@ -331,6 +334,7 @@ const RemarriedYes = ({setLocalFormData, localFormData}) => {
 const DeceasedYes = ({setLocalFormData, localFormData}) => {
   return (
     <>
+
       <div class="input-group mt-1">
         <span class="d-flex align-items-center">if yes whom?</span>
         <input type="text" name="DeceasedWho" value={localFormData.DeceasedWho} class="form-control rounded-4 ms-1" />
