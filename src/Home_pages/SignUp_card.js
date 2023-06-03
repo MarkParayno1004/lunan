@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, firestore } from "../firebase/firebase-config";
-import firebase from "firebase/compat/app";
+
+import "../css/Slider.css";
+import { collection, addDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, firestore } from '../firebase/firebase-config';
+import firebase from 'firebase/compat/app';
+
 
 import { CardOne } from "./SignUpCards/CardOne";
 import { CardTwo } from "./SignUpCards/CardTwo";
@@ -141,20 +144,43 @@ export const SIGNUPCARD = () => {
       )}
 
       {card === 9 && (
-        <CardEight ButtonBack={handlePrevious} ButtonNext={handleNext} />
+        <CardEight
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
       )}
+
+
       {card === 10 && (
-        <CardNine ButtonBack={handlePrevious} ButtonNext={handleNext} />
+        <CardNine
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
       )}
+
       {card === 11 && (
-        <CardTen ButtonBack={handlePrevious} ButtonNext={handleNext} />
+        <CardTen
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
       )}
+      
       {card === 12 && (
-        <CardEleven ButtonBack={handlePrevious} ButtonNext={handleNext} />
+        <CardEleven
+        handleInputChange={handleInputChange}
+        ButtonNext={handleNext}
+        ButtonBack={handlePrevious}
+        formData={formData}
+      />
       )}
-      {card === 13 && (
-        <CardTwelve ButtonBack={handlePrevious} ButtonNext={handleSubmit} />
-      )}
+
+      {card === 13 && <CardTwelve ButtonBack={handlePrevious} ButtonNext={handleSubmit} />}
     </div>
   );
 };

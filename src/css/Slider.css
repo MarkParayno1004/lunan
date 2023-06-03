@@ -1,0 +1,12 @@
+.custom-range {
+    --slider-track-color: #007bff;
+    --slider-thumb-color: #ffffff;
+  }
+  
+  .custom-range::-webkit-slider-runnable-track {
+    background-color: var(--slider-track-color);
+  }
+  
+  .custom-range::-webkit-slider-thumb {
+    background-color: var(--slider-thumb-color);
+  }
