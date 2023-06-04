@@ -1,66 +1,46 @@
 import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
 
-const AssignmentTab = () => {
-  const [assignments, setAssignments] = useState([
-    { id: 1, title: "Assignment 1", status: "Pending" },
-    { id: 2, title: "Assignment 2", status: "Complete" },
-    { id: 3, title: "Assignment 3", status: "Pending" },
-    { id: 4, title: "Assignment 4", status: "Complete" },
-  ]);
+export const UploadFile = () => {
+  //! For UploadFile Validation
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState("");
 
-  const [activeTab, setActiveTab] = useState("Pending");
+  const handleChange = (event) => {
+    const selectedFile = event.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
-  const moveAssignment = (id, newStatus) => {
-    const updatedAssignments = assignments.map((assignment) => {
-      if (assignment.id === id) {
-        return { ...assignment, status: newStatus };
-      }
-      return assignment;
-    });
-    setAssignments(updatedAssignments);
+    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+      setFile(selectedFile);
+      setError("");
+    } else {
+      setFile(null);
+      setError("Please select a valid image file (JPEG, PNG, or GIF).");
+    }
   };
 
-  const renderAssignments = () => {
-    return assignments
-      .filter((assignment) => assignment.status === activeTab)
-      .map((assignment) => (
-        <div key={assignment.id}>
-          <span>{assignment.title}</span>
-          <button
-            onClick={() =>
-              moveAssignment(
-                assignment.id,
-                activeTab === "Pending" ? "Complete" : "Pending"
-              )
-            }
-          >
-            {activeTab === "Pending" ? "Mark Complete" : "Mark Pending"}
-          </button>
-        </div>
-      ));
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Handle file submission logic here
+    if (file) {
+      console.log("File:", file);
+      // Perform further actions with the file, such as uploading to a server
+    } else {
+      setError("Please select a file to upload.");
+    }
   };
 
   return (
-    <div>
-      <div>
-        <button
-          onClick={() => setActiveTab("Pending")}
-          className={activeTab === "Pending" ? "active" : ""}
-        >
-          Pending
-        </button>
-        <button
-          onClick={() => setActiveTab("Complete")}
-          className={activeTab === "Complete" ? "active" : ""}
-        >
-          Complete
-        </button>
-      </div>
-
-      <h2>{activeTab} Assignments</h2>
-      {renderAssignments()}
-    </div>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Label>Upload Image</Form.Label>
+        <Form.Control type="file" accept="image/*" onChange={handleChange} />
+        <Form.Text className="text-danger">{error}</Form.Text>
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        Upload
+      </Button>
+    </Form>
   );
 };
-
-export default AssignmentTab;

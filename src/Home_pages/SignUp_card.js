@@ -19,6 +19,7 @@ import { CardNine } from "./SignUpCards/CardNine";
 import { CardTen } from "./SignUpCards/CardTen";
 import { CardEleven } from "./SignUpCards/CardEleven";
 import { CardTwelve } from "./SignUpCards/CardTwelve";
+import swal from "sweetalert";
 
 export const SIGNUPCARD = () => {
   const [card, setCard] = useState(1);
@@ -67,7 +68,7 @@ export const SIGNUPCARD = () => {
 
   const handleSubmit = () => {
     upload(formData); // Call the upload function with form data
-    alert("Form submitted!");
+    swal("Form submitted!");
   };
 
   return (
