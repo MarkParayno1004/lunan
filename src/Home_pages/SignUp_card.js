@@ -15,6 +15,7 @@ import { CardNine } from "./SignUpCards/CardNine";
 import { CardTen } from "./SignUpCards/CardTen";
 import { CardEleven } from "./SignUpCards/CardEleven";
 import { CardTwelve } from "./SignUpCards/CardTwelve";
+import swal from "sweetalert";
 
 
 export const SIGNUPCARD = () => {
@@ -56,6 +57,11 @@ export const SIGNUPCARD = () => {
   const handlePrevious = () => {
     setCard(card - 1);
   };
+
+
+  const handleSubmit = () => {
+    upload(formData); // Call the upload function with form data
+    swal("Form submitted!");
 
   const upload = async (data) => {
     try {
@@ -289,10 +295,7 @@ export const SIGNUPCARD = () => {
     }
   };
 
-  const handleSubmit = (data) => {
-    upload(data); // Call the upload function with form data
-    alert("Form submitted!");
-  };
+
 
   return (
     <div className="container-fluid">

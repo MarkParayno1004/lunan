@@ -21,3 +21,8 @@
   color: #7db9b6;
   width: 5rem;
 }
+
+.swal-modal {
+  background-color: #f5e9cf;
+  border: 3px solid white;
+}
