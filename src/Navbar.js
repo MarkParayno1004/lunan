@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./css/Navbar.css";
 import lunanHeader from "../src/img/lunanHeader.png";
+import { BrowserRouter as Route } from "react-router-dom";
 export const Navbar = () => {
   return (
     <div className="container-fluid sticky-top" id="navbar">
