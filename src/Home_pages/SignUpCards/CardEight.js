@@ -192,7 +192,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.depressedMoodRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}        
@@ -235,7 +235,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.irritabilityRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}    
@@ -278,7 +278,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.moodSwingsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}    
@@ -320,7 +320,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.rapidSpeechRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -364,7 +364,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value = {localFormData.racingThoughtsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -407,7 +407,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.anxietyRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -450,7 +450,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.constantWorryRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -492,7 +492,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.panicAttacksRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -535,7 +535,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.phobiasRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -578,7 +578,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.sleepDisturbancesRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -621,7 +621,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.hallucinationsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -664,7 +664,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.paranoiaRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -706,7 +706,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.poorConcentrationRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -749,7 +749,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.alcoholSubstanceAbuseRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -793,7 +793,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.frequentBodyComplaintsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -837,7 +837,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.eatingDisorderRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -880,7 +880,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.bodyImageProblemsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -922,7 +922,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.repetitiveThoughtsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -964,7 +964,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.repetitiveBehaviorsRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -1007,7 +1007,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.poorImpulseControlRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -1049,7 +1049,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.selfMutilationRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -1091,7 +1091,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.sexualAbuseRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -1133,7 +1133,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.physicalAbuseRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
@@ -1176,7 +1176,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.emotionalAbuseRatingNow}
                                             onChange={handleChange}
-                                            required
+                                            
                                         />
                                     </div>
                                 )}
