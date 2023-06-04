@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import swal from "sweetalert";
-import { UploadFile } from "./test.js";
 import { Form, Button } from "react-bootstrap";
 import "../css/Assignment.css";
 
@@ -43,9 +42,18 @@ export const Assignment = () => {
               showAss === "Complete" && <CompleteAss />
             )}
           </div>
+          <div className="mt-3 d-flex align-items-end">
+            <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
+              <Button
+                className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+                id="buttonCard"
+              >
+                Back
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
-      <UploadFile />
     </div>
   );
 };
@@ -95,8 +103,9 @@ const PendingAss = () => {
       setError("Please select a file to upload.");
     }
   };
+
   return (
-    <>
+    <div className="d-flex justify-content-center">
       <button className="rounded-5" id="buttonAssTab" onClick={handleShow}>
         <h5 className="d-flex justify-content-start mt-2">Activity #1</h5>
         <p className="d-flex justify-content-start">
@@ -108,32 +117,25 @@ const PendingAss = () => {
           <div style={{ color: "white" }}>
             <Modal.Title>Activity #1</Modal.Title>
             Journal and Drawing Entry | Due: March 8, 2023
-            <Form.Group>
-              <Form.Label>Upload Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleChange}
-              />
-              <Form.Text className="text-danger">{error}</Form.Text>
-            </Form.Group>
-          </div>
-          <div className="d-flex justify-content-end">
-            {/* <button
-              variant="primary"
-              onClick={handleClose}
-              id="submitButton"
-              className="rounded-4 fw-semibold"
-            >
-              Submit
-            </button> */}
-            <Button variant="primary" type="submit">
-              Upload
-            </Button>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mt-3">
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChange}
+                />
+                <Form.Text className="text-danger">{error}</Form.Text>
+              </Form.Group>
+              <div className="d-flex justify-content-end mt-3">
+                <Button variant="primary" type="submit" id="submitButton">
+                  Submit
+                </Button>
+              </div>
+            </Form>
           </div>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 
