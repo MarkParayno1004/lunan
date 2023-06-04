@@ -52,6 +52,11 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
     );
   }, [formData]);
 
+  const handleSubmit = () => {
+    console.log(localFormData); // Log form data
+    ButtonSubmit(localFormData); // Call the ButtonNext function with form data
+  };
+
   const handleDifficulty = (event) => {
     const { name, value } = event.target;
     const updatedDifficulty = { ...localFormData };
@@ -103,7 +108,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="DepressionMem"
                       value={localFormData.DepressionMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -140,7 +145,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="BipolarMem"
                       value={localFormData.BipolarMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -177,7 +182,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="AnxietyMem"
                       value={localFormData.AnxietyMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -214,7 +219,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="PanicMem"
                       value={localFormData.PanicMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -251,7 +256,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="SchizoMem"
                       value={localFormData.SchizoMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -288,7 +293,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       name="AlcoholMem"
                       value={localFormData.AlcoholMem}
                       class="form-control rounded-4 me-1"
-                      required
+                      
                     />
                   </div>
                 )}
@@ -325,7 +330,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       name="EatingMem"
                       value={localFormData.EatingMem}
                       class="form-control rounded-4 me-1"
-                      required
+                      
                     />
                   </div>
                 )}
@@ -362,7 +367,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="LearningMem"
                       value={localFormData.LearningMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -399,7 +404,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="TraumaMem"
                       value={localFormData.TraumaMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -436,7 +441,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="SuicideMem"
                       value={localFormData.SuicideMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -473,7 +478,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       class="form-control rounded-4 me-1"
                       name="PsychiatricMem"
                       value={localFormData.PsychiatricMem}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -493,7 +498,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
         <button
           className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
           id="buttonCard"
-          onClick={ButtonSubmit}
+          onClick={handleSubmit}
         >
           Submit
         </button>

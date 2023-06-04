@@ -161,7 +161,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.depressedMoodRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -204,7 +204,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.irritabilityRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -247,7 +247,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.moodSwingsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -290,7 +290,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.rapidSpeechRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -333,7 +333,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.racingThoughtsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -376,7 +376,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.anxietyRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -419,7 +419,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.constantWorryRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -462,7 +462,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.panicAttacksRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -505,7 +505,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.phobiasRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -548,7 +548,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.sleepDisturbancesRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -591,7 +591,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.hallucinationsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -634,7 +634,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.paranoiaRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -677,7 +677,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.poorConcentrationRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -720,7 +720,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.alcoholSubstanceAbuseRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -765,7 +765,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.frequentBodyComplaintsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -808,7 +808,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.eatingDisorderRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -851,7 +851,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.bodyImageProblemsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -894,7 +894,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.repetitiveThoughtsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -937,7 +937,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.repetitiveBehaviorsRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -966,7 +966,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                   onChange={handleChange}
                 />
                 <label class="form-check-label ms-1">No</label>
-                {localFormData.poorImpulseControlSelPast && (
+                {localFormData.poorImpulseControlSelPast === "Yes" && (
                   <div class="input-group">
                     <span class="me-2 d-flex align-items-center">
                       Rating Scale 1-10 (10 = worst):{" "}
@@ -980,7 +980,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.poorImpulseControlRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -1023,7 +1023,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.selfMutilationRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -1066,7 +1066,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.sexualAbuseRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -1109,7 +1109,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.physicalAbuseRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
@@ -1152,7 +1152,7 @@ export const CardNine = ({ ButtonBack, ButtonNext, formData }) => {
                       max="10"
                       value={localFormData.emotionalAbuseRatingPast}
                       onChange={handleChange}
-                      required
+                      
                     />
                   </div>
                 )}
