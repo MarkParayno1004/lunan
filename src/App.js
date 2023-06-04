@@ -7,6 +7,7 @@ import { AboutUs } from "./Home_pages/AboutUs";
 import { SignUp } from "./Home_pages/SignUp";
 import { PatientDashboard } from "./Patient_Pages/PatientDashboard";
 import { WellnessFrom } from "./Patient_Pages/WellnessForm";
+import { Assignment } from "./Patient_Pages/Assignment";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/Sign Up" element={<SignUp />} />
           <Route path="/Patient Dashboard" element={<PatientDashboard />} />
           <Route path="/Wellness Form" element={<WellnessFrom />} />
+          <Route path="/Assignment" element={<Assignment />} />
         </Routes>
       </Router>
     </div>

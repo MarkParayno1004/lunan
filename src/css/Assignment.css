@@ -1,0 +1,26 @@
+#assBG {
+  background-color: #f5e9cf;
+  min-height: 100vh;
+}
+
+#AssForm {
+  background-color: #7db9b6;
+  color: white;
+}
+#buttonAss {
+  background-color: #4d455d;
+  border: none;
+  color: #ffffff;
+}
+
+#buttonAssTab {
+  background-color: #4d455d;
+  height: 6rem;
+  width: 50rem;
+  color: white;
+  border: none;
+}
+
+#modalBG {
+  background-color: #4d455d;
+}
