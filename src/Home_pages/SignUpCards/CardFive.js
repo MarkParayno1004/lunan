@@ -2,33 +2,33 @@ import { useState, useEffect } from "react";
 
 export const CardFive = ({ ButtonBack, ButtonNext, formData }) => {
   const [localFormData, setLocalFormData] = useState({
-    PsychiatricMeds: "",
-    CurrPsychMeds: "",
-    PrevPsychMedSel: "",
-    PrevPsychMeds: "",
-    SuicidalThoughtsPast: "",
-    SelfHarm: "",
-    SuicidalThoughts: "",
-    SuicidalThoughtsPastTime: "",
-    CurrentHomicidal: "",
-    HadPreviousHomicide: "",
-    PastHomicidalTime: "",
+    PsychiatricMeds: "N/A",
+    CurrPsychMeds: "N/A",
+    PrevPsychMedSel: "N/A",
+    PrevPsychMeds: "N/A",
+    SuicidalThoughtsPast: "N/A",
+    SelfHarm: "N/A",
+    SuicidalThoughts: "N/A",
+    SuicidalThoughtsPastTime: "N/A",
+    CurrentHomicidal: "N/A",
+    HadPreviousHomicide: "N/A",
+    PastHomicidalTime: "N/A",
   });
 
   useEffect(() => {
     setLocalFormData(
       formData ?? {
-        PsychiatricMeds: "",
-        CurrPsychMeds: "",
-        PrevPsychMedSel: "",
-        PrevPsychMeds: "",
-        SuicidalThoughtsPast: "",
-        SelfHarm: "",
-        SuicidalThoughts: "",
-        SuicidalThoughtsPastTime: "",
-        CurrentHomicidal: "",
-        HadPreviousHomicide: "",
-        PastHomicidalTime: "",
+        PsychiatricMeds: "N/A",
+        CurrPsychMeds: "N/A",
+        PrevPsychMedSel: "N/A",
+        PrevPsychMeds: "N/A",
+        SuicidalThoughtsPast: "N/A",
+        SelfHarm: "N/A",
+        SuicidalThoughts: "N/A",
+        SuicidalThoughtsPastTime: "N/A",
+        CurrentHomicidal: "N/A",
+        HadPreviousHomicide: "N/A",
+        PastHomicidalTime: "N/A",
       }
     );
   }, [formData]);

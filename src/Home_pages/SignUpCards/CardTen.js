@@ -15,7 +15,6 @@ export const CardTen = ({ ButtonBack, ButtonNext, formData }) => {
         militaryNo:"",
         LegalExp:"",
         FinExp:"",
-        LegalExp:"",
       });
     
       useEffect(() => {
@@ -33,7 +32,7 @@ export const CardTen = ({ ButtonBack, ButtonNext, formData }) => {
         militaryNo:"",
         LegalExp:"",
         FinExp:"",
-        LegalExp:"",
+
           }
         );
       }, [formData]);

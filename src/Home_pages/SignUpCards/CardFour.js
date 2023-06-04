@@ -1,33 +1,33 @@
 import { useState, useEffect } from "react";
 export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
   const [localFormData, setLocalFormData] = useState({
-    SexualPref: "",
-    MaritalStatus: "",
-    RelStatus: "",
-    HowLong: "",
-    QualRel: "",
-    Child: "",
-    CountChild: "",
-    ChildAge: "",
-    TherapyStatus: "",
-    WhyTherapy: "",
-    WhenTherapy: "",
+    SexualPref: "N/A",
+    MaritalStatus: "N/A",
+    RelStatus: "N/A",
+    HowLong: "N/A",
+    QualRel: "N/A",
+    Child: "N/A",
+    CountChild: "N/A",
+    ChildAge: "N/A",
+    TherapyStatus: "N/A",
+    WhyTherapy: "N/A",
+    WhenTherapy: "N/A",
     showRomanticRelationship: false,
   });
   useEffect(() => {
     setLocalFormData(
       formData ?? {
-        SexualPref: "",
-        MaritalStatus: "",
-        RelStatus: "",
-        HowLong: "",
-        QualRel: "",
-        Child: "",
-        CountChild: "",
-        ChildAge: "",
-        TherapyStatus: "",
-        WhyTherapy: "",
-        WhenTherapy: "",
+        SexualPref: "N/A",
+        MaritalStatus: "N/A",
+        RelStatus: "N/A",
+        HowLong: "N/A",
+        QualRel: "N/A",
+        Child: "N/A",
+        CountChild: "N/A",
+        ChildAge: "N/A",
+        TherapyStatus: "N/A",
+        WhyTherapy: "N/A",
+        WhenTherapy: "N/A",
       }
     );
   }, [formData]);
@@ -440,7 +440,7 @@ const ChildrenYes = ({ setLocalFormData, localFormData }) => {
         />
         <span className="d-flex align-items-center">Age?</span>
         <input
-          type="number"
+          type="text"
           aria-label="Patient's Child"
           placeholder="Answer:"
           name="ChildAge"
