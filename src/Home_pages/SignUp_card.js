@@ -16,7 +16,6 @@ import { CardTen } from "./SignUpCards/CardTen";
 import { CardEleven } from "./SignUpCards/CardEleven";
 import { CardTwelve } from "./SignUpCards/CardTwelve";
 
-
 export const SIGNUPCARD = () => {
   // Use state to keep track of the current card and form data
   const [card, setCard] = useState(1);
