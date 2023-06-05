@@ -14,13 +14,13 @@ export const AllPatients = () => {
     return (
         <div className="container-fluid d-flex justify-content-center" id="apBG">
             <div className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center" id="CardBG">
-                <h1 className="d-flex justify-content-center mt-3">Patients List</h1>
+                <h1 className="d-flex justify-content-center mt-3">All Patients List</h1>
                 <input
                     type="text"
-                    placeholder="Search patients..."
+                    placeholder="Search counselors..."
                     value={searchQuery}
                     onChange={handleSearch}
-                    style={{ float: 'right' }}
+                    className="search-input"
                 />
                 <table id="patient-table">
                 <thead>

@@ -33,7 +33,7 @@
   }
   
   .add-counselor-button {
-    background-color: #4d455d;
+    background-color: #7db9b6;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -43,5 +43,5 @@
   }
   
   .add-counselor-button:hover {
-    background-color: #6b6285;
+    background-color: #608a88;
   }
