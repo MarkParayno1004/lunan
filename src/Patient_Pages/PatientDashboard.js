@@ -92,7 +92,7 @@ export const PatientDashboard = () => {
         {/* Wellness Guide */}
         <div className="row align-items-start mt-5">
           <div className="col d-flex justify-content-end">
-            <Link to="" style={{ textDecoration: "none" }}>
+            <Link to="/Wellness Guide" style={{ textDecoration: "none" }}>
               <div>
                 <div
                   className="card rounded-5"
@@ -117,7 +117,7 @@ export const PatientDashboard = () => {
 
           {/* Schedule */}
           <div className="col d-flex justify-content-start ms-5">
-            <Link to="" style={{ textDecoration: "none" }}>
+            <Link to="/Schedule" style={{ textDecoration: "none" }}>
               <div>
                 <div
                   className="card rounded-5"
