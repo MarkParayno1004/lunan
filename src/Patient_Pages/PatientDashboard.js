@@ -65,7 +65,7 @@ export const PatientDashboard = () => {
 
           {/* Weekly Form */}
           <div className="col d-flex justify-content-start">
-            <Link to="" style={{ textDecoration: "none" }}>
+            <Link to="/Weekly Form" style={{ textDecoration: "none" }}>
               <div>
                 <div
                   className="card rounded-5"
