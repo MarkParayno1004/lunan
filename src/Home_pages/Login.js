@@ -42,7 +42,7 @@ export const Login = () => {
           navigate("/Patient Dashboard");
           console.log('User role:', userData.Role);
         } else if (userData.Role === 'Admin') {
-          // navigate('/AdminDashboard');
+          navigate('/Supervisor Dashboard');
           console.log('User role:', userData.Role);
         } else {
           console.log('Non-existing user role');

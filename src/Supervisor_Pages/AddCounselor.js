@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import "../css/AddCounselor";
+import "../css/AddCounselor.css";
 
 export const AddCounselor = () => {
     const [name, setName] = useState('');
     const [picture, setPicture] = useState('');
     const [contactNumber, setContactNumber] = useState('');
     const [email, setEmail] = useState('');
+
+    const handleAddCounselor = (newCounselor) => {
+        // Logic to add the counselor to the system
+        console.log('Adding counselor:', newCounselor);
+        // Add your implementation here
+    };
 
     const handleSubmit = event => {
         event.preventDefault();

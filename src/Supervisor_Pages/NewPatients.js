@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../css/AllPatients";
+import "../css/AllPatients.css";
 
 export const NewPatients = () => {
     const [searchQuery, setSearchQuery] = useState('');

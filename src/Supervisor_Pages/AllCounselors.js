@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../css/AllCounselors";
+import "../css/AllCounselors.css";
 
 export const AllCounselors = () => {
     const [searchQuery, setSearchQuery] = useState('');
