@@ -1,6 +1,7 @@
 import "../css/WellnessForm.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 export const WellnessFrom = () => {
   const [getRangeQ1, setRangeQ1] = useState(1);
   const [getRangeQ2, setRangeQ2] = useState(1);
@@ -162,12 +163,12 @@ export const WellnessFrom = () => {
           </p>
           <div className="d-flex justify-content-start">
             <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
-              <button
+              <Button
                 className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
                 id="buttonCard"
               >
                 Back
-              </button>
+              </Button>
             </Link>
           </div>
         </div>

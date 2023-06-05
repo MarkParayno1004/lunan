@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import swal from "sweetalert";
+import { Form, Button } from "react-bootstrap";
 import "../css/Assignment.css";
 
 export const Assignment = () => {
@@ -40,6 +42,16 @@ export const Assignment = () => {
               showAss === "Complete" && <CompleteAss />
             )}
           </div>
+          <div className="mt-3 d-flex align-items-end">
+            <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
+              <Button
+                className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+                id="buttonCard"
+              >
+                Back
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -49,10 +61,51 @@ export const Assignment = () => {
 const PendingAss = () => {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    return swal("Assignment Submitted!!");
+  };
   const handleShow = () => setShow(true);
+
+  //! For UploadFile Validation
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState("");
+
+  const handleChange = (event) => {
+    const selectedFile = event.target.files[0];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      ".doc",
+      ".docx",
+      "application/pdf",
+    ];
+
+    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+      setFile(selectedFile);
+      setError("");
+    } else {
+      setFile(null);
+      setError(
+        "Please select a valid image file (JPEG, PNG, GIF, Doc, Docx, PDF)."
+      );
+    }
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Handle file submission logic here
+    if (file) {
+      console.log("File:", file);
+      // Perform further actions with the file, such as uploading to a server
+    } else {
+      setError("Please select a file to upload.");
+    }
+  };
+
   return (
-    <>
+    <div className="d-flex justify-content-center">
       <button className="rounded-5" id="buttonAssTab" onClick={handleShow}>
         <h5 className="d-flex justify-content-start mt-2">Activity #1</h5>
         <p className="d-flex justify-content-start">
@@ -60,19 +113,29 @@ const PendingAss = () => {
         </p>
       </button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton id="modalBG">
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
         <Modal.Body closeButton id="modalBG">
-          <Modal.Title>Heading</Modal.Title>
-          <div>Woohoo, you are reading this text in a modal!</div>
-
-          <button variant="primary" onClick={handleClose}>
-            Save Changes
-          </button>
+          <div style={{ color: "white" }}>
+            <Modal.Title>Activity #1</Modal.Title>
+            Journal and Drawing Entry | Due: March 8, 2023
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mt-3">
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChange}
+                />
+                <Form.Text className="text-danger">{error}</Form.Text>
+              </Form.Group>
+              <div className="d-flex justify-content-end mt-3">
+                <Button variant="primary" type="submit" id="submitButton">
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </div>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 
