@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { collection, getDocs, doc, getDoc, where, query, collectionGroup } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import "../css/AllPatients.css";
 
@@ -12,29 +12,9 @@ export const AllPatients = () => {
     const fetchPatientsData = async () => {
       try {
         const querySnapshot = await getDocs(collection(firestore, "Users"));
-        const patients = [];
+        const patients = querySnapshot.docs.map((doc) => doc.data());
 
-        for (const docSnapshot of querySnapshot.docs) {
-          const patientData = docSnapshot.data();
-          const counselorUID = patientData.counselorUID;
-
-          if (counselorUID) {
-            const q = query(collectionGroup(firestore, "Counselor"), where("counselorUID", "==", counselorUID));
-            const counselorQuerySnapshot = await getDocs(q);
-
-            if (!counselorQuerySnapshot.empty) {
-              const counselorData = counselorQuerySnapshot.docs[0].data();
-              const patient = {
-                UID: patientData.UID,
-                firstName: patientData.firstName,
-                dateCreated: patientData.dateCreated,
-                counselor: counselorData.counselName,
-              };
-
-              patients.push(patient);
-            }
-          }
-        }
+        console.log("Patients Data:", patients); // Log the data
 
         setPatientsData(patients);
       } catch (error) {
@@ -46,10 +26,7 @@ export const AllPatients = () => {
   }, []);
 
   return (
-    <div
-      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
-      id="cardAllPatientBG"
-    >
+    <div className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3" id="cardBG">
       <div className="row">
         <div className="col"></div>
         <div className="col-4">
@@ -68,26 +45,21 @@ export const AllPatients = () => {
               </tr>
             </thead>
             <tbody>
-              {patientsData.map((patient) => (
-                <tr key={patient.UID}>
-                  <td>{patient.firstName}</td>
-                  <td>{patient.dateCreated}</td>
-                  <td>{patient.counselor}</td>
-                </tr>
-              ))}
-            </tbody>
+  {patientsData.map((patient) => (
+    patient.counselorUID && (
+      <tr key={patient.UID}>
+        <td>{patient.firstName}</td>
+        <td>{patient.dateCreated}</td>
+        <td>{patient.UID}</td>
+      </tr>
+    )
+  ))}
+</tbody>
           </table>
         </div>
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-
             <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
-
-
-            <Button
-              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-              id="buttonCard"
-            >
               Back
             </Button>
           </Link>
