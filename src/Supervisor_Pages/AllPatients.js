@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
-
+import { collection, getDocs, doc, getDoc, where, query, collectionGroup } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import "../css/AllPatients.css";
 
@@ -21,11 +19,11 @@ export const AllPatients = () => {
           const counselorUID = patientData.counselorUID;
 
           if (counselorUID) {
-            const counselorDocRef = doc(firestore, "Counselor", counselorUID);
-            const counselorSnapshot = await getDoc(counselorDocRef);
+            const q = query(collectionGroup(firestore, "Counselor"), where("counselorUID", "==", counselorUID));
+            const counselorQuerySnapshot = await getDocs(q);
 
-            if (counselorSnapshot.exists()) {
-              const counselorData = counselorSnapshot.data();
+            if (!counselorQuerySnapshot.empty) {
+              const counselorData = counselorQuerySnapshot.docs[0].data();
               const patient = {
                 UID: patientData.UID,
                 firstName: patientData.firstName,
@@ -74,7 +72,6 @@ export const AllPatients = () => {
                 <tr key={patient.UID}>
                   <td>{patient.firstName}</td>
                   <td>{patient.dateCreated}</td>
-
                   <td>{patient.counselor}</td>
                 </tr>
               ))}
@@ -83,6 +80,10 @@ export const AllPatients = () => {
         </div>
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
+
+            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
+
+
             <Button
               className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
               id="buttonCard"
