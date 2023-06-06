@@ -1,79 +1,79 @@
 #acBG {
-    background-color: #f5e9cf;
-    min-height: 100vh;
-  }
+  background-color: #f5e9cf;
+  min-height: 100vh;
+}
 
-  #CardBG {
-    background-color: #7db9b6;
-    color: white;
-  }
+#btnAddCounselor {
+  background: #7db97f;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 22px;
+  color: white;
+}
+.search-input {
+  float: right;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
 
-  .search-input {
-    float: right;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-  }
-  
-  .search-input:focus {
-    outline: none;
-    border-color: #6b6285;
-    box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
-  }
+.search-input:focus {
+  outline: none;
+  border-color: #6b6285;
+  box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
+}
 
-  .counselor-table {
-    width: 100%;
-    background-color: #4d455d;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .counselor-table th,
-  .counselor-table td {
-    padding: 10px;
-    color: white;
-    text-align: center;
-  }
-  
-  .counselor-table th {
-    background-color: #4d455d;
-  }
-  
-  .counselor-table tr:nth-child(even) {
-    background-color: #6b6285;
-  }
-  
-  .counselor-table img {
-    border-radius: 50%;
-  }
-  
-  .counselor-table button {
-    background-color: #7db9b6;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .counselor-table button:hover {
-    background-color: #608a88;
-  }
-  
-  button.add-counselor {
-    background-color: #7db9b6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button.add-counselor:hover {
-    background-color: #608a88;
-  }
-  
+.counselor-table {
+  width: 100%;
+  background-color: #4d455d;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.counselor-table th,
+.counselor-table td {
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+
+.counselor-table th {
+  background-color: #4d455d;
+}
+
+.counselor-table tr:nth-child(even) {
+  background-color: #6b6285;
+}
+
+.counselor-table img {
+  border-radius: 50%;
+}
+
+.counselor-table button {
+  background-color: #7db9b6;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.counselor-table button:hover {
+  background-color: #608a88;
+}
+
+button.add-counselor {
+  background-color: #7db9b6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.add-counselor:hover {
+  background-color: #608a88;
+}

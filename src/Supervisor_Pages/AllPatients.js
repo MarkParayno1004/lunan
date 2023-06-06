@@ -8,7 +8,6 @@ import { firestore } from "../firebase/firebase-config";
 import "../css/AllPatients.css";
 
 export const AllPatients = () => {
-
   const [patientsData, setPatientsData] = useState([]);
 
   useEffect(() => {
@@ -48,31 +47,29 @@ export const AllPatients = () => {
     fetchPatientsData();
   }, []);
 
-
   return (
-    <div className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3" id="cardBG">
+    <div
+      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
+      id="cardAllPatientBG"
+    >
       <div className="row">
         <div className="col"></div>
         <div className="col-4">
           <h2 className="text-center mt-4 mb-4">All Patient List</h2>
         </div>
         <div className="col"></div>
-
       </div>
       <div className="d-flex flex-column">
         <div className="flex-grow-1">
           <table className="table table-dark">
             <thead>
               <tr>
-
-
                 <th scope="col">Name</th>
                 <th scope="col">Date Added</th>
                 <th scope="col">Counselor</th>
               </tr>
             </thead>
             <tbody>
-
               {patientsData.map((patient) => (
                 <tr key={patient.UID}>
                   <td>{patient.firstName}</td>
@@ -86,9 +83,10 @@ export const AllPatients = () => {
         </div>
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-
-            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
-
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              id="buttonCard"
+            >
               Back
             </Button>
           </Link>
@@ -96,6 +94,4 @@ export const AllPatients = () => {
       </div>
     </div>
   );
-
 };
-
