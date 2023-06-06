@@ -4,60 +4,8 @@ import { Link } from "react-router-dom";
 import "../css/AllPatients.css";
  
 export const AllCounselors = () => {
-<<<<<<<<< Temporary merge branch 1
-  const [searchQuery, setSearchQuery] = useState("");
-  const [counselorsData, setCounselorsData] = useState([
-    // Replace with your actual counselor data
-    {
-      id: 1,
-      name: "John Doe",
-      picture: "john.jpg",
-      dateAdded: "2022-01-01",
-      patients: 10,
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      picture: "jane.jpg",
-      dateAdded: "2022-02-02",
-      patients: 5,
-    },
-    // Add more counselor objects as needed
-  ]);
 
-  const filteredCounselors = counselorsData.filter((counselor) =>
-    counselor.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleEdit = (counselorId) => {
-    // Handle edit functionality for the counselor with the given ID
-  };
-
-  const handleRemove = (counselorId) => {
-    // Handle remove functionality for the counselor with the given ID
-  };
-
-  const handleAddCounselor = () => {
-    // Handle adding a new counselor
-  };
-
-  return (
-    <div className="container-fluid d-flex justify-content-center" id="acBG">
-      <div
-        className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center"
-        id="CardBG"
-      >
-        <div className="mt-3">
-          <div class="row mb-3">
-            <div class="col">
-              <div className="d-flex justify-content-center align-items-center">
-                <span className="fs-5">Counselor List</span>
-              </div>
-=========
     const [searchQuery, setSearchQuery] = useState('');
     const counselorsData = [
         {
@@ -175,7 +123,59 @@ export const AllCounselors = () => {
                         </Button>
                     </Link>
                 </div>
->>>>>>>>> Temporary merge branch 2
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [counselorsData, setCounselorsData] = useState([
+    // Replace with your actual counselor data
+    {
+      id: 1,
+      name: "John Doe",
+      picture: "john.jpg",
+      dateAdded: "2022-01-01",
+      patients: 10,
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      picture: "jane.jpg",
+      dateAdded: "2022-02-02",
+      patients: 5,
+    },
+    // Add more counselor objects as needed
+  ]);
+
+  const filteredCounselors = counselorsData.filter((counselor) =>
+    counselor.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleEdit = (counselorId) => {
+    // Handle edit functionality for the counselor with the given ID
+  };
+
+  const handleRemove = (counselorId) => {
+    // Handle remove functionality for the counselor with the given ID
+  };
+
+  const handleAddCounselor = () => {
+    // Handle adding a new counselor
+  };
+
+  return (
+    <div className="container-fluid d-flex justify-content-center" id="acBG">
+      <div
+        className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center"
+        id="CardBG"
+      >
+        <div className="mt-3">
+          <div class="row mb-3">
+            <div class="col">
+              <div className="d-flex justify-content-center align-items-center">
+                <span className="fs-5">Counselor List</span>
+              </div>
             </div>
             <div class="col">
               <div className="d-flex justify-content-end">
@@ -242,12 +242,12 @@ export const AllCounselors = () => {
             </button>
           </div>
         </div>
-<<<<<<<<< Temporary merge branch 1
+
+    )
+}
+
+
       </div>
     </div>
   );
 };
-=========
-    )
-}
->>>>>>>>> Temporary merge branch 2

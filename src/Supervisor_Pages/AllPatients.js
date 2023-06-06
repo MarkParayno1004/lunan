@@ -80,14 +80,14 @@ export const AllPatients = () => {
         </div>
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-<<<<<<<<< Temporary merge branch 1
+
+            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
+
+
             <Button
               className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
               id="buttonCard"
             >
-=========
-            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
->>>>>>>>> Temporary merge branch 2
               Back
             </Button>
           </Link>
