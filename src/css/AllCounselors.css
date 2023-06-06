@@ -3,25 +3,25 @@
   min-height: 100vh;
 }
 
-#CardBG {
-  background-color: #7db9b6;
-  color: white;
-}
+  #CardBG {
+    background-color: #7db9b6;
+    color: white;
+  }
 
-.search-input {
-  float: right;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #6b6285;
-  box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
-}
+  .search-input {
+    float: right;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #6b6285;
+    box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
+  }
 
 .counselor-table {
   width: 100%;

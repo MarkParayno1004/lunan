@@ -1,47 +1,47 @@
 #addBG {
-    background-color: #f5e9cf;
-    min-height: 100vh;
-  }
+  background-color: #f5e9cf;
+  min-height: 100vh;
+}
 
-  #CardBG {
-    background-color: #7db9b6;
-    color: white;
-  }
+#CardBG {
+  background-color: #7db9b6;
+  color: white;
+}
 
-  #counselor-form {
-    width: 100%;
-    background-color: #4d455d;
-    border-radius: 10px;
-    overflow: hidden;
-  }
+#counselor-form {
+  width: 100%;
+  background-color: #4d455d;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .add-counselor-button {
-    background-color: #7db9b6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .add-counselor-button:hover {
-    background-color: #608a88;
-  }
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-counselor-button {
+  background-color: #7db9b6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-counselor-button:hover {
+  background-color: #608a88;
+}
