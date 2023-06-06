@@ -43,7 +43,10 @@ export const AllCounselors = () => {
   };
 
   return (
-    <div className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3" id="cardBG">
+    <div
+      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
+      id="cardAllPatientBG"
+    >
       <div className="row">
         <div className="col"></div>
         <div className="col-4">
@@ -84,16 +87,25 @@ export const AllCounselors = () => {
               {filteredCounselors.map((counselor) => (
                 <tr key={counselor.id}>
                   <td>
-                    <img src={counselor.picture} alt={counselor.name} width="50" height="50" />
+                    <img
+                      src={counselor.picture}
+                      alt={counselor.name}
+                      width="50"
+                      height="50"
+                    />
                   </td>
                   <td>{counselor.name}</td>
                   <td>{counselor.dateAdded}</td>
                   <td>{counselor.patients}</td>
                   <td>
-                    <button onClick={() => handleEdit(counselor.id)}>Edit</button>
+                    <button onClick={() => handleEdit(counselor.id)}>
+                      Edit
+                    </button>
                   </td>
                   <td>
-                    <button onClick={() => handleRemove(counselor.id)}>Remove</button>
+                    <button onClick={() => handleRemove(counselor.id)}>
+                      Remove
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -104,14 +116,20 @@ export const AllCounselors = () => {
       <div className="row">
         <div className="col mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              id="buttonCard"
+            >
               Back
             </Button>
           </Link>
         </div>
         <div className="col mt-auto">
           <Link to="/Add Counselors" style={{ textDecoration: "none" }}>
-            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              id="buttonCard"
+            >
               Add
             </Button>
           </Link>

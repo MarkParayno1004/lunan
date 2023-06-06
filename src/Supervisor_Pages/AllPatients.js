@@ -26,7 +26,10 @@ export const AllPatients = () => {
   }, []);
 
   return (
-    <div className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3" id="cardBG">
+    <div
+      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
+      id="cardAllPatientBG"
+    >
       <div className="row">
         <div className="col"></div>
         <div className="col-4">
@@ -45,21 +48,25 @@ export const AllPatients = () => {
               </tr>
             </thead>
             <tbody>
-  {patientsData.map((patient) => (
-    patient.counselorUID && (
-      <tr key={patient.UID}>
-        <td>{patient.firstName}</td>
-        <td>{patient.dateCreated}</td>
-        <td>{patient.UID}</td>
-      </tr>
-    )
-  ))}
-</tbody>
+              {patientsData.map(
+                (patient) =>
+                  patient.counselorUID && (
+                    <tr key={patient.UID}>
+                      <td>{patient.firstName}</td>
+                      <td>{patient.dateCreated}</td>
+                      <td>{patient.UID}</td>
+                    </tr>
+                  )
+              )}
+            </tbody>
           </table>
         </div>
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              id="buttonCard"
+            >
               Back
             </Button>
           </Link>
