@@ -30,9 +30,9 @@ function App() {
           <Route path="/Patient Dashboard" element={<PatientDashboard />} />
           <Route path="/Supervisor Dashboard" element={<SupervisorDashboard />} />
           <Route path="/All Patients" element={<AllPatients />} />
-          <Route path="/All Counselors" element={<AllCounselors />}/>
           <Route path="/New Patients" element={<NewPatients />} />
-          <Route path="/Add Counselors" element={<AddCounselor/>} />
+          <Route path="/All Counselors" element={<AllCounselors />} />
+          <Route path="/Add Counselors" element={<AddCounselor />} />
           <Route path="/Wellness Form" element={<WellnessFrom />} />
           <Route path="/Assignment" element={<Assignment />} />
           <Route path="/Weekly Form" element={<WeeklyForm />} />
