@@ -29,10 +29,10 @@ export const AllCounselors = () => {
                 <h1 className="d-flex justify-content-center mt-3">Counselor List</h1>
                 <input
                     type="text"
-                    placeholder="Search patients..."
+                    placeholder="Search counselors..."
                     value={searchQuery}
                     onChange={handleSearch}
-                    style={{ float: 'right' }}
+                    className="search-input"
                 />
                 <table className="counselor-table">
                     <thead>
