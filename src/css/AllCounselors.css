@@ -3,11 +3,12 @@
   min-height: 100vh;
 }
 
-#CardBG {
-  background-color: #7db9b6;
+#btnAddCounselor {
+  background: #7db97f;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 22px;
   color: white;
 }
-
 .search-input {
   float: right;
   padding: 8px;
