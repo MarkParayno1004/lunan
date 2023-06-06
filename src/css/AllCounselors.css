@@ -3,6 +3,7 @@
   min-height: 100vh;
 }
 
+<<<<<<< HEAD
 #CardBG {
   background-color: #7db9b6;
   color: white;
@@ -23,6 +24,29 @@
   box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
 }
 
+=======
+#btnAddCounselor {
+  background: #7db97f;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 22px;
+  color: white;
+}
+.search-input {
+  float: right;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6b6285;
+  box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
+}
+
+>>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
 .counselor-table {
   width: 100%;
   background-color: #4d455d;
