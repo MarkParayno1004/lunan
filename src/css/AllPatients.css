@@ -2,14 +2,16 @@ body {
   background-color: #f5e9cf;
   height: 100vh;
 }
- 
+
 #cardBG {
   background-color: #7db9b6;
   color: whitesmoke;
   height: 80vh;
   width: 60vw;
 }
+
  
 #columnSize {
   height: 60px;
 }
+

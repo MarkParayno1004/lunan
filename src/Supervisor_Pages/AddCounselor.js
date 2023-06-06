@@ -44,7 +44,7 @@ export const AddCounselor = () => {
                         </div>
                         <div className="form-group">
                             <label>Picture URL:</label>
-                            <input type="text" value={picture} onChange={e => setPicture(e.target.value)} required />
+                            <input type="file" value={picture} onChange={e => setPicture(e.target.value)} required />
                         </div>
                         <div className="form-group">
                             <label>Contact Number:</label>

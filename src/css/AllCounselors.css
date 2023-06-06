@@ -8,6 +8,21 @@
     color: white;
   }
 
+  .search-input {
+    float: right;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #6b6285;
+    box-shadow: 0 0 5px rgba(107, 98, 133, 0.5);
+  }
+
   .counselor-table {
     width: 100%;
     background-color: #4d455d;
@@ -35,7 +50,7 @@
   }
   
   .counselor-table button {
-    background-color: #4d455d;
+    background-color: #7db9b6;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -45,11 +60,11 @@
   }
   
   .counselor-table button:hover {
-    background-color: #6b6285;
+    background-color: #608a88;
   }
   
   button.add-counselor {
-    background-color: #4d455d;
+    background-color: #7db9b6;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -59,6 +74,6 @@
   }
   
   button.add-counselor:hover {
-    background-color: #6b6285;
+    background-color: #608a88;
   }
   

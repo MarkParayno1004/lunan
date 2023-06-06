@@ -10,6 +10,7 @@ export const AllCounselors = () => {
         // Add more counselor objects as needed
     ]);
 
+
     const filteredCounselors = counselorsData.filter(counselor =>
         counselor.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -31,6 +32,7 @@ export const AllCounselors = () => {
     };
 
     return (
+
         <div className="container-fluid d-flex justify-content-center" id="acBG">
             <div className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center" id="CardBG">
                 <h1 className="d-flex justify-content-center mt-3">Counselor List</h1>
@@ -72,6 +74,7 @@ export const AllCounselors = () => {
                     </tbody>
                 </table>
                 <button onClick={handleAddCounselor}>Add New Counselor</button>
+
             </div>
         </div>
     )

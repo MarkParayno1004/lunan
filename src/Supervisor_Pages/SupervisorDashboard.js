@@ -42,7 +42,9 @@ export const SupervisorDashboard = () => {
           </div>
 
           {/* All Patients List */}
+
           <div className="col d-flex justify-content-end">
+
             <Link to="/All Patients" style={{ textDecoration: "none" }}>
               <div>
                 <div className="card rounded-5" style={{ width: 18 + "rem" }} id="cardBG">
@@ -84,7 +86,9 @@ export const SupervisorDashboard = () => {
           </div>
 
           {/* All Counselors */}
+
           <div className="col d-flex justify-content-center">
+
             <Link to="/All Counselors" style={{ textDecoration: "none" }}>
               <div>
                 <div className="card rounded-5" style={{ width: 18 + "rem" }} id="cardBG">
@@ -108,3 +112,4 @@ export const SupervisorDashboard = () => {
     </div>
   );
 };
+
