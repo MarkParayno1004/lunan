@@ -1,11 +1,7 @@
 import { useState } from "react";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
-=======
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
->>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
+
 import "../css/AllPatients.css";
 
 export const NewPatients = () => {
@@ -36,14 +32,12 @@ export const NewPatients = () => {
   };
 
   return (
-<<<<<<< HEAD
+
     <div className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3" id="cardBG">
-=======
     <div
       className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
       id="cardAllPatientBG"
     >
->>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
       <div className="row">
         <div className="col"></div>
         <div className="col-4">
@@ -66,7 +60,6 @@ export const NewPatients = () => {
             </div>
           </div>
         </div>
-<<<<<<< HEAD
       </div>
       <div className="d-flex flex-column">
         <div className="flex-grow-1">
@@ -99,7 +92,8 @@ export const NewPatients = () => {
               Back
             </Button>
           </Link>
-=======
+
+
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
             <table className="table table-dark">
@@ -140,7 +134,6 @@ export const NewPatients = () => {
               </Button>
             </Link>
           </div>
->>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
         </div>
       </div>
     </div>

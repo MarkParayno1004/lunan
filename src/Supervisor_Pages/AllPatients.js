@@ -80,14 +80,14 @@ export const AllPatients = () => {
         </div>
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-<<<<<<< HEAD
+
             <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
-=======
+
+
             <Button
               className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
               id="buttonCard"
             >
->>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
               Back
             </Button>
           </Link>

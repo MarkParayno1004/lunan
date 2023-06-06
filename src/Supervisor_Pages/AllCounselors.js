@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import "../css/AllPatients.css";
  
 export const AllCounselors = () => {
-<<<<<<< HEAD
+
+
     const [searchQuery, setSearchQuery] = useState('');
     const counselorsData = [
         {
@@ -122,7 +123,7 @@ export const AllCounselors = () => {
                         </Button>
                     </Link>
                 </div>
-=======
+
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorsData, setCounselorsData] = useState([
     // Replace with your actual counselor data
@@ -175,7 +176,6 @@ export const AllCounselors = () => {
               <div className="d-flex justify-content-center align-items-center">
                 <span className="fs-5">Counselor List</span>
               </div>
->>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
             </div>
             <div class="col">
               <div className="d-flex justify-content-end">
@@ -242,12 +242,12 @@ export const AllCounselors = () => {
             </button>
           </div>
         </div>
-<<<<<<< HEAD
+
     )
 }
-=======
+
+
       </div>
     </div>
   );
 };
->>>>>>> 651c242c501ed4ae21f4796861fc6cc5d1278e63
