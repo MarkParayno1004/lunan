@@ -1,44 +1,42 @@
 import { useState, useEffect } from "react";
-import { collection, query, getDocs, where, doc, getDoc } from "firebase/firestore";
-import "../css/AllPatients";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
+import "../css/AllPatients.css";
 
 export const AllPatients = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
-
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   useEffect(() => {
     const fetchPatientsData = async () => {
       try {
-        const q = query(collection(firestore, "Users"), where("Role", "==", "Patient"));
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(collection(firestore, "Users"));
+        const patients = [];
 
-        const patients = await Promise.all(querySnapshot.docs.map(async (doc) => {
-          const patientData = doc.data();
-          if (patientData.counselorUID && patientData.counselorUID !== "") {
-            const counselorDoc = doc(firestore, "Counsellor", patientData.counselorUID);
-            const counselorSnapshot = await getDoc(counselorDoc);
-            const counselorData = counselorSnapshot.data();
-            
-            return {
-              UID: patientData.UID,
-              name: patientData.firstName,
-              dateAdded: patientData.dateCreated,
-              counselor: counselorData ? counselorData.counselName : "",
-            };
+        for (const docSnapshot of querySnapshot.docs) {
+          const patientData = docSnapshot.data();
+          const counselorUID = patientData.counselorUID;
+
+          if (counselorUID) {
+            const counselorDocRef = doc(firestore, "Counselor", counselorUID);
+            const counselorSnapshot = await getDoc(counselorDocRef);
+
+            if (counselorSnapshot.exists()) {
+              const counselorData = counselorSnapshot.data();
+              const patient = {
+                UID: patientData.UID,
+                firstName: patientData.firstName,
+                dateCreated: patientData.dateCreated,
+                counselor: counselorData.counselName,
+              };
+
+              patients.push(patient);
+            }
           }
-          return null;
-        }));
+        }
 
-        const filteredPatients = patients.filter((patient) => patient !== null);
-
-        console.log("Patients Data:", filteredPatients); // Log the data
-
-        setPatientsData(filteredPatients);
+        setPatientsData(patients);
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
@@ -47,39 +45,43 @@ export const AllPatients = () => {
     fetchPatientsData();
   }, []);
 
-  const filteredPatients = patientsData.filter((patient) =>
-    patient.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <div className="container-fluid d-flex justify-content-center" id="apBG">
-            <div className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center" id="CardBG">
-                <h1 className="d-flex justify-content-center mt-3">All Patients List</h1>
-        <input
-          type="text"
-          placeholder="Search patients..."
-          value={searchQuery}
-          onChange={handleSearch}
-          style={{ float: 'right' }}
-        />
-        <table id="patient-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date Added</th>
-              <th>Counselor</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPatients.map((patient) => (
-              <tr key={patient.UID}>
-                <td>{patient.name}</td>
-                <td>{patient.dateAdded}</td>
-                <td>{patient.counselor}</td>
+    <div className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3" id="cardBG">
+      <div className="row">
+        <div className="col"></div>
+        <div className="col-4">
+          <h2 className="text-center mt-4 mb-4">All Patient List</h2>
+        </div>
+        <div className="col"></div>
+      </div>
+      <div className="d-flex flex-column">
+        <div className="flex-grow-1">
+          <table className="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Counselor</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {patientsData.map((patient) => (
+                <tr key={patient.UID}>
+                  <td>{patient.firstName}</td>
+                  <td>{patient.dateCreated}</td>
+                  <td>{patient.counselor}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-auto">
+          <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
+            <Button className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4" id="buttonCard">
+              Back
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

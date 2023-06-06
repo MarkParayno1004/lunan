@@ -3,6 +3,13 @@ import "../css/AllCounselors.css";
 
 export const AllCounselors = () => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [counselorsData, setCounselorsData] = useState([
+        // Replace with your actual counselor data
+        { id: 1, name: "John Doe", picture: "john.jpg", dateAdded: "2022-01-01", patients: 10 },
+        { id: 2, name: "Jane Smith", picture: "jane.jpg", dateAdded: "2022-02-02", patients: 5 },
+        // Add more counselor objects as needed
+    ]);
+
     const filteredCounselors = counselorsData.filter(counselor =>
         counselor.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -48,18 +55,18 @@ export const AllCounselors = () => {
                     <tbody>
                     {filteredCounselors.map(counselor => (
                         <tr key={counselor.id}>
-                        <td>
-                            <img src={counselor.picture} alt={counselor.name} width="50" height="50" />
-                        </td>
-                        <td>{counselor.name}</td>
-                        <td>{counselor.dateAdded}</td>
-                        <td>{counselor.patients}</td>
-                        <td>
-                            <button onClick={() => handleEdit(counselor.id)}>Edit</button>
-                        </td>
-                        <td>
-                            <button onClick={() => handleRemove(counselor.id)}>Remove</button>
-                        </td>
+                            <td>
+                                <img src={counselor.picture} alt={counselor.name} width="50" height="50" />
+                            </td>
+                            <td>{counselor.name}</td>
+                            <td>{counselor.dateAdded}</td>
+                            <td>{counselor.patients}</td>
+                            <td>
+                                <button onClick={() => handleEdit(counselor.id)}>Edit</button>
+                            </td>
+                            <td>
+                                <button onClick={() => handleRemove(counselor.id)}>Remove</button>
+                            </td>
                         </tr>
                     ))}
                     </tbody>

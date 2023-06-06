@@ -13,7 +13,7 @@ import { WellnessGuide } from "./Patient_Pages/WellnessGuide";
 import { Schedule } from "./Patient_Pages/Schedule";
 import { SupervisorDashboard } from "./Supervisor_Pages/SupervisorDashboard"
 import { AddCounselor } from "./Supervisor_Pages/AddCounselor"
-import { AllCounselors } from "./Supervisor_Pages/AddCounselor"
+import { AllCounselors } from "./Supervisor_Pages/AllCounselors"
 import { AllPatients } from "./Supervisor_Pages/AllPatients"
 import { NewPatients } from "./Supervisor_Pages/NewPatients"
 
@@ -30,6 +30,9 @@ function App() {
           <Route path="/Patient Dashboard" element={<PatientDashboard />} />
           <Route path="/Supervisor Dashboard" element={<SupervisorDashboard />} />
           <Route path="/All Patients" element={<AllPatients />} />
+          <Route path="/New Patients" element={<NewPatients />} />
+          <Route path="/All Counselors" element={<AllCounselors />} />
+          <Route path="/Add Counselors" element={<AddCounselor />} />
           <Route path="/Wellness Form" element={<WellnessFrom />} />
           <Route path="/Assignment" element={<Assignment />} />
           <Route path="/Weekly Form" element={<WeeklyForm />} />
