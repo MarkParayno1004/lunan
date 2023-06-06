@@ -111,6 +111,7 @@ export const WellnessGuide = () => {
               </Button>
             </Link>
           </div>
+          
         </div>
       </div>
     </div>

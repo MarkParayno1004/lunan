@@ -161,15 +161,31 @@ export const WellnessFrom = () => {
             Scoring: Compute the mean across responses to all four questions;
             item #4 is reverse coded.
           </p>
-          <div className="d-flex justify-content-start">
-            <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
-              <Button
-                className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                id="buttonCard"
-              >
-                Back
-              </Button>
-            </Link>
+          <div className="container-fluid mb-3">
+            <div className="row">
+              <div className="col-sm">
+                <div className="d-flex justify-content-start">
+                  <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
+                    <Button
+                      className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+                      id="buttonCard"
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="col-sm">
+                <div className="d-flex justify-content-end">
+                    <Button
+                      className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+                      id="buttonCard"
+                    >
+                      Submit
+                    </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
