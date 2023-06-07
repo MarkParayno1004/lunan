@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
 
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../css/AllPatients.css";
 
 export const NewPatients = () => {
