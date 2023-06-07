@@ -26,9 +26,11 @@ export const AllCounselors = () => {
         counselor.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleSearch = event => {
-        setSearchQuery(event.target.value);
-    };
+
+  const handleRemove = (counselorId) => {
+    // Handle remove functionality for the counselor with the given ID
+  };
+
 
     const handleEdit = counselorId => {
         // Handle edit functionality for the counselor with the given ID
@@ -121,7 +123,76 @@ export const AllCounselors = () => {
                         </Button>
                     </Link>
                 </div>
+
             </div>
+          </div>
         </div>
-    )
-}
+      </div>
+      <div className="d-flex flex-column">
+        <div className="flex-grow-1">
+          <table className="table table-dark">
+            <thead>
+              <tr>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Date Added</th>
+                <th>Patients</th>
+                <th>Edit</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCounselors.map((counselor) => (
+                <tr key={counselor.id}>
+                  <td>
+                    <img
+                      src={counselor.picture}
+                      alt={counselor.name}
+                      width="50"
+                      height="50"
+                    />
+                  </td>
+                  <td>{counselor.name}</td>
+                  <td>{counselor.dateAdded}</td>
+                  <td>{counselor.patients}</td>
+                  <td>
+                    <button onClick={() => handleEdit(counselor.id)}>
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => handleRemove(counselor.id)}>
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col mt-auto">
+          <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              id="buttonCard"
+            >
+              Back
+            </Button>
+          </Link>
+        </div>
+        <div className="col mt-auto">
+          <Link to="/Add Counselors" style={{ textDecoration: "none" }}>
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              id="buttonCard"
+            >
+              Add
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
