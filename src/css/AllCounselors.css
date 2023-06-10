@@ -29,6 +29,13 @@
   border-radius: 22px;
   color: white;
 }
+#editCounselor {
+  background: #7db97f;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+
+  color: white;
+  border: none;
+}
 .search-input {
   float: right;
   padding: 8px;

@@ -103,7 +103,10 @@ export const AllCounselors = () => {
                   <td>{counselor.dateAdded}</td>
                   <td>{counselor.patients}</td>
                   <td>
-                    <button onClick={() => handleEdit(counselor.id)}>
+                    <button
+                      id="editCounselor"
+                      onClick={() => handleEdit(counselor.id)}
+                    >
                       Edit
                     </button>
                   </td>
@@ -149,67 +152,263 @@ export const AllCounselors = () => {
 };
 
 const AddModal = (props) => {
+  const [name, setName] = useState("");
+  const [picture, setPicture] = useState(null);
+  const [contactNumber, setContactNumber] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handlePictureChange = (e) => {
+    setPicture(e.target.files[0]);
+  };
+
+  const handleContactNumberChange = (e) => {
+    setContactNumber(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (name && contactNumber && email) {
+      // Perform the submit action
+      props.handleClose();
+    } else {
+      // Show validation errors
+      if (!name) {
+        document.getElementById("NameInput").classList.add("is-invalid");
+      } else if (name) {
+        document.getElementById("NameInput").classList.remove("is-invalid");
+      }
+      if (!contactNumber) {
+        document.getElementById("ContactNumber").classList.add("is-invalid");
+      } else if (contactNumber) {
+        document.getElementById("ContactNumber").classList.remove("is-invalid");
+      }
+      if (!email) {
+        document.getElementById("EmailInput").classList.add("is-invalid");
+      } else if (contactNumber) {
+        document.getElementById("EmailInput").classList.remove("is-invalid");
+      }
+    }
+  };
+
   return (
-    <Modal show={props.show} onHide={props.handleClose}>
+    <Modal
+      className="container-fluid"
+      show={props.show}
+      onHide={props.handleClose}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Modal heading</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/*Name: */}
+        {/* Name */}
         <div>
-          <label for="NameInput" class="form-label">
+          <label htmlFor="NameInput" className="form-label">
             Name:
           </label>
         </div>
-        <div class="input-group flex-nowrap">
+        <div className="input-group flex-nowrap">
           <input
             type="text"
             id="NameInput"
-            class="form-control"
+            className="form-control"
             placeholder="Name"
+            value={name}
+            onChange={handleNameChange}
             required
           />
         </div>
 
-        {/*Picture: */}
-        <div class="mt-3">
-          <label for="formFileMultiple" class="form-label">
+        {/* Picture */}
+        <div className="mt-3">
+          <label htmlFor="formFileMultiple" className="form-label">
             Picture:
           </label>
           <input
-            class="form-control"
+            className="form-control"
             type="file"
             id="formFileMultiple"
             multiple
+            onChange={handlePictureChange}
           />
         </div>
 
-        {/*Contact Number: */}
+        {/* Contact Number */}
         <div>
-          <label for="ContactNumber" class="form-label mt-3">
+          <label htmlFor="ContactNumber" className="form-label mt-3">
             Contact Number:
           </label>
         </div>
-        <div class="input-group flex-nowrap">
-          <input type="text" class="form-control" id="ContactNumber" />
+        <div className="input-group flex-nowrap">
+          <input
+            type="text"
+            className="form-control"
+            id="ContactNumber"
+            pattern="[0-10]{11}"
+            value={contactNumber}
+            onChange={handleContactNumberChange}
+            required
+          />
         </div>
 
-        {/*Email: */}
+        {/* Email */}
         <div>
-          <label for="EmailInput" class="form-label mt-3">
+          <label htmlFor="EmailInput" className="form-label mt-3">
             Email:
           </label>
         </div>
-        <div class="input-group flex-nowrap">
-          <input type="text" class="form-control" id="EmailInput" />
+        <div className="input-group flex-nowrap">
+          <input
+            type="email"
+            className="form-control"
+            id="EmailInput"
+            value={email}
+            onChange={handleEmailChange}
+            required
+          />
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
-          Close
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+          Submit
         </Button>
-        <Button variant="primary" onClick={props.handleClose}>
-          Save Changes
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+const EditModal = (props) => {
+  const [name, setName] = useState("");
+  const [picture, setPicture] = useState(null);
+  const [contactNumber, setContactNumber] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handlePictureChange = (e) => {
+    setPicture(e.target.files[0]);
+  };
+
+  const handleContactNumberChange = (e) => {
+    setContactNumber(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (name && contactNumber && email) {
+      // Perform the submit action
+      props.handleClose();
+    } else {
+      // Show validation errors
+      if (!name) {
+        document.getElementById("NameInput").classList.add("is-invalid");
+      } else if (name) {
+        document.getElementById("NameInput").classList.remove("is-invalid");
+      }
+      if (!contactNumber) {
+        document.getElementById("ContactNumber").classList.add("is-invalid");
+      } else if (contactNumber) {
+        document.getElementById("ContactNumber").classList.remove("is-invalid");
+      }
+      if (!email) {
+        document.getElementById("EmailInput").classList.add("is-invalid");
+      } else if (contactNumber) {
+        document.getElementById("EmailInput").classList.remove("is-invalid");
+      }
+    }
+  };
+
+  return (
+    <Modal
+      className="container-fluid"
+      show={props.show}
+      onHide={props.handleClose}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Modal heading</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {/* Name */}
+        <div>
+          <label htmlFor="NameInput" className="form-label">
+            Name:
+          </label>
+        </div>
+        <div className="input-group flex-nowrap">
+          <input
+            type="text"
+            id="NameInput"
+            className="form-control"
+            placeholder="Name"
+            value={name}
+            onChange={handleNameChange}
+            required
+          />
+        </div>
+
+        {/* Picture */}
+        <div className="mt-3">
+          <label htmlFor="formFileMultiple" className="form-label">
+            Picture:
+          </label>
+          <input
+            className="form-control"
+            type="file"
+            id="formFileMultiple"
+            multiple
+            onChange={handlePictureChange}
+          />
+        </div>
+
+        {/* Contact Number */}
+        <div>
+          <label htmlFor="ContactNumber" className="form-label mt-3">
+            Contact Number:
+          </label>
+        </div>
+        <div className="input-group flex-nowrap">
+          <input
+            type="text"
+            className="form-control"
+            id="ContactNumber"
+            pattern="[0-10]{11}"
+            value={contactNumber}
+            onChange={handleContactNumberChange}
+            required
+          />
+        </div>
+
+        {/* Email */}
+        <div>
+          <label htmlFor="EmailInput" className="form-label mt-3">
+            Email:
+          </label>
+        </div>
+        <div className="input-group flex-nowrap">
+          <input
+            type="email"
+            className="form-control"
+            id="EmailInput"
+            value={email}
+            onChange={handleEmailChange}
+            required
+          />
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+          Submit
         </Button>
       </Modal.Footer>
     </Modal>
