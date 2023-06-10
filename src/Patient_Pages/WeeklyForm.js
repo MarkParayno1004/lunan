@@ -2,13 +2,42 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "../css/WeeklyForm.css";
+import { auth, firestore } from "../firebase/firebase-config";
+import { collection, addDoc } from "firebase/firestore";
+
 export const WeeklyForm = () => {
-  //! Value of radio button
   const [getRadio5, setRadio5] = useState();
   const [getRadio4, setRadio4] = useState();
   const [getRadio3, setRadio3] = useState();
   const [getRadio2, setRadio2] = useState();
   const [getRadio1, setRadio1] = useState();
+  const weeklyFormRef = collection(firestore, "WeeklyForm");
+
+  const upload = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        // User not logged in, handle this case accordingly
+        return;
+      }
+
+      const newAnswer = {
+        UID: user.uid,
+        WellnessQ1: getRadio1,
+        WellnessQ2: getRadio2,
+        WellnessQ3: getRadio3,
+        WellnessQ4: getRadio4,
+        WellnessQ5: getRadio5,
+        DateAnswered: new Date().toISOString().split("T")[0],
+      };
+      console.log("New User Data:", newAnswer);
+
+      // Add the document to Firestore
+      await addDoc(weeklyFormRef, newAnswer);
+    } catch (error) {
+      console.error("Error uploading data:", error);
+    }
+  };
   return (
     <div
       className="container-fluid d-flex justify-content-center "
@@ -740,7 +769,7 @@ export const WeeklyForm = () => {
                 <div className="d-flex justify-content-end">
                     <Button
                       className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                      id="buttonCard"
+                      id="buttonCard" onClick={upload}
                     >
                       Submit
                     </Button>
