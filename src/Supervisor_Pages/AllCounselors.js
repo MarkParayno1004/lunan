@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import "../css/AllCounselors.css";
 
 export const AllCounselors = () => {
@@ -123,7 +124,9 @@ export const AllCounselors = () => {
                     <button
                       id="removeCounselor"
                       className="rounded-5 fw-medium"
-                      onClick={() => handleRemove(counselor.id)}
+                      onClick={() => {
+                        handleRemove(counselor.id);
+                      }}
                     >
                       Remove
                     </button>
