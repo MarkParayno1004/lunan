@@ -63,15 +63,6 @@ const PendingAss = () => {
 
   const handleClose = () => {
     setShow(false);
-    return Swal.fire({
-      position: "center",
-      icon: "success",
-      background: "#7db9b6",
-      title: "Successfully Submitted",
-      color: "white",
-      showConfirmButton: false,
-      timer: 1500,
-    });
   };
   const handleShow = () => setShow(true);
 
@@ -107,6 +98,15 @@ const PendingAss = () => {
     if (file) {
       console.log("File:", file);
       // Perform further actions with the file, such as uploading to a server
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        background: "#7db9b6",
+        title: "Assignment Done!",
+        color: "white",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
       setError("Please select a file to upload.");
     }
@@ -120,8 +120,8 @@ const PendingAss = () => {
           Journal and Drawing Entry | Due: March 8, 2023
         </p>
       </button>
-      <Modal show={show} onHide={handleFile}>
-        <Modal.Body closeButton id="modalBG">
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body id="modalBG">
           <div style={{ color: "white" }}>
             <Modal.Title>Activity #1</Modal.Title>
             Journal and Drawing Entry | Due: March 8, 2023
