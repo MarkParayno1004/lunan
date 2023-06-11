@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import swal from "sweetalert";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { Form, Button } from "react-bootstrap";
 import "../css/Assignment.css";
 
@@ -63,7 +63,15 @@ const PendingAss = () => {
 
   const handleClose = () => {
     setShow(false);
-    return swal("Assignment Submitted!!");
+    return Swal.fire({
+      position: "center",
+      icon: "success",
+      background: "#7db9b6",
+      title: "Successfully Submitted",
+      color: "white",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
   const handleShow = () => setShow(true);
 
@@ -71,7 +79,7 @@ const PendingAss = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
 
-  const handleChange = (event) => {
+  const handleFile = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = [
       "image/jpeg",
@@ -112,7 +120,7 @@ const PendingAss = () => {
           Journal and Drawing Entry | Due: March 8, 2023
         </p>
       </button>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleFile}>
         <Modal.Body closeButton id="modalBG">
           <div style={{ color: "white" }}>
             <Modal.Title>Activity #1</Modal.Title>
@@ -122,7 +130,7 @@ const PendingAss = () => {
                 <Form.Control
                   type="file"
                   accept="image/*"
-                  onChange={handleChange}
+                  onChange={handleFile}
                 />
                 <Form.Text className="text-danger">{error}</Form.Text>
               </Form.Group>

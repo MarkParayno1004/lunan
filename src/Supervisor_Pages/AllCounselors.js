@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import "../css/AllCounselors.css";
 
@@ -165,49 +165,32 @@ export const AllCounselors = () => {
 };
 
 const AddModal = (props) => {
-  //! Validation
-  const [name, setName] = useState("");
-  const [picture, setPicture] = useState(null);
-  const [contactNumber, setContactNumber] = useState("");
-  const [email, setEmail] = useState("");
+  //! File Validation
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState("");
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
+  const handleFile = (event) => {
+    const selectedFile = event.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
-  const handlePictureChange = (e) => {
-    setPicture(e.target.files[0]);
-  };
-
-  const handleContactNumberChange = (e) => {
-    setContactNumber(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    if (name && contactNumber && email) {
-      // Perform the submit action
-      props.handleClose();
+    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+      setFile(selectedFile);
+      setError("");
     } else {
-      // Show validation errors
-      if (!name) {
-        document.getElementById("NameInput").classList.add("is-invalid");
-      } else {
-        document.getElementById("NameInput").classList.remove("is-invalid");
-      }
-      if (!contactNumber) {
-        document.getElementById("ContactNumber").classList.add("is-invalid");
-      } else {
-        document.getElementById("ContactNumber").classList.remove("is-invalid");
-      }
-      if (!email) {
-        document.getElementById("EmailInput").classList.add("is-invalid");
-      } else {
-        document.getElementById("EmailInput").classList.remove("is-invalid");
-      }
+      setFile(null);
+      setError("Please select a valid image file (JPEG, PNG, GIF).");
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevents the default form submission
+    //!File validation
+    // Handle file submission logic here
+    if (file) {
+      console.log("File:", file);
+      // Perform further actions with the file, such as uploading to a server
+    } else {
+      setError("Please select a file to upload.");
     }
   };
 
@@ -222,107 +205,76 @@ const AddModal = (props) => {
         <Modal.Header className="mb-3" closeButton>
           <Modal.Title>Add Counselor</Modal.Title>
         </Modal.Header>
-        {/* Name */}
-        <div>
-          <label htmlFor="NameInput" className="form-label">
-            Name:
-          </label>
-        </div>
-        <div className="input-group flex-nowrap">
-          <input
-            type="text"
-            id="NameInput"
-            className="form-control"
-            placeholder="Name"
-            value={name}
-            onChange={handleNameChange}
-            required
-          />
-        </div>
+        <Form onSubmit={handleSubmit}>
+          {/* Name */}
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" required />
+          </Form.Group>
 
-        {/* Picture */}
-        <div className="mt-3">
-          <label htmlFor="formFileMultiple" className="form-label">
-            Picture:
-          </label>
-          <input
-            className="form-control"
-            type="file"
-            id="formFileMultiple"
-            multiple
-            onChange={handlePictureChange}
-          />
-        </div>
+          {/* Picture */}
+          <Form.Group className="mt-3">
+            <Form.Control type="file" accept="image/*" onChange={handleFile} />
+            <Form.Text className="text-danger">{error}</Form.Text>
+          </Form.Group>
 
-        {/* Contact Number */}
-        <div>
-          <label htmlFor="ContactNumber" className="form-label mt-3">
-            Contact Number:
-          </label>
-        </div>
-        <div className="input-group flex-nowrap">
-          <input
-            type="text"
-            className="form-control"
-            id="ContactNumber"
-            pattern="[0-10]{11}"
-            value={contactNumber}
-            onChange={handleContactNumberChange}
-            required
-          />
-        </div>
+          {/* Contact Number */}
+          <Form.Group>
+            <Form.Label className="mt-2">Contact Number</Form.Label>
+            <Form.Control type="text" required />
+          </Form.Group>
 
-        {/* Email */}
-        <div>
-          <label htmlFor="EmailInput" className="form-label mt-3">
-            Email:
-          </label>
-        </div>
-        <div className="input-group flex-nowrap">
-          <input
-            type="email"
-            className="form-control"
-            id="EmailInput"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-        </div>
-        <Modal.Footer>
-          <Button
-            className="rounded-5 fw-medium"
-            variant="primary"
-            type="submit"
-            onClick={handleSubmit}
-            id="BtnSubmitAC"
-          >
-            Submit
-          </Button>
-        </Modal.Footer>
+          {/* Email */}
+          <Form.Group>
+            <Form.Label className="mt-2">Contact Number</Form.Label>
+            <Form.Control type="text" required />
+          </Form.Group>
+
+          <Modal.Footer>
+            <Button
+              className="rounded-5 fw-medium"
+              variant="primary"
+              type="submit"
+              id="BtnSubmitAC"
+            >
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal.Body>
     </Modal>
   );
 };
 
 const EditModal = (props) => {
-  const [editName, setEditName] = useState("");
-  const [picture, ediSetPicture] = useState(null);
+  //! File Validation
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState("");
 
-  const handleEditNameChange = (e) => {
-    setEditName(e.target.value);
+  const handleFile = (event) => {
+    const selectedFile = event.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+      setFile(selectedFile);
+      setError("");
+    } else {
+      setFile(null);
+      setError("Please select a valid image file (JPEG, PNG, GIF).");
+    }
   };
 
-  const handlePictureChange = (e) => {
-    ediSetPicture(e.target.files[0]);
-  };
-
-  const handleSubmit = () => {
-    // Perform the submit action
-    editName && props.handleClose();
-    //
-    !editName
-      ? document.getElementById("EditNameInput").classList.add("is-invalid")
-      : document.getElementById("EditNameInput").classList.remove("is-invalid");
+  //! Submit Validation
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevents the default form submission
+    //!File validation
+    // Handle file submission logic here
+    if (file) {
+      console.log("File:", file);
+      // Perform further actions with the file, such as uploading to a server
+    } else {
+      setError("Please select a file to upload.");
+    }
   };
 
   return (
@@ -336,47 +288,30 @@ const EditModal = (props) => {
         <Modal.Header className="mb-3" closeButton>
           <Modal.Title>Edit Counselor</Modal.Title>
         </Modal.Header>
-        {/* Name */}
-        <div>
-          <label htmlFor="EditNameInput" className="form-label">
-            Name:
-          </label>
-        </div>
-        <div className="input-group flex-nowrap">
-          <input
-            type="text"
-            id="EditNameInput"
-            className="form-control"
-            value={editName}
-            onChange={handleEditNameChange}
-            required
-          />
-        </div>
+        <Form onSubmit={handleSubmit}>
+          {/* Name */}
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" required />
+          </Form.Group>
 
-        {/* Picture */}
-        <div className="mt-3">
-          <label htmlFor="formFileMultiple" className="form-label">
-            Picture:
-          </label>
-          <input
-            className="form-control"
-            type="file"
-            id="formFileMultiple"
-            multiple
-            onChange={handlePictureChange}
-          />
-        </div>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            type="submit"
-            className="mt-2 rounded-5 fw-medium"
-            id="BtnSubmitAC"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        </Modal.Footer>
+          {/* Picture */}
+          <Form.Group className="mt-3">
+            <Form.Control type="file" accept="image/*" onChange={handleFile} />
+            <Form.Text className="text-danger">{error}</Form.Text>
+          </Form.Group>
+
+          <Modal.Footer className="mt-3">
+            <Button
+              variant="primary"
+              type="submit"
+              className=" rounded-5 fw-medium"
+              id="BtnSubmitAC"
+            >
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal.Body>
     </Modal>
   );
