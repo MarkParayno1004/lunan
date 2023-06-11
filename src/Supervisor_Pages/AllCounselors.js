@@ -107,7 +107,7 @@ export const AllCounselors = () => {
                   <td>{counselor.patients}</td>
                   <td>
                     <button
-                      className="rounded-5"
+                      className="rounded-5 fw-medium"
                       id="editCounselor"
                       onClick={handleShowEdit}
                     >
@@ -122,7 +122,7 @@ export const AllCounselors = () => {
                   <td>
                     <button
                       id="removeCounselor"
-                      className="rounded-5"
+                      className="rounded-5 fw-medium"
                       onClick={() => handleRemove(counselor.id)}
                     >
                       Remove
@@ -138,7 +138,7 @@ export const AllCounselors = () => {
         <div className="col mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
             <Button
-              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
               id="buttonCard"
             >
               Back
@@ -147,7 +147,7 @@ export const AllCounselors = () => {
         </div>
         <div className="col mt-auto">
           <Button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
             id="buttonCard"
             onClick={handleShowAdd}
           >
@@ -195,17 +195,17 @@ const AddModal = (props) => {
       // Show validation errors
       if (!name) {
         document.getElementById("NameInput").classList.add("is-invalid");
-      } else if (name) {
+      } else {
         document.getElementById("NameInput").classList.remove("is-invalid");
       }
       if (!contactNumber) {
         document.getElementById("ContactNumber").classList.add("is-invalid");
-      } else if (contactNumber) {
+      } else {
         document.getElementById("ContactNumber").classList.remove("is-invalid");
       }
       if (!email) {
         document.getElementById("EmailInput").classList.add("is-invalid");
-      } else if (contactNumber) {
+      } else {
         document.getElementById("EmailInput").classList.remove("is-invalid");
       }
     }
@@ -216,11 +216,12 @@ const AddModal = (props) => {
       className="container-fluid"
       show={props.show}
       onHide={props.handleClose}
+      style={{ border: "none", color: "white" }}
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Add Counselor</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <Modal.Body id="BGmodal">
+        <Modal.Header className="mb-3" closeButton>
+          <Modal.Title>Add Counselor</Modal.Title>
+        </Modal.Header>
         {/* Name */}
         <div>
           <label htmlFor="NameInput" className="form-label">
@@ -287,12 +288,18 @@ const AddModal = (props) => {
             required
           />
         </div>
+        <Modal.Footer>
+          <Button
+            className="rounded-5 fw-medium"
+            variant="primary"
+            type="submit"
+            onClick={handleSubmit}
+            id="BtnSubmitAC"
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
@@ -300,12 +307,9 @@ const AddModal = (props) => {
 const EditModal = (props) => {
   const [editName, setEditName] = useState("");
   const [picture, ediSetPicture] = useState(null);
-  const [nameError, setNameError] = useState("");
 
-  const handleNameChange = (e) => {
-    const name = e.target.value;
-    setEditName(name);
-    setNameError(name ? "" : "Name is required");
+  const handleEditNameChange = (e) => {
+    setEditName(e.target.value);
   };
 
   const handlePictureChange = (e) => {
@@ -313,10 +317,12 @@ const EditModal = (props) => {
   };
 
   const handleSubmit = () => {
-    if (editName) {
-      // Perform the submit action
-      props.handleClose();
-    }
+    // Perform the submit action
+    editName && props.handleClose();
+    //
+    !editName
+      ? document.getElementById("EditNameInput").classList.add("is-invalid")
+      : document.getElementById("EditNameInput").classList.remove("is-invalid");
   };
 
   return (
@@ -324,11 +330,12 @@ const EditModal = (props) => {
       className="container-fluid"
       show={props.show}
       onHide={props.handleClose}
+      style={{ color: "white" }}
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Counselor</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <Modal.Body id="BGmodal">
+        <Modal.Header className="mb-3" closeButton>
+          <Modal.Title>Edit Counselor</Modal.Title>
+        </Modal.Header>
         {/* Name */}
         <div>
           <label htmlFor="EditNameInput" className="form-label">
@@ -339,13 +346,11 @@ const EditModal = (props) => {
           <input
             type="text"
             id="EditNameInput"
-            className={`form-control ${nameError && "is-invalid"}`}
-            placeholder="Name"
+            className="form-control"
             value={editName}
-            onChange={handleNameChange}
+            onChange={handleEditNameChange}
             required
           />
-          {nameError && <div className="invalid-feedback">{nameError}</div>}
         </div>
 
         {/* Picture */}
@@ -361,12 +366,18 @@ const EditModal = (props) => {
             onChange={handlePictureChange}
           />
         </div>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            type="submit"
+            className="mt-2 rounded-5 fw-medium"
+            id="BtnSubmitAC"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
