@@ -15,8 +15,7 @@ import { CardNine } from "./SignUpCards/CardNine";
 import { CardTen } from "./SignUpCards/CardTen";
 import { CardEleven } from "./SignUpCards/CardEleven";
 import { CardTwelve } from "./SignUpCards/CardTwelve";
-import swal from "sweetalert";
-
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 export const SIGNUPCARD = () => {
   // Use state to keep track of the current card and form data
@@ -61,7 +60,15 @@ export const SIGNUPCARD = () => {
 
   const handleSubmit = () => {
     upload(formData); // Call the upload function with form data
-    swal("Form submitted!");
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      background: "#7db9b6",
+      title: "Successfully Submitted",
+      color: "white",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   const upload = async (data) => {

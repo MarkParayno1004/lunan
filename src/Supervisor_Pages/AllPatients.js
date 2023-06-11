@@ -64,7 +64,7 @@ export const AllPatients = () => {
         <div className="mt-auto">
           <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
             <Button
-              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
               id="buttonCard"
             >
               Back
