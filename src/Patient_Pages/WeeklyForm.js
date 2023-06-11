@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import "../css/WeeklyForm.css";
 import { auth, firestore } from "../firebase/firebase-config";
 import { collection, addDoc } from "firebase/firestore";
+import "../css/WeeklyForm.css";
+import Swal from "sweetalert2";
 
 export const WeeklyForm = () => {
   const [getRadio5, setRadio5] = useState();
@@ -37,6 +38,16 @@ export const WeeklyForm = () => {
     } catch (error) {
       console.error("Error uploading data:", error);
     }
+
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      background: "#7db9b6",
+      title: "Successfully Submitted",
+      color: "white",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
   return (
     <div
@@ -755,7 +766,10 @@ export const WeeklyForm = () => {
             <div className="row">
               <div className="col-sm">
                 <div className="d-flex justify-content-start">
-                  <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
+                  <Link
+                    to="/Patient Dashboard"
+                    style={{ textDecoration: "none" }}
+                  >
                     <Button
                       className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
                       id="buttonCard"
@@ -767,12 +781,13 @@ export const WeeklyForm = () => {
               </div>
               <div className="col-sm">
                 <div className="d-flex justify-content-end">
-                    <Button
-                      className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                      id="buttonCard" onClick={upload}
-                    >
-                      Submit
-                    </Button>
+                  <Button
+                    className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+                    id="buttonCard"
+                    onClick={upload}
+                  >
+                    Submit
+                  </Button>
                 </div>
               </div>
             </div>

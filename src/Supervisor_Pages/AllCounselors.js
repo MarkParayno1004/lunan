@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import Swal from "sweetalert2/dist/sweetalert2.js";
+import Swal from "sweetalert2";
 import "../css/AllCounselors.css";
 
 export const AllCounselors = () => {
@@ -29,6 +29,26 @@ export const AllCounselors = () => {
   );
 
   const handleRemove = (counselorId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      background: "#7db9b6",
+      color: "#FFFFFF",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted. success",
+          background: "#7db9b6",
+          color: "#FFFFFF",
+        });
+      }
+    });
     // Handle remove functionality for the counselor with the given ID
   };
 
