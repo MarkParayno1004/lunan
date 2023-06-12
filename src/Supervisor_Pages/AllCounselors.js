@@ -4,20 +4,21 @@ import { Form, Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "../css/AllCounselors.css";
-
+import "../img/ProfilePic.png"
+import ProfilePic from "../img/ProfilePic.png";
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const counselorsData = [
     {
       id: 1,
-      picture: "counselor1.jpg",
+      picture: ProfilePic,
       name: "John Doe",
       dateAdded: "2023-06-01",
       patients: 5,
     },
     {
       id: 2,
-      picture: "counselor2.jpg",
+      picture: ProfilePic,
       name: "Jane Smith",
       dateAdded: "2023-06-02",
       patients: 3,
@@ -119,8 +120,8 @@ export const AllCounselors = () => {
                     <img
                       src={counselor.picture}
                       alt={counselor.name}
-                      width="50"
-                      height="50"
+                      width="100"
+                      height="100"
                     />
                   </td>
                   <td>{counselor.name}</td>

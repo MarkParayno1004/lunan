@@ -22,6 +22,7 @@ import { AddCounselor } from "./Supervisor_Pages/AddCounselor";
 import { AllCounselors } from "./Supervisor_Pages/AllCounselors";
 import { AllPatients } from "./Supervisor_Pages/AllPatients";
 import { NewPatients } from "./Supervisor_Pages/NewPatients";
+import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
 
 function App() {
   return (
@@ -47,6 +48,8 @@ function App() {
           <Route path="/Weekly Form" element={<WeeklyForm />} />
           <Route path="/Wellness Guide" element={<WellnessGuide />} />
           <Route path="/Schedule" element={<Schedule />} />
+
+          <Route path="/Counselor Dashboard" element={<CounselorDashboard />} />
         </Routes>
       </Router>
     </div>
