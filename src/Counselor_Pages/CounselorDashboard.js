@@ -22,7 +22,7 @@ export const CounselorDashboard = () => {
                                     <div className="card-body">
                                         <img
                                         alt="View Patients"
-                                        src={wellFormLogo}
+                                        // src={wellFormLogo}
                                         className="card-img-bottom"
                                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                                         />
@@ -47,7 +47,7 @@ export const CounselorDashboard = () => {
                                     <div className="card-body">
                                         <img
                                         alt="View Patients Assignments"
-                                        src={wellFormLogo}
+                                        // src={wellFormLogo}
                                         className="card-img-bottom"
                                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                                         />
@@ -72,7 +72,7 @@ export const CounselorDashboard = () => {
                                     <div className="card-body">
                                         <img
                                         alt="Patient Weekly Forms"
-                                        src={wellFormLogo}
+                                        // src={wellFormLogo}
                                         className="card-img-bottom"
                                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                                         />
@@ -97,7 +97,7 @@ export const CounselorDashboard = () => {
                                     <div className="card-body">
                                         <img
                                         alt="Patient Wellness Forms"
-                                        src={wellFormLogo}
+                                        // src={wellFormLogo}
                                         className="card-img-bottom"
                                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                                         />
@@ -122,7 +122,7 @@ export const CounselorDashboard = () => {
                                     <div className="card-body">
                                         <img
                                         alt="Schedule"
-                                        src={wellFormLogo}
+                                        // src={wellFormLogo}
                                         className="card-img-bottom"
                                         style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
                                         />

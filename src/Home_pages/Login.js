@@ -41,10 +41,18 @@ export const Login = () => {
         if (userData.Role === 'Patient') {
           navigate("/Patient Dashboard");
           console.log('User role:', userData.Role);
-        } else if (userData.Role === 'Admin') {
-          navigate('/Supervisor Dashboard');
+        }
+        
+        else if (userData.Role === 'Counselor') {
+          navigate('/Counselor Dashboard');
           console.log('User role:', userData.Role);
-        } else {
+        } 
+
+        else if (userData.Role === 'Admin') {
+          navigate('/Supervisor Dashboard');
+          console.log('User role:', userData.Role);}
+
+          else {
           console.log('Non-existing user role');
         }
       } else {
