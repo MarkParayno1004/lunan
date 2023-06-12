@@ -101,15 +101,6 @@ export const Footer = () => {
             </p>
           </div>
         </div>
-        <div className="d-flex justify-content-center">
-          <button
-            type="button"
-            className="d-flex align-items-center d-flex justify-content-center mt-5 mb-5"
-            id="ButtonFooter"
-          >
-            Get Started
-          </button>
-        </div>
       </div>
     </footer>
   );

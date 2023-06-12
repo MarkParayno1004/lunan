@@ -23,7 +23,7 @@ import { AllCounselors } from "./Supervisor_Pages/AllCounselors";
 import { AllPatients } from "./Supervisor_Pages/AllPatients";
 import { NewPatients } from "./Supervisor_Pages/NewPatients";
 import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
-
+import { PatientList } from "./Counselor_Pages/PatientList";
 function App() {
   return (
     <div className="App">
@@ -50,6 +50,7 @@ function App() {
           <Route path="/Schedule" element={<Schedule />} />
 
           <Route path="/Counselor Dashboard" element={<CounselorDashboard />} />
+          <Route path="/Patient List" element={<PatientList />} />
         </Routes>
       </Router>
     </div>
