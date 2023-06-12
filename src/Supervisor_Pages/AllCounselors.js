@@ -433,10 +433,10 @@ const AddModal = (props) => {
             const EditModal = (props) => {
               const [file, setFile] = useState(null);
               const [error, setError] = useState("");
-              const [formData, setFormData] = useState({
-                firstName: props.counselor.firstName,
-                ProfPic: props.counselor.ProfPic
-              });
+              // const [formData, setFormData] = useState({
+              //   firstName: props.counselor.firstName,
+              //   ProfPic: props.counselor.ProfPic
+              // });
             
               const handleFile = (event) => {
                 const selectedFile = event.target.files[0];
@@ -458,12 +458,12 @@ const AddModal = (props) => {
             
                 // Update only the fields that are not null
                 const updateData = {};
-                if (formData.firstName !== "") {
-                  updateData.firstName = formData.firstName;
-                }
-                if (file !== null) {
-                  updateData.profPic = file;
-                }
+                // if (formData.firstName !== "") {
+                //   updateData.firstName = formData.firstName;
+                // }
+                // if (file !== null) {
+                //   updateData.profPic = file;
+                // }
             
                 // Update the document with the new data
                 updateDoc(userDocRef, updateData)
@@ -495,10 +495,10 @@ const AddModal = (props) => {
                         <Form.Control
                           type="text"
                           name="firstName"
-                          value={formData.firstName}
-                          onChange={(e) =>
-                            setFormData({ ...formData, firstName: e.target.value })
-                          }
+                          // value={formData.firstName}
+                          // onChange={(e) =>
+                          //   setFormData({ ...formData, firstName: e.target.value })
+                          // }
                         />
                       </Form.Group>
             
