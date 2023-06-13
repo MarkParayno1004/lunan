@@ -119,11 +119,7 @@ export const CounselorDashboard = () => {
                         </Link>
                     </div>
                 </div>
-              </div>
-            </Link>
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-};
+    )
+}
