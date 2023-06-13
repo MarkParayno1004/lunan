@@ -44,14 +44,17 @@ export const SupervisorDashboard = () => {
           {/* All Patients List */}
 
           <div className="col d-flex justify-content-end">
-
             <Link to="/All Patients" style={{ textDecoration: "none" }}>
               <div>
-                <div className="card rounded-5" style={{ width: 18 + "rem" }} id="cardBG">
+                <div
+                  className="card rounded-5"
+                  style={{ width: 18 + "rem" }}
+                  id="cardBG"
+                >
                   <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
                     All Patients List
                   </p>
-                  <div className="card-body">
+                  <div className="card-body" style={{ fontSize: 36 + "px" }}>
                     <img
                       alt="all patients"
                       src=""
@@ -68,11 +71,15 @@ export const SupervisorDashboard = () => {
           <div className="col d-flex justify-content-center">
             <Link to="/New Patients" style={{ textDecoration: "none" }}>
               <div>
-                <div className="card rounded-5" style={{ width: 18 + "rem" }} id="cardBG">
+                <div
+                  className="card rounded-5"
+                  style={{ width: 18 + "rem" }}
+                  id="cardBG"
+                >
                   <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
                     New Patients
                   </p>
-                  <div className="card-body">
+                  <div className="card-body" style={{ fontSize: 36 + "px" }}>
                     <img
                       alt="new patients"
                       src=""
@@ -88,14 +95,17 @@ export const SupervisorDashboard = () => {
           {/* All Counselors */}
 
           <div className="col d-flex justify-content-center">
-
             <Link to="/All Counselors" style={{ textDecoration: "none" }}>
               <div>
-                <div className="card rounded-5" style={{ width: 18 + "rem" }} id="cardBG">
+                <div
+                  className="card rounded-5"
+                  style={{ width: 18 + "rem" }}
+                  id="cardBG"
+                >
                   <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
                     All Counselors
                   </p>
-                  <div className="card-body">
+                  <div className="card-body" style={{ fontSize: 36 + "px" }}>
                     <img
                       alt="all counselors"
                       src=""
@@ -112,4 +122,3 @@ export const SupervisorDashboard = () => {
     </div>
   );
 };
-

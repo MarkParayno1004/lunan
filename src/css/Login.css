@@ -9,6 +9,7 @@
   background: rgba(77, 69, 93, 0.623);
   background-repeat: no-repeat;
   min-height: 100vh;
+  overflow: none;
 }
 
 #LoginButton {

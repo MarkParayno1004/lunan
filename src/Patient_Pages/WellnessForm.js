@@ -240,7 +240,10 @@ export const WellnessFrom = () => {
                     </div>
                   </div>
                   <div className="container-fluid">
-                    <p className="mt-3 d-flex justify-content-start">
+                    <p
+                      className="mt-3 d-flex justify-content-start"
+                      style={{ fontSize: 18 + "px" }}
+                    >
                       Scoring: Compute the mean across responses to all four
                       questions; item #4 is reverse coded.
                     </p>

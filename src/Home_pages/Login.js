@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { auth } from "../firebase/firebase-config";
 import "../css/Login.css";
 import lunanDark from "../img/LoginImg.png";
 import loginInputImg from "../img/LoginInputImg.png";
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [firstName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -26,40 +32,35 @@ export const Login = () => {
   const fetchUserData = async (uid) => {
     try {
       const db = getFirestore();
-      const usersCollection = collection(db, 'Users');
-      const q = query(usersCollection, where('UID', '==', uid));
+      const usersCollection = collection(db, "Users");
+      const q = query(usersCollection, where("UID", "==", uid));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const docSnapshot = querySnapshot.docs[0];
         const userData = docSnapshot.data();
         const firstName = userData.firstName;
-        console.log('User data:', userData);
-        console.log('First name:', firstName);
+        console.log("User data:", userData);
+        console.log("First name:", firstName);
         setFirstName(firstName);
 
-        if (userData.Role === 'Patient') {
+        if (userData.Role === "Patient") {
           navigate("/Patient Dashboard");
-          console.log('User role:', userData.Role);
-        }
-        
-        else if (userData.Role === 'Counselor') {
-          navigate('/Counselor Dashboard');
-          console.log('User role:', userData.Role);
-        } 
-
-        else if (userData.Role === 'Admin') {
-          navigate('/Supervisor Dashboard');
-          console.log('User role:', userData.Role);}
-
-          else {
-          console.log('Non-existing user role');
+          console.log("User role:", userData.Role);
+        } else if (userData.Role === "Counselor") {
+          navigate("/Counselor Dashboard");
+          console.log("User role:", userData.Role);
+        } else if (userData.Role === "Admin") {
+          navigate("/Supervisor Dashboard");
+          console.log("User role:", userData.Role);
+        } else {
+          console.log("Non-existing user role");
         }
       } else {
-        console.error('User data not found for email:', uid);
+        console.error("User data not found for email:", uid);
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     } finally {
       setLoading(false);
     }
@@ -69,30 +70,29 @@ export const Login = () => {
     e.preventDefault();
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log('User logged in');
-      setEmail('');
-      setPassword('');
+      console.log("User logged in");
+      setEmail("");
+      setPassword("");
       setLoggedIn(true);
       const userUid = user.uid;
-      sessionStorage.setItem('userUid', userUid);
+      sessionStorage.setItem("userUid", userUid);
     } catch (error) {
-      console.error('Error logging in:', error.message);
+      console.error("Error logging in:", error.message);
     }
   };
 
   useEffect(() => {
     if (loggedIn) {
-      const userUid = sessionStorage.getItem('userUid');
-      console.log('Retrieved user UID:', userUid);
+      const userUid = sessionStorage.getItem("userUid");
+      console.log("Retrieved user UID:", userUid);
       if (userUid) {
         setLoading(true);
         fetchUserData(userUid);
       } else {
-        console.error('Invalid user UID:', userUid);
+        console.error("Invalid user UID:", userUid);
       }
     }
   }, [loggedIn, fetchUserData]);
-  
 
   return (
     <div className="container-fluid text-center" id="loginBG">
@@ -100,9 +100,16 @@ export const Login = () => {
         <div className="col">
           <img src={lunanDark} style={{ width: "70%" }} alt="Logo" />
         </div>
-        <div className="col d-flex align-items-center justify-content-center" id="loginInput">
+        <div
+          className="col d-flex align-items-center justify-content-center"
+          id="loginInput"
+        >
           <div className="mb-5">
-            <img src={loginInputImg} style={{ width: "80%" }} alt="Login Input" />
+            <img
+              src={loginInputImg}
+              style={{ width: "80%" }}
+              alt="Login Input"
+            />
             <p style={{ color: "white", fontSize: "50px" }} className="fs-1">
               Login
             </p>
@@ -129,7 +136,15 @@ export const Login = () => {
               />
             </div>
             <div className="d-flex justify-content-end">
-              <Link to="" style={{ color: "white", textDecoration: "none" }}>
+              <Link
+                className="fw-light mt-2"
+                to=""
+                style={{
+                  color: "white",
+                  textDecoration: "none",
+                  fontSize: 18 + "px",
+                }}
+              >
                 Forgot Password
               </Link>
             </div>
