@@ -23,7 +23,10 @@ import { AllCounselors } from "./Supervisor_Pages/AllCounselors";
 import { AllPatients } from "./Supervisor_Pages/AllPatients";
 import { NewPatients } from "./Supervisor_Pages/NewPatients";
 import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
+import { ViewAssignments } from "./Counselor_Pages/ViewAssignments";
 import { PatientList } from "./Counselor_Pages/PatientList";
+import { CounselorSchedule } from "./Counselor_Pages/CounselorSchedule";
+
 function App() {
   return (
     <div className="App">
@@ -39,6 +42,7 @@ function App() {
             path="/Supervisor Dashboard"
             element={<SupervisorDashboard />}
           />
+          <Route path="Counselor Dashboard" element={<CounselorDashboard />}/>
           <Route path="/All Patients" element={<AllPatients />} />
           <Route path="/New Patients" element={<NewPatients />} />
           <Route path="/All Counselors" element={<AllCounselors />} />
@@ -48,9 +52,9 @@ function App() {
           <Route path="/Weekly Form" element={<WeeklyForm />} />
           <Route path="/Wellness Guide" element={<WellnessGuide />} />
           <Route path="/Schedule" element={<Schedule />} />
-
-          <Route path="/Counselor Dashboard" element={<CounselorDashboard />} />
-          <Route path="/Patient List" element={<PatientList />} />
+          <Route path="/View Patients Assignment" element={<ViewAssignments />}/>
+          <Route path="/View Patient List" element={<PatientList />}/>
+          <Route path="/Counselor Schedule" element={<CounselorSchedule />}/>
         </Routes>
       </Router>
     </div>

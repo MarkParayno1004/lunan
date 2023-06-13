@@ -1,8 +1,17 @@
-import React from "react";
-import "../css/ViewAssignments";
+import React, {useState} from "react";
+import Modal from "react-bootstrap/Modal";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import "../css/ViewAssignments.css";
 
 export const ViewAssignments = () => {
     const [activeTab, setActiveTab] = useState('turnedIn');
+    const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);

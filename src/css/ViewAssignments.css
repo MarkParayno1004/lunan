@@ -1,64 +1,56 @@
 #vaBG {
-    background-color: #f5e9cf;
-    min-height: 100vh;
-  }
+  background-color: #f5e9cf;
+  min-height: 90vh;
+}
 
-  #CardBG {
-    background-color: #7db9b6;
-    color: white;
-  }
+#CardBG {
+  background-color: #7db9b6;
+  color: white;
+}
 
-  .view-assignments {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  .tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    background-color: #4d455d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .tabs button.active {
-    background-color: #6b6285;
-  }
-  
-  .assignments-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .assignments-table th,
-  .assignments-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .assignments-table th {
-    background-color: #f2f2f2;
-  }
-  
-  .assignments-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .assignments-table tbody tr:hover {
-    background-color: #ebebeb;
-  }
+.view-assignments {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background-color: #4d455d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tabs button.active {
+  background-color: #6b6285;
+}
+
+#modalBG {
+  background-color: #4d455d;
+}
+
+#container-pdf {
+  background-color: #f5e9cf;
+  width: 29rem;
+  height: 20rem;
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.col {
+  margin-bottom: 10px;
+}

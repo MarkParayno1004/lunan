@@ -1,49 +1,66 @@
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import "../css/PatientList.css";
+import { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "../firebase/firebase-config";
+import "../css/AllPatients.css";
 
 export const PatientList = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  //   const filteredPatients = patientsData.filter((patient) =>
-  //     patient.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
+    const [searchQuery, setSearchQuery] = useState("");
+    const [patientsData, setPatientsData] = useState([]);
+
+  useEffect(() => {
+    const fetchPatientsData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "Users"));
+        const patients = querySnapshot.docs.map((doc) => doc.data());
+
+        console.log("Patients Data:", patients); // Log the data
+
+        setPatientsData(patients);
+      } catch (error) {
+        console.error("Error fetching patients data:", error);
+      }
+    };
+
+    fetchPatientsData();
+  }, []);
+
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  //! Modal Behaviour
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const fetchImageUrl = (imageUrl) => {
+    return imageUrl;
+  };
 
-  return (
-    <div
-      className="container-fluid d-flex justify-content-center"
-      id="patientBG"
+    return (
+        <div
+      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
+      id="cardAllPatientBG"
     >
-      <div
-        className="container-lg mt-3 mb-3 rounded-4 fw-normal"
-        id="patienCard"
-      >
-        <div>
-          {/*Header */}
-          <div className="container-fluid">
-            <div className="row mt-4">
-              <div className="col-7 d-flex justify-content-end d-flex align-items-center">
-                <h1 className="fw-normal">Patient List</h1>
-              </div>
-              <div className="col-4 d-flex justify-content-center">
-                <input
-                  type="text"
-                  placeholder="Search counselors..."
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  className="search-input rounded-5"
-                />
-              </div>
+      <div className="row">
+        <div className="col"></div>
+        <div className="col-4">
+          <h2 className="text-center mt-4 mb-4">All Patient List</h2>
+            <div className="col">
+                <div className="input-group mt-4">
+                    <input
+                    type="text"
+                    placeholder="Counselor Name..."
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    aria-describedby="search"
+                    className="w-25 form-control"
+                    />
+                    <div className="input-group-append">
+                    <span className="input-group-text" id="search">
+                        Search
+                    </span>
+                    </div>
+                </div>
             </div>
           </div>
 
@@ -75,75 +92,56 @@ export const PatientList = () => {
             <ModalPatient show={show} handleClose={handleClose} />
           </div>
         </div>
+
+        <div className="col"></div>
+      </div>
+      <div className="d-flex flex-column">
+        <div className="flex-grow-1">
+          <table className="table table-dark">
+            <thead>
+              <tr>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Date Added</th>
+                <th>Patients</th>
+              </tr>
+            </thead>
+            <tbody>
+              {patientsData.map(
+                (patient) =>
+                  patient.counselorUID && (
+                    <tr key={patient.UID}>
+                        <td>
+                            {patient.ProfPic && (
+                            <img
+                            src={fetchImageUrl(patient.ProfPic)}
+                            alt={patient.firstName}
+                            width="100"
+                            height="100"
+                            />
+                            )}
+                        </td>  
+                      <td>{patient.firstName}</td>
+                      <td>{patient.dateCreated}</td>
+                      <td>{patient.UID}</td>
+                    </tr>
+                  )
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-auto">
+          <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
+              id="buttonCard"
+            >
+              Back
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
-  );
+    );
 };
 
-const ModalPatient = (props) => {
-  const [showWellness, setWellness] = useState("");
-  return (
-    <Modal
-      className="rounded-5"
-      size="lg"
-      aria-labelledby="example-custom-modal-styling-title"
-      show={props.show}
-      onHide={props.handleClose}
-      style={{ color: "white", border: "none" }}
-    >
-      <Modal.Body className="container-lg" id="patientModalBG">
-        <Modal.Header closeButton>
-          <Modal.Title>View Patients Forms</Modal.Title>
-        </Modal.Header>
-        <div className="d-flex justify-content-center mt-3">
-          {/*Wellness Form Button Modal */}
-          <div className="me-3">
-            <Button
-              id="ButtonCard"
-              onClick={() => {
-                setWellness("WellnessForm");
-              }}
-            >
-              Wellness Form
-            </Button>
-          </div>
-
-          {/*Weekly Form Button Modal */}
-          <div>
-            <Button
-              id="ButtonCard"
-              onClick={() => {
-                setWellness("WeeklyForm");
-              }}
-            >
-              Weekly Form
-            </Button>
-          </div>
-        </div>
-
-        <div className="mt-3">
-          {showWellness === "WellnessForm" ? (
-            <TableWellForm />
-          ) : (
-            <TableWeekForm />
-          )}
-        </div>
-      </Modal.Body>
-    </Modal>
-  );
-};
-
-const TableWeekForm = () => {
-  return (
-    <div className="container-fluid d-flex justify-content-center">
-      <h1>TABLE RESULY OF WEEKLY FORM</h1>
-    </div>
-  );
-};
-const TableWellForm = () => {
-  return (
-    <div className="container-fluid d-flex justify-content-center">
-      <h5>TABLE RESULT OF WELLNESS FORM</h5>
-    </div>
-  );
-};

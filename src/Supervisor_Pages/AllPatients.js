@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import "../css/AllPatients.css";
+import { collection, getDocs, query, where, updateDoc } from "firebase/firestore";
+import { uploadBytes, ref, getDownloadURL, getMetadata, setMetadata } from "firebase/storage";
 
 export const AllPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
@@ -24,6 +25,9 @@ export const AllPatients = () => {
 
     fetchPatientsData();
   }, []);
+  const fetchImageUrl = (imageUrl) => {
+    return imageUrl;
+  };
 
   return (
     <div
@@ -42,23 +46,32 @@ export const AllPatients = () => {
           <table className="table table-dark">
             <thead>
               <tr>
+              <th scope="col">Picture</th>
                 <th scope="col">Name</th>
                 <th scope="col">Date Added</th>
                 <th scope="col">Counselor</th>
               </tr>
             </thead>
             <tbody>
-              {patientsData.map(
-                (patient) =>
-                  patient.counselorUID && (
-                    <tr key={patient.UID}>
-                      <td>{patient.firstName}</td>
-                      <td>{patient.dateCreated}</td>
-                      <td>{patient.UID}</td>
-                    </tr>
-                  )
-              )}
-            </tbody>
+  {patientsData.map(
+    (patient) =>
+      patient.counselorUID && (
+        <tr key={patient.UID}>
+          <td>
+          <img
+          src={fetchImageUrl(patient.ProfPic)}
+          alt={patient.firstName}
+          width="100"
+          height="100"
+        />
+          </td>
+          <td>{patient.firstName}</td>
+          <td>{patient.dateCreated}</td>
+          <td>{patient.UID}</td>
+        </tr>
+      )
+  )}
+</tbody>
           </table>
         </div>
         <div className="mt-auto">
