@@ -83,69 +83,51 @@ export const PatientList = () => {
 const ModalPatient = (props) => {
   const [showWellness, setWellness] = useState("");
   return (
-    // <Modal
-    //   dialogClassName="modal-90w"
-    //   aria-labelledby="example-custom-modal-styling-title"
-    //   show={props.show}
-    //   onHide={props.handleClose}
-    // >
-    //   <Modal.Body className="container-lg">
-    //     <Modal.Header closeButton>
-    //       <Modal.Title>View Patients Forms</Modal.Title>
-    //     </Modal.Header>
-    //     <div className="d-flex justify-content-center mt-3">
-    //       {/*Wellness Form Button Modal */}
-    //       <div className="me-3">
-    //         <Button
-    //           onClick={() => {
-    //             setWellness("WellnessForm");
-    //           }}
-    //         >
-    //           Wellness Form
-    //         </Button>
-    //       </div>
-
-    //       {/*Weekly Form Button Modal */}
-    //       <div>
-    //         <Button
-    //           onClick={() => {
-    //             setWellness("WeeklyForm");
-    //           }}
-    //         >
-    //           Weekly Form
-    //         </Button>
-    //       </div>
-    //     </div>
-
-    //     <div className="">
-    //       {showWellness === "WellnessForm" ? (
-    //         <TableWellForm />
-    //       ) : (
-    //         <TableWeekForm />
-    //       )}
-    //     </div>
-    //   </Modal.Body>
-    // </Modal>
     <Modal
+      className="rounded-5"
+      size="lg"
+      aria-labelledby="example-custom-modal-styling-title"
       show={props.show}
       onHide={props.handleClose}
-      dialogClassName="modal-90w"
-      aria-labelledby="example-custom-modal-styling-title"
+      style={{ color: "white", border: "none" }}
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="example-custom-modal-styling-title">
-          Custom Modal Styling
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>
-          Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae unde
-          commodi aspernatur enim, consectetur. Cumque deleniti temporibus ipsam
-          atque a dolores quisquam quisquam adipisci possimus laboriosam.
-          Quibusdam facilis doloribus debitis! Sit quasi quod accusamus eos
-          quod. Ab quos consequuntur eaque quo rem! Mollitia reiciendis porro
-          quo magni incidunt dolore amet atque facilis ipsum deleniti rem!
-        </p>
+      <Modal.Body className="container-lg" id="patientModalBG">
+        <Modal.Header closeButton>
+          <Modal.Title>View Patients Forms</Modal.Title>
+        </Modal.Header>
+        <div className="d-flex justify-content-center mt-3">
+          {/*Wellness Form Button Modal */}
+          <div className="me-3">
+            <Button
+              id="ButtonCard"
+              onClick={() => {
+                setWellness("WellnessForm");
+              }}
+            >
+              Wellness Form
+            </Button>
+          </div>
+
+          {/*Weekly Form Button Modal */}
+          <div>
+            <Button
+              id="ButtonCard"
+              onClick={() => {
+                setWellness("WeeklyForm");
+              }}
+            >
+              Weekly Form
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-3">
+          {showWellness === "WellnessForm" ? (
+            <TableWellForm />
+          ) : (
+            <TableWeekForm />
+          )}
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -153,14 +135,14 @@ const ModalPatient = (props) => {
 
 const TableWeekForm = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid d-flex justify-content-center">
       <h1>TABLE RESULY OF WEEKLY FORM</h1>
     </div>
   );
 };
 const TableWellForm = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid d-flex justify-content-center">
       <h5>TABLE RESULT OF WELLNESS FORM</h5>
     </div>
   );
