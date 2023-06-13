@@ -95,8 +95,10 @@ export const SIGNUPCARD = () => {
         MessageHome: formData.MessageHome,
         MessageCall: formData.MessageCall,
         checkEmail: formData.checkEmail,
-        UID: user.uid,
+        UID: user.uid, 
         Role: "Patient",
+        counselorUID: null,
+        ProfPic: "https://firebasestorage.googleapis.com/v0/b/lunancapstone.appspot.com/o/user_photos%2FProfilePic.png?alt=media&token=1504a2d1-169f-4dcc-b03d-70c8bfae59e4"
       };
       console.log("New User Data:", newUser);
       // Add the document to Firestore
