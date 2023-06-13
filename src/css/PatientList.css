@@ -1,0 +1,18 @@
+#patientBG {
+  background-color: #f5e9cf;
+  min-height: 100vh;
+}
+
+#patienCard {
+  background-color: #7db9b6;
+  color: white;
+}
+
+#ButtonCard {
+  background-color: #4d455d;
+  border: none;
+}
+
+#patientModalBG {
+  background-color: #7db9b6;
+}

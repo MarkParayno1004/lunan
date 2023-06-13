@@ -26,9 +26,11 @@ export const PatientList = () => {
     fetchPatientsData();
   }, []);
 
+
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
+
 
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
@@ -60,7 +62,37 @@ export const PatientList = () => {
                     </div>
                 </div>
             </div>
+          </div>
+
+          {/*Body */}
+          <div className="mt-5">
+            <Button
+              className="container-fluid d-flex justify-content-start rounded-5"
+              id="ButtonCard"
+              style={{ width: 50 + "%" }}
+              onClick={handleShow}
+            >
+              <div className="mt-1">
+                <img
+                  className="rounded-5"
+                  src="https://i.pinimg.com/564x/58/51/2e/58512eb4e598b5ea4e2414e3c115bef9.jpg"
+                  style={{ width: 100 + "px", height: 80 + "px" }}
+                />
+              </div>
+              <div>
+                <ul style={{ listStyleType: "none" }}>
+                  <li className="d-flex justify-content-start">
+                    <span className="fw-semibold fs-5">Patient A</span>
+                  </li>
+                  <li>Date Added</li>
+                  <li>Last Session</li>
+                </ul>
+              </div>
+            </Button>
+            <ModalPatient show={show} handleClose={handleClose} />
+          </div>
         </div>
+
         <div className="col"></div>
       </div>
       <div className="d-flex flex-column">
@@ -112,3 +144,4 @@ export const PatientList = () => {
     </div>
     );
 };
+
