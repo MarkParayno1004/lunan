@@ -44,7 +44,7 @@ export const SupervisorDashboard = () => {
           {/* All Patients List */}
 
           <div className="col d-flex justify-content-end">
-            <Link to="/All Patients" style={{ textDecoration: "none" }}>
+            <Link to="  " style={{ textDecoration: "none" }}>
               <div>
                 <div
                   className="card rounded-5"
