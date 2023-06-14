@@ -95,68 +95,77 @@ export const Login = () => {
   }, [loggedIn, fetchUserData]);
 
   return (
-    <div className="container-fluid text-center" id="loginBG">
-      <div className="row align-items-center">
+    <div
+      className="container-fluid text-center d-flex align-items-center"
+      id="loginBG"
+    >
+      <div className="row" id="rowHeight">
         <div className="col">
           <img src={lunanDark} style={{ width: "70%" }} alt="Logo" />
         </div>
         <div
-          className="col d-flex align-items-center justify-content-center"
+          className="col d-flex align-items-center d-flex justify-content-center"
           id="loginInput"
         >
           <div className="mb-5">
-            <img
-              src={loginInputImg}
-              style={{ width: "80%" }}
-              alt="Login Input"
-            />
+            <div className="d-flex align-items-center d-flex justify-content-center">
+              <img
+                src={loginInputImg}
+                style={{ width: "80%" }}
+                alt="Login Input"
+              />
+            </div>
+
             <p style={{ color: "white", fontSize: "50px" }} className="fs-1">
               Login
             </p>
-            <div className="input-group flex-nowrap">
-              <input
-                type="email"
-                className="form-control mt-3"
-                placeholder="Email"
-                aria-label="Email"
-                aria-describedby="addon-wrapping"
-                value={email}
-                onChange={handleEmailChange}
-              />
-            </div>
-            <div className="input-group flex-nowrap">
-              <input
-                type="password"
-                className="form-control mt-3"
-                placeholder="Password"
-                aria-label="Password"
-                aria-describedby="addon-wrapping"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </div>
-            <div className="d-flex justify-content-end">
-              <Link
-                className="fw-light mt-2"
-                to=""
-                style={{
-                  color: "white",
-                  textDecoration: "none",
-                  fontSize: 18 + "px",
-                }}
-              >
-                Forgot Password
-              </Link>
-            </div>
-            <div className="d-flex justify-content-center">
-              <button
-                onClick={handleSubmit}
-                className="d-flex align-items-center justify-content-center"
-                id="LoginButton"
-              >
-                Login
-              </button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="input-group flex-nowrap">
+                <input
+                  type="email"
+                  className="form-control mt-3"
+                  placeholder="Email"
+                  aria-label="Email"
+                  aria-describedby="addon-wrapping"
+                  value={email}
+                  onChange={handleEmailChange}
+                  required
+                />
+              </div>
+              <div className="input-group flex-nowrap">
+                <input
+                  type="password"
+                  className="form-control mt-3"
+                  placeholder="Password"
+                  aria-label="Password"
+                  aria-describedby="addon-wrapping"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  required
+                />
+              </div>
+              <div className="d-flex justify-content-end">
+                <Link
+                  className="fw-light mt-2"
+                  to=""
+                  style={{
+                    color: "white",
+                    textDecoration: "none",
+                    fontSize: 18 + "px",
+                  }}
+                >
+                  Forgot Password
+                </Link>
+              </div>
+              <div className="d-flex justify-content-center">
+                <button
+                  className="d-flex align-items-center justify-content-center"
+                  id="LoginButton"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
