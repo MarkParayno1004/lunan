@@ -1,0 +1,56 @@
+#pInfoBG {
+  background-color: #f5e9cf;
+  min-height: 100vh;
+}
+#plCardBG {
+  background-color: #7db9b6;
+  color: white;
+}
+#piBG {
+  background-color: #4d455d;
+}
+
+#backButton {
+  width: 6rem;
+  height: 3rem;
+  background: #e96479;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #ffffff;
+}
+
+#viewAssButton {
+  width: 8rem;
+  height: 3rem;
+  background: #b69e66;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #ffffff;
+}
+
+#viewcaseButton {
+  width: 8rem;
+  height: 3rem;
+  background: #7db9b6;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #ffffff;
+}
+
+#viewButton {
+  width: 8rem;
+  height: 3rem;
+  background: #7db9b6;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #ffffff;
+}
+
+#createButton {
+  width: 8rem;
+  height: 3rem;
+  background: #7db97f;
+  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #ffffff;
+}
