@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import Modal from "react-bootstrap/Modal";
-import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "../css/ViewAssignments.css";
 
@@ -29,7 +28,7 @@ export const ViewAssignments = () => {
 
     return (
         <div className="container-fluid d-flex justify-content-center" id="apBG">
-            <div className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center" id="CardBG">
+            <div className="container mt-3 mb-3 rounded-4 fw-normal justify-content-center" id="CardBG">
                 <h1 className="d-flex justify-content-center mt-3">Assignments</h1>
                 <div className="view-assignments">
                     <div className="tabs">
@@ -47,44 +46,88 @@ export const ViewAssignments = () => {
                         </button>
                     </div>
                     {activeTab === 'turnedIn' && (
-                        <table className="assignments-table">
-                        <thead>
-                            <tr>
-                            <th>Patient Name</th>
-                            <th>Date Given</th>
-                            <th>Homework Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {turnedInAssignments.map((assignment) => (
-                            <tr key={assignment.id}>
-                                <td>{assignment.patientName}</td>
-                                <td>{assignment.dateGiven}</td>
-                                <td>{assignment.homeworkName}</td>
-                            </tr>
-                            ))}
-                        </tbody>
-                        </table>
+                        <div className="d-flex justify-content-center">
+                            <div className="row">
+                                <div className="col">
+                                    <button className="rounded-2" id="buttonAssTab" onClick={handleShow}>
+                                        <h5 className="d-flex justify-content-start mt-2">Patient Name: John Doe</h5>
+                                        <p className="d-flex justify-content-start">Activity 1: Journal and Drawing Entry</p>
+                                        <p className="d-flex justify-content-start">Turned in on: March 8, 2023</p>
+                                    </button>
+                                    <Modal show={show} onHide={handleClose}>
+                                        <Modal.Body id="modalBG">
+                                            <div style={{ color: "white" }}>
+                                                <Modal.Title>Activity #1</Modal.Title>
+                                                <div id="modalContainer">
+                                                    <p style={{ color:"black" }}>
+                                                        JournalEntry.pdf
+                                                    </p>
+                                                </div>
+                                                <div className="d-flex justify-content-end mt-3">
+                                                    <Button variant="primary" type="submit" id="verifyButton">
+                                                        Verify
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </Modal.Body>
+                                    </Modal>
+                                </div>
+                                <div className="col">
+                                    <button className="rounded-2" id="buttonAssTab" onClick={handleShow}>
+                                        <h5 className="d-flex justify-content-start mt-2">Patient Name: Jane Doe</h5>
+                                        <p className="d-flex justify-content-start">Activity 1: Journal and Drawing Entry</p>
+                                        <p className="d-flex justify-content-start">Turned in on: March 10, 2023</p>
+                                    </button>
+                                    <Modal show={show} onHide={handleClose}>
+                                        <Modal.Body id="modalBG">
+                                            <div style={{ color: "white" }}>
+                                                <Modal.Title>Activity #1</Modal.Title>
+                                                <div id="modalContainer">
+                                                    <p style={{ color:"black" }}>
+                                                        JournalEntry.pdf
+                                                    </p>
+                                                </div>
+                                                <div className="d-flex justify-content-end mt-3">
+                                                    <Button variant="primary" type="submit" id="verifyButton">
+                                                        Verify
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </Modal.Body>
+                                    </Modal>
+                                </div>
+                            </div>    
+                        </div>
                     )}
                     {activeTab === 'verified' && (
-                        <table className="assignments-table">
-                        <thead>
-                            <tr>
-                            <th>Patient Name</th>
-                            <th>Date Given</th>
-                            <th>Homework Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {verifiedAssignments.map((assignment) => (
-                            <tr key={assignment.id}>
-                                <td>{assignment.patientName}</td>
-                                <td>{assignment.dateGiven}</td>
-                                <td>{assignment.homeworkName}</td>
-                            </tr>
-                            ))}
-                        </tbody>
-                        </table>
+                        <div className="d-flex justify-content-center">
+                            <div className="row">
+                                <div className="col">
+                                    <button
+                                        className="rounded-2"
+                                        id="buttonAssTab"
+                                        style={{ opacity: 80 + "%" }}
+                                        disabled
+                                    >
+                                        <h5 className="d-flex justify-content-start mt-2">Patient Name: John Doe</h5>
+                                        <p className="d-flex justify-content-start">Activity 1: Journal and Drawing Entry</p>
+                                        <p className="d-flex justify-content-start">Turned in on: March 8, 2023</p>
+                                    </button>
+                                </div>
+                                <div className="col">
+                                    <button
+                                        className="rounded-2"
+                                        id="buttonAssTab"
+                                        style={{ opacity: 80 + "%" }}
+                                        disabled
+                                    >
+                                        <h5 className="d-flex justify-content-start mt-2">Patient Name: Jane Doe</h5>
+                                        <p className="d-flex justify-content-start">Activity 1: Journal and Drawing Entry</p>
+                                        <p className="d-flex justify-content-start">Turned in on: March 10, 2023</p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     )}
                     </div>
             </div>
