@@ -83,12 +83,17 @@ export const PatientList = () => {
                     <tr key={patient.UID}>
                       <td>
                         {patient.ProfPic && (
-                          <img
-                            src={fetchImageUrl(patient.ProfPic)}
-                            alt={patient.firstName}
-                            width="100"
-                            height="100"
-                          />
+                          <Link
+                            to="/View Patient Info"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <img
+                              src={fetchImageUrl(patient.ProfPic)}
+                              alt={patient.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          </Link>
                         )}
                       </td>
                       <td>{patient.firstName}</td>
