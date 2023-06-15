@@ -27,6 +27,8 @@ import { ViewAssignments } from "./Counselor_Pages/ViewAssignments";
 import { PatientList } from "./Counselor_Pages/PatientList";
 import { CounselorSchedule } from "./Counselor_Pages/CounselorSchedule";
 import { PatientInfo } from "./Counselor_Pages/PatientInfo";
+import { ViewCaseNotes } from "./Counselor_Pages/ViewCaseNotes";
+import { CreateCaseNotes } from "./Counselor_Pages/CreateCaseNotes";
 
 function App() {
   return (
@@ -59,6 +61,8 @@ function App() {
           />
           <Route path="/View Patient List" element={<PatientList />} />
           <Route path="/View Patient Info" element={<PatientInfo />} />
+          <Route path="/View Case Notes" element={<ViewCaseNotes />} />
+          <Route path="/Create Case Notes" element={<CreateCaseNotes />} />
           <Route path="/Counselor Schedule" element={<CounselorSchedule />} />
         </Routes>
       </Router>
