@@ -38,11 +38,19 @@ h1 {
   background-color: #6b6285;
 }
 
+#buttonAssTab {
+  background-color: #4d455d;
+  height: 8rem;
+  width: 50rem;
+  color: white;
+  border: none;
+}
+
 #modalBG {
   background-color: #4d455d;
 }
 
-#container-pdf {
+#modalContainer {
   background-color: #f5e9cf;
   width: 29rem;
   height: 20rem;
@@ -53,4 +61,12 @@ h1 {
 
 .col {
   margin-bottom: 10px;
+}
+
+#submitButton {
+  background-color: #7db97f;
+  font-size: large;
+  color: #f5e9cf;
+  width: 6rem;
+  border: none;
 }
