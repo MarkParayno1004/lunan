@@ -4,11 +4,15 @@
   min-height: 100vh;
   opacity: 90%;
 }
+#rowHeight {
+  height: 100vh;
+}
 #loginInput {
   color: white;
   background: rgba(77, 69, 93, 0.623);
   background-repeat: no-repeat;
-  min-height: 100vh;
+  height: 100%;
+  overflow: auto;
 }
 
 #LoginButton {
