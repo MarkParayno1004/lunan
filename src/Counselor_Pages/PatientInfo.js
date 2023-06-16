@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
 import "../css/PatientInfo.css";
 
-export const PatientInfo = (patient) => {
+export const PatientInfo = (props) => {
   const handleBack = () => {
     // Handle back button functionality
   };
@@ -17,36 +18,37 @@ export const PatientInfo = (patient) => {
   };
 
   return (
-    <div className="container-fluid d-flex justify-content-center" id="pInfoBG">
-      <div
-        className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center"
-        id="plCardBG"
-      >
+    <Modal size="lg" show={props.show} onHide={props.handleClose}>
+      <Modal.Body>
         <div className="container-lg mt-5">
-          <h1>Patient Information</h1>
+          <Modal.Header closeButton>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              <h1>Patient Information</h1>
+            </Modal.Title>
+          </Modal.Header>
           <div className="patient-info rounded-4" id="piBG">
             <div className="row d-flex align-items-center pt-3 ps-3 patient-details">
               <div className="col-1">
                 <img
                   src={Pic}
-                  alt={patient.name}
+                  alt={props.name}
                   className="patient-picture"
                   style={{ width: 100 + "px" }}
                 />
               </div>
               <div className="col-4 ">
                 <div className="patient-text ms-3">
-                  <span>{patient.name}PatientA</span>
+                  <span>{props.name}PatientA</span>
                   <div>
                     <span>
                       <strong className="fw-normal">Date Added: </strong>
-                      {patient.dateAdded}
+                      {props.dateAdded}
                     </span>
                   </div>
                   <div>
                     <span>
                       <strong className="fw-normal">Last Session: </strong>
-                      {patient.lastSession}
+                      {props.lastSession}
                     </span>
                   </div>
                 </div>
@@ -54,7 +56,7 @@ export const PatientInfo = (patient) => {
 
               <div className="ms-4 mt-2">
                 <strong className="fw-normal">Diagnosis:</strong>
-                <p>{patient.diagnosis}</p>
+                <p>{props.diagnosis}</p>
               </div>
             </div>
             <div className="button-group d-flex justify-content-end pb-3 pe-4">
@@ -100,7 +102,7 @@ export const PatientInfo = (patient) => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 };
