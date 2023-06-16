@@ -67,13 +67,18 @@ export const PatientInfo = (patient) => {
                   Back
                 </button>
               </Link>
-              <button
-                className="me-2 rounded-5 fw-semibold"
-                onClick={handleViewCaseNotes}
-                id="viewAssButton"
+              <Link
+                to="/View Patients Assignment"
+                style={{ textDecoration: "none" }}
               >
-                View Assignment
-              </button>
+                <button
+                  className="me-2 rounded-5 fw-semibold"
+                  onClick={handleViewCaseNotes}
+                  id="viewAssButton"
+                >
+                  View Assignment
+                </button>
+              </Link>
               <Link to="/View Case Notes" style={{ textDecoration: "none" }}>
                 <button
                   className="me-2 rounded-5 fw-semibold"

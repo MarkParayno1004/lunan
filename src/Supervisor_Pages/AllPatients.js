@@ -3,8 +3,20 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { firestore } from "../firebase/firebase-config";
 import "../css/AllPatients.css";
-import { collection, getDocs, query, where, updateDoc } from "firebase/firestore";
-import { uploadBytes, ref, getDownloadURL, getMetadata, setMetadata } from "firebase/storage";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+} from "firebase/firestore";
+import {
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  getMetadata,
+  setMetadata,
+} from "firebase/storage";
 
 export const AllPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
@@ -31,7 +43,7 @@ export const AllPatients = () => {
 
   return (
     <div
-      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
+      className="container-fluid justify-content-center rounded-5 mt-5 mb-3 p-3"
       id="cardAllPatientBG"
     >
       <div className="row">
@@ -46,43 +58,33 @@ export const AllPatients = () => {
           <table className="table table-dark">
             <thead>
               <tr>
-              <th scope="col">Picture</th>
+                <th scope="col">Picture</th>
                 <th scope="col">Name</th>
                 <th scope="col">Date Added</th>
                 <th scope="col">Counselor</th>
               </tr>
             </thead>
             <tbody>
-  {patientsData.map(
-    (patient) =>
-      patient.counselorUID && (
-        <tr key={patient.UID}>
-          <td>
-          <img
-          src={fetchImageUrl(patient.ProfPic)}
-          alt={patient.firstName}
-          width="100"
-          height="100"
-        />
-          </td>
-          <td>{patient.firstName}</td>
-          <td>{patient.dateCreated}</td>
-          <td>{patient.UID}</td>
-        </tr>
-      )
-  )}
-</tbody>
+              {patientsData.map(
+                (patient) =>
+                  patient.counselorUID && (
+                    <tr key={patient.UID}>
+                      <td>
+                        <img
+                          src={fetchImageUrl(patient.ProfPic)}
+                          alt={patient.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      </td>
+                      <td>{patient.firstName}</td>
+                      <td>{patient.dateCreated}</td>
+                      <td>{patient.UID}</td>
+                    </tr>
+                  )
+              )}
+            </tbody>
           </table>
-        </div>
-        <div className="mt-auto">
-          <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-            <Button
-              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
-              id="buttonCard"
-            >
-              Back
-            </Button>
-          </Link>
         </div>
       </div>
     </div>
