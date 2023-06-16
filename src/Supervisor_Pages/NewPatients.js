@@ -2,8 +2,21 @@ import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../css/AllPatients.css";
-import { collection, getDocs, query, where, updateDoc, doc } from "firebase/firestore";
-import { uploadBytes, ref, getDownloadURL, getMetadata, setMetadata } from "firebase/storage";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import {
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  getMetadata,
+  setMetadata,
+} from "firebase/storage";
 import { firestore } from "../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -12,9 +25,11 @@ export const NewPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredPatients = patientsData.filter((patient) =>
-  patient.name && patient.name.toLowerCase().includes(searchQuery.toLowerCase())
-);
+  const filteredPatients = patientsData.filter(
+    (patient) =>
+      patient.name &&
+      patient.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -46,7 +61,7 @@ export const NewPatients = () => {
 
   return (
     <div
-      className="container-fluid justify-content-center rounded-3 mt-3 mb-3 p-3"
+      className="container-fluid justify-content-center rounded-5 mt-5 mb-3 p-3"
       id="cardAllPatientBG"
     >
       <div className="row">
@@ -85,51 +100,41 @@ export const NewPatients = () => {
               </tr>
             </thead>
             <tbody>
-  {patientsData.map(
-    (patient) =>
-      patient.counselorUID === null && (
-        <tr key={patient.UID}>
-          <td>
-            <img
-              src={fetchImageUrl(patient.ProfPic)}
-              alt={patient.firstName}
-              width="100"
-              height="100"
-            />
-          </td>
-          <td>{patient.firstName}</td>
-          <td>{patient.dateCreated}</td>
-          <td>{patient.UID}</td>
-          <td>
-            <button
-              className="rounded-5 fw-medium"
-              id="editCounselor"
-              onClick={handleShowEdit}
-            >
-              Assign
-            </button>
-            <AssignPatient
-              show={showEdit}
-              onHide={handleCloseEdit}
-              handleClose={handleCloseEdit}
-              userId={patient.UID}
-            />
-          </td>
-        </tr>
-      )
-  )}
-</tbody>
+              {patientsData.map(
+                (patient) =>
+                  patient.counselorUID === null && (
+                    <tr key={patient.UID}>
+                      <td>
+                        <img
+                          src={fetchImageUrl(patient.ProfPic)}
+                          alt={patient.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      </td>
+                      <td>{patient.firstName}</td>
+                      <td>{patient.dateCreated}</td>
+                      <td>{patient.UID}</td>
+                      <td>
+                        <button
+                          className="rounded-5 fw-medium"
+                          id="editCounselor"
+                          onClick={handleShowEdit}
+                        >
+                          Assign
+                        </button>
+                        <AssignPatient
+                          show={showEdit}
+                          onHide={handleCloseEdit}
+                          handleClose={handleCloseEdit}
+                          userId={patient.UID}
+                        />
+                      </td>
+                    </tr>
+                  )
+              )}
+            </tbody>
           </table>
-        </div>
-        <div className="mt-auto">
-          <Link to="/Supervisor Dashboard" style={{ textDecoration: "none" }}>
-            <Button
-              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
-              id="buttonCard"
-            >
-              Back
-            </Button>
-          </Link>
         </div>
       </div>
     </div>
@@ -143,20 +148,22 @@ const AssignPatient = (props) => {
     const fetchCounselors = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
+          query(
+            collection(firestore, "Users"),
+            where("Role", "==", "Counselor")
+          )
         );
         const counselorData = querySnapshot.docs.map((doc) => doc.data());
-  
+
         setCounselors(counselorData);
         console.log("User ID:", props.userId);
       } catch (error) {
         console.error("Error fetching counselors:", error);
       }
     };
-  
+
     fetchCounselors();
   }, [props.userId]);
-  
 
   const handleCounselorChange = (event) => {
     setSelectedCounselor(event.target.value);
@@ -199,7 +206,12 @@ const AssignPatient = (props) => {
           {/* Counselor */}
           <Form.Group>
             <Form.Label>Counselor</Form.Label>
-            <Form.Control as="select" name="counselor" value={selectedCounselor} onChange={handleCounselorChange}>
+            <Form.Control
+              as="select"
+              name="counselor"
+              value={selectedCounselor}
+              onChange={handleCounselorChange}
+            >
               <option value="">Select Counselor</option>
               {counselors.map((counselor) => (
                 <option key={counselor.UID} value={counselor.UID}>
@@ -210,7 +222,12 @@ const AssignPatient = (props) => {
           </Form.Group>
 
           <Modal.Footer className="mt-3">
-            <Button variant="primary" type="submit" className="rounded-5 fw-medium" id="BtnSubmitAC">
+            <Button
+              variant="primary"
+              type="submit"
+              className="rounded-5 fw-medium"
+              id="BtnSubmitAC"
+            >
               Submit
             </Button>
           </Modal.Footer>

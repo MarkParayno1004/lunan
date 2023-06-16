@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { firestore, auth } from "../firebase/firebase-config";
+import { AllPatients } from "./AllPatients";
+import { NewPatients } from "./NewPatients";
+import { AllCounselors } from "./AllCounselors";
 import "../css/SupervisorDashboard.css";
 
 export const SupervisorDashboard = () => {
@@ -32,92 +35,57 @@ export const SupervisorDashboard = () => {
     fetchAdminName();
   }, []);
 
+  const [showComponent, setComponent] = useState("");
+
   return (
-    <div className="d-flex align-items-center" id="sdBG">
-      <div className="container text-center">
-        <div className="row align-items-start">
-          {/* Welcome Message */}
-          <div className="col">
-            <h1>Welcome, {adminName}</h1>
-          </div>
-
-          {/* All Patients List */}
-
-          <div className="col d-flex justify-content-end">
-            <Link to="/View Patient List" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    All Patients List
-                  </p>
-                  <div className="card-body" style={{ fontSize: 36 + "px" }}>
-                    <img
-                      alt="all patients"
-                      src=""
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-
-          {/* New Patients */}
-          <div className="col d-flex justify-content-center">
-            <Link to="/New Patients" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    New Patients
-                  </p>
-                  <div className="card-body" style={{ fontSize: 36 + "px" }}>
-                    <img
-                      alt="new patients"
-                      src=""
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-
-          {/* All Counselors */}
-
-          <div className="col d-flex justify-content-center">
-            <Link to="/All Counselors" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    All Counselors
-                  </p>
-                  <div className="card-body" style={{ fontSize: 36 + "px" }}>
-                    <img
-                      alt="all counselors"
-                      src=""
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
+    <div className="d-flex align-items-start" id="sdBG">
+      <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarSuperVisor">
+        <span class="fs-4">
+          <h5>Welcome, {adminName}</h5>
+        </span>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li className="d-flex justify-content-start">Dashboard</li>
+          <li>
+            <button
+              id="hoverList"
+              onClick={() => {
+                setComponent("patient");
+              }}
+            >
+              All Patient List
+            </button>
+          </li>
+          <li>
+            <button
+              id="hoverList"
+              onClick={() => {
+                setComponent("Counselors");
+              }}
+            >
+              All Counselor
+            </button>
+          </li>
+          <li>
+            <button
+              id="hoverList"
+              onClick={() => {
+                setComponent("new");
+              }}
+            >
+              New Patient
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div className="container-fluid">
+        {showComponent === "patient" ? (
+          <AllPatients />
+        ) : showComponent === "Counselors" ? (
+          <AllCounselors />
+        ) : (
+          showComponent === "new" && <NewPatients />
+        )}
       </div>
     </div>
   );
