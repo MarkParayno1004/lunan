@@ -18,15 +18,15 @@ export const PatientInfo = (props) => {
   };
 
   return (
-    <Modal size="lg" show={props.show} onHide={props.handleClose}>
-      <Modal.Body>
-        <div className="container-lg mt-5">
-          <Modal.Header closeButton>
-            <Modal.Title id="example-modal-sizes-title-lg">
-              <h1>Patient Information</h1>
-            </Modal.Title>
-          </Modal.Header>
-          <div className="patient-info rounded-4" id="piBG">
+    <Modal size="lg" show={props.show} onHide={props.onHide}>
+      <Modal.Body id="piModal">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Patient Information
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-lg">
+          <div className="patient-info rounded-4 mt-3" id="piBG">
             <div className="row d-flex align-items-center pt-3 ps-3 patient-details">
               <div className="col-1">
                 <img
@@ -36,7 +36,7 @@ export const PatientInfo = (props) => {
                   style={{ width: 100 + "px" }}
                 />
               </div>
-              <div className="col-4 ">
+              <div className="col-4 ms-5">
                 <div className="patient-text ms-3">
                   <span>{props.name}PatientA</span>
                   <div>
@@ -54,21 +54,12 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              <div className="ms-4 mt-2">
+              <div className="ms-2 mt-2">
                 <strong className="fw-normal">Diagnosis:</strong>
                 <p>{props.diagnosis}</p>
               </div>
             </div>
-            <div className="button-group d-flex justify-content-end pb-3 pe-4">
-              <Link to="/View Patient List" style={{ textDecoration: "none" }}>
-                <button
-                  className="me-2 rounded-5 fw-semibold"
-                  onClick={handleBack}
-                  id="backButton"
-                >
-                  Back
-                </button>
-              </Link>
+            <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
               <Link
                 to="/View Patients Assignment"
                 style={{ textDecoration: "none" }}
@@ -76,7 +67,7 @@ export const PatientInfo = (props) => {
                 <button
                   className="me-2 rounded-5 fw-semibold"
                   onClick={handleViewCaseNotes}
-                  id="viewAssButton"
+                  id="viewButton"
                 >
                   View Assignment
                 </button>
@@ -85,16 +76,40 @@ export const PatientInfo = (props) => {
                 <button
                   className="me-2 rounded-5 fw-semibold"
                   onClick={handleViewCaseNotes}
-                  id="viewcaseButton"
+                  id="viewButton"
                 >
                   View Case Notes
+                </button>
+              </Link>
+              <Link
+                to="/Patient Weekly Form"
+                style={{ textDecoration: "none" }}
+              >
+                <button
+                  className="me-2 rounded-5 fw-semibold"
+                  onClick={handleViewCaseNotes}
+                  id="viewButton"
+                >
+                  View Weekly Form
+                </button>
+              </Link>
+              <Link
+                to="/Patient Wellness Form"
+                style={{ textDecoration: "none" }}
+              >
+                <button
+                  className="me-2 rounded-5 fw-semibold"
+                  onClick={handleViewCaseNotes}
+                  id="viewButton"
+                >
+                  View Wellness Form
                 </button>
               </Link>
               <Link to="/Create Case Notes" style={{ textDecoration: "none" }}>
                 <button
                   className="rounded-5 fw-semibold"
                   onClick={handleCreateCaseNotes}
-                  id="createButton"
+                  id="viewButton"
                 >
                   Create Case Notes
                 </button>

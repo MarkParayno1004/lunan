@@ -29,6 +29,8 @@ import { CounselorSchedule } from "./Counselor_Pages/CounselorSchedule";
 import { PatientInfo } from "./Counselor_Pages/PatientInfo";
 import { ViewCaseNotes } from "./Counselor_Pages/ViewCaseNotes";
 import { CreateCaseNotes } from "./Counselor_Pages/CreateCaseNotes";
+import { PatientWeeklyForms } from "./Counselor_Pages/PatientWeeklyForms";
+import { PatientWellnessForms } from "./Counselor_Pages/PatientWellnessForms";
 
 function App() {
   return (
@@ -64,6 +66,11 @@ function App() {
           <Route path="/View Case Notes" element={<ViewCaseNotes />} />
           <Route path="/Create Case Notes" element={<CreateCaseNotes />} />
           <Route path="/Counselor Schedule" element={<CounselorSchedule />} />
+          <Route path="/Patient Weekly Form" element={<PatientWeeklyForms />} />
+          <Route
+            path="/Patient Wellness Form"
+            element={<PatientWellnessForms />}
+          />
         </Routes>
       </Router>
     </div>
