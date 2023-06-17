@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
+import { PatientInfo } from "./PatientInfo";
 import "../css/AllPatients.css";
 
 export const PatientList = () => {
@@ -33,6 +34,12 @@ export const PatientList = () => {
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
   };
+
+  //! Modal Behaviour
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div
@@ -82,19 +89,19 @@ export const PatientList = () => {
                   patient.counselorUID && (
                     <tr key={patient.UID}>
                       <td>
-                        {patient.ProfPic && (
-                          <Link
-                            to="/View Patient Info"
-                            style={{ textDecoration: "none" }}
-                          >
+                        <button
+                          style={{ border: "none", background: "none" }}
+                          onClick={handleShow}
+                        >
+                          {patient.ProfPic && (
                             <img
                               src={fetchImageUrl(patient.ProfPic)}
                               alt={patient.firstName}
                               width="100"
                               height="100"
                             />
-                          </Link>
-                        )}
+                          )}
+                        </button>
                       </td>
                       <td>{patient.firstName}</td>
                       <td>{patient.dateCreated}</td>
@@ -116,6 +123,7 @@ export const PatientList = () => {
           </Link>
         </div>
       </div>
+      <PatientInfo show={show} onHide={handleClose} />
     </div>
   );
 };

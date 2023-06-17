@@ -6,7 +6,7 @@ import { Form, Button } from "react-bootstrap";
 import "../css/Assignment.css";
 
 export const Assignment = () => {
-  const [showAss, setAss] = useState("");
+  const [showAss, setAss] = useState("Pending");
   return (
     <div className="container-fluid d-flex justify-content-center " id="assBG">
       <div
