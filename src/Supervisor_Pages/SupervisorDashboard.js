@@ -5,7 +5,11 @@ import { firestore, auth } from "../firebase/firebase-config";
 import { AllPatients } from "./AllPatients";
 import { NewPatients } from "./NewPatients";
 import { AllCounselors } from "./AllCounselors";
+import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
+import { DefaultPageSupervisor } from "./DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 export const SupervisorDashboard = () => {
   const [adminName, setAdminName] = useState("");
@@ -35,57 +39,89 @@ export const SupervisorDashboard = () => {
     fetchAdminName();
   }, []);
 
-  const [showComponent, setComponent] = useState("");
+  const [showComponent, setComponent] = useState("default");
 
   return (
-    <div className="d-flex align-items-start" id="sdBG">
+    <div className=" d-flex align-items-start" id="sdBG">
       <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarSuperVisor">
         <span class="fs-4">
-          <h5>Welcome, {adminName}</h5>
+          <div className="d-flex justify-content-center">
+            <img src={SideLogo} style={{ width: 13 + "rem" }} />
+          </div>
+          <h5>Welcome {adminName}</h5>
         </span>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
-          <li className="d-flex justify-content-start">Dashboard</li>
-          <li>
+          <li className="d-flex justify-content-start">
             <button
               id="hoverList"
               onClick={() => {
-                setComponent("patient");
+                setComponent("default");
               }}
             >
-              All Patient List
+              Dashboard
             </button>
           </li>
-          <li>
-            <button
-              id="hoverList"
-              onClick={() => {
-                setComponent("Counselors");
-              }}
-            >
-              All Counselor
-            </button>
-          </li>
-          <li>
-            <button
-              id="hoverList"
-              onClick={() => {
-                setComponent("new");
-              }}
-            >
-              New Patient
-            </button>
-          </li>
+          <div className="ms-2 mt-1">
+            <li>
+              <button
+                id="hoverList"
+                onClick={() => {
+                  setComponent("patient");
+                }}
+              >
+                All Patient List
+              </button>
+            </li>
+            <li>
+              <button
+                id="hoverList"
+                onClick={() => {
+                  setComponent("Counselors");
+                }}
+              >
+                All Counselor
+              </button>
+            </li>
+            <li>
+              <button
+                id="hoverList"
+                onClick={() => {
+                  setComponent("new");
+                }}
+              >
+                New Patient
+              </button>
+            </li>
+          </div>
         </ul>
       </div>
       <div className="container-fluid">
-        {showComponent === "patient" ? (
+        {showComponent === "default" ? (
+          <DefaultPageSupervisor />
+        ) : showComponent === "patient" ? (
           <AllPatients />
         ) : showComponent === "Counselors" ? (
           <AllCounselors />
         ) : (
           showComponent === "new" && <NewPatients />
         )}
+      </div>
+      <div
+        className="me-5 d-flex align-items-end"
+        style={{ height: 80 + "vh" }}
+      >
+        <div>
+          <button style={{ border: "none", background: "none" }}>
+            <FontAwesomeIcon
+              className="fa-3x"
+              icon={faComment}
+              flip="horizontal"
+              color={"#4d455d"}
+              size={32}
+            />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
-#WellnessBG {
-  background-color: #f5e9cf;
-  min-height: 100vh;
+#WellBG {
+  background-color: #ffffff;
+  min-height: 92vh;
 }
 
 #WellnessForm {
-  background-color: #7db9b6;
-  color: white;
+  min-width: 50px;
+  background-color: #ffffff;
 }
 
 #SHSDescription {

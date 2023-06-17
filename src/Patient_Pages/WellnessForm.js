@@ -7,7 +7,7 @@ import Scale from "../Patient_Pages/img/wellnessScale.png";
 import Swal from "sweetalert2";
 import "../css/WellnessForm.css";
 
-export const WellnessFrom = () => {
+export const WellnessForm = () => {
   const [getRangeQ1, setRangeQ1] = useState("1");
   const [getRangeQ2, setRangeQ2] = useState("1");
   const [getRangeQ3, setRangeQ3] = useState("1");
@@ -94,10 +94,7 @@ export const WellnessFrom = () => {
   };
 
   return (
-    <div
-      className="container-fluid d-flex justify-content-center"
-      id="WellnessBG"
-    >
+    <div className="container-fluid d-flex justify-content-center" id="WellBG">
       <div
         className="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center"
         id="WellnessForm"
@@ -115,11 +112,6 @@ export const WellnessFrom = () => {
             offer brief descriptions of happy and unhappy individuals and ask
             respondents the extent to which each characterization describes
             them.
-            <br />
-            <br />
-            Lyubomirsky, S., & Lepper, H. S. (1999). A measure of subjective
-            happiness: Preliminary reliability and construct validation. Social
-            Indicators Research, 46, 137-155.
           </p>
 
           <div className="container-fluid">
@@ -239,46 +231,6 @@ export const WellnessFrom = () => {
                       {getRangeQ4Text}
                     </div>
                   </div>
-                  <div className="container-fluid">
-                    <p
-                      className="mt-3 d-flex justify-content-start"
-                      style={{ fontSize: 18 + "px" }}
-                    >
-                      Scoring: Compute the mean across responses to all four
-                      questions; item #4 is reverse coded.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="container-fluid mb-3">
-            <div className="row">
-              <div className="col-sm">
-                <div className="d-flex justify-content-start">
-                  <Link
-                    to="/Patient Dashboard"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Button
-                      className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                      id="buttonCard"
-                    >
-                      Back
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-              <div className="col-sm">
-                <div className="d-flex justify-content-end">
-                  <Button
-                    className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                    id="buttonCard"
-                    onClick={upload}
-                  >
-                    Submit
-                  </Button>
                 </div>
               </div>
             </div>
@@ -288,5 +240,3 @@ export const WellnessFrom = () => {
     </div>
   );
 };
-
-export default WellnessFrom;

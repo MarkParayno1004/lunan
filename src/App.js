@@ -12,8 +12,8 @@ import { Navbar } from "./Navbar";
 import { AboutUs } from "./Home_pages/AboutUs";
 import { SignUp } from "./Home_pages/SignUp";
 import { PatientDashboard } from "./Patient_Pages/PatientDashboard";
-import { WellnessFrom } from "./Patient_Pages/WellnessForm";
-import { Assignment } from "./Patient_Pages/Assignment";
+import { WellnessForm } from "./Patient_Pages/WellnessForm";
+import { PatientAssignment } from "./Patient_Pages/PatientAssignment";
 import { WeeklyForm } from "./Patient_Pages/WeeklyForm";
 import { WellnessGuide } from "./Patient_Pages/WellnessGuide";
 import { Schedule } from "./Patient_Pages/Schedule";
@@ -52,8 +52,8 @@ function App() {
           <Route path="/New Patients" element={<NewPatients />} />
           <Route path="/All Counselors" element={<AllCounselors />} />
           <Route path="/Add Counselors" element={<AddCounselor />} />
-          <Route path="/Wellness Form" element={<WellnessFrom />} />
-          <Route path="/Assignment" element={<Assignment />} />
+          <Route path="/WellnessForm" element={<WellnessForm />} />
+          <Route path="/Assignment" element={<PatientAssignment />} />
           <Route path="/Weekly Form" element={<WeeklyForm />} />
           <Route path="/Wellness Guide" element={<WellnessGuide />} />
           <Route path="/Schedule" element={<Schedule />} />

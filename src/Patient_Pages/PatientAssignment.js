@@ -3,9 +3,9 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { Form, Button } from "react-bootstrap";
-import "../css/Assignment.css";
+import "../css/PatientAssignment.css";
 
-export const Assignment = () => {
+export const PatientAssignment = () => {
   const [showAss, setAss] = useState("Pending");
   return (
     <div className="container-fluid d-flex justify-content-center " id="assBG">
