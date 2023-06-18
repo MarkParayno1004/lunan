@@ -1,6 +1,6 @@
 export const DefaultPageSupervisor = () => {
   return (
-    <div className="container-fluid d-flex justify-content-start">
+    <div className="container-lg d-flex justify-content-start">
       <div className="d-flex align-items-center mt-5">
         <div className="row">
           {/* Number of Patients*/}

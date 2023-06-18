@@ -64,7 +64,7 @@ export const PatientWeeklyForms = (patient) => {
             </tbody>
           </table>
           <div className="d-flex justify-content-end">
-            <Link to="/View Patient List" style={{ textDecoration: "none" }}>
+            <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
               <button
                 className="me-2 mb-2 rounded-5 fw-semibold"
                 id="casebackButton"

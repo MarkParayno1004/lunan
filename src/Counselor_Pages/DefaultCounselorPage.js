@@ -1,4 +1,4 @@
-export const DefaultPagePatient = () => {
+export const DefaultCounselorPage = () => {
   return (
     <div className="container-lg d-flex justify-content-start">
       <div className="d-flex align-items-center mt-5">
@@ -15,16 +15,14 @@ export const DefaultPagePatient = () => {
               }}
             >
               <div class="card-body">
-                <h5 class="card-title">Handling Councelor</h5>
+                <h5 class="card-title">Number of Patients</h5>
                 <h6
                   class="card-subtitle mb-2 fw-normal"
                   style={{ color: "#f5e9cf" }}
                 >
-                  Counselor Name
+                  (69)
                 </h6>
-                <p class="card-text">
-                  This is your counselor that was assigned to you.
-                </p>
+                <p class="card-text">This is the number of patients.</p>
               </div>
             </div>
           </div>

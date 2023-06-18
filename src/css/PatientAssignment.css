@@ -1,34 +1,22 @@
-#assBG {
-  background-color: #f5e9cf;
-  min-height: 100vh;
-}
-
 #AssForm {
-  background-color: #7db9b6;
-  color: white;
+  background-color: #4d455d;
+  color: #f5e9cf;
+  min-width: 90rem;
 }
 #buttonAss {
-  background-color: #4d455d;
+  background-color: #f5e9cf;
   border: none;
-  color: #ffffff;
+  color: #4d455d;
 }
 
-#buttonAssTab {
-  background-color: #4d455d;
+#buttonAssBG {
+  background-color: #f5e9cf;
   height: 6rem;
   width: 50rem;
-  color: white;
+  color: #4d455d;
   border: none;
 }
 
 #modalBG {
   background-color: #4d455d;
-}
-
-#submitButton {
-  background-color: #7db97f;
-  font-size: large;
-  color: #f5e9cf;
-  width: 6rem;
-  border: none;
 }

@@ -38,10 +38,10 @@ export const ViewAssignments = () => {
   ];
 
   return (
-    <div className="container-fluid d-flex justify-content-center" id="apBG">
+    <div className="container-fluid d-flex justify-content-center" id="AssBG">
       <div
         className="container mt-3 mb-3 rounded-4 fw-normal justify-content-center"
-        id="CardBG"
+        id="ViewAssForm"
       >
         <h1 className="d-flex justify-content-center mt-3">Assignments</h1>
         <div className="view-assignments">
@@ -181,7 +181,7 @@ export const ViewAssignments = () => {
           )}
         </div>
         <div className="d-flex justify-content-end">
-          <Link to="/View Patient List" style={{ textDecoration: "none" }}>
+          <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
             <button
               className="me-2 mb-2 rounded-5 fw-semibold"
               id="casebackButton"

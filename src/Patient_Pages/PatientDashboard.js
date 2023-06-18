@@ -17,72 +17,96 @@ import { WellnessGuide } from "./WellnessGuide";
 import { PatientAssignment } from "./PatientAssignment";
 import { Schedule } from "./Schedule";
 export const PatientDashboard = () => {
-  const [showComponent, setComponent] = useState("default");
+  const [activeComponent, setActiveComponent] = useState("default");
   return (
     <div className=" d-flex align-items-start" id="sdBG">
-      <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarSuperVisor">
+      <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarPatient">
         <div className="d-flex justify-content-center">
           <img src={SideLogo} style={{ width: 13 + "rem" }} />
         </div>
         <h5>Welcome </h5>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
-          <li className="d-flex justify-content-start">
+          <li
+            className={`d-flex justify-content-start ${
+              activeComponent === "default" ? "active" : ""
+            }`}
+          >
             <button
-              id="hoverList"
+              id="hoverPatientList"
               onClick={() => {
-                setComponent("default");
+                setActiveComponent("default");
               }}
             >
               Dashboard
             </button>
           </li>
           <div className="ms-2 mt-1">
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Wellness" ? "active" : ""
+              }`}
+            >
               <button
-                id="hoverList"
+                id="hoverPatientList"
                 onClick={() => {
-                  setComponent("Wellness");
+                  setActiveComponent("Wellness");
                 }}
               >
                 Wellness Form
               </button>
             </li>
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Weekly" ? "active" : ""
+              }`}
+            >
               <button
-                id="hoverList"
+                id="hoverPatientList"
                 onClick={() => {
-                  setComponent("Weekly");
+                  setActiveComponent("Weekly");
                 }}
               >
                 Weekly Forms
               </button>
             </li>
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Guide" ? "active" : ""
+              }`}
+            >
               <button
-                id="hoverList"
+                id="hoverPatientList"
                 onClick={() => {
-                  setComponent("Guide");
+                  setActiveComponent("Guide");
                 }}
               >
                 Wellness Guide
               </button>
             </li>
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Assignment" ? "active" : ""
+              }`}
+            >
               <button
-                id="hoverList"
+                id="hoverPatientList"
                 onClick={() => {
-                  setComponent("Assignment");
+                  setActiveComponent("Assignment");
                 }}
               >
                 Assignment
               </button>
             </li>
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Schedule" ? "active" : ""
+              }`}
+            >
               <button
-                id="hoverList"
+                id="hoverPatientList"
                 onClick={() => {
-                  setComponent("Schedule");
+                  setActiveComponent("Schedule");
                 }}
               >
                 Schedule
@@ -92,18 +116,18 @@ export const PatientDashboard = () => {
         </ul>
       </div>
       <div className="container-fluid">
-        {showComponent === "default" ? (
+        {activeComponent === "default" ? (
           <DefaultPagePatient />
-        ) : showComponent === "Wellness" ? (
+        ) : activeComponent === "Wellness" ? (
           <WellnessForm />
-        ) : showComponent === "Weekly" ? (
+        ) : activeComponent === "Weekly" ? (
           <WeeklyForm />
-        ) : showComponent === "Guide" ? (
+        ) : activeComponent === "Guide" ? (
           <WellnessGuide />
-        ) : showComponent === "Assignment" ? (
+        ) : activeComponent === "Assignment" ? (
           <PatientAssignment />
         ) : (
-          showComponent === "Schedule" && <Schedule />
+          activeComponent === "Schedule" && <Schedule />
         )}
       </div>
       <div

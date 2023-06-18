@@ -1,11 +1,10 @@
-#vaBG {
+#AssBG {
   background-color: #f5e9cf;
-  min-height: 90vh;
+  min-height: 92vh;
 }
-
-#CardBG {
+#ViewAssForm {
   background-color: #7db9b6;
-  color: white;
+  color: #ffffff;
 }
 
 .view-assignments {
@@ -42,7 +41,7 @@ h1 {
   background-color: #4d455d;
   height: 8rem;
   width: 50rem;
-  color: white;
+  color: #f5e9cf;
   border: none;
 }
 
@@ -69,4 +68,10 @@ h1 {
   color: #f5e9cf;
   width: 6rem;
   border: none;
+}
+
+#viewAssButton {
+  background-color: #f5e9cf;
+  border: none;
+  color: #4d455d;
 }

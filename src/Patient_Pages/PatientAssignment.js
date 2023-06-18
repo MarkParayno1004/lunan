@@ -8,50 +8,38 @@ import "../css/PatientAssignment.css";
 export const PatientAssignment = () => {
   const [showAss, setAss] = useState("Pending");
   return (
-    <div className="container-fluid d-flex justify-content-center " id="assBG">
-      <div
-        class="container-lg mt-3 mb-3 rounded-4 fw-normal d-flex justify-content-center"
-        id="AssForm"
-      >
-        <div>
-          <h1 className="d-flex justify-content-center mt-3">Assignment</h1>
-          <div className="d-flex justify-content-center">
-            <button
-              onClick={() => {
-                setAss("Pending");
-              }}
-              className="rounded-5 me-2"
-              id="buttonAss"
-            >
-              Pending
-            </button>
-            <button
-              className="rounded-5"
-              onClick={() => {
-                setAss("Complete");
-              }}
-              id="buttonAss"
-            >
-              Complete
-            </button>
-          </div>
-          <div className="mt-5">
-            {showAss === "Pending" ? (
-              <PendingAss />
-            ) : (
-              showAss === "Complete" && <CompleteAss />
-            )}
-          </div>
-          <div className="mt-3 d-flex align-items-end">
-            <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
-              <Button
-                className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                id="buttonCard"
-              >
-                Back
-              </Button>
-            </Link>
-          </div>
+    <div
+      className="container-lg mt-5 pb-3 rounded-4 fw-normal d-flex justify-content-center"
+      id="AssForm"
+    >
+      <div>
+        <h1 className="d-flex justify-content-center mt-3">Assignment</h1>
+        <div className="d-flex justify-content-center">
+          <button
+            onClick={() => {
+              setAss("Pending");
+            }}
+            className="rounded-5 me-2"
+            id="buttonAss"
+          >
+            Pending
+          </button>
+          <button
+            className="rounded-5"
+            onClick={() => {
+              setAss("Complete");
+            }}
+            id="buttonAss"
+          >
+            Complete
+          </button>
+        </div>
+        <div className="mt-4 mb-3">
+          {showAss === "Pending" ? (
+            <PendingAss />
+          ) : (
+            showAss === "Complete" && <CompleteAss />
+          )}
         </div>
       </div>
     </div>
@@ -113,8 +101,8 @@ const PendingAss = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center">
-      <button className="rounded-5" id="buttonAssTab" onClick={handleShow}>
+    <div className=" d-flex justify-content-center">
+      <button className="rounded-5" id="buttonAssBG" onClick={handleShow}>
         <h5 className="d-flex justify-content-start mt-2">Activity #1</h5>
         <p className="d-flex justify-content-start">
           Journal and Drawing Entry | Due: March 8, 2023
@@ -152,7 +140,7 @@ const CompleteAss = () => {
     <div className="d-flex justify-content-center">
       <button
         className="rounded-5"
-        id="buttonAssTab"
+        id="buttonAssBG"
         style={{ opacity: 80 + "%" }}
         disabled
       >

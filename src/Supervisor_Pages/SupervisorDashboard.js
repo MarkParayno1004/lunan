@@ -39,7 +39,7 @@ export const SupervisorDashboard = () => {
     fetchAdminName();
   }, []);
 
-  const [showComponent, setComponent] = useState("default");
+  const [activeComponent, setActiveComponent] = useState("default");
 
   return (
     <div className=" d-flex align-items-start" id="sdBG">
@@ -52,42 +52,58 @@ export const SupervisorDashboard = () => {
         </span>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
-          <li className="d-flex justify-content-start">
+          <li
+            className={`d-flex justify-content-start ${
+              activeComponent === "default" ? "active" : ""
+            }`}
+          >
             <button
               id="hoverList"
               onClick={() => {
-                setComponent("default");
+                setActiveComponent("default");
               }}
             >
               Dashboard
             </button>
           </li>
           <div className="ms-2 mt-1">
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "patient" ? "active" : ""
+              }`}
+            >
               <button
                 id="hoverList"
                 onClick={() => {
-                  setComponent("patient");
+                  setActiveComponent("patient");
                 }}
               >
                 All Patient List
               </button>
             </li>
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Counselors" ? "active" : ""
+              }`}
+            >
               <button
                 id="hoverList"
                 onClick={() => {
-                  setComponent("Counselors");
+                  setActiveComponent("Counselors");
                 }}
               >
                 All Counselor
               </button>
             </li>
-            <li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "new" ? "active" : ""
+              }`}
+            >
               <button
                 id="hoverList"
                 onClick={() => {
-                  setComponent("new");
+                  setActiveComponent("new");
                 }}
               >
                 New Patient
@@ -97,14 +113,14 @@ export const SupervisorDashboard = () => {
         </ul>
       </div>
       <div className="container-fluid">
-        {showComponent === "default" ? (
+        {activeComponent === "default" ? (
           <DefaultPageSupervisor />
-        ) : showComponent === "patient" ? (
+        ) : activeComponent === "patient" ? (
           <AllPatients />
-        ) : showComponent === "Counselors" ? (
+        ) : activeComponent === "Counselors" ? (
           <AllCounselors />
         ) : (
-          showComponent === "new" && <NewPatients />
+          activeComponent === "new" && <NewPatients />
         )}
       </div>
       <div
