@@ -1,22 +1,22 @@
-#WeekForm {
+#AssForm {
   background-color: #4d455d;
   color: #f5e9cf;
   min-width: 90rem;
 }
-
-#bgHeader {
+#buttonAss {
   background-color: #f5e9cf;
+  border: none;
   color: #4d455d;
 }
 
-#bgCol {
+#buttonAssBG {
   background-color: #f5e9cf;
+  height: 6rem;
+  width: 50rem;
   color: #4d455d;
-}
-.table-group-divider {
-  color: #000;
+  border: none;
 }
 
-#tableBG {
-  background-color: #7db9b6;
+#modalBG {
+  background-color: #4d455d;
 }

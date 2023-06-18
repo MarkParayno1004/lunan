@@ -1,5 +1,5 @@
 #sdBG {
-  background-color: #f5e9cf;
+  background-color: #ffffff;
   min-height: 92vh;
   overflow: hidden;
 }
@@ -12,8 +12,8 @@
 }
 
 #sideBarSuperVisor {
-  background-color: #7db9b6;
-  color: #4d455d;
+  background-color: #4d455d;
+  color: #f5e9cf;
   width: 280px;
   height: 92vh;
 }
@@ -21,9 +21,10 @@
 #hoverList {
   background: none;
   border: none;
-  color: #4d455d;
+  color: #f5e9cf;
 }
 #hoverList:hover {
-  background-color: #f5e9cf;
+  background-color: #7db9b6;
+  color: #4d455d;
   border-radius: 15px;
 }

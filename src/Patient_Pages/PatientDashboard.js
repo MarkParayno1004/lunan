@@ -1,147 +1,149 @@
 import { Link } from "react-router-dom";
 import "../css/PatientDashboard.css";
+import { useState } from "react";
 import { ModalComponent } from "./ModalComponent";
 import assLogo from "./img/Assignment.png";
 import wellFormLogo from "./img/WellnessForm.png";
 import weekFormLogo from "./img/WeeklyForms.png";
 import wellGuideLogo from "./img/WellnessGuide.png";
 import scheduleLogo from "./img/Schedule.png";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
+import { DefaultPagePatient } from "./DefaultPagePatient";
+import { WeeklyForm } from "./WeeklyForm";
+import { WellnessForm } from "./WellnessForm";
+import { WellnessGuide } from "./WellnessGuide";
+import { PatientAssignment } from "./PatientAssignment";
+import { Schedule } from "./Schedule";
 export const PatientDashboard = () => {
+  const [activeComponent, setActiveComponent] = useState("default");
   return (
-    <div className="d-flex align-items-center " id="pdBG">
-      <div className="container text-center ">
-        <div className="row align-items-start ">
-          {/* Wellness Form */}
-          <ModalComponent />
-          <div className="col d-flex justify-content-end">
-            <Link to="/Wellness Form" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    Wellness Form
-                  </p>
-                  <div className="card-body">
-                    <img
-                      alt="wellLogo"
-                      src={wellFormLogo}
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-
-          {/* Assignment */}
-          <div className="col d-flex justify-content-center">
-            <Link to="/Assignment" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    Assignment
-                  </p>
-                  <div className="card-body">
-                    <img
-                      alt="assignment"
-                      src={assLogo}
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-
-          {/* Weekly Form */}
-          <div className="col d-flex justify-content-start">
-            <Link to="/Weekly Form" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    Weekly Forms
-                  </p>
-                  <div className="card-body">
-                    <img
-                      alt="weekFormLogo"
-                      src={weekFormLogo}
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+    <div className=" d-flex align-items-start" id="sdBG">
+      <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarPatient">
+        <div className="d-flex justify-content-center">
+          <img src={SideLogo} style={{ width: 13 + "rem" }} />
         </div>
-
-        {/* Wellness Guide */}
-        <div className="row align-items-start mt-5">
-          <div className="col d-flex justify-content-end">
-            <Link to="/Wellness Guide" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <p className="card-text mt-3" style={{ fontSize: 36 + "px" }}>
-                    Wellness Guide
-                  </p>
-                  <div className="card-body">
-                    <img
-                      alt="wellGuide"
-                      src={wellGuideLogo}
-                      className="card-img-bottom"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
+        <h5>Welcome </h5>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li
+            className={`d-flex justify-content-start ${
+              activeComponent === "default" ? "active" : ""
+            }`}
+          >
+            <button
+              id="hoverPatientList"
+              onClick={() => {
+                setActiveComponent("default");
+              }}
+            >
+              Dashboard
+            </button>
+          </li>
+          <div className="ms-2 mt-1">
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Wellness" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Wellness");
+                }}
+              >
+                Wellness Form
+              </button>
+            </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Weekly" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Weekly");
+                }}
+              >
+                Weekly Forms
+              </button>
+            </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Guide" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Guide");
+                }}
+              >
+                Wellness Guide
+              </button>
+            </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Assignment" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Assignment");
+                }}
+              >
+                Assignment
+              </button>
+            </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Schedule" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Schedule");
+                }}
+              >
+                Schedule
+              </button>
+            </li>
           </div>
-
-          {/* Schedule */}
-          <div className="col d-flex justify-content-start ms-5">
-            <Link to="/Schedule" style={{ textDecoration: "none" }}>
-              <div>
-                <div
-                  className="card rounded-5"
-                  style={{ width: 18 + "rem" }}
-                  id="cardBG"
-                >
-                  <span
-                    className="card-text mt-3"
-                    style={{ fontSize: 36 + "px" }}
-                  >
-                    Schedule
-                  </span>
-                  <div className="card-body">
-                    <img
-                      alt="scheduleLogo"
-                      src={scheduleLogo}
-                      className="card-img-bottom pb-4"
-                      style={{ width: 150 + "px", paddingBottom: 10 + "px" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+        </ul>
+      </div>
+      <div className="container-fluid">
+        {activeComponent === "default" ? (
+          <DefaultPagePatient />
+        ) : activeComponent === "Wellness" ? (
+          <WellnessForm />
+        ) : activeComponent === "Weekly" ? (
+          <WeeklyForm />
+        ) : activeComponent === "Guide" ? (
+          <WellnessGuide />
+        ) : activeComponent === "Assignment" ? (
+          <PatientAssignment />
+        ) : (
+          activeComponent === "Schedule" && <Schedule />
+        )}
+      </div>
+      <div
+        className="me-5 d-flex align-items-end"
+        style={{ height: 80 + "vh" }}
+      >
+        <div>
+          <button style={{ border: "none", background: "none" }}>
+            <FontAwesomeIcon
+              className="fa-3x"
+              icon={faComment}
+              flip="horizontal"
+              color={"#4d455d"}
+              size={32}
+            />
+          </button>
         </div>
       </div>
     </div>

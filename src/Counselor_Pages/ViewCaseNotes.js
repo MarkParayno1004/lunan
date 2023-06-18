@@ -50,7 +50,7 @@ export const ViewCaseNotes = (patient) => {
             </div>
           </div>
           <div className="d-flex justify-content-end mt-2 mb-2">
-            <Link to="/View Patient List" style={{ textDecoration: "none" }}>
+            <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
               <button
                 className="me-2 rounded-5 fw-semibold"
                 id="casebackButton"

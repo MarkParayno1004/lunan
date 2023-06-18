@@ -1,11 +1,7 @@
-#WellnessBG {
-  background-color: #f5e9cf;
-  min-height: 100vh;
-}
-
 #WellnessForm {
-  background-color: #7db9b6;
-  color: white;
+  background-color: #4d455d;
+  color: #f5e9cf;
+  min-width: 90rem;
 }
 
 #SHSDescription {
@@ -15,4 +11,17 @@
 
 #slider {
   width: 100%;
+}
+
+#bgP {
+  background-color: #f5e9cf;
+  color: #4d455d;
+  width: 85rem;
+}
+
+#bgGeneral {
+  background-color: #f5e9cf;
+  color: #4d455d;
+  text-align: justify;
+  text-justify: inter-word;
 }

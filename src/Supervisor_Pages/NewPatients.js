@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "../css/AllPatients.css";
+import "../css/NewPatients.css";
 import {
   collection,
   getDocs,
@@ -61,80 +61,81 @@ export const NewPatients = () => {
 
   return (
     <div
-      className="container-fluid justify-content-center rounded-5 mt-5 mb-3 p-3"
-      id="cardAllPatientBG"
+      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
+      id="NewPatientForm"
     >
-      <div className="row">
-        <div className="col"></div>
-        <div className="col-4">
-          <h2 className="text-center mt-4 mb-4">New Patient List</h2>
-        </div>
-        <div className="col">
-          <div className="input-group mt-4">
-            <input
-              type="text"
-              placeholder="Patient Name..."
-              value={searchQuery}
-              onChange={handleSearch}
-              aria-describedby="search"
-              className="w-25 form-control"
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="search">
-                Search
-              </span>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
+            <h1 className="mt-2 ms-5 ps-5">New Patient List</h1>
+          </div>
+          <div className="col-3 col-sm-3 mb-3">
+            <div className="input-group mt-4">
+              <input
+                type="text"
+                placeholder="Patient Name..."
+                value={searchQuery}
+                onChange={handleSearch}
+                aria-describedby="search"
+                className="w-25 form-control"
+              />
+              <div className="input-group-append ">
+                <span className="input-group-text" id="search">
+                  Search
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="d-flex flex-column">
-        <div className="flex-grow-1">
-          <table className="table table-dark">
-            <thead>
-              <tr>
-                <th scope="col">Picture</th>
-                <th scope="col">Name</th>
-                <th scope="col">Date Added</th>
-                <th scope="col">Counselor</th>
-                <th scope="col">Assign Patient</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patientsData.map(
-                (patient) =>
-                  patient.counselorUID === null && (
-                    <tr key={patient.UID}>
-                      <td>
-                        <img
-                          src={fetchImageUrl(patient.ProfPic)}
-                          alt={patient.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      </td>
-                      <td>{patient.firstName}</td>
-                      <td>{patient.dateCreated}</td>
-                      <td>{patient.UID}</td>
-                      <td>
-                        <button
-                          className="rounded-5 fw-medium"
-                          id="editCounselor"
-                          onClick={handleShowEdit}
-                        >
-                          Assign
-                        </button>
-                        <AssignPatient
-                          show={showEdit}
-                          onHide={handleCloseEdit}
-                          handleClose={handleCloseEdit}
-                          userId={patient.UID}
-                        />
-                      </td>
-                    </tr>
-                  )
-              )}
-            </tbody>
-          </table>
+        <div className="d-flex flex-column">
+          <div className="flex-grow-1">
+            <table className="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Picture</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Date Added</th>
+                  <th scope="col">Counselor</th>
+                  <th scope="col">Assign Patient</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patientsData.map(
+                  (patient) =>
+                    patient.counselorUID === null && (
+                      <tr key={patient.UID}>
+                        <td>
+                          <img
+                            src={fetchImageUrl(patient.ProfPic)}
+                            alt={patient.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        </td>
+                        <td>{patient.firstName}</td>
+                        <td>{patient.dateCreated}</td>
+                        <td>{patient.UID}</td>
+                        <td>
+                          <button
+                            className="rounded-5 fw-medium"
+                            id="editCounselor"
+                            onClick={handleShowEdit}
+                          >
+                            Assign
+                          </button>
+                          <AssignPatient
+                            show={showEdit}
+                            onHide={handleCloseEdit}
+                            handleClose={handleCloseEdit}
+                            userId={patient.UID}
+                          />
+                        </td>
+                      </tr>
+                    )
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

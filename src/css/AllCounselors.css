@@ -1,11 +1,7 @@
-#acBG {
-  background-color: #f5e9cf;
-  min-height: 100vh;
-}
-
-#CardBG {
-  background-color: #7db9b6;
-  color: white;
+#counselorForm {
+  background-color: #4d455d;
+  color: #f5e9cf;
+  min-width: 90rem;
 }
 
 .search-input {
@@ -115,5 +111,6 @@ button.add-counselor:hover {
 }
 
 #BGmodal {
-  background-color: #7db9b6;
+  background-color: #4d455d;
+  color: #f5e9cf;
 }

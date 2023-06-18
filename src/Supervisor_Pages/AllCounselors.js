@@ -125,106 +125,107 @@ export const AllCounselors = () => {
 
   return (
     <div
-      className="container-lg justify-content-center rounded-5 mt-5 mb-3 p-3"
-      id="CardBG"
+      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
+      id="counselorForm"
     >
-      <div className="row">
-        <div className="col"></div>
-        <div className="col-4">
-          <h2 className="text-center mt-4 mb-4">Counsellor List</h2>
-        </div>
-        <div className="col">
-          <div className="input-group mt-4">
-            <input
-              type="text"
-              placeholder="Counselor Name..."
-              value={searchQuery}
-              onChange={handleSearch}
-              aria-describedby="search"
-              className="w-25 form-control"
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="search">
-                Search
-              </span>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
+            <h1 className="mt-2 ms-5 ps-5">Counselor List</h1>
+          </div>
+          <div className="col-3 col-sm-3 mb-3">
+            <div className="input-group mt-4">
+              <input
+                type="text"
+                placeholder="Counselor Name..."
+                value={searchQuery}
+                onChange={handleSearch}
+                aria-describedby="search"
+                className="w-25 form-control"
+              />
+              <div className="input-group-append">
+                <span className="input-group-text" id="search">
+                  Search
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="d-flex flex-column">
-        <div className="flex-grow-1">
-          <table className="table table-dark">
-            <thead>
-              <tr>
-                <th>Picture</th>
-                <th>Name</th>
-                <th>Date Added</th>
-                <th>Patients</th>
-                <th>Edit</th>
-                <th>Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              {counselorData.map((counselor) => (
-                <tr key={counselor.UID}>
-                  <td>
-                    {counselor.ProfPic && (
-                      <img
-                        src={fetchImageUrl(counselor.ProfPic)}
-                        alt={counselor.firstName}
-                        width="100"
-                        height="100"
-                      />
-                    )}
-                  </td>
-                  <td>{counselor.firstName}</td>
-                  <td>{counselor.dateCreated}</td>
-                  <td>{counselor.patients}</td>
-                  <td>
-                    <button
-                      className="rounded-5 fw-medium"
-                      id="editCounselor"
-                      onClick={handleShowEdit}
-                    >
-                      Edit
-                    </button>
-                    <EditModal
-                      show={showEdit}
-                      onHide={handleCloseEdit}
-                      handleClose={handleCloseEdit}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      id="removeCounselor"
-                      className="rounded-5 fw-medium"
-                      onClick={() => {
-                        handleRemove(counselor.UID);
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </td>
+        <div className="d-flex flex-column">
+          <div className="flex-grow-1">
+            <table className="table table-dark">
+              <thead>
+                <tr>
+                  <th>Picture</th>
+                  <th>Name</th>
+                  <th>Date Added</th>
+                  <th>Patients</th>
+                  <th>Edit</th>
+                  <th>Remove</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {counselorData.map((counselor) => (
+                  <tr key={counselor.UID}>
+                    <td>
+                      {counselor.ProfPic && (
+                        <img
+                          src={fetchImageUrl(counselor.ProfPic)}
+                          alt={counselor.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      )}
+                    </td>
+                    <td>{counselor.firstName}</td>
+                    <td>{counselor.dateCreated}</td>
+                    <td>{counselor.patients}</td>
+                    <td>
+                      <button
+                        className="rounded-5 fw-medium"
+                        id="editCounselor"
+                        onClick={handleShowEdit}
+                      >
+                        Edit
+                      </button>
+                      <EditModal
+                        show={showEdit}
+                        onHide={handleCloseEdit}
+                        handleClose={handleCloseEdit}
+                      />
+                    </td>
+                    <td>
+                      <button
+                        id="removeCounselor"
+                        className="rounded-5 fw-medium"
+                        onClick={() => {
+                          handleRemove(counselor.UID);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col mt-auto d-flex justify-content-end">
-          <Button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
-            id="buttonCard"
-            onClick={handleShowAdd}
-          >
-            Add
-          </Button>
-          <AddModal
-            show={showAdd}
-            onHide={handleCloseAdd}
-            handleClose={handleCloseAdd}
-          />
+        <div className="row">
+          <div className="col mt-auto d-flex justify-content-end">
+            <Button
+              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
+              id="buttonCard"
+              onClick={handleShowAdd}
+            >
+              Add
+            </Button>
+            <AddModal
+              show={showAdd}
+              onHide={handleCloseAdd}
+              handleClose={handleCloseAdd}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -423,7 +424,7 @@ const AddModal = (props) => {
             />
           </Form.Group>
 
-          <Modal.Footer>
+          <Modal.Footer className="mt-3">
             <Button
               className="rounded-5 fw-medium"
               variant="primary"

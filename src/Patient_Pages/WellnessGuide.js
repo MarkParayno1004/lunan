@@ -4,11 +4,11 @@ import "../css/WellnessGuide.css";
 export const WellnessGuide = () => {
   return (
     <div
-      className="container-fluid d-flex justify-content-center"
+      className="container-fluid d-flex justify-content-center mt-4 pb-3 rounded-5"
       id="WellnessGuideBG"
     >
-      <div className="mt-5">
-        <div class="container-fluid text-center">
+      <div className=" mt-5">
+        <div class="text-center">
           <div class="row align-items-start ">
             <div class="col me-5 mb-5">
               <div class="card rounded-5">
@@ -101,17 +101,6 @@ export const WellnessGuide = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3 d-flex align-items-end">
-            <Link to="/Patient Dashboard" style={{ textDecoration: "none" }}>
-              <Button
-                className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-                id="WellnessButton"
-              >
-                Back
-              </Button>
-            </Link>
-          </div>
-          
         </div>
       </div>
     </div>

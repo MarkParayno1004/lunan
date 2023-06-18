@@ -1,15 +1,5 @@
-body {
-  background-color: #f5e9cf;
-  height: 100vh;
-}
-
-#cardAllPatientBG {
-  background-color: #7db9b6;
-  color: whitesmoke;
-  height: 80vh;
-  width: 60vw;
-}
-
-#columnSize {
-  height: 60px;
+#AllPatientForm {
+  background-color: #4d455d;
+  color: #f5e9cf;
+  min-width: 90rem;
 }

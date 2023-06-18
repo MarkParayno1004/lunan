@@ -43,48 +43,50 @@ export const AllPatients = () => {
 
   return (
     <div
-      className="container-fluid justify-content-center rounded-5 mt-5 mb-3 p-3"
-      id="cardAllPatientBG"
+      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
+      id="AllPatientForm"
     >
-      <div className="row">
-        <div className="col"></div>
-        <div className="col-4">
-          <h2 className="text-center mt-4 mb-4">All Patient List</h2>
+      <div className="container-fluid ">
+        <div className="row">
+          <div className="col"></div>
+          <div className="col-4">
+            <h2 className="text-center mt-4 mb-4">All Patient List</h2>
+          </div>
+          <div className="col"></div>
         </div>
-        <div className="col"></div>
-      </div>
-      <div className="d-flex flex-column">
-        <div className="flex-grow-1">
-          <table className="table table-dark">
-            <thead>
-              <tr>
-                <th scope="col">Picture</th>
-                <th scope="col">Name</th>
-                <th scope="col">Date Added</th>
-                <th scope="col">Counselor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patientsData.map(
-                (patient) =>
-                  patient.counselorUID && (
-                    <tr key={patient.UID}>
-                      <td>
-                        <img
-                          src={fetchImageUrl(patient.ProfPic)}
-                          alt={patient.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      </td>
-                      <td>{patient.firstName}</td>
-                      <td>{patient.dateCreated}</td>
-                      <td>{patient.UID}</td>
-                    </tr>
-                  )
-              )}
-            </tbody>
-          </table>
+        <div className="d-flex flex-column">
+          <div className="flex-grow-1">
+            <table className="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Picture</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Date Added</th>
+                  <th scope="col">Counselor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patientsData.map(
+                  (patient) =>
+                    patient.counselorUID && (
+                      <tr key={patient.UID}>
+                        <td>
+                          <img
+                            src={fetchImageUrl(patient.ProfPic)}
+                            alt={patient.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        </td>
+                        <td>{patient.firstName}</td>
+                        <td>{patient.dateCreated}</td>
+                        <td>{patient.UID}</td>
+                      </tr>
+                    )
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
