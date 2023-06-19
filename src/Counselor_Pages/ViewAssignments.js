@@ -37,6 +37,11 @@ export const ViewAssignments = () => {
     // Add more verified assignments
   ];
 
+  //! Create Assignment Modal Behavior
+  const [showCreate, setShowCreate] = useState(false);
+
+  const handleCloseCreate = () => setShowCreate(false);
+  const handleShowCreate = () => setShowCreate(true);
   return (
     <div className="container-fluid d-flex justify-content-center" id="AssBG">
       <div
@@ -181,6 +186,15 @@ export const ViewAssignments = () => {
           )}
         </div>
         <div className="d-flex justify-content-end">
+          <button
+            className="me-2 mb-2 rounded-5 fw-semibold"
+            id="casebackButton"
+            onClick={handleShowCreate}
+          >
+            Create Assignment
+          </button>
+          <CreateModal show={showCreate} handleClose={handleCloseCreate} />
+
           <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
             <button
               className="me-2 mb-2 rounded-5 fw-semibold"
@@ -192,5 +206,34 @@ export const ViewAssignments = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CreateModal = (props) => {
+  return (
+    <Modal show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#7db9b6", color: "#FFFFFF" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Assignment</Modal.Title>
+        </Modal.Header>
+        <div class="input-group mb-3 mt-3">
+          <span class="input-group-text" id="basic-addon1">
+            New Activity
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="New Activity"
+            aria-label="NewAct"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <Modal.Footer>
+          <Button variant="primary" onClick={props.handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal.Body>
+    </Modal>
   );
 };

@@ -18,17 +18,23 @@ export const PatientInfo = (props) => {
   };
 
   return (
-    <Modal size="lg" show={props.show} onHide={props.onHide}>
+    <Modal
+      dialogClassName="modal-90w"
+      size="xl"
+      aria-labelledby="example-custom-modal-styling-title"
+      show={props.show}
+      onHide={props.onHide}
+    >
       <Modal.Body id="piModal">
         <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">
+          <Modal.Title id="example-custom-modal-styling-title">
             Patient Information
           </Modal.Title>
         </Modal.Header>
-        <div className="container-lg">
-          <div className="patient-info rounded-4 mt-3" id="piBG">
-            <div className="row d-flex align-items-center pt-3 ps-3 patient-details">
-              <div className="col-1">
+        <div className="container-fluid">
+          <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
+            <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
+              <div className="col-1 ">
                 <img
                   src={Pic}
                   alt={props.name}
@@ -36,8 +42,11 @@ export const PatientInfo = (props) => {
                   style={{ width: 100 + "px" }}
                 />
               </div>
-              <div className="col ms-3">
-                <div className="container-fluid patient-text ms-3">
+              <div
+                className="col-8 ms-5 d-flex justify-content-center rounded-5"
+                id="colBG"
+              >
+                <div className="container-fluid patient-text">
                   {/*1st Row */}
                   <div className="row">
                     <div className="col">
@@ -71,10 +80,15 @@ export const PatientInfo = (props) => {
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div
+              className="container-fluid rounded-5 mt-3 pt-2 pb-2 pe-4"
+              id="colBG"
+            >
               {/*3rd Row */}
-              <div className="row ms-2 mt-2">
-                <div className="col">
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col ">
                   <strong>Cell Phone Number: </strong>
                   <span style={{ color: "red" }}>{props.cellPhoneNum}</span>
                 </div>
@@ -88,8 +102,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*4th Row */}
-              <div className="row ms-2 mt-2">
+              {/*4th Row  pt-2 pb-2*/}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Sexual Preference: </strong>
                   <span style={{ color: "red" }}>{props.sexualPref}</span>
@@ -104,8 +118,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*5th Row */}
-              <div className="row ms-2 mt-2">
+              {/*5th Row  pt-2 pb-2*/}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Current prescribed psychiatric medications:</strong>
                   <span style={{ color: "red" }}>
@@ -126,8 +140,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*6th Row */}
-              <div className="row ms-2 mt-2">
+              {/*6th Row  pt-2 pb-2*/}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Suicidal thoughts: </strong>
                   <span style={{ color: "red" }}>{props.suicidalThoughts}</span>
@@ -146,8 +160,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*7th Row */}
-              <div className="row ms-2 mt-2">
+              {/*7th Row  pt-2 pb-2*/}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Previous homicidal thoughts: </strong>
                   <span style={{ color: "red" }}>{props.prevHomiThoughts}</span>
@@ -162,8 +176,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*8th Row */}
-              <div className="row ms-2 mt-2">
+              {/*8th Row  pt-2 pb-2*/}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>List of chronic health problem: </strong>
                   <span style={{ color: "red" }}>
@@ -180,8 +194,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*9th Row */}
-              <div className="row ms-2 mt-2">
+              {/*9th Row  pt-2 pb-2*/}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Regular intake of alcohol: </strong>
                   <span style={{ color: "red" }}>
@@ -200,8 +214,8 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*10th Row */}
-              <div className="row ms-2 mt-2">
+              {/*10th Row pt-2 pb-2 */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Any past head injury: </strong>
                   <span style={{ color: "red" }}>{props.headInjury}</span>
@@ -211,10 +225,40 @@ export const PatientInfo = (props) => {
                   <span style={{ color: "red" }}>{props.changesStressors}</span>
                 </div>
                 <div className="col">
-                  <strong>Habit of smoke: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.habitSmoke} # of cigar per day
-                  </span>
+                  <strong>Depressed Mood or Sadness: </strong>
+                  <span style={{ color: "red" }}>{props.DepressSad}</span>
+                </div>
+              </div>
+
+              {/*11th Row pt-2 pb-2 */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Axiety: </strong>
+                  <span style={{ color: "red" }}>{props.anxiety}</span>
+                </div>
+                <div className="col">
+                  <strong>Phobias: </strong>
+                  <span style={{ color: "red" }}>{props.phobias}</span>
+                </div>
+                <div className="col">
+                  <strong>Hallucinations: </strong>
+                  <span style={{ color: "red" }}>{props.hallucinations}</span>
+                </div>
+              </div>
+
+              {/*12th Row */}
+              <div className="row ms-2 mt-2">
+                <div className="col">
+                  <strong>Sexual Abuse: </strong>
+                  <span style={{ color: "red" }}>{props.sexualAbuse}</span>
+                </div>
+                <div className="col">
+                  <strong>Physical Abuse: </strong>
+                  <span style={{ color: "red" }}>{props.phyAbuse}</span>
+                </div>
+                <div className="col">
+                  <strong>Emotional Abuse: </strong>
+                  <span style={{ color: "red" }}>{props.emotionalAbuse}</span>
                 </div>
               </div>
             </div>

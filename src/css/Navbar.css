@@ -1,7 +1,7 @@
 #navbar {
-  background-color: #7db9b6;
+  background-color: #f5e9cf;
 }
 #navFocus:hover {
-  background-color: #f5e9cf;
+  background-color: #7db9b6;
   border-radius: 15px;
 }
