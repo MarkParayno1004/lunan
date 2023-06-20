@@ -93,6 +93,17 @@ export const WellnessForm = () => {
     }
   };
 
+  const handleSubmit = () => {
+    Swal.fire({
+      position: "center",
+      background: "#4d455d",
+      color: "#f5e9cf",
+      icon: "success",
+      title: "Your answer has been submited",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
   return (
     <div
       className="container-lg mt-5 pt-3 pb-4 ps-4 pe-3 rounded-4 fw-normal d-flex justify-content-center"
@@ -221,6 +232,15 @@ export const WellnessForm = () => {
                   />
                 </div>
               </div>
+            </div>
+            <div className="d-flex justify-content-end mt-3 ms-2">
+              <button
+                className="btn rounded-5 fs-5"
+                style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>

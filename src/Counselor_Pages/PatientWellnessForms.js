@@ -31,7 +31,7 @@ export const PatientWellnessForms = (patient) => {
             <div className="col d-flext justify-content-center d-flex align-items-center">
               <input
                 type="text"
-                placeholder="Search counselors..."
+                placeholder="Search Date:"
                 value={searchQuery}
                 onChange={handleSearch}
                 className="search-input"
