@@ -230,7 +230,7 @@ class PatientScheduler extends React.Component {
               showCloseButton
               showOpenButton
             />
-            <AppointmentForm readOnly/>
+            <AppointmentForm />
           </Scheduler>
         </Paper>
       </div>
