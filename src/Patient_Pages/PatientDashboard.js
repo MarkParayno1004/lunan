@@ -16,6 +16,8 @@ import { WellnessForm } from "./WellnessForm";
 import { WellnessGuide } from "./WellnessGuide";
 import { PatientAssignment } from "./PatientAssignment";
 import PatientScheduler from "./PatientScheduler";
+import { PatientProfile } from "./PatientProfile";
+
 export const PatientDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("default");
   return (
@@ -112,6 +114,20 @@ export const PatientDashboard = () => {
                 Schedule
               </button>
             </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Profile" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Profile");
+                }}
+              >
+                Profile
+              </button>
+            </li>
           </div>
         </ul>
         <div className="d-flex justify-content-start">
@@ -136,9 +152,10 @@ export const PatientDashboard = () => {
           <WellnessGuide />
         ) : activeComponent === "Assignment" ? (
           <PatientAssignment />
-        ) : (
-          activeComponent === "Schedule" && <PatientScheduler />
-        )}
+        ) : activeComponent === "Profile" ? (
+          <PatientProfile />
+        ) : activeComponent === "Schedule" && <PatientScheduler />
+        }
       </div>
       <div
         className="me-5 d-flex align-items-end"

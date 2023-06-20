@@ -11,6 +11,7 @@ import "../css/SupervisorDashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import SupervisorScheduler from "./SupervisorScheduler";
+import { SupervisorProfile } from "./SupervisorProfile";
 
 export const SupervisorDashboard = () => {
   const [adminName, setAdminName] = useState("");
@@ -124,6 +125,20 @@ export const SupervisorDashboard = () => {
                 Scheduler
               </button>
             </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "schedule" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverList"
+                onClick={() => {
+                  setActiveComponent("Profile");
+                }}
+              >
+                Profile
+              </button>
+            </li>
           </div>
         </ul>
         <div className="d-flex justify-content-start">
@@ -148,6 +163,8 @@ export const SupervisorDashboard = () => {
           <NewPatients />
         ) : activeComponent === "schedule" ? (
           <SupervisorScheduler />
+        ) : activeComponent === "Profile" ? (
+          <SupervisorProfile />
         ) : null}
       </div>
       <div

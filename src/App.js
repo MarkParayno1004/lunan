@@ -15,7 +15,6 @@ import { WellnessForm } from "./Patient_Pages/WellnessForm";
 import { PatientAssignment } from "./Patient_Pages/PatientAssignment";
 import { WeeklyForm } from "./Patient_Pages/WeeklyForm";
 import { WellnessGuide } from "./Patient_Pages/WellnessGuide";
-import { Schedule } from "./Patient_Pages/Schedule";
 import { SupervisorDashboard } from "./Supervisor_Pages/SupervisorDashboard";
 import { AddCounselor } from "./Supervisor_Pages/AddCounselor";
 import { AllCounselors } from "./Supervisor_Pages/AllCounselors";
@@ -30,6 +29,9 @@ import { CreateCaseNotes } from "./Counselor_Pages/CreateCaseNotes";
 import { PatientWeeklyForms } from "./Counselor_Pages/PatientWeeklyForms";
 import { PatientWellnessForms } from "./Counselor_Pages/PatientWellnessForms";
 import  CounselorScheduler  from "./Counselor_Pages/CounselorScheduler";
+import { PatientProfile } from "./Patient_Pages/PatientProfile";
+import { SupervisorProfile } from "./Supervisor_Pages/SupervisorProfile";
+import { CounselorProfile } from "./Counselor_Pages/CounselorProfile";
 
 function App() {
   return (
@@ -54,7 +56,6 @@ function App() {
           <Route path="/Assignment" element={<PatientAssignment />} />
           <Route path="/Weekly Form" element={<WeeklyForm />} />
           <Route path="/Wellness Guide" element={<WellnessGuide />} />
-          <Route path="/Schedule" element={<Schedule />} />
           <Route
             path="/View Patients Assignment"
             element={<ViewAssignments />}
@@ -69,6 +70,9 @@ function App() {
             path="/Patient Wellness Form"
             element={<PatientWellnessForms />}
           />
+          <Route path="/Patient Profile" element={<PatientProfile />} />
+          <Route path="/Supervisor Profile" element={<SupervisorProfile />} />
+          <Route path="/Counselor Profile" element={<CounselorProfile />} />
         </Routes>
       </Router>
     </div>

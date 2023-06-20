@@ -10,6 +10,7 @@ import { PatientList } from "./PatientList";
 import { ViewAssignments } from "./ViewAssignments";
 import  CounselorScheduler  from "./CounselorScheduler";
 import { DefaultCounselorPage } from "./DefaultCounselorPage";
+import { CounselorProfile } from "./CounselorProfile";
 
 export const CounselorDashboard = () => {
   const [counselorName, setCounselorName] = useState("");
@@ -91,6 +92,20 @@ export const CounselorDashboard = () => {
                 Schedule
               </button>
             </li>
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "Schedule" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverPatientList"
+                onClick={() => {
+                  setActiveComponent("Profile");
+                }}
+              >
+                Profile
+              </button>
+            </li>
           </div>
         </ul>
         <div className="d-flex justify-content-start">
@@ -109,9 +124,10 @@ export const CounselorDashboard = () => {
           <DefaultCounselorPage />
         ) : activeComponent === "ViewPatients" ? (
           <PatientList />
-        ) : (
-          activeComponent === "Schedule" && <CounselorScheduler />
-        )}
+        ) : activeComponent === "Profile" ? (
+          <CounselorProfile />
+        ) : activeComponent === "Schedule" && <CounselorScheduler />
+        }
       </div>
       <div
         className="me-5 d-flex align-items-end"

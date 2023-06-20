@@ -1,0 +1,17 @@
+#Profile {
+    background-color: #4d455d;
+    color: #f5e9cf;
+    width: 50rem;
+}
+
+#ProfileBG {
+    background-color: #f5e9cf;
+    color: #4d455d;
+}
+
+#buttonCard {
+    background-color: #4d455d;
+    border: none;
+    color: #f5e9cf;
+    width: 5rem;
+}
