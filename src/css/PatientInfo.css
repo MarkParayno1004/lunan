@@ -10,6 +10,13 @@
   background-color: #4d455d;
 }
 
+#colBG {
+  background-color: #f5e9cf;
+  color: #4d455d;
+}
+#bottomBorder {
+  border-bottom: #4d455d 1px solid;
+}
 #viewButton {
   width: 8rem;
   height: 3rem;
