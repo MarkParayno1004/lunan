@@ -15,7 +15,7 @@ import { WeeklyForm } from "./WeeklyForm";
 import { WellnessForm } from "./WellnessForm";
 import { WellnessGuide } from "./WellnessGuide";
 import { PatientAssignment } from "./PatientAssignment";
-import { Schedule } from "./Schedule";
+import PatientScheduler from "./PatientScheduler";
 export const PatientDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("default");
   return (
@@ -137,7 +137,7 @@ export const PatientDashboard = () => {
         ) : activeComponent === "Assignment" ? (
           <PatientAssignment />
         ) : (
-          activeComponent === "Schedule" && <Schedule />
+          activeComponent === "Schedule" && <PatientScheduler />
         )}
       </div>
       <div

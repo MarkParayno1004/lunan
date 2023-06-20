@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@coreui/react": "^4.8.0",
+    "@devexpress/dx-react-core": "^4.0.4",
+    "@devexpress/dx-react-scheduler": "^4.0.4",
+    "@devexpress/dx-react-scheduler-material-ui": "^4.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
