@@ -111,6 +111,16 @@ export const SupervisorDashboard = () => {
             </li>
           </div>
         </ul>
+        <div className="d-flex justify-content-start">
+          <Link to="/Login" style={{ textDecoration: "none" }}>
+            <button
+              className="btn rounded-5"
+              style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            >
+              Logout
+            </button>
+          </Link>
+        </div>
       </div>
       <div className="container-fluid">
         {activeComponent === "default" ? (
@@ -125,7 +135,7 @@ export const SupervisorDashboard = () => {
       </div>
       <div
         className="me-5 d-flex align-items-end"
-        style={{ height: 80 + "vh" }}
+        style={{ height: 95 + "vh" }}
       >
         <div>
           <button style={{ border: "none", background: "none" }}>
