@@ -26,19 +26,23 @@ import { appointments } from '../demo-data/month-appointments';
 const PREFIX = 'Demo';
 
 const Appointment = ({
-  children, style, ...restProps
-}) => (
-  <Appointments.Appointment
-    {...restProps}
-    style={{
-      ...style,
-      backgroundColor: '#7DB9B6',
-      borderRadius: '8px',
-    }}
-  >
-    {children}
-  </Appointments.Appointment>
-);
+  children, style, data, ...restProps
+}) => {
+  const isConfirmed = data.confirmed; // Assuming there is a 'confirmed' property in the appointment data
+  
+  return (
+    <Appointments.Appointment
+      {...restProps}
+      style={{
+        ...style,
+        backgroundColor: isConfirmed ? '#7DB9B6' : 'gray',
+        borderRadius: '8px',
+      }}
+    >
+      {children}
+    </Appointments.Appointment>
+  );
+};
 
 const classes = {
   icon: `${PREFIX}-icon`,
@@ -138,6 +142,7 @@ class PatientScheduler extends React.Component {
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
   }
+  
   changeAddedAppointment = (addedAppointment) => {
     this.setState({ addedAppointment });
   };
@@ -194,16 +199,16 @@ class PatientScheduler extends React.Component {
             />
 
             <EditingState
-            onCommitChanges={this.commitChanges}
-            addedAppointment={addedAppointment}
-            onAddedAppointmentChange={this.changeAddedAppointment}
-            appointmentChanges={appointmentChanges}
-            onAppointmentChangesChange={this.changeAppointmentChanges}
-            editingAppointment={editingAppointment}
-            onEditingAppointmentChange={this.changeEditingAppointment}
+              onCommitChanges={this.commitChanges}
+              addedAppointment={addedAppointment}
+              onAddedAppointmentChange={this.changeAddedAppointment}
+              appointmentChanges={appointmentChanges}
+              onAppointmentChangesChange={this.changeAppointmentChanges}
+              editingAppointment={editingAppointment}
+              onEditingAppointmentChange={this.changeEditingAppointment}
             />
 
-            <WeekView startDayHour={10} endDayHour={19} />
+            <WeekView />
             <WeekView
               name="work-week"
               displayName="Work Week"
