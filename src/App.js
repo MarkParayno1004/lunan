@@ -8,7 +8,6 @@ import {
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Home } from "./Home_pages/Home";
 import { Login } from "./Home_pages/Login";
-import { Navbar } from "./Navbar";
 import { AboutUs } from "./Home_pages/AboutUs";
 import { SignUp } from "./Home_pages/SignUp";
 import { PatientDashboard } from "./Patient_Pages/PatientDashboard";
@@ -31,32 +30,11 @@ import { ViewCaseNotes } from "./Counselor_Pages/ViewCaseNotes";
 import { CreateCaseNotes } from "./Counselor_Pages/CreateCaseNotes";
 import { PatientWeeklyForms } from "./Counselor_Pages/PatientWeeklyForms";
 import { PatientWellnessForms } from "./Counselor_Pages/PatientWellnessForms";
-import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { auth } from "./firebase/firebase-config";
+
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      setIsLoggedIn(!!user); // Set isLoggedIn to true if user exists, false otherwise
-    });
-
-    // Clean up the subscription when component unmounts
-    return () => unsubscribe();
-  }, []);
   return (
     <div className="App">
       <Router>
-        {/* Render Navbar only when the user is not logged in */}
-        {!isLoggedIn && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />

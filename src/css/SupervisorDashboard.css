@@ -1,9 +1,3 @@
-#sdBG {
-  background-color: #ffffff;
-  min-height: 92vh;
-  overflow: hidden;
-}
-
 #superVisorcardBG {
   background-color: #7db9b6;
   color: #4d455d;
@@ -15,7 +9,7 @@
   background-color: #4d455d;
   color: #f5e9cf;
   width: 280px;
-  height: 92vh;
+  height: 100vh;
 }
 
 #hoverList {

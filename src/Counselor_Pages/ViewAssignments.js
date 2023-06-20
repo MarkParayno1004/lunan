@@ -186,15 +186,6 @@ export const ViewAssignments = () => {
           )}
         </div>
         <div className="d-flex justify-content-end">
-          <button
-            className="me-2 mb-2 rounded-5 fw-semibold"
-            id="casebackButton"
-            onClick={handleShowCreate}
-          >
-            Create Assignment
-          </button>
-          <CreateModal show={showCreate} handleClose={handleCloseCreate} />
-
           <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
             <button
               className="me-2 mb-2 rounded-5 fw-semibold"
@@ -203,6 +194,14 @@ export const ViewAssignments = () => {
               Back
             </button>
           </Link>
+          <button
+            className="me-2 mb-2 rounded-5 fw-semibold"
+            id="casebackButton"
+            onClick={handleShowCreate}
+          >
+            Create Assignment
+          </button>
+          <CreateModal show={showCreate} handleClose={handleCloseCreate} />
         </div>
       </div>
     </div>
