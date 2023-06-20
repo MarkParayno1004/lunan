@@ -1,12 +1,7 @@
-#pdBG {
-  background-color: #f5e9cf;
-  min-height: 92vh;
-}
-
 #sideBarPatient {
   color: #f5e9cf;
   background-color: #4d455d;
-  min-height: 92vh;
+  min-height: 100vh;
 }
 
 #cardBG {

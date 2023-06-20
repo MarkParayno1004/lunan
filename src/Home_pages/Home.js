@@ -2,9 +2,11 @@ import "../css/Home.css";
 import "../css/Footer.css";
 import { Footer } from "../Footer.js";
 import { Link } from "react-router-dom";
+import { Navbar } from "../Navbar";
 export const Home = () => {
   return (
     <div>
+      <Navbar />
       <div className="container-fluid" id="bodyBG">
         <p className="text-center" id="titleP">
           Convenient and Affortable Therapy
