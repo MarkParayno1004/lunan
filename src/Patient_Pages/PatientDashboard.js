@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import "../css/PatientDashboard.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import {
   faComment,
   faAngleDown,
@@ -14,12 +13,8 @@ import { WeeklyForm } from "./WeeklyForm";
 import { WellnessForm } from "./WellnessForm";
 import { WellnessGuide } from "./WellnessGuide";
 import { PatientAssignment } from "./PatientAssignment";
-
-import { Schedule } from "./Schedule";
 import { ViewAnswerWell } from "./ViewAnswerWell";
 import { ViewAnswerWeek } from "./ViewAnswerWeek";
-
-
 import PatientScheduler from "./PatientScheduler";
 
 export const PatientDashboard = () => {
@@ -217,13 +212,11 @@ export const PatientDashboard = () => {
           <WellnessGuide />
         ) : activeComponent === "Assignment" ? (
           <PatientAssignment />
-        ) : activeComponent === "Schedule" ? (
-          <Schedule />
         ) : activeComponent === "ViewWellness" ? (
           <ViewAnswerWell />
+        ) : activeComponent === "ViewWeekly" ? (
+          <ViewAnswerWeek />
         ) : (
-          activeComponent === "ViewWeekly" ? <ViewAnswerWeek /> :
-
           activeComponent === "Schedule" && <PatientScheduler />
         )}
       </div>
