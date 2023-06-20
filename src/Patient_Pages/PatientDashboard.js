@@ -1,23 +1,31 @@
 import { Link } from "react-router-dom";
 import "../css/PatientDashboard.css";
 import { useState } from "react";
-import { ModalComponent } from "./ModalComponent";
-import assLogo from "./img/Assignment.png";
-import wellFormLogo from "./img/WellnessForm.png";
-import weekFormLogo from "./img/WeeklyForms.png";
-import wellGuideLogo from "./img/WellnessGuide.png";
-import scheduleLogo from "./img/Schedule.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  faComment,
+  faAngleDown,
+  faAngleUp,
+} from "@fortawesome/free-solid-svg-icons";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { DefaultPagePatient } from "./DefaultPagePatient";
 import { WeeklyForm } from "./WeeklyForm";
 import { WellnessForm } from "./WellnessForm";
 import { WellnessGuide } from "./WellnessGuide";
 import { PatientAssignment } from "./PatientAssignment";
+
+import { Schedule } from "./Schedule";
+import { ViewAnswerWell } from "./ViewAnswerWell";
+import { ViewAnswerWeek } from "./ViewAnswerWeek";
+
+
 import PatientScheduler from "./PatientScheduler";
+
 export const PatientDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("default");
+  const [showDropdownWell, setShowDropdownWell] = useState(false);
+  const [showDropdownWeek, setShowDropdownWeek] = useState(false);
   return (
     <div className=" d-flex align-items-start" id="sdBG">
       <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarPatient">
@@ -42,34 +50,107 @@ export const PatientDashboard = () => {
             </button>
           </li>
           <div className="ms-2 mt-1">
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "Wellness" ? "active" : ""
-              }`}
-            >
+            {/*Wellness Form DropDown */}
+            <li>
               <button
                 id="hoverPatientList"
                 onClick={() => {
-                  setActiveComponent("Wellness");
+                  setShowDropdownWell(!showDropdownWell);
                 }}
               >
-                Wellness Form
+                {showDropdownWell === true ? (
+                  <FontAwesomeIcon icon={faAngleUp} />
+                ) : (
+                  <FontAwesomeIcon icon={faAngleDown} />
+                )}
+                <span className="ms-2">Wellness Form</span>
               </button>
             </li>
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "Weekly" ? "active" : ""
-              }`}
-            >
+            <div>
+              {showDropdownWell === true && (
+                <>
+                  <div
+                    className={`d-flex justify-content-center me-4 ${
+                      activeComponent === "Wellness" ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      id="hoverPatientList"
+                      onClick={() => {
+                        setActiveComponent("Wellness");
+                      }}
+                    >
+                      Answer Form
+                    </button>
+                  </div>
+                  <div
+                    className={`d-flex justify-content-center me-4 ${
+                      activeComponent === "ViewWellness" ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      id="hoverPatientList"
+                      onClick={() => {
+                        setActiveComponent("ViewWellness");
+                      }}
+                    >
+                      View Answer
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/*Weekly Form DropDown */}
+            <li>
               <button
                 id="hoverPatientList"
                 onClick={() => {
-                  setActiveComponent("Weekly");
+                  setShowDropdownWeek(!showDropdownWeek);
                 }}
               >
-                Weekly Forms
+                {showDropdownWeek === true ? (
+                  <FontAwesomeIcon icon={faAngleUp} />
+                ) : (
+                  <FontAwesomeIcon icon={faAngleDown} />
+                )}
+                <span className="ms-2">Weekly Form</span>
               </button>
             </li>
+            <div>
+              {showDropdownWeek === true && (
+                <>
+                  <div
+                    className={`d-flex justify-content-center me-4 ${
+                      activeComponent === "Weekly" ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      id="hoverPatientList"
+                      onClick={() => {
+                        setActiveComponent("Weekly");
+                      }}
+                    >
+                      Answer Form
+                    </button>
+                  </div>
+                  <div
+                    className={`d-flex justify-content-center me-4 ${
+                      activeComponent === "ViewWeekly" ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      id="hoverPatientList"
+                      onClick={() => {
+                        setActiveComponent("ViewWeekly");
+                      }}
+                    >
+                      View Answer
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
             <li
               className={`d-flex justify-content-start ${
                 activeComponent === "Guide" ? "active" : ""
@@ -136,7 +217,13 @@ export const PatientDashboard = () => {
           <WellnessGuide />
         ) : activeComponent === "Assignment" ? (
           <PatientAssignment />
+        ) : activeComponent === "Schedule" ? (
+          <Schedule />
+        ) : activeComponent === "ViewWellness" ? (
+          <ViewAnswerWell />
         ) : (
+          activeComponent === "ViewWeekly" ? <ViewAnswerWeek /> :
+
           activeComponent === "Schedule" && <PatientScheduler />
         )}
       </div>

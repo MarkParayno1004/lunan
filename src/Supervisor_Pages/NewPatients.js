@@ -73,17 +73,17 @@ export const NewPatients = () => {
             <div className="input-group mt-4">
               <input
                 type="text"
-                placeholder="Patient Name..."
+                placeholder="Search Patient Name:"
                 value={searchQuery}
                 onChange={handleSearch}
                 aria-describedby="search"
                 className="w-25 form-control"
               />
-              <div className="input-group-append ">
-                <span className="input-group-text" id="search">
+              <span class="input-group-text" id="search">
+                <button style={{ border: "none", background: "none" }}>
                   Search
-                </span>
-              </div>
+                </button>
+              </span>
             </div>
           </div>
         </div>

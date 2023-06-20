@@ -48,8 +48,9 @@ export const PatientList = () => {
     >
       <div className="container-fluid">
         <div className="row">
+          {/*Dont remove this col */}
           <div className="col"></div>
-          <div className="col-4">
+          <div className="col-6">
             <h2
               className="text-center mt-4 mb-4"
               style={{ fontSize: 30 + "px" }}
@@ -61,7 +62,7 @@ export const PatientList = () => {
             <div className="input-group mt-4">
               <input
                 type="text"
-                placeholder="Counselor Name..."
+                placeholder="Search Patient Name:"
                 value={searchQuery}
                 onChange={handleSearch}
                 aria-describedby="search"
