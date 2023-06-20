@@ -8,7 +8,7 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { PatientList } from "./PatientList";
 import { ViewAssignments } from "./ViewAssignments";
-import { CounselorSchedule } from "./CounselorSchedule";
+import  CounselorScheduler  from "./CounselorScheduler";
 import { DefaultCounselorPage } from "./DefaultCounselorPage";
 
 export const CounselorDashboard = () => {
@@ -110,7 +110,7 @@ export const CounselorDashboard = () => {
         ) : activeComponent === "ViewPatients" ? (
           <PatientList />
         ) : (
-          activeComponent === "Schedule" && <CounselorSchedule />
+          activeComponent === "Schedule" && <CounselorScheduler />
         )}
       </div>
       <div
