@@ -10,7 +10,6 @@ import { DefaultPageSupervisor } from "./DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-import SupervisorScheduler from "./SupervisorScheduler";
 
 export const SupervisorDashboard = () => {
   const [adminName, setAdminName] = useState("");
@@ -110,20 +109,6 @@ export const SupervisorDashboard = () => {
                 New Patient
               </button>
             </li>
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "schedule" ? "active" : ""
-              }`}
-            >
-              <button
-                id="hoverList"
-                onClick={() => {
-                  setActiveComponent("schedule");
-                }}
-              >
-                Scheduler
-              </button>
-            </li>
           </div>
         </ul>
         <div className="d-flex justify-content-start">
@@ -144,11 +129,9 @@ export const SupervisorDashboard = () => {
           <AllPatients />
         ) : activeComponent === "Counselors" ? (
           <AllCounselors />
-        ) : activeComponent === "new" ? (
-          <NewPatients />
-        ) : activeComponent === "schedule" ? (
-          <SupervisorScheduler />
-        ) : null}
+        ) : (
+          activeComponent === "new" && <NewPatients />
+        )}
       </div>
       <div
         className="me-5 d-flex align-items-end"

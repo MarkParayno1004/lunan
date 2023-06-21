@@ -1,6 +1,6 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
 import {
   Scheduler,
   WeekView,
@@ -15,28 +15,26 @@ import {
   AppointmentTooltip,
   AppointmentForm,
   ConfirmationDialog,
-} from '@devexpress/dx-react-scheduler-material-ui';
-import Grid from '@mui/material/Grid';
-import Room from '@mui/icons-material/Room';
-import { styled } from '@mui/material/styles';
-import classNames from 'clsx';
+} from "@devexpress/dx-react-scheduler-material-ui";
+import Grid from "@mui/material/Grid";
+import Room from "@mui/icons-material/Room";
+import { styled } from "@mui/material/styles";
+import classNames from "clsx";
 
-import { appointments } from '../demo-data/month-appointments';
+import { appointments } from "../demo-data/month-appointments";
 
-const PREFIX = 'Demo';
+const PREFIX = "Demo";
 
-const Appointment = ({
-  children, style, data, ...restProps
-}) => {
+const Appointment = ({ children, style, data, ...restProps }) => {
   const isConfirmed = data.confirmed; // Assuming there is a 'confirmed' property in the appointment data
-  
+
   return (
     <Appointments.Appointment
       {...restProps}
       style={{
         ...style,
-        backgroundColor: isConfirmed ? '#7DB9B6' : 'gray',
-        borderRadius: '8px',
+        backgroundColor: isConfirmed ? "#7DB9B6" : "gray",
+        borderRadius: "8px",
       }}
     >
       {children}
@@ -54,25 +52,30 @@ const classes = {
   commandButton: `${PREFIX}-commandButton`,
 };
 
-const StyledAppointmentTooltipHeader = styled(AppointmentTooltip.Header)(() => ({
-  [`&.${classes.firstRoom}`]: {
-    background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/Lobby-4.jpg)',
-  },
-  [`&.${classes.secondRoom}`]: {
-    background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-4.jpg)',
-  },
-  [`&.${classes.thirdRoom}`]: {
-    background: 'url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-0.jpg)',
-  },
-  [`&.${classes.header}`]: {
-    height: '260px',
-    backgroundSize: 'cover',
-  },
-}));
+const StyledAppointmentTooltipHeader = styled(AppointmentTooltip.Header)(
+  () => ({
+    [`&.${classes.firstRoom}`]: {
+      background:
+        "url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/Lobby-4.jpg)",
+    },
+    [`&.${classes.secondRoom}`]: {
+      background:
+        "url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-4.jpg)",
+    },
+    [`&.${classes.thirdRoom}`]: {
+      background:
+        "url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-0.jpg)",
+    },
+    [`&.${classes.header}`]: {
+      height: "260px",
+      backgroundSize: "cover",
+    },
+  })
+);
 
 const StyledGrid = styled(Grid)(() => ({
   [`&.${classes.textCenter}`]: {
-    textAlign: 'center',
+    textAlign: "center",
   },
 }));
 
@@ -82,31 +85,32 @@ const StyledRoom = styled(Room)(({ theme: { palette } }) => ({
   },
 }));
 
-const StyledAppointmentTooltipCommandButton = styled(AppointmentTooltip.CommandButton)(() => ({
+const StyledAppointmentTooltipCommandButton = styled(
+  AppointmentTooltip.CommandButton
+)(() => ({
   [`&.${classes.commandButton}`]: {
-    backgroundColor: 'rgba(255,255,255,0.65)',
+    backgroundColor: "rgba(255,255,255,0.65)",
   },
 }));
 
 const getClassByLocation = (location) => {
-  if (location === 'Room 1') return classes.firstRoom;
-  if (location === 'Room 2') return classes.secondRoom;
+  if (location === "Room 1") return classes.firstRoom;
+  if (location === "Room 2") return classes.secondRoom;
   return classes.thirdRoom;
 };
 
-const Header = (({
-  children, appointmentData, ...restProps
-}) => (
+const Header = ({ children, appointmentData, ...restProps }) => (
   <StyledAppointmentTooltipHeader
     {...restProps}
-    className={classNames(getClassByLocation(appointmentData.location), classes.header)}
+    className={classNames(
+      getClassByLocation(appointmentData.location),
+      classes.header
+    )}
     appointmentData={appointmentData}
   />
-));
+);
 
-const Content = (({
-  children, appointmentData, ...restProps
-}) => (
+const Content = ({ children, appointmentData, ...restProps }) => (
   <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
     <Grid container alignItems="center">
       <StyledGrid item xs={2} className={classes.textCenter}>
@@ -117,21 +121,22 @@ const Content = (({
       </Grid>
     </Grid>
   </AppointmentTooltip.Content>
-));
+);
 
-const CommandButton = (({
-  ...restProps
-}) => (
-  <StyledAppointmentTooltipCommandButton {...restProps} className={classes.commandButton} />
-));
+const CommandButton = ({ ...restProps }) => (
+  <StyledAppointmentTooltipCommandButton
+    {...restProps}
+    className={classes.commandButton}
+  />
+);
 
 class PatientScheduler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: appointments,
-      currentViewName: 'work-week',
-      currentDate: '2018-07-25',
+      currentViewName: "work-week",
+      currentDate: "2018-07-25",
       addedAppointment: {},
       appointmentChanges: {},
       editingAppointment: undefined,
@@ -142,29 +147,32 @@ class PatientScheduler extends React.Component {
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
   }
-  
+
   changeAddedAppointment = (addedAppointment) => {
     this.setState({ addedAppointment });
   };
-  
+
   changeAppointmentChanges = (appointmentChanges) => {
     this.setState({ appointmentChanges });
   };
-  
+
   changeEditingAppointment = (editingAppointment) => {
     this.setState({ editingAppointment });
   };
-  
+
   commitChanges = ({ added, changed, deleted }) => {
     this.setState((state) => {
       let { data } = state;
       if (added) {
-        const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
+        const startingAddedId =
+          data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
       }
       if (changed) {
         data = data.map((appointment) =>
-          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
+          changed[appointment.id]
+            ? { ...appointment, ...changed[appointment.id] }
+            : appointment
         );
       }
       if (deleted !== undefined) {
@@ -183,7 +191,14 @@ class PatientScheduler extends React.Component {
   };
 
   render() {
-    const { data, currentViewName, currentDate, addedAppointment, appointmentChanges, editingAppointment, } = this.state;
+    const {
+      data,
+      currentViewName,
+      currentDate,
+      addedAppointment,
+      appointmentChanges,
+      editingAppointment,
+    } = this.state;
 
     return (
       <div>
@@ -191,7 +206,7 @@ class PatientScheduler extends React.Component {
           <center>Patient Scheduler</center>
         </h1>
         <Paper>
-          <Scheduler data={data} height={1000}>
+          <Scheduler data={data} height={900}>
             <ViewState
               currentDate={currentDate}
               currentViewName={currentViewName}
@@ -225,9 +240,7 @@ class PatientScheduler extends React.Component {
             <TodayButton />
             <EditRecurrenceMenu />
             <ConfirmationDialog />
-            <Appointments 
-              appointmentComponent={Appointment} 
-            />
+            <Appointments appointmentComponent={Appointment} />
             <AppointmentTooltip
               headerComponent={Header}
               contentComponent={Content}
