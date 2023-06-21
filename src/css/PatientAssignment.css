@@ -9,6 +9,11 @@
   color: #4d455d;
 }
 
+#buttonAss:hover {
+  background-color: #7db9b6;
+  color: #4d455d;
+}
+
 #buttonAssBG {
   background-color: #f5e9cf;
   height: 6rem;
@@ -19,4 +24,10 @@
 
 #modalBG {
   background-color: #4d455d;
+}
+
+.activeButton {
+  background-color: #7db9b6;
+  color: #4d455d;
+  border-radius: 15px;
 }
