@@ -17,6 +17,8 @@ import { ViewAnswerWell } from "./ViewAnswerWell";
 import { ViewAnswerWeek } from "./ViewAnswerWeek";
 import PatientScheduler from "./PatientScheduler";
 
+import { AvatarPatient } from "../SupportEngine/AvatarPatient";
+
 export const PatientDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("default");
   const [showDropdownWell, setShowDropdownWell] = useState(false);
@@ -65,7 +67,7 @@ export const PatientDashboard = () => {
               {showDropdownWell === true && (
                 <>
                   <div
-                    className={`d-flex justify-content-center me-4 ${
+                    className={`d-flex justify-content-start ms-4  ${
                       activeComponent === "Wellness" ? "active" : ""
                     }`}
                   >
@@ -79,7 +81,7 @@ export const PatientDashboard = () => {
                     </button>
                   </div>
                   <div
-                    className={`d-flex justify-content-center me-4 ${
+                    className={`d-flex justify-content-start ms-4  ${
                       activeComponent === "ViewWellness" ? "active" : ""
                     }`}
                   >
@@ -116,7 +118,7 @@ export const PatientDashboard = () => {
               {showDropdownWeek === true && (
                 <>
                   <div
-                    className={`d-flex justify-content-center me-4 ${
+                    className={`d-flex justify-content-start ms-4 ${
                       activeComponent === "Weekly" ? "active" : ""
                     }`}
                   >
@@ -130,7 +132,7 @@ export const PatientDashboard = () => {
                     </button>
                   </div>
                   <div
-                    className={`d-flex justify-content-center me-4 ${
+                    className={`d-flex justify-content-start ms-4 ${
                       activeComponent === "ViewWeekly" ? "active" : ""
                     }`}
                   >
@@ -203,38 +205,106 @@ export const PatientDashboard = () => {
       </div>
       <div className="container-fluid">
         {activeComponent === "default" ? (
-          <DefaultPagePatient />
+          <>
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+            <DefaultPagePatient />
+          </>
         ) : activeComponent === "Wellness" ? (
-          <WellnessForm />
+          <>
+            <WellnessForm />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : activeComponent === "Weekly" ? (
-          <WeeklyForm />
+          <>
+            <WeeklyForm />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : activeComponent === "Guide" ? (
-          <WellnessGuide />
+          <>
+            <WellnessGuide />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : activeComponent === "Assignment" ? (
-          <PatientAssignment />
+          <>
+            <PatientAssignment />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : activeComponent === "ViewWellness" ? (
-          <ViewAnswerWell />
+          <>
+            <ViewAnswerWell />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : activeComponent === "ViewWeekly" ? (
-          <ViewAnswerWeek />
+          <>
+            <ViewAnswerWeek />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : (
           activeComponent === "Schedule" && <PatientScheduler />
         )}
-      </div>
-      <div
-        className="me-5 d-flex align-items-end"
-        style={{ height: 95 + "vh" }}
-      >
-        <div>
-          <button style={{ border: "none", background: "none" }}>
-            <FontAwesomeIcon
-              className="fa-3x"
-              icon={faComment}
-              flip="horizontal"
-              color={"#4d455d"}
-              size={32}
-            />
-          </button>
-        </div>
       </div>
     </div>
   );

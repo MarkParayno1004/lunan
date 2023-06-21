@@ -8,9 +8,7 @@ import { AllCounselors } from "./AllCounselors";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { DefaultPageSupervisor } from "./DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
-import SupervisorScheduler from "./SupervisorScheduler";
+import { AvatarSupervisor } from "../SupportEngine/AvatarSupervisor";
 
 export const SupervisorDashboard = () => {
   const [adminName, setAdminName] = useState("");
@@ -110,20 +108,6 @@ export const SupervisorDashboard = () => {
                 New Patient
               </button>
             </li>
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "schedule" ? "active" : ""
-              }`}
-            >
-              <button
-                id="hoverList"
-                onClick={() => {
-                  setActiveComponent("schedule");
-                }}
-              >
-                Scheduler
-              </button>
-            </li>
           </div>
         </ul>
         <div className="d-flex justify-content-start">
@@ -139,32 +123,68 @@ export const SupervisorDashboard = () => {
       </div>
       <div className="container-fluid">
         {activeComponent === "default" ? (
-          <DefaultPageSupervisor />
-        ) : activeComponent === "patient" ? (
-          <AllPatients />
-        ) : activeComponent === "Counselors" ? (
-          <AllCounselors />
-        ) : activeComponent === "new" ? (
-          <NewPatients />
-        ) : activeComponent === "schedule" ? (
-          <SupervisorScheduler />
-        ) : null}
-      </div>
-      <div
-        className="me-5 d-flex align-items-end"
-        style={{ height: 95 + "vh" }}
-      >
-        <div>
-          <button style={{ border: "none", background: "none" }}>
-            <FontAwesomeIcon
-              className="fa-3x"
-              icon={faComment}
-              flip="horizontal"
-              color={"#4d455d"}
-              size={32}
+          <>
+            <DefaultPageSupervisor />
+            <AvatarSupervisor
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
             />
-          </button>
-        </div>
+            <AvatarSupervisor
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
+        ) : activeComponent === "patient" ? (
+          <>
+            <AllPatients />
+            <AvatarSupervisor
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarSupervisor
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
+        ) : activeComponent === "Counselors" ? (
+          <>
+            <AllCounselors />
+            <AvatarSupervisor
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarSupervisor
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
+        ) : (
+          activeComponent === "new" && (
+            <>
+              <NewPatients />
+              <AvatarSupervisor
+                style={{
+                  position: "fixed",
+                  bottom: 120 + "px",
+                  right: 24 + "px",
+                }}
+              />
+              <AvatarSupervisor
+                style={{
+                  position: "fixed",
+                  bottom: 24 + "px",
+                  right: 24 + "px",
+                }}
+              />
+            </>
+          )
+        )}
       </div>
     </div>
   );
