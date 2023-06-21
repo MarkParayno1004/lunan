@@ -7,6 +7,7 @@ import "../css/PatientAssignment.css";
 
 export const PatientAssignment = () => {
   const [showAss, setAss] = useState("Pending");
+
   return (
     <div
       className="container-lg mt-5 pb-3 rounded-4 fw-normal d-flex justify-content-center"
@@ -19,7 +20,7 @@ export const PatientAssignment = () => {
             onClick={() => {
               setAss("Pending");
             }}
-            className="rounded-5 me-2"
+            className={"rounded-5 me-2"}
             id="buttonAss"
           >
             Pending
@@ -136,19 +137,40 @@ const PendingAss = () => {
 };
 
 const CompleteAss = () => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <div className="d-flex justify-content-center">
       <button
         className="rounded-5"
         id="buttonAssBG"
+        onClick={handleShow}
         style={{ opacity: 80 + "%" }}
-        disabled
       >
         <h5 className="d-flex justify-content-start mt-2">Activity #1</h5>
         <p className="d-flex justify-content-start">
           Journal and Drawing Entry | Due: March 8, 2023
         </p>
       </button>
+      <ShowFiles show={show} handleClose={handleClose} />
     </div>
+  );
+};
+
+const ShowFiles = (props) => {
+  return (
+    <Modal show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Submitted Files:</Modal.Title>
+        </Modal.Header>
+        <div className="mt-3 ms-3">
+          <h5>Files:</h5>
+          <div>PatientDocument.docx</div>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
