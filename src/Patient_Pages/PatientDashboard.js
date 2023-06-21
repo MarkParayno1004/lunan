@@ -17,7 +17,7 @@ import { ViewAnswerWell } from "./ViewAnswerWell";
 import { ViewAnswerWeek } from "./ViewAnswerWeek";
 import PatientScheduler from "./PatientScheduler";
 
-import { Avatar } from "../SupportEngine/Avatar";
+import { AvatarPatient } from "../SupportEngine/AvatarPatient";
 
 export const PatientDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("default");
@@ -205,88 +205,100 @@ export const PatientDashboard = () => {
       </div>
       <div className="container-fluid">
         {activeComponent === "default" ? (
-          <DefaultPagePatient />
-        ) : activeComponent === "Wellness" ? (
           <>
-            <WellnessForm />
-            <Avatar
+            <AvatarPatient
               style={{
                 position: "fixed",
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
             />
-            <Avatar
+            <AvatarPatient
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+            <DefaultPagePatient />
+          </>
+        ) : activeComponent === "Wellness" ? (
+          <>
+            <WellnessForm />
+            <AvatarPatient
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarPatient
               style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "Weekly" ? (
           <>
             <WeeklyForm />
-            <Avatar
+            <AvatarPatient
               style={{
                 position: "fixed",
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
             />
-            <Avatar
+            <AvatarPatient
               style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "Guide" ? (
           <>
             <WellnessGuide />
-            <Avatar
+            <AvatarPatient
               style={{
                 position: "fixed",
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
             />
-            <Avatar
+            <AvatarPatient
               style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "Assignment" ? (
           <>
             <PatientAssignment />
-            <Avatar
+            <AvatarPatient
               style={{
                 position: "fixed",
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
             />
-            <Avatar
+            <AvatarPatient
               style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "ViewWellness" ? (
           <>
             <ViewAnswerWell />
-            <Avatar
+            <AvatarPatient
               style={{
                 position: "fixed",
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
             />
-            <Avatar
+            <AvatarPatient
               style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "ViewWeekly" ? (
           <>
             <ViewAnswerWeek />
-            <Avatar
+            <AvatarPatient
               style={{
                 position: "fixed",
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
             />
-            <Avatar
+            <AvatarPatient
               style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
             />
           </>

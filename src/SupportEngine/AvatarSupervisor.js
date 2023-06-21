@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { styles } from "./style";
+import { styles } from "./styleSupervisor";
 
 import "./index.css";
-export const Avatar = (props) => {
+export const AvatarSupervisor = (props) => {
   const [hovered, setHovered] = useState(false);
   return (
     <div style={props.style}>
       <div
-        className="ms-5"
+        className="ms-3"
         id="transition-3"
         style={{ ...styles.avatarHello, ...{ opacity: hovered ? "1" : "0" } }}
       >
-        Hi Patient!!!
+        Hi Supervisor!!!
       </div>
 
       <div

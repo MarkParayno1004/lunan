@@ -8,8 +8,9 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { PatientList } from "./PatientList";
 import { ViewAssignments } from "./ViewAssignments";
-import  CounselorScheduler  from "./CounselorScheduler";
+import CounselorScheduler from "./CounselorScheduler";
 import { DefaultCounselorPage } from "./DefaultCounselorPage";
+import { AvatarCounselor } from "../SupportEngine/AvatarCounselor";
 
 export const CounselorDashboard = () => {
   const [counselorName, setCounselorName] = useState("");
@@ -106,28 +107,36 @@ export const CounselorDashboard = () => {
       </div>
       <div className="container-fluid">
         {activeComponent === "default" ? (
-          <DefaultCounselorPage />
+          <>
+            <DefaultCounselorPage />
+            <AvatarCounselor
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarCounselor
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : activeComponent === "ViewPatients" ? (
-          <PatientList />
+          <>
+            <PatientList />
+            <AvatarCounselor
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarCounselor
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
         ) : (
           activeComponent === "Schedule" && <CounselorScheduler />
         )}
-      </div>
-      <div
-        className="me-5 d-flex align-items-end"
-        style={{ height: 95 + "vh" }}
-      >
-        <div>
-          <button style={{ border: "none", background: "none" }}>
-            <FontAwesomeIcon
-              className="fa-3x"
-              icon={faComment}
-              flip="horizontal"
-              color={"#4d455d"}
-              size={32}
-            />
-          </button>
-        </div>
       </div>
     </div>
   );
