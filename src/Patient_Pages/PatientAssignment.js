@@ -138,12 +138,7 @@ const PendingAss = () => {
 const CompleteAss = () => {
   return (
     <div className="d-flex justify-content-center">
-      <button
-        className="rounded-5"
-        id="buttonAssBG"
-        style={{ opacity: 80 + "%" }}
-        disabled
-      >
+      <button className="rounded-5" id="buttonAssBG">
         <h5 className="d-flex justify-content-start mt-2">Activity #1</h5>
         <p className="d-flex justify-content-start">
           Journal and Drawing Entry | Due: March 8, 2023
