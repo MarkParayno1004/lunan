@@ -6,8 +6,10 @@ import { Form, Button } from "react-bootstrap";
 import "../css/PatientAssignment.css";
 
 export const PatientAssignment = () => {
-  const [showAss, setAss] = useState("Pending");
-
+  const [activeTab, setActiveTab] = useState("Pending");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
   return (
     <div
       className="container-lg mt-5 pb-3 rounded-4 fw-normal d-flex justify-content-center"
@@ -15,31 +17,26 @@ export const PatientAssignment = () => {
     >
       <div>
         <h1 className="d-flex justify-content-center mt-3">Assignment</h1>
-        <div className="d-flex justify-content-center">
+        <div className="tabs mt-4 d-flex justify-content-center">
           <button
-            onClick={() => {
-              setAss("Pending");
-            }}
-            className={"rounded-5 me-2"}
-            id="buttonAss"
+            className={`me-3 ${activeTab === "Pending" ? "active" : ""}`}
+            onClick={() => handleTabChange("Pending")}
           >
             Pending
           </button>
           <button
-            className="rounded-5"
-            onClick={() => {
-              setAss("Complete");
-            }}
-            id="buttonAss"
+            className={activeTab === "Complete" ? "active" : ""}
+            onClick={() => handleTabChange("Complete")}
           >
             Complete
           </button>
         </div>
+
         <div className="mt-4 mb-3">
-          {showAss === "Pending" ? (
+          {activeTab === "Pending" ? (
             <PendingAss />
           ) : (
-            showAss === "Complete" && <CompleteAss />
+            activeTab === "Complete" && <CompleteAss />
           )}
         </div>
       </div>

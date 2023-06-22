@@ -343,6 +343,22 @@ const ViewModalAssign = (props) => {
     setActiveTab(tab);
   };
 
+  const [show, setShow] = useState();
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Assignment successfully created!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setShow(false);
+  };
   return (
     <Modal
       show={props.show}
@@ -374,12 +390,17 @@ const ViewModalAssign = (props) => {
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
+                  <th scope="col">Descsription:</th>
                   <th scope="col">Turned in on:</th>
                 </tr>
               </thead>
               <tbody class="table-group-divider">
                 <tr>
                   <td>Journal and Drawing Entry</td>
+                  <td>
+                    Make a Journal about yourself and make a drawing entry that
+                    represents you today.
+                  </td>
                   <td>March 8, 2023</td>
                 </tr>
               </tbody>
@@ -396,12 +417,17 @@ const ViewModalAssign = (props) => {
                 </tr>
               </thead>
               <tbody class="table-group-divider">
-                <tr style={{ opacity: 60 + "%" }}>
+                <tr>
                   <td>Journal and Drawing Entry</td>
                   <td>March 8, 2023</td>
                   <td>JournalDrawingEntry.docx</td>
                   <td>
-                    <button>Verify</button>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                    >
+                      Verify
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -409,8 +435,24 @@ const ViewModalAssign = (props) => {
           )}
         </table>
         <Modal.Footer>
-          <button>Create Assignment</button>
-          <button variant="secondary" onClick={props.handleClose}>
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={handleShow}
+          >
+            Create Assignment
+          </button>
+          <CreateAssignment
+            show={show}
+            handleClose={handleClose}
+            handleSubmit={handleSubmit}
+          />
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            variant="secondary"
+            onClick={props.handleClose}
+          >
             Close
           </button>
         </Modal.Footer>
@@ -444,7 +486,17 @@ const ViewCaseNotes = (props) => {
               <td>John Doe</td>
               <td>06/22/2023</td>
               <td>
-                <button onClick={handleShow}>Case Note</button>
+                <button
+                  className="btn"
+                  style={{
+                    backgroundColor: "#f5e9cf",
+                    color: "#4d455d",
+                    width: "auto",
+                  }}
+                  onClick={handleShow}
+                >
+                  Case Note
+                </button>
               </td>
               <PublishCaseNotes show={show} handleClose={handleClose} />
             </tr>
@@ -480,7 +532,13 @@ const ViewWeeklyForm = (props) => {
               <td>John Doe</td>
               <td>06/22/2023</td>
               <td>
-                <button onClick={handleShow}>Form</button>
+                <button
+                  className="btn"
+                  style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                  onClick={handleShow}
+                >
+                  Form
+                </button>
                 <ViewFormWeek show={show} handleClose={handleClose} />
               </td>
             </tr>
@@ -516,7 +574,13 @@ const ViewWellnessForm = (props) => {
               <td>John Doe</td>
               <td>06/22/2023</td>
               <td>
-                <button onClick={handleShow}>Form</button>
+                <button
+                  className="btn"
+                  style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                  onClick={handleShow}
+                >
+                  Form
+                </button>
                 <ViewFormWell show={show} handleClose={handleClose} />
               </td>
             </tr>
@@ -566,7 +630,13 @@ const CreateCaseNotes = (props) => {
               <td>John Doe</td>
               <td>06/22/2023</td>
               <td>
-                <button onClick={handleShow}>Case Note</button>
+                <button
+                  className="btn"
+                  style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                  onClick={handleShow}
+                >
+                  Case Note
+                </button>
                 <CreateNote
                   show={show}
                   handleClose={handleClose}
@@ -722,17 +792,22 @@ const CreateNote = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Create Case Note:</Modal.Title>
         </Modal.Header>
-        <div class="form-floating mt-3">
+        <div class="form-floating mt-3 mb-3">
+          <h5>Input Case Note:</h5>
           <textarea
             className="form-control"
-            placeholder="Leave a comment here"
             id="floatingTextarea2"
             style={{ height: 150 + "px" }}
           ></textarea>
-          <label for="floatingTextarea2">Input Case Note:</label>
         </div>
         <Modal.Footer>
-          <button onClick={props.handleSubmit}>Submit</button>
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={props.handleSubmit}
+          >
+            Submit
+          </button>
         </Modal.Footer>
       </Modal.Body>
     </Modal>
@@ -746,17 +821,32 @@ const CreateAssignment = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Create Assignment:</Modal.Title>
         </Modal.Header>
-        <div class="form-floating mt-3">
+        <h5>Input Activity:</h5>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            aria-label="CreateAssignment"
+            aria-describedby="basic-addon1"
+          />
+        </div>
+        <div class="form-floating mt-3 mb-3">
+          <h5>Input Descsription:</h5>
           <textarea
             className="form-control"
-            placeholder="Leave a comment here"
             id="floatingTextarea2"
             style={{ height: 150 + "px" }}
           ></textarea>
-          <label for="floatingTextarea2">Input Case Note:</label>
         </div>
+
         <Modal.Footer>
-          <button onClick={props.handleSubmit}>Submit</button>
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={props.handleSubmit}
+          >
+            Submit
+          </button>
         </Modal.Footer>
       </Modal.Body>
     </Modal>
