@@ -2,21 +2,36 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
+import { useState } from "react";
+import { CounselorDashboard } from "./CounselorDashboard";
 import "../css/PatientInfo.css";
+import Swal from "sweetalert2";
 
 export const PatientInfo = (props) => {
-  const handleBack = () => {
-    // Handle back button functionality
-  };
+  //!View Assignment Modal Behaviour
+  const [showAss, setShowAss] = useState(false);
+  const handleCloseAss = () => setShowAss(false);
+  const handleShowAss = () => setShowAss(true);
 
-  const handleViewCaseNotes = () => {
-    // Handle view case notes button functionality
-  };
+  //!View Case Notes  Modal Behaviour
+  const [showCase, setShowCase] = useState(false);
+  const handleCloseCase = () => setShowCase(false);
+  const handleShowCase = () => setShowCase(true);
 
-  const handleCreateCaseNotes = () => {
-    // Handle create case notes button functionality
-  };
+  //!View Weekly Form  Modal Behaviour
+  const [showWeek, setShowWeek] = useState(false);
+  const handleCloseWeek = () => setShowWeek(false);
+  const handleShowWeek = () => setShowWeek(true);
 
+  //!View Wellness Form Modal Behaviour
+  const [showWell, setShowWell] = useState(false);
+  const handleCloseWell = () => setShowWell(false);
+  const handleShowWell = () => setShowWell(true);
+
+  //!Create Case Notes Form Modal Behaviour
+  const [showCreate, setShowCreate] = useState(false);
+  const handleCloseCreate = () => setShowCreate(false);
+  const handleShowCreate = () => setShowCreate(true);
   return (
     <Modal
       dialogClassName="modal-90w"
@@ -102,7 +117,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*4th Row  pt-2 pb-2*/}
+              {/*4th Row  */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Sexual Preference: </strong>
@@ -118,7 +133,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*5th Row  pt-2 pb-2*/}
+              {/*5th Row  */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Current prescribed psychiatric medications:</strong>
@@ -140,7 +155,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*6th Row  pt-2 pb-2*/}
+              {/*6th Row  */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Suicidal thoughts: </strong>
@@ -160,7 +175,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*7th Row  pt-2 pb-2*/}
+              {/*7th Row  */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Previous homicidal thoughts: </strong>
@@ -176,7 +191,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*8th Row  pt-2 pb-2*/}
+              {/*8th Row  */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>List of chronic health problem: </strong>
@@ -194,7 +209,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*9th Row  pt-2 pb-2*/}
+              {/*9th Row */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Regular intake of alcohol: </strong>
@@ -214,7 +229,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*10th Row pt-2 pb-2 */}
+              {/*10th Row */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Any past head injury: </strong>
@@ -230,7 +245,7 @@ export const PatientInfo = (props) => {
                 </div>
               </div>
 
-              {/*11th Row pt-2 pb-2 */}
+              {/*11th Row */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Axiety: </strong>
@@ -265,63 +280,484 @@ export const PatientInfo = (props) => {
 
             {/*Buttons */}
             <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
-              <Link
-                to="/View Patients Assignment"
-                style={{ textDecoration: "none" }}
+              <button
+                className="me-2 rounded-5 fw-semibold"
+                onClick={handleShowAss}
+                id="viewButton"
               >
-                <button
-                  className="me-2 rounded-5 fw-semibold"
-                  onClick={handleViewCaseNotes}
-                  id="viewButton"
-                >
-                  View Assignment
-                </button>
-              </Link>
-              <Link to="/View Case Notes" style={{ textDecoration: "none" }}>
-                <button
-                  className="me-2 rounded-5 fw-semibold"
-                  onClick={handleViewCaseNotes}
-                  id="viewButton"
-                >
-                  View Case Notes
-                </button>
-              </Link>
-              <Link
-                to="/Patient Weekly Form"
-                style={{ textDecoration: "none" }}
+                View Assignment
+              </button>
+
+              <button
+                className="me-2 rounded-5 fw-semibold"
+                onClick={handleShowCase}
+                id="viewButton"
               >
-                <button
-                  className="me-2 rounded-5 fw-semibold"
-                  onClick={handleViewCaseNotes}
-                  id="viewButton"
-                >
-                  View Weekly Form
-                </button>
-              </Link>
-              <Link
-                to="/Patient Wellness Form"
-                style={{ textDecoration: "none" }}
+                View Case Notes
+              </button>
+
+              <button
+                className="me-2 rounded-5 fw-semibold"
+                onClick={handleShowWeek}
+                id="viewButton"
               >
-                <button
-                  className="me-2 rounded-5 fw-semibold"
-                  onClick={handleViewCaseNotes}
-                  id="viewButton"
-                >
-                  View Wellness Form
-                </button>
-              </Link>
-              <Link to="/Create Case Notes" style={{ textDecoration: "none" }}>
-                <button
-                  className="rounded-5 fw-semibold"
-                  onClick={handleCreateCaseNotes}
-                  id="viewButton"
-                >
-                  Create Case Notes
-                </button>
-              </Link>
+                View Weekly Form
+              </button>
+
+              <button
+                className="me-2 rounded-5 fw-semibold"
+                onClick={handleShowWell}
+                id="viewButton"
+              >
+                View Wellness Form
+              </button>
+
+              <button
+                className="rounded-5 fw-semibold"
+                onClick={handleShowCreate}
+                id="viewButton"
+              >
+                Create Case Notes
+              </button>
+              <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
+              <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
+              <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
+              <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
+              <CreateCaseNotes
+                show={showCreate}
+                handleClose={handleCloseCreate}
+              />
             </div>
           </div>
         </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+//!MODALS
+
+const ViewModalAssign = (props) => {
+  const [activeTab, setActiveTab] = useState("turnedIn");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+      className="mt-3"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Assignment</Modal.Title>
+        </Modal.Header>
+        <div className="tabs mt-4 d-flex justify-content-start">
+          <button
+            className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
+            onClick={() => handleTabChange("turnedIn")}
+          >
+            Turned-in Assignments
+          </button>
+          <button
+            className={activeTab === "verified" ? "active" : ""}
+            onClick={() => handleTabChange("verified")}
+          >
+            Verified Assignments
+          </button>
+        </div>
+        <table class="table table-dark table-hover">
+          {activeTab === "turnedIn" && (
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Turned in on:</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr>
+                  <td>Journal and Drawing Entry</td>
+                  <td>March 8, 2023</td>
+                </tr>
+              </tbody>
+            </>
+          )}
+          {activeTab === "verified" && (
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Turned in on:</th>
+                  <th scope="col">Files:</th>
+                  <th scope="col">Verify:</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr style={{ opacity: 60 + "%" }}>
+                  <td>Journal and Drawing Entry</td>
+                  <td>March 8, 2023</td>
+                  <td>JournalDrawingEntry.docx</td>
+                  <td>
+                    <button>Verify</button>
+                  </td>
+                </tr>
+              </tbody>
+            </>
+          )}
+        </table>
+        <Modal.Footer>
+          <button>Create Assignment</button>
+          <button variant="secondary" onClick={props.handleClose}>
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewCaseNotes = (props) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Case Notes</Modal.Title>
+        </Modal.Header>
+
+        <table class="table table-dark table-hover mt-3">
+          {}
+          <thead>
+            <tr>
+              <th scope="col">Name:</th>
+              <th scope="col">Date Created:</th>
+              <th scope="col">View Case:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>06/22/2023</td>
+              <td>
+                <button onClick={handleShow}>Case Note</button>
+              </td>
+              <PublishCaseNotes show={show} handleClose={handleClose} />
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewWeeklyForm = (props) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Patients Weekly Form</Modal.Title>
+        </Modal.Header>
+
+        <table class="table table-dark table-hover mt-3">
+          {}
+          <thead>
+            <tr>
+              <th scope="col">Name:</th>
+              <th scope="col">Date Submited:</th>
+              <th scope="col">View Form:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>06/22/2023</td>
+              <td>
+                <button onClick={handleShow}>Form</button>
+                <ViewFormWeek show={show} handleClose={handleClose} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewWellnessForm = (props) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Patients Wellness Form</Modal.Title>
+        </Modal.Header>
+
+        <table class="table table-dark table-hover mt-3">
+          {}
+          <thead>
+            <tr>
+              <th scope="col">Name:</th>
+              <th scope="col">Date Submited:</th>
+              <th scope="col">View Form:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>06/22/2023</td>
+              <td>
+                <button onClick={handleShow}>Form</button>
+                <ViewFormWell show={show} handleClose={handleClose} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const CreateCaseNotes = (props) => {
+  const [show, setShow] = useState(false);
+  const handleSubmit = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Case note has been created sucessfully!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setShow(false);
+  };
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Case Notes</Modal.Title>
+        </Modal.Header>
+
+        <table class="table table-dark table-hover mt-3">
+          {}
+          <thead>
+            <tr>
+              <th scope="col">Name:</th>
+              <th scope="col">Date Added:</th>
+              <th scope="col">Create Case:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>06/22/2023</td>
+              <td>
+                <button onClick={handleShow}>Case Note</button>
+                <CreateNote
+                  show={show}
+                  handleClose={handleClose}
+                  handleSubmit={handleSubmit}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const PublishCaseNotes = (props) => {
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Publish Case Notes:</Modal.Title>
+        </Modal.Header>
+        <table class="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Case Notes:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                {" "}
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewFormWeek = (props) => {
+  return (
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Weekly Form:</Modal.Title>
+        </Modal.Header>
+        <table class="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Question:</th>
+              <th scope="col">Answer:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. I have felt cheerful and in good spirits.</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>2. I have felt calm and relaxed.</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>3. I have felt active and vigorous.</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>4. I woke up feeling fresh and rested.</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>
+                5. My daily life has been filled with things that interest me.
+              </td>
+              <td>A very happy and joyful person</td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewFormWell = (props) => {
+  return (
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Wellness Form:</Modal.Title>
+        </Modal.Header>
+        <table class="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Question:</th>
+              <th scope="col">Answer:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. In general, I consider myself:</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>2. Compared to most of my peers, I consider myself:</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>
+                3. Some people are generally very happy. They enjoy life
+                regardless of what is going on, getting the most out of
+                everything. To what extent does this characterization describe
+                you?
+              </td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>
+                4. Some people are generally not very happy. Although they are
+                not depressed, they never seem as happy as they might be. To
+                what extent does this characterization describe you?
+              </td>
+              <td>A very happy and joyful person</td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const CreateNote = (props) => {
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Case Note:</Modal.Title>
+        </Modal.Header>
+        <div class="form-floating mt-3">
+          <textarea
+            className="form-control"
+            placeholder="Leave a comment here"
+            id="floatingTextarea2"
+            style={{ height: 150 + "px" }}
+          ></textarea>
+          <label for="floatingTextarea2">Input Case Note:</label>
+        </div>
+        <Modal.Footer>
+          <button onClick={props.handleSubmit}>Submit</button>
+        </Modal.Footer>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const CreateAssignment = (props) => {
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Assignment:</Modal.Title>
+        </Modal.Header>
+        <div class="form-floating mt-3">
+          <textarea
+            className="form-control"
+            placeholder="Leave a comment here"
+            id="floatingTextarea2"
+            style={{ height: 150 + "px" }}
+          ></textarea>
+          <label for="floatingTextarea2">Input Case Note:</label>
+        </div>
+        <Modal.Footer>
+          <button onClick={props.handleSubmit}>Submit</button>
+        </Modal.Footer>
       </Modal.Body>
     </Modal>
   );

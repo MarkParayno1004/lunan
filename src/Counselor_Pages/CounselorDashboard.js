@@ -3,16 +3,13 @@ import { useState, useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore, auth } from "../firebase/firebase-config";
 import "../css/CounselorDashboard.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { PatientList } from "./PatientList";
-import { ViewAssignments } from "./ViewAssignments";
 import CounselorScheduler from "./CounselorScheduler";
 import { DefaultCounselorPage } from "./DefaultCounselorPage";
 import { AvatarCounselor } from "../SupportEngine/AvatarCounselor";
 
-export const CounselorDashboard = () => {
+export const CounselorDashboard = (props) => {
   const [counselorName, setCounselorName] = useState("");
   const [activeComponent, setActiveComponent] = useState("default");
 

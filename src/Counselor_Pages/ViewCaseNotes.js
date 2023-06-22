@@ -34,22 +34,31 @@ export const ViewCaseNotes = (patient) => {
                 </div>
               </div>
             </div>
+            <strong className="fw-semibold d-flex justify-content-start  mt-2">
+              Case Note:
+            </strong>
             <div
-              className="rounded-4 ms-5 mt-3"
+              className="rounded-4  mt-2"
               id="bgSession"
-              style={{ height: 5 + "rem" }}
+              style={{ height: 7 + "rem" }}
             >
               <div className="ms-3">
                 <div className="pt-3">
-                  <strong className="fw-normal">Session Number: </strong>
-                </div>
-                <div>
-                  <strong className="fw-normal">Date Created: </strong>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end mt-2 mb-2">
+          <div className="d-flex justify-content-end d-flex mt-2 mb-2">
             <Link to="/Counselor Dashboard" style={{ textDecoration: "none" }}>
               <button
                 className="me-2 rounded-5 fw-semibold"
