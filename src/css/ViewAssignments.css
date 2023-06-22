@@ -34,7 +34,8 @@ h1 {
 }
 
 .tabs button.active {
-  background-color: #6b6285;
+  background-color: #f5e9cf;
+  color: #4d455d;
 }
 
 #buttonAssTab {

@@ -3,11 +3,6 @@
   color: #f5e9cf;
   min-width: 90rem;
 }
-#buttonAss {
-  background-color: #f5e9cf;
-  border: none;
-  color: #4d455d;
-}
 
 #buttonAss:hover {
   background-color: #7db9b6;
