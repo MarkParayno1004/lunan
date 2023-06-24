@@ -628,7 +628,7 @@ const ViewWeeklyForm = (props) => {
 };
 
 const ViewWellnessForm = (props) => {
-  const [activeTab, setActiveTab] = useState("turnedIn");
+  const [activeTab, setActiveTab] = useState("submitted");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
