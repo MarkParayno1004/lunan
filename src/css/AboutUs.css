@@ -1,4 +1,11 @@
 #bgAboutUs {
-  background-color: #7db9b6;
-  min-height: 92vh;
+  background-image: url("../img/aboutUs.png");
+  min-height: 50vh;
+  color: #f5e9cf;
+}
+
+#blueBackground {
+  background-image: url("../img/BlueBG.png");
+  background-color: #f5e9cf;
+  min-height: 60;
 }
