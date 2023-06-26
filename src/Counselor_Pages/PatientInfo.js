@@ -30,8 +30,22 @@ export const PatientInfo = (props) => {
 
   //!Create Case Notes Form Modal Behaviour
   const [showCreate, setShowCreate] = useState(false);
-  const handleCloseCreate = () => setShowCreate(false);
+  const handleCloseCreate = () => {
+    setShowCreate(false);
+  };
   const handleShowCreate = () => setShowCreate(true);
+  const handleSubmitCreate = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Case note has been created sucessfully!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setShowCreate(false);
+  };
   return (
     <Modal
       dialogClassName="modal-90w"
@@ -326,6 +340,7 @@ export const PatientInfo = (props) => {
               <CreateCaseNotes
                 show={showCreate}
                 handleClose={handleCloseCreate}
+                handleSubmit={handleSubmitCreate}
               />
             </div>
           </div>
@@ -466,7 +481,12 @@ const ViewCaseNotes = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Case Notes</Modal.Title>
@@ -495,7 +515,7 @@ const ViewCaseNotes = (props) => {
                   }}
                   onClick={handleShow}
                 >
-                  Case Note
+                  View Note
                 </button>
               </td>
               <PublishCaseNotes show={show} handleClose={handleClose} />
@@ -511,141 +531,230 @@ const ViewWeeklyForm = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [activeTab, setActiveTab] = useState("submitted");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Weekly Form</Modal.Title>
         </Modal.Header>
-
-        <table class="table table-dark table-hover mt-3">
-          {}
-          <thead>
-            <tr>
-              <th scope="col">Name:</th>
-              <th scope="col">Date Submited:</th>
-              <th scope="col">View Form:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>06/22/2023</td>
-              <td>
-                <button
-                  className="btn"
-                  style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                  onClick={handleShow}
-                >
-                  Form
-                </button>
-                <ViewFormWeek show={show} handleClose={handleClose} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="tabs mt-4 d-flex justify-content-start">
+          <button
+            className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
+            onClick={() => handleTabChange("submitted")}
+          >
+            Submitted Assignment
+          </button>
+          <button
+            className={activeTab === "verified" ? "active" : ""}
+            onClick={() => handleTabChange("verified")}
+          >
+            Verified Assignments
+          </button>
+        </div>
+        {activeTab === "submitted" && (
+          <>
+            <h5>Submitted:</h5>
+            <table class="table table-dark table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name:</th>
+                  <th scope="col">Date Submited:</th>
+                  <th scope="col">View Form:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>06/22/2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                      onClick={handleShow}
+                    >
+                      Form
+                    </button>
+                    <ViewFormWeek show={show} handleClose={handleClose} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
+        {activeTab === "verified" && (
+          <>
+            <h5>Verified:</h5>
+            <table class="table table-dark table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name:</th>
+                  <th scope="col">Date Submited:</th>
+                  <th scope="col">View Form:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>06/22/2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                      onClick={handleShow}
+                    >
+                      Form
+                    </button>
+                    <ViewFormWeek show={show} handleClose={handleClose} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
       </Modal.Body>
     </Modal>
   );
 };
 
 const ViewWellnessForm = (props) => {
+  const [activeTab, setActiveTab] = useState("submitted");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Wellness Form</Modal.Title>
         </Modal.Header>
-
-        <table class="table table-dark table-hover mt-3">
-          {}
-          <thead>
-            <tr>
-              <th scope="col">Name:</th>
-              <th scope="col">Date Submited:</th>
-              <th scope="col">View Form:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>06/22/2023</td>
-              <td>
-                <button
-                  className="btn"
-                  style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                  onClick={handleShow}
-                >
-                  Form
-                </button>
-                <ViewFormWell show={show} handleClose={handleClose} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="tabs mt-4 d-flex justify-content-start">
+          <button
+            className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
+            onClick={() => handleTabChange("submitted")}
+          >
+            Submitted Assignment
+          </button>
+          <button
+            className={activeTab === "verified" ? "active" : ""}
+            onClick={() => handleTabChange("verified")}
+          >
+            Verified Assignments
+          </button>
+        </div>
+        {activeTab === "submitted" && (
+          <>
+            <h5>Submitted:</h5>
+            <table class="table table-dark table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name:</th>
+                  <th scope="col">Date Submited:</th>
+                  <th scope="col">View Form:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>06/22/2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                      onClick={handleShow}
+                    >
+                      Form
+                    </button>
+                    <ViewFormWell show={show} handleClose={handleClose} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
+        {activeTab === "verified" && (
+          <>
+            <h5>Verified:</h5>
+            <table class="table table-dark table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name:</th>
+                  <th scope="col">Date Submited:</th>
+                  <th scope="col">View Form:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>06/22/2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                      onClick={handleShow}
+                    >
+                      Form
+                    </button>
+                    <ViewFormWell show={show} handleClose={handleClose} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
       </Modal.Body>
     </Modal>
   );
 };
 
 const CreateCaseNotes = (props) => {
-  const [show, setShow] = useState(false);
-  const handleSubmit = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Case note has been created sucessfully!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    setShow(false);
-  };
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => setShow(true);
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Create Case Notes</Modal.Title>
+          <Modal.Title>Create Case Note</Modal.Title>
         </Modal.Header>
-
-        <table class="table table-dark table-hover mt-3">
-          {}
-          <thead>
-            <tr>
-              <th scope="col">Name:</th>
-              <th scope="col">Date Added:</th>
-              <th scope="col">Create Case:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>06/22/2023</td>
-              <td>
-                <button
-                  className="btn"
-                  style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                  onClick={handleShow}
-                >
-                  Case Note
-                </button>
-                <CreateNote
-                  show={show}
-                  handleClose={handleClose}
-                  handleSubmit={handleSubmit}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="form-floating mt-3 mb-3">
+          <textarea
+            className="form-control"
+            id="CreateCaseNote"
+            style={{ height: 150 + "px" }}
+          ></textarea>
+          <label for="CreateCaseNote">Case Note</label>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={props.handleSubmit}
+          >
+            Submit
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -728,6 +837,14 @@ const ViewFormWeek = (props) => {
             </tr>
           </tbody>
         </table>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+          >
+            Verify
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -780,6 +897,14 @@ const ViewFormWell = (props) => {
             </tr>
           </tbody>
         </table>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+          >
+            Verify
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );

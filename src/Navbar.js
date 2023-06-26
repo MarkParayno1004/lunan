@@ -1,19 +1,18 @@
 import { Link } from "react-router-dom";
 import "./css/Navbar.css";
-import lunanHeader from "../src/img/lunanHeader.png";
-import { BrowserRouter as Route } from "react-router-dom";
+import lunanHeader from "../src/img/BLOOMFIELDS_LOGO-03-.png";
 export const Navbar = () => {
   return (
     <div className="container-fluid sticky-top" id="navbar">
       <div className="row">
         {/* Logo */}
         <div className="col">
-          <img src={lunanHeader} style={{ width: 20 + "%" }}></img>
+          <img src={lunanHeader} style={{ width: 15 + "%" }}></img>
         </div>
         {/* Nav */}
-        <div className="col">
+        <div className="col d-flex align-items-center d-flex justify-content-end">
           <nav className="navbar navbar-expand-lg float-end">
-            <div className="container-fluid">
+            <div className="container-fluid ">
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link
@@ -34,9 +33,13 @@ export const Navbar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link fs-4 me-5" href="#">
+                  <Link
+                    to="/FAQ"
+                    className="nav-link fs-4 me-2"
+                    aria-current="page"
+                  >
                     FAQ
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/Login" className="nav-link fs-4 " id="navFocus">
