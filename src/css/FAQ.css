@@ -1,0 +1,9 @@
+#faqBG {
+  font-family: "Playfair Display";
+  background-image: url("../img/faqBG.png");
+  min-height: 100vh;
+}
+
+hr {
+  color: black;
+}

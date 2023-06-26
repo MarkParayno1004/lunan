@@ -1,10 +1,12 @@
 #bgAboutUs {
+  font-family: "Playfair Display";
   background-image: url("../img/aboutUs.png");
   min-height: 50vh;
   color: #f5e9cf;
 }
 
 #blueBackground {
+  font-family: "Playfair Display";
   background-image: url("../img/BlueBG.png");
   background-color: #f5e9cf;
   min-height: 60;

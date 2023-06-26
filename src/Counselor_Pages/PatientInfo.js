@@ -741,9 +741,10 @@ const CreateCaseNotes = (props) => {
         <div class="form-floating mt-3 mb-3">
           <textarea
             className="form-control"
-            id="floatingTextarea2"
+            id="CreateCaseNote"
             style={{ height: 150 + "px" }}
           ></textarea>
+          <label for="CreateCaseNote">Case Note</label>
         </div>
         <div className="d-flex justify-content-end">
           <button

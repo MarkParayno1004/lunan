@@ -29,8 +29,8 @@ import { ViewCaseNotes } from "./Counselor_Pages/ViewCaseNotes";
 import { CreateCaseNotes } from "./Counselor_Pages/CreateCaseNotes";
 import { PatientWeeklyForms } from "./Counselor_Pages/PatientWeeklyForms";
 import { PatientWellnessForms } from "./Counselor_Pages/PatientWellnessForms";
-import  CounselorScheduler  from "./Counselor_Pages/CounselorScheduler";
-
+import CounselorScheduler from "./Counselor_Pages/CounselorScheduler";
+import { FAQ } from "./Home_pages/FAQ";
 function App() {
   return (
     <div className="App">
@@ -40,6 +40,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/About Us" element={<AboutUs />} />
           <Route path="/Sign Up" element={<SignUp />} />
+          <Route path="/FAQ" element={<FAQ />} />
           <Route path="/Patient Dashboard" element={<PatientDashboard />} />
           <Route
             path="/Supervisor Dashboard"
