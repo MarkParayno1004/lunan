@@ -13,8 +13,8 @@ import { WeeklyForm } from "./WeeklyForm";
 import { WellnessForm } from "./WellnessForm";
 import { WellnessGuide } from "./WellnessGuide";
 import { PatientAssignment } from "./PatientAssignment";
-import { ViewAnswerWell } from "./ViewAnswerWell";
-import { ViewAnswerWeek } from "./ViewAnswerWeek";
+import { ViewTableWell } from "./ViewTableAnswer";
+import { ViewWeekTable } from "./ViewWeekTable";
 import PatientScheduler from "./PatientScheduler";
 import { AvatarPatient } from "../SupportEngine/AvatarPatient";
 import { ModalComponent } from "./ModalComponent";
@@ -71,7 +71,7 @@ export const PatientDashboard = () => {
                   ) : (
                     <FontAwesomeIcon icon={faAngleDown} />
                   )}
-                  <span className="ms-2">Wellness Form</span>
+                  <span className="ms-2">Daily Form</span>
                 </button>
               </li>
               <div>
@@ -307,7 +307,7 @@ export const PatientDashboard = () => {
             </>
           ) : activeComponent === "ViewWellness" ? (
             <>
-              <ViewAnswerWell />
+              <ViewTableWell />
               <AvatarPatient
                 style={{
                   position: "fixed",
@@ -325,7 +325,7 @@ export const PatientDashboard = () => {
             </>
           ) : activeComponent === "ViewWeekly" ? (
             <>
-              <ViewAnswerWeek />
+              <ViewWeekTable />
               <AvatarPatient
                 style={{
                   position: "fixed",

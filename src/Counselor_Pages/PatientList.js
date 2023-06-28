@@ -55,7 +55,7 @@ export const PatientList = () => {
               className="text-center mt-4 mb-4"
               style={{ fontSize: 30 + "px" }}
             >
-              All Patient List
+              All Patient Lisr
             </h2>
           </div>
           <div className="col">

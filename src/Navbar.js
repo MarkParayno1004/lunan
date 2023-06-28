@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import "./css/Navbar.css";
-import lunanHeader from "../src/img/BLOOMFIELDS_LOGO-03-.png";
+import lunanHeader from "../src/img/Bloomfields_text_logo.png";
 export const Navbar = () => {
   return (
     <div className="container-fluid sticky-top" id="navbar">
       <div className="row">
         {/* Logo */}
-        <div className="col">
-          <img src={lunanHeader} style={{ width: 15 + "%" }}></img>
+        <div className="col d-flex align-items-center">
+          <img src={lunanHeader} style={{ width: 25 + "%" }}></img>
         </div>
         {/* Nav */}
         <div className="col d-flex align-items-center d-flex justify-content-end">

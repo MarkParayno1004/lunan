@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
-import { useState } from "react";
-import { CounselorDashboard } from "./CounselorDashboard";
+import { useState, useRef } from "react";
 import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 
@@ -323,7 +322,7 @@ export const PatientInfo = (props) => {
                 onClick={handleShowWell}
                 id="viewButton"
               >
-                View Wellness Form
+                View Daily Form
               </button>
 
               <button
@@ -361,6 +360,10 @@ const ViewModalAssign = (props) => {
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [showFiles, setShowFiles] = useState();
+  const handleCloseFiles = () => setShowFiles(false);
+  const handleShowFiles = () => setShowFiles(true);
 
   const handleSubmit = () => {
     Swal.fire({
@@ -407,16 +410,36 @@ const ViewModalAssign = (props) => {
                   <th scope="col">Activity:</th>
                   <th scope="col">Descsription:</th>
                   <th scope="col">Turned in on:</th>
+                  <th scope="col">Verify:</th>
                 </tr>
               </thead>
               <tbody class="table-group-divider">
                 <tr>
-                  <td>Journal and Drawing Entry</td>
+                  <td>
+                    <span
+                      onClick={handleShowFiles}
+                      style={{ cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      Journal and Drawing Entry
+                    </span>
+                    <AssignmentFiles
+                      show={showFiles}
+                      handleClose={handleCloseFiles}
+                    />
+                  </td>
                   <td>
                     Make a Journal about yourself and make a drawing entry that
                     represents you today.
                   </td>
                   <td>March 8, 2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                    >
+                      Verify
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </>
@@ -428,7 +451,6 @@ const ViewModalAssign = (props) => {
                   <th scope="col">Activity:</th>
                   <th scope="col">Turned in on:</th>
                   <th scope="col">Files:</th>
-                  <th scope="col">Verify:</th>
                 </tr>
               </thead>
               <tbody class="table-group-divider">
@@ -436,14 +458,6 @@ const ViewModalAssign = (props) => {
                   <td>Journal and Drawing Entry</td>
                   <td>March 8, 2023</td>
                   <td>JournalDrawingEntry.docx</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                    >
-                      Verify
-                    </button>
-                  </td>
                 </tr>
               </tbody>
             </>
@@ -645,7 +659,7 @@ const ViewWellnessForm = (props) => {
     >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Patients Wellness Form</Modal.Title>
+          <Modal.Title>Patients Daily Form</Modal.Title>
         </Modal.Header>
         <div className="tabs mt-4 d-flex justify-content-start">
           <button
@@ -805,6 +819,7 @@ const ViewFormWeek = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
+        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
         <table class="table table-dark table-hover mt-3">
           <thead>
             <tr>
@@ -860,8 +875,11 @@ const ViewFormWell = (props) => {
     >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>View Wellness Form:</Modal.Title>
+          <Modal.Title>
+            <div>View Daily Form:</div>
+          </Modal.Title>
         </Modal.Header>
+        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
         <table class="table table-dark table-hover mt-3">
           <thead>
             <tr>
@@ -940,6 +958,12 @@ const CreateNote = (props) => {
 };
 
 const CreateAssignment = (props) => {
+  const [date, setDate] = useState("");
+  const dateInputRef = useRef(null);
+
+  const handleChange = (e) => {
+    setDate(e.target.value);
+  };
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
@@ -953,6 +977,16 @@ const CreateAssignment = (props) => {
             class="form-control"
             aria-label="CreateAssignment"
             aria-describedby="basic-addon1"
+          />
+        </div>
+        <div>
+          <h5>Input Date:</h5>
+          <input
+            className="input-group rounded-2"
+            type="date"
+            onChange={handleChange}
+            ref={dateInputRef}
+            style={{ border: "none" }}
           />
         </div>
         <div class="form-floating mt-3 mb-3">
@@ -973,6 +1007,28 @@ const CreateAssignment = (props) => {
             Submit
           </button>
         </Modal.Footer>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const AssignmentFiles = (props) => {
+  return (
+    <Modal show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Files Submitted</Modal.Title>
+        </Modal.Header>
+        <table class="table">
+          <tr>
+            <th scope="col">Files:</th>
+            <th scope="col">Date:</th>
+          </tr>
+          <tbody>
+            <td>JournalDrawingEntry.docx</td>
+            <td>06/29/2023</td>
+          </tbody>
+        </table>
       </Modal.Body>
     </Modal>
   );
