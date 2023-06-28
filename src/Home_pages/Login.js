@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { auth } from "../firebase/firebase-config";
 import "../css/Login.css";
-import lunanDark from "../img/BLOOMFIELDS_LOGO-03.png";
+import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import loginInputImg from "../img/lunanHeader.png";
 import { Navbar } from "../Navbar";
 
@@ -98,20 +98,17 @@ export const Login = () => {
   return (
     <>
       <Navbar />
-      <div
-        className="container-fluid text-center d-flex align-items-center"
-        id="loginBG"
-      >
-        <div className="row" id="rowHeight">
-          <div className="col d-flex align-items-center d-flex justify-content-center">
-            <img src={lunanDark} style={{ width: "100%" }} alt="Logo" />
+      <div className="container-fluid text-center " id="loginBG">
+        <div className="row d-flex align-items-center" id="rowHeight">
+          <div className="col ">
+            <img src={BloomFieldsLogo} style={{ width: "50%" }} alt="Logo" />
           </div>
           <div
             className="col d-flex align-items-center d-flex justify-content-center"
             id="loginInput"
           >
             <div className="mb-5">
-              <div className="d-flex align-items-center d-flex justify-content-center">
+              <div>
                 <img
                   src={loginInputImg}
                   style={{ width: "%" }}

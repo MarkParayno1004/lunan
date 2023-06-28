@@ -1,11 +1,11 @@
 #loginBG {
   background-image: url("/src/img/loginbg.png");
   background-repeat: no-repeat;
-  min-height: 100vh;
+  min-height: 92;
   opacity: 90%;
 }
 #rowHeight {
-  height: 100vh;
+  height: 92vh;
 }
 #loginInput {
   color: white;
