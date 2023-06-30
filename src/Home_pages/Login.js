@@ -101,21 +101,13 @@ export const Login = () => {
       <div className="container-fluid text-center " id="loginBG">
         <div className="row d-flex align-items-center" id="rowHeight">
           <div className="col ">
-            <img src={BloomFieldsLogo} style={{ width: "50%" }} alt="Logo" />
+            <img src={BloomFieldsLogo} style={{ width: "40%" }} alt="Logo" />
           </div>
           <div
             className="col d-flex align-items-center d-flex justify-content-center"
             id="loginInput"
           >
-            <div className="mb-5">
-              <div>
-                <img
-                  src={loginInputImg}
-                  style={{ width: "%" }}
-                  alt="Login Input"
-                />
-              </div>
-
+            <div className="mb-5" style={{ width: "60%" }}>
               <div className="mt-5">
                 <p
                   style={{ color: "white", fontSize: "50px" }}
