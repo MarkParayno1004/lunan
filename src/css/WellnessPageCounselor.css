@@ -1,0 +1,11 @@
+#WellnessPageBG {
+  background-color: #4d455d;
+}
+.my-content {
+  height: 800px;
+}
+
+/* No horizontal scrolling */
+scrollable-component {
+  --viewport-overflow-x: hidden;
+}
