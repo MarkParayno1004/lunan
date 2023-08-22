@@ -4,13 +4,14 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA_xGC0IlgZJcjuno_lgAx1_5TwLkRoWYc",
-    authDomain: "lunancapstone.firebaseapp.com",
-    projectId: "lunancapstone",
-    storageBucket: "lunancapstone.appspot.com",
-    messagingSenderId: "350722858345",
-    appId: "1:350722858345:web:91f22488821de48743f1f8",
-    measurementId: "G-K9QBCMKGSC"
+  apiKey: "AIzaSyDqOWpvqQfDIWvpe6-yz0EI-GiqWLNmPk4",
+  authDomain: "lunan-75e15.firebaseapp.com",
+  databaseURL: "https://lunan-75e15-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "lunan-75e15",
+  storageBucket: "lunan-75e15.appspot.com",
+  messagingSenderId: "1029237308637",
+  appId: "1:1029237308637:web:e337c7924c7180fac42f34",
+  measurementId: "G-CE28EPC8XE"
   };
 
   export const app = initializeApp(firebaseConfig);
