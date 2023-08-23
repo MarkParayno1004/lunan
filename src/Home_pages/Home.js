@@ -9,10 +9,9 @@ export const Home = () => {
       <Navbar />
       <div className="container-fluid" id="bodyBG">
         <p className="text-center" id="titleP">
-          dadadad
+          Convinient and Affordable Therapy
           <br />
           <p id="titleP2">Anytime, Anywhere</p>
-          <h1>Hi This is LUNAN !!!!!</h1>
         </p>
         <div className="d-flex justify-content-center">
           <Link to="/Sign Up" style={{ textDecoration: "none" }}>
