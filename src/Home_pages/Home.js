@@ -12,7 +12,7 @@ export const Home = () => {
           dadadad
           <br />
           <p id="titleP2">Anytime, Anywhere</p>
-          <h1>Hi</h1>
+          <h1>Hi This is LUNAN</h1>
         </p>
         <div className="d-flex justify-content-center">
           <Link to="/Sign Up" style={{ textDecoration: "none" }}>
