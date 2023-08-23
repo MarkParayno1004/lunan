@@ -9,6 +9,7 @@ import {
   where,
   updateDoc,
   doc,
+  setDoc,
 } from "firebase/firestore";
 import {
   uploadBytes,
@@ -102,7 +103,7 @@ export const NewPatients = () => {
               <tbody>
                 {patientsData.map(
                   (patient) =>
-                    patient.counselorUID === null && (
+                    patient.counselorUID === "" && (
                       <tr key={patient.UID}>
                         <td>
                           <img
@@ -170,27 +171,40 @@ const AssignPatient = (props) => {
     setSelectedCounselor(event.target.value);
   };
 
-  const handleSubmitEdit = (event) => {
-    event.preventDefault(); // Prevent form submission
+  const handleSubmitEdit = async (event) => {
+    event.preventDefault();
     const userAccRef = collection(firestore, "Users");
-    const userDocRef = doc(userAccRef, props.userId); // Access UID from props
-
-    // Update only the fields that are not null
+    const userDocRef = doc(userAccRef, props.userId);
+  
+    console.log("Document Reference Path:", userDocRef.path);
+  
     const updateData = {
       counselorUID: selectedCounselor,
     };
-
-    // Update the document with the new data
-    updateDoc(userDocRef, updateData)
-      .then(() => {
-        console.log("User data updated successfully.");
-        // Perform any additional actions after the update if needed
-      })
-      .catch((error) => {
+  
+    try {
+      // Attempt to update the existing document
+      await updateDoc(userDocRef, updateData);
+      console.log("User data updated successfully.");
+      // Perform any additional actions after the update if needed
+    } catch (error) {
+      if (error.code === "not-found") {
+        // Document doesn't exist, create it
+        try {
+          await setDoc(userDocRef, updateData);
+          console.log("User data created successfully.");
+        } catch (createError) {
+          console.error("Error creating user data:", createError);
+        }
+      } else {
+        console.error("Firebase Error Code:", error.code);
         console.error("Error updating user data:", error);
         // Handle the error case if needed
-      });
+      }
+    }
   };
+  
+  
 
   return (
     <Modal
