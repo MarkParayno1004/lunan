@@ -9,7 +9,7 @@ import {
   where,
   updateDoc,
   doc,
-  setDoc,
+  getDoc,
 } from "firebase/firestore";
 import {
   uploadBytes,
@@ -44,16 +44,19 @@ export const NewPatients = () => {
     const fetchPatientsData = async () => {
       try {
         const querySnapshot = await getDocs(collection(firestore, "Users"));
-        const patients = querySnapshot.docs.map((doc) => doc.data());
-
+        const patients = querySnapshot.docs.map((doc) => ({
+          id: doc.id, // Include the document ID
+          data: doc.data(), // Include the patient data
+        }));
+  
         console.log("Patients Data:", patients); // Log the data
-
+  
         setPatientsData(patients);
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
     };
-
+  
     fetchPatientsData();
   }, []);
   const fetchImageUrl = (imageUrl) => {
@@ -101,34 +104,34 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {patientsData.map(
-                  (patient) =>
-                    patient.counselorUID === "" && (
-                      <tr key={patient.UID}>
-                        <td>
-                          <img
-                            src={fetchImageUrl(patient.ProfPic)}
-                            alt={patient.firstName}
-                            width="100"
-                            height="100"
-                          />
-                        </td>
-                        <td>{patient.firstName}</td>
-                        <td>{patient.dateCreated}</td>
-                        <td>{patient.UID}</td>
-                        <td>
-                          <button
-                            className="rounded-5 fw-medium"
-                            id="editCounselor"
-                            onClick={handleShowEdit}
-                          >
-                            Assign
-                          </button>
-                          <AssignPatient
-                            show={showEdit}
-                            onHide={handleCloseEdit}
-                            handleClose={handleCloseEdit}
-                            userId={patient.UID}
+              {patientsData.map(
+  (patientObj) =>
+    patientObj.data.counselorUID === null && (
+      <tr key={patientObj.id}>
+        <td>
+          <img
+            src={fetchImageUrl(patientObj.data.ProfPic)}
+            alt={patientObj.data.firstName}
+            width="100"
+            height="100"
+          />
+        </td>
+        <td>{patientObj.data.firstName}</td>
+        <td>{patientObj.data.dateCreated}</td>
+        <td>{patientObj.data.UID}</td>
+        <td>
+          <button
+            className="rounded-5 fw-medium"
+            id="editCounselor"
+            onClick={() => handleShowEdit(patientObj.id)} // Pass the document ID
+          >
+            Assign
+          </button>
+          <AssignPatient
+            show={showEdit}
+            onHide={handleCloseEdit}
+            handleClose={handleCloseEdit}
+            userId={patientObj.id} // Pass the document ID
                           />
                         </td>
                       </tr>
@@ -178,29 +181,29 @@ const AssignPatient = (props) => {
   
     console.log("Document Reference Path:", userDocRef.path);
   
-    const updateData = {
-      counselorUID: selectedCounselor,
-    };
-  
     try {
-      // Attempt to update the existing document
-      await updateDoc(userDocRef, updateData);
-      console.log("User data updated successfully.");
-      // Perform any additional actions after the update if needed
-    } catch (error) {
-      if (error.code === "not-found") {
-        // Document doesn't exist, create it
-        try {
-          await setDoc(userDocRef, updateData);
-          console.log("User data created successfully.");
-        } catch (createError) {
-          console.error("Error creating user data:", createError);
-        }
+      // Fetch the existing document data
+      const docSnapshot = await getDoc(userDocRef);
+      if (docSnapshot.exists()) {
+        const existingData = docSnapshot.data();
+  
+        // Modify the existing data with the new counselorUID
+        const updateData = {
+          ...existingData,
+          counselorUID: selectedCounselor,
+        };
+  
+        // Attempt to update the existing document
+        await updateDoc(userDocRef, updateData);
+        console.log("User data updated successfully.");
+        
       } else {
-        console.error("Firebase Error Code:", error.code);
-        console.error("Error updating user data:", error);
-        // Handle the error case if needed
+        console.log("Document does not exist."); // Handle this case if needed
       }
+    } catch (error) {
+      console.error("Firebase Error Code:", error.code);
+      console.error("Error updating user data:", error);
+      // Handle the error case if needed
     }
   };
   
@@ -227,7 +230,7 @@ const AssignPatient = (props) => {
               value={selectedCounselor}
               onChange={handleCounselorChange}
             >
-              <option value="">Select Counselor</option>
+              <option value="null">Select Counselor</option>
               {counselors.map((counselor) => (
                 <option key={counselor.UID} value={counselor.UID}>
                   {counselor.firstName}
