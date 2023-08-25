@@ -9,7 +9,7 @@ export const Home = () => {
       <Navbar />
       <div className="container-fluid" id="bodyBG">
         <p className="text-center" id="titleP">
-          Convinient and Affordable Therapy UPDATE
+          Convinient and Affordable Therapy
           <br />
           <p id="titleP2">Anytime, Anywhere</p>
         </p>
@@ -23,6 +23,7 @@ export const Home = () => {
               Get Started
             </button>
           </Link>
+          1
         </div>
       </div>
       <Footer />
