@@ -68,6 +68,7 @@ export const AllCounselors = () => {
       try {
         const querySnapshot = await getDocs(
           query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
+          
         );
   
         const counselorDataWithPatientsCount = await Promise.all(
@@ -238,7 +239,7 @@ export const AllCounselors = () => {
           show={showEdit}
           onHide={handleCloseEdit}
           handleClose={handleCloseEdit}
-          // counselorId={selectedCounselorId} // Pass selected counselor ID to EditModal
+          userId={counselor.UID}
         />
       </td>
       <td>
@@ -488,12 +489,9 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
+  const [updateName, setUpdateName] = useState(""); // Changed the state variable name
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
-  // const [formData, setFormData] = useState({
-  //   firstName: props.counselor.firstName,
-  //   ProfPic: props.counselor.ProfPic
-  // });
 
   const handleFile = (event) => {
     const selectedFile = event.target.files[0];
@@ -508,36 +506,43 @@ const EditModal = (props) => {
     }
   };
 
-  const handleSubmitEdit = (event) => {
-    event.preventDefault(); // Prevent form submission
+  const handleUpdateName = (event) => {
+    setUpdateName(event.target.value); // Corrected the state update function
+  };
+
+  const handleSubmitEdit = async (event) => {
+    event.preventDefault();
     const userAccRef = collection(firestore, "Users");
-    const userDocRef = doc(userAccRef, props.userId); // Access UID from props
+    
+    try {
+      // Ensure props.userId is valid before creating the document reference
+      if (props.userId) {
+        const userDocRef = doc(userAccRef, props.userId);
+        const docSnapshot = await getDoc(userDocRef);
+        
+        if (docSnapshot.exists()) {
+          const existingData = docSnapshot.data();
 
-    // Update only the fields that are not null
-    const updateData = {};
-    // if (formData.firstName !== "") {
-    //   updateData.firstName = formData.firstName;
-    // }
-    // if (file !== null) {
-    //   updateData.profPic = file;
-    // }
+          const updateData = {
+            ...existingData,
+            firstName: updateName,
+          };
 
-    // Update the document with the new data
-    updateDoc(userDocRef, updateData)
-      .then(() => {
-        console.log("User data updated successfully.");
-        // Perform any additional actions after the update if needed
-      })
-      .catch((error) => {
-        console.error("Error updating user data:", error);
-        // Handle the error case if needed
-      });
+          await updateDoc(userDocRef, updateData);
+          console.log("User data updated successfully.");
+        } else {
+          console.log("Document does not exist.");
+        }
+      } else {
+        console.log("Invalid userId.");
+      }
+    } catch (error) {
+      console.error("Firebase Error Code:", error.code);
+      console.error("Error updating user data:", error);
+    }
   };
 
   return (
-
-
-
     <Modal
       className="container-fluid"
       show={props.show}
@@ -555,10 +560,8 @@ const EditModal = (props) => {
             <Form.Control
               type="text"
               name="firstName"
-              // value={formData.firstName}
-              // onChange={(e) =>
-              //   setFormData({ ...formData, firstName: e.target.value })
-              // }
+              value={updateName}
+              onChange={handleUpdateName}
             />
           </Form.Group>
 
