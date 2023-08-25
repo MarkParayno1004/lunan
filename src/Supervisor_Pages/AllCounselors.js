@@ -23,6 +23,7 @@ import {
   getDownloadURL,
   getMetadata,
   setMetadata,
+  deleteObject,
 } from "firebase/storage";
 
 export const AllCounselors = () => {
@@ -119,20 +120,23 @@ export const AllCounselors = () => {
         // Show success message
         await Swal.fire({
           title: "Deleted!",
-          text: "Your file has been deleted.",
+          text: "The counselor has been removed.",
           background: "#7db9b6",
           color: "#FFFFFF",
         });
 
-        console.log("Counselor deleted successfully.", UID);
+        // Filter out the removed counselor from the counselorData state
+        setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
+
+        console.log("Counselor removed successfully.", UID);
       }
     } catch (error) {
-      console.error("Error deleting counselor:", error);
+      console.error("Error removing counselor:", error);
 
       // Show error message
       await Swal.fire({
         title: "Error",
-        text: "An error occurred while deleting the counselor.",
+        text: "An error occurred while removing the counselor.",
         background: "#7db9b6",
         color: "#FFFFFF",
         icon: "error",
@@ -282,8 +286,8 @@ export const AllCounselors = () => {
   );
 };
 const AddModal = (props) => {
-  //! File Validation
   const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
 
   const handleFileChange = (event) => {
@@ -400,6 +404,7 @@ const AddModal = (props) => {
   };
 
 
+
   return (
     <Modal
       className="container-fluid"
@@ -491,7 +496,7 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
-  const [updateName, setUpdateName] = useState(""); // Changed the state variable name
+  const [updateName, setUpdateName] = useState(props.firstName || ""); // Changed the state variable name
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
 
@@ -530,6 +535,12 @@ const EditModal = (props) => {
             firstName: updateName,
           };
 
+          // Update the profile picture if a new one was selected
+          if (file) {
+            const imageUrl = await uploadProfilePicture(props.userId, file);
+            updateData.ProfPic = imageUrl;
+          }
+
           await updateDoc(userDocRef, updateData);
           console.log("User data updated successfully.");
         } else {
@@ -541,6 +552,18 @@ const EditModal = (props) => {
     } catch (error) {
       console.error("Firebase Error Code:", error.code);
       console.error("Error updating user data:", error);
+    }
+  };
+
+  const uploadProfilePicture = async (userId, file) => {
+    try {
+      const storageRef = ref(storage, `user_profile_pictures/${userId}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+      return imageUrl;
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      throw error;
     }
   };
 
@@ -562,7 +585,7 @@ const EditModal = (props) => {
             <Form.Control
               type="text"
               name="firstName"
-              value={updateName || props.firstName}
+              value={updateName}
               onChange={handleUpdateName}
             />
           </Form.Group>
