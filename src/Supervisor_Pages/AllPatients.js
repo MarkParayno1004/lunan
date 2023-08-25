@@ -18,39 +18,46 @@ export const AllPatients = () => {
     const fetchPatientsData = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(collection(firestore, "Users"), where("Role", "==", "Patient"))
+          query(
+            collection(firestore, "Users"),
+            where("counselorID", "!=", null)
+          )
         );
         const patients = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log("Patients Data:", patients); // Log the data
-
+  
+        console.log("Patients Data:", patients);
+  
         setPatientsData(patients);
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
     };
-
+  
     fetchPatientsData();
   }, []);
 
   useEffect(() => {
     const fetchCounselorNames = async () => {
       const names = {};
-      for (const patient of patientsData) {
-        if (patient.counselorUID) {
-          const counselorName = await fetchCounselorName(patient.counselorUID);
-          names[patient.counselorUID] = counselorName;
+  
+      await Promise.all(patientsData.map(async (patient) => {
+        if (patient.counselorID) {
+          console.log("Fetching counselor name for:", patient.counselorID);
+          const counselorName = await fetchCounselorName(patient.counselorID);
+          names[patient.counselorID] = counselorName;
         }
-      }
+      }));
+  
+      console.log("Fetched Counselor Names:", names);
       setCounselorNames(names);
     };
   
     fetchCounselorNames();
   }, [patientsData]);
   
-  const fetchCounselorName = async (counselorUID) => {
+  const fetchCounselorName = async (counselorID) => {
     try {
-      const counselorDocRef = doc(firestore, "Users", counselorUID);
+      const counselorDocRef = doc(firestore, "Users", counselorID);
       const counselorDocSnapshot = await getDoc(counselorDocRef);
   
       if (counselorDocSnapshot.exists()) {
@@ -68,6 +75,7 @@ export const AllPatients = () => {
       return "Error Fetching Name";
     }
   };
+  
 
   return (
     <div className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3" id="AllPatientForm">
@@ -104,7 +112,7 @@ export const AllPatients = () => {
                       </td>
                       <td>{patient.firstName}</td>
                       <td>{patient.dateCreated}</td>
-                      <td>{counselorNames[patient.counselorUID] || "N/A"}</td>
+                      <td>{counselorNames[patient.counselorID] || "N/A"}</td>
                     </tr>
                   )
                 )}
