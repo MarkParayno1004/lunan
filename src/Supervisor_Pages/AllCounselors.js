@@ -13,6 +13,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore, storage } from "../firebase/firebase-config";
@@ -28,27 +29,68 @@ export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
 
+  const fetchCounselorPatientsCount = async (counselorID) => {
+    try {
+      // Query the "Users" collection for documents with role "Patient"
+      const querySnapshot = await getDocs(
+        query(collection(firestore, "Users"), where("Role", "==", "Patient"))
+      );
+  
+      // Get the list of patient documents
+      const patientDocs = querySnapshot.docs;
+      let patientsCount = 0;
+  
+      // Find the counselor document with the specified counselorID
+      const counselorDoc = await getDoc(doc(collection(firestore, "Users"), counselorID));
+  
+      if (counselorDoc.exists()) {
+        const counselorData = counselorDoc.data();
+  
+        // Iterate through patient documents and compare data with counselor ID
+        for (const patientDoc of patientDocs) {
+          const patientData = patientDoc.data();
+          if (patientData.counselorID === counselorID) {
+            patientsCount++;
+          }
+        }
+      }
+  
+      return patientsCount;
+    } catch (error) {
+      console.error("Error fetching counselor patients count:", error);
+      return 0;
+    }
+  };
+  
+
   useEffect(() => {
     const fetchCounselorData = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(
-            collection(firestore, "Users"),
-            where("Role", "==", "Counselor")
-          )
+          query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
         );
-        const counselor = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log("Counselor Data:", counselor); // Log the data
-
-        setCounselorData(counselor);
+  
+        const counselorDataWithPatientsCount = await Promise.all(
+          querySnapshot.docs.map(async (doc) => {
+            const patientsCount = await fetchCounselorPatientsCount(doc.id);
+            return {
+              ...doc.data(),
+              UID: doc.id,
+              patientsCount: patientsCount,
+            };
+          })
+        );
+  
+        console.log("Counselor Data:", counselorDataWithPatientsCount);
+        setCounselorData(counselorDataWithPatientsCount);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
     };
-
+  
     fetchCounselorData();
   }, []);
+  
 
   const handleRemove = async (UID) => {
     try {
@@ -123,6 +165,7 @@ export const AllCounselors = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
 
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -166,49 +209,52 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-                {counselorData.map((counselor) => (
-                  <tr key={counselor.UID}>
-                    <td>
-                      {counselor.ProfPic && (
-                        <img
-                          src={fetchImageUrl(counselor.ProfPic)}
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
-                    </td>
-                    <td>{counselor.firstName}</td>
-                    <td>{counselor.dateCreated}</td>
-                    <td>{counselor.patients}</td>
-                    <td>
-                      <button
-                        className="rounded-5 fw-medium"
-                        id="editCounselor"
-                        onClick={handleShowEdit}
-                      >
-                        Edit
-                      </button>
-                      <EditModal
-                        show={showEdit}
-                        onHide={handleCloseEdit}
-                        handleClose={handleCloseEdit}
-                      />
-                    </td>
-                    <td>
-                      <button
-                        id="removeCounselor"
-                        className="rounded-5 fw-medium"
-                        onClick={() => {
-                          handleRemove(counselor.UID);
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+  {counselorData.map((counselor) => (
+    <tr key={counselor.UID}>
+      <td>
+        {counselor.ProfPic && (
+          <img
+            src={fetchImageUrl(counselor.ProfPic)}
+            alt={counselor.firstName}
+            width="100"
+            height="100"
+          />
+        )}
+      </td>
+      <td>{counselor.firstName}</td>
+      <td>{counselor.dateCreated}</td>
+      <td>
+        {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
+      </td>
+      <td>
+        <button
+          className="rounded-5 fw-medium"
+          id="editCounselor"
+          onClick={() => handleShowEdit(counselor.UID)} // Pass counselor UID to handleShowEdit
+        >
+          Edit
+        </button>
+        <EditModal
+          show={showEdit}
+          onHide={handleCloseEdit}
+          handleClose={handleCloseEdit}
+          // counselorId={selectedCounselorId} // Pass selected counselor ID to EditModal
+        />
+      </td>
+      <td>
+        <button
+          id="removeCounselor"
+          className="rounded-5 fw-medium"
+          onClick={() => {
+            handleRemove(counselor.UID);
+          }}
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
             </table>
           </div>
         </div>
@@ -232,7 +278,6 @@ export const AllCounselors = () => {
     </div>
   );
 };
-
 const AddModal = (props) => {
   //! File Validation
   const [file, setFile] = useState(null);
@@ -350,6 +395,7 @@ const AddModal = (props) => {
       console.error("Error adding new counselor:", error);
     }
   };
+
 
   return (
     <Modal
@@ -489,6 +535,9 @@ const EditModal = (props) => {
   };
 
   return (
+
+
+
     <Modal
       className="container-fluid"
       show={props.show}
