@@ -9,7 +9,7 @@ export const Home = () => {
       <Navbar />
       <div className="container-fluid" id="bodyBG">
         <p className="text-center" id="titleP">
-          Convinient and Affordable Therapy
+          Convinient and Affordable Therapy UPDATE
           <br />
           <p id="titleP2">Anytime, Anywhere</p>
         </p>
