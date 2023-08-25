@@ -164,7 +164,7 @@ export const AllCounselors = () => {
   //! Modal Behaviour for Edit Button
   const [showEdit, setShowEdit] = useState(false);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (UID) => setShowEdit(UID);
 
 
   return (
@@ -236,10 +236,12 @@ export const AllCounselors = () => {
           Edit
         </button>
         <EditModal
-          show={showEdit}
+          show={showEdit === counselor.UID}
           onHide={handleCloseEdit}
           handleClose={handleCloseEdit}
           userId={counselor.UID}
+          firstName={counselor.firstName} // Pass the firstName prop
+          ProfPic={counselor.ProfPic} // Pass the ProfPic prop
         />
       </td>
       <td>
@@ -560,7 +562,7 @@ const EditModal = (props) => {
             <Form.Control
               type="text"
               name="firstName"
-              value={updateName}
+              value={updateName || props.firstName}
               onChange={handleUpdateName}
             />
           </Form.Group>
