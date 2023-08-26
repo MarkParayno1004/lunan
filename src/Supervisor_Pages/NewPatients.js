@@ -36,7 +36,7 @@ export const NewPatients = () => {
   };
 
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (id) => setShowEdit(id);
 
   return (
     <div className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3" id="NewPatientForm">
@@ -100,7 +100,7 @@ export const NewPatients = () => {
                             Assign
                           </button>
                           <AssignPatient
-                            show={showEdit}
+                            show={showEdit === patientObj.id}
                             onHide={handleCloseEdit}
                             handleClose={handleCloseEdit}
                             userId={patientObj.id}
