@@ -29,21 +29,28 @@ import {
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
+  const [filteredCounselorData, setFilteredCounselorData] = useState([]);
+
+  const filteredCounselors = counselorData.filter((counselor) =>
+    counselor.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
       const querySnapshot = await getDocs(
         query(collection(firestore, "Users"), where("Role", "==", "Patient"))
       );
-  
+
       const patientDocs = querySnapshot.docs;
       let patientsCount = 0;
-  
-      const counselorDoc = await getDoc(doc(collection(firestore, "Users"), counselorID));
-  
+
+      const counselorDoc = await getDoc(
+        doc(collection(firestore, "Users"), counselorID)
+      );
+
       if (counselorDoc.exists()) {
         const counselorData = counselorDoc.data();
-  
+
         for (const patientDoc of patientDocs) {
           const patientData = patientDoc.data();
           if (patientData.counselorID === counselorID) {
@@ -51,23 +58,24 @@ export const AllCounselors = () => {
           }
         }
       }
-  
+
       return patientsCount;
     } catch (error) {
       console.error("Error fetching counselor patients count:", error);
       return 0;
     }
   };
-  
 
   useEffect(() => {
     const fetchCounselorData = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
-          
+          query(
+            collection(firestore, "Users"),
+            where("Role", "==", "Counselor")
+          )
         );
-  
+
         const counselorDataWithPatientsCount = await Promise.all(
           querySnapshot.docs.map(async (doc) => {
             const patientsCount = await fetchCounselorPatientsCount(doc.id);
@@ -78,17 +86,16 @@ export const AllCounselors = () => {
             };
           })
         );
-  
+
         console.log("Counselor Data:", counselorDataWithPatientsCount);
         setCounselorData(counselorDataWithPatientsCount);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
     };
-  
+
     fetchCounselorData();
   }, []);
-  
 
   const handleRemove = async (UID) => {
     try {
@@ -117,7 +124,9 @@ export const AllCounselors = () => {
           color: "#FFFFFF",
         });
 
-        setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
+        setCounselorData((prevData) =>
+          prevData.filter((counselor) => counselor.UID !== UID)
+        );
 
         console.log("Counselor removed successfully.", UID);
       }
@@ -135,7 +144,21 @@ export const AllCounselors = () => {
   };
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    if (query === "") {
+      setFilteredCounselorData(counselorData); // Show all data when query is empty
+    } else {
+      const filteredCounselors = counselorData.filter(
+        (counselor) =>
+          (counselor.firstName &&
+            counselor.firstName.toLowerCase().includes(query)) ||
+          (counselor.lastName &&
+            counselor.lastName.toLowerCase().includes(query))
+      );
+      setFilteredCounselorData(filteredCounselors);
+    }
   };
 
   const fetchImageUrl = (imageUrl) => {
@@ -149,7 +172,6 @@ export const AllCounselors = () => {
   const [showEdit, setShowEdit] = useState(false);
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (UID) => setShowEdit(UID);
-
 
   return (
     <div
@@ -194,61 +216,63 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-  {counselorData.map((counselor) => (
-    <tr key={counselor.UID}>
-      <td>
-    {counselor.ProfPic ? (
-      <img
-        src={fetchImageUrl(counselor.ProfPic)}
-        alt={counselor.firstName}
-        width="100"
-        height="100"
-      />
-    ) : (
-      <img
-        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-        alt={counselor.firstName}
-        width="100"
-        height="100"
-      />
-    )}
-  </td>
-  <td>{counselor.firstName}</td>
-  <td>{counselor.dateCreated}</td>
-  <td>
-    {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
-  </td>
-      <td>
-        <button
-          className="rounded-5 fw-medium"
-          id="editCounselor"
-          onClick={() => handleShowEdit(counselor.UID)}
-        >
-          Edit
-        </button>
-        <EditModal
-          show={showEdit === counselor.UID}
-          onHide={handleCloseEdit}
-          handleClose={handleCloseEdit}
-          userId={counselor.UID}
-          firstName={counselor.firstName}
-          ProfPic={counselor.ProfPic}
-        />
-      </td>
-      <td>
-        <button
-          id="removeCounselor"
-          className="rounded-5 fw-medium"
-          onClick={() => {
-            handleRemove(counselor.UID);
-          }}
-        >
-          Remove
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+                {counselorData.map((counselor) => (
+                  <tr key={counselor.UID}>
+                    <td>
+                      {counselor.ProfPic ? (
+                        <img
+                          src={fetchImageUrl(counselor.ProfPic)}
+                          alt={counselor.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      ) : (
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                          alt={counselor.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      )}
+                    </td>
+                    <td>{counselor.firstName}</td>
+                    <td>{counselor.dateCreated}</td>
+                    <td>
+                      {counselor.patientsCount !== undefined
+                        ? counselor.patientsCount
+                        : 0}
+                    </td>
+                    <td>
+                      <button
+                        className="rounded-5 fw-medium"
+                        id="editCounselor"
+                        onClick={() => handleShowEdit(counselor.UID)}
+                      >
+                        Edit
+                      </button>
+                      <EditModal
+                        show={showEdit === counselor.UID}
+                        onHide={handleCloseEdit}
+                        handleClose={handleCloseEdit}
+                        userId={counselor.UID}
+                        firstName={counselor.firstName}
+                        ProfPic={counselor.ProfPic}
+                      />
+                    </td>
+                    <td>
+                      <button
+                        id="removeCounselor"
+                        className="rounded-5 fw-medium"
+                        onClick={() => {
+                          handleRemove(counselor.UID);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         </div>
@@ -304,7 +328,7 @@ const AddModal = (props) => {
     const file = event.target.files[0];
     setLocalFormData({
       ...localFormData,
-      ProfPic: file, 
+      ProfPic: file,
     });
   };
 
@@ -313,7 +337,7 @@ const AddModal = (props) => {
       const storageRef = ref(storage, `user_photos/${file.name}`);
 
       const metadata = {
-        contentType: file.type, 
+        contentType: file.type,
       };
 
       const snapshot = await uploadBytes(storageRef, file, metadata);
@@ -380,8 +404,6 @@ const AddModal = (props) => {
       console.error("Error adding new counselor:", error);
     }
   };
-
-
 
   return (
     <Modal
@@ -493,18 +515,18 @@ const EditModal = (props) => {
   };
 
   const handleUpdateName = (event) => {
-    setUpdateName(event.target.value); 
+    setUpdateName(event.target.value);
   };
 
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
     const userAccRef = collection(firestore, "Users");
-    
+
     try {
       if (props.userId) {
         const userDocRef = doc(userAccRef, props.userId);
         const docSnapshot = await getDoc(userDocRef);
-        
+
         if (docSnapshot.exists()) {
           const existingData = docSnapshot.data();
 
