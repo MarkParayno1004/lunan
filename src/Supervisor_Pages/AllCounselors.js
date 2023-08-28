@@ -25,9 +25,14 @@ import {
   setMetadata,
 } from "firebase/storage";
 
-export const AllCounselors = () => {
+export const AllCounselors = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredCounselorData, setFilteredCounselorData] = useState([]);
   const [counselorData, setCounselorData] = useState([]);
+
+  const filteredCounselors = counselorData.filter((counselor) =>
+    counselor.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
@@ -68,9 +73,8 @@ export const AllCounselors = () => {
       try {
         const querySnapshot = await getDocs(
           query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
-          
         );
-  
+
         const counselorDataWithPatientsCount = await Promise.all(
           querySnapshot.docs.map(async (doc) => {
             const patientsCount = await fetchCounselorPatientsCount(doc.id);
@@ -81,9 +85,17 @@ export const AllCounselors = () => {
             };
           })
         );
-  
+
+        const fetchedCounselors = querySnapshot.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            UID: doc.id,
+          };
+        });
+
         console.log("Counselor Data:", counselorDataWithPatientsCount);
         setCounselorData(counselorDataWithPatientsCount);
+        setFilteredCounselorData(fetchedCounselors);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
@@ -91,54 +103,6 @@ export const AllCounselors = () => {
   
     fetchCounselorData();
   }, []);
-  
-
-  const handleRemove = async (UID) => {
-    try {
-      const userAccRef = collection(firestore, "Users");
-      const counselorDocRef = doc(userAccRef, UID);
-
-      // Show confirmation dialog
-      const confirmationResult = await Swal.fire({
-        position: "top",
-        title: "Are you sure?",
-        background: "#7db9b6",
-        color: "#FFFFFF",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      });
-
-      if (confirmationResult.isConfirmed) {
-        // Delete the counselor document
-        await deleteDoc(counselorDocRef);
-
-        // Show success message
-        await Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          background: "#7db9b6",
-          color: "#FFFFFF",
-        });
-
-        console.log("Counselor deleted successfully.", UID);
-      }
-    } catch (error) {
-      console.error("Error deleting counselor:", error);
-
-      // Show error message
-      await Swal.fire({
-        title: "Error",
-        text: "An error occurred while deleting the counselor.",
-        background: "#7db9b6",
-        color: "#FFFFFF",
-        icon: "error",
-      });
-    }
-  };
 
   const handleEdit = (UID) => {
     // Handle edit functionality for the counselor with the given ID
@@ -149,7 +113,19 @@ export const AllCounselors = () => {
   };
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    if (query === "") {
+      setFilteredCounselorData(counselorData); // Show all data when query is empty
+    } else {
+      const filteredCounselors = counselorData.filter(
+        (counselor) =>
+          (counselor.firstName && counselor.firstName.toLowerCase().includes(query)) ||
+          (counselor.lastName && counselor.lastName.toLowerCase().includes(query))
+      );
+      setFilteredCounselorData(filteredCounselors);
+    }
   };
 
   const fetchImageUrl = (imageUrl) => {
@@ -166,6 +142,23 @@ export const AllCounselors = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
 
+  const handleRemove = async (userId) => {
+    const userAccRef = collection(firestore, "Users");
+    const counselorDocRef = doc(userAccRef, props.userId);
+  
+    try {
+      const docSnapshot = await getDoc(counselorDocRef);
+      if (docSnapshot.exists()) {
+        await deleteDoc(counselorDocRef);
+        console.log("User data deleted successfully.");
+      } else {
+        console.log("Document does not exist.");
+      }
+    } catch (error) {
+      console.error("Firebase Error Code:", error.code);
+      console.log("Error deleting counselor data:", error);
+    }
+  };
 
   return (
     <div
@@ -210,7 +203,7 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-  {counselorData.map((counselor) => (
+  {filteredCounselorData.map((counselor) => (
     <tr key={counselor.UID}>
       <td>
         {counselor.ProfPic && (
@@ -247,7 +240,7 @@ export const AllCounselors = () => {
           id="removeCounselor"
           className="rounded-5 fw-medium"
           onClick={() => {
-            handleRemove(counselor.UID);
+            handleRemove(counselor.userId);
           }}
         >
           Remove
@@ -396,7 +389,6 @@ const AddModal = (props) => {
       console.error("Error adding new counselor:", error);
     }
   };
-
 
   return (
     <Modal
