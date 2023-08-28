@@ -36,7 +36,7 @@ export const NewPatients = () => {
   };
 
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (id) => setShowEdit(id);
 
   return (
     <div className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3" id="NewPatientForm">
@@ -100,7 +100,7 @@ export const NewPatients = () => {
                             Assign
                           </button>
                           <AssignPatient
-                            show={showEdit}
+                            show={showEdit === patientObj.id}
                             onHide={handleCloseEdit}
                             handleClose={handleCloseEdit}
                             userId={patientObj.id}
@@ -120,6 +120,7 @@ export const NewPatients = () => {
 
 const AssignPatient = (props) => {
   const [selectedCounselor, setSelectedCounselor] = useState("");
+  const [selectedCounselorUID, setSelectedCounselorUID] = useState("");
   const [counselors, setCounselors] = useState([]);
 
   useEffect(() => {
@@ -144,23 +145,29 @@ const AssignPatient = (props) => {
 
   const handleCounselorChange = (event) => {
     setSelectedCounselor(event.target.value);
+    setSelectedCounselorUID(event.target.value);
   };
 
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
     const userAccRef = collection(firestore, "Users");
     const userDocRef = doc(userAccRef, props.userId);
-
+  
     try {
       const docSnapshot = await getDoc(userDocRef);
       if (docSnapshot.exists()) {
         const existingData = docSnapshot.data();
-
+  
+        // Find the selected counselor's UID from counselors array
+        const selectedCounselorData = counselors.find(counselor => counselor.id === selectedCounselor);
+        const selectedCounselorUID = selectedCounselorData ? selectedCounselorData.data.UID : '';
+  
         const updateData = {
           ...existingData,
           counselorID: selectedCounselor,
+          counselorUID: selectedCounselorUID,
         };
-
+  
         await updateDoc(userDocRef, updateData);
         console.log("User data updated successfully.");
       } else {

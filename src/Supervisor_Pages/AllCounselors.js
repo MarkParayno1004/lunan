@@ -23,6 +23,7 @@ import {
   getDownloadURL,
   getMetadata,
   setMetadata,
+  deleteObject,
 } from "firebase/storage";
 
 export const AllCounselors = (props) => {
@@ -140,7 +141,7 @@ export const AllCounselors = (props) => {
   //! Modal Behaviour for Edit Button
   const [showEdit, setShowEdit] = useState(false);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (UID) => setShowEdit(UID);
 
   const handleRemove = async (userId) => {
     const userAccRef = collection(firestore, "Users");
@@ -206,20 +207,27 @@ export const AllCounselors = (props) => {
   {filteredCounselorData.map((counselor) => (
     <tr key={counselor.UID}>
       <td>
-        {counselor.ProfPic && (
-          <img
-            src={fetchImageUrl(counselor.ProfPic)}
-            alt={counselor.firstName}
-            width="100"
-            height="100"
-          />
-        )}
-      </td>
-      <td>{counselor.firstName}</td>
-      <td>{counselor.dateCreated}</td>
-      <td>
-        {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
-      </td>
+    {counselor.ProfPic ? (
+      <img
+        src={fetchImageUrl(counselor.ProfPic)}
+        alt={counselor.firstName}
+        width="100"
+        height="100"
+      />
+    ) : (
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_photos%2Favatar.png?alt=media&token=05925de3-c060-466f-a252-62a2140f6486"
+        alt={counselor.firstName}
+        width="100"
+        height="100"
+      />
+    )}
+  </td>
+  <td>{counselor.firstName}</td>
+  <td>{counselor.dateCreated}</td>
+  <td>
+    {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
+  </td>
       <td>
         <button
           className="rounded-5 fw-medium"
@@ -229,10 +237,12 @@ export const AllCounselors = (props) => {
           Edit
         </button>
         <EditModal
-          show={showEdit}
+          show={showEdit === counselor.UID}
           onHide={handleCloseEdit}
           handleClose={handleCloseEdit}
           userId={counselor.UID}
+          firstName={counselor.firstName} // Pass the firstName prop
+          ProfPic={counselor.ProfPic} // Pass the ProfPic prop
         />
       </td>
       <td>
@@ -273,8 +283,8 @@ export const AllCounselors = (props) => {
   );
 };
 const AddModal = (props) => {
-  //! File Validation
   const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
 
   const handleFileChange = (event) => {
@@ -481,7 +491,7 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
-  const [updateName, setUpdateName] = useState(""); // Changed the state variable name
+  const [updateName, setUpdateName] = useState(props.firstName || ""); // Changed the state variable name
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
 
@@ -520,6 +530,12 @@ const EditModal = (props) => {
             firstName: updateName,
           };
 
+          // Update the profile picture if a new one was selected
+          if (file) {
+            const imageUrl = await uploadProfilePicture(props.userId, file);
+            updateData.ProfPic = imageUrl;
+          }
+
           await updateDoc(userDocRef, updateData);
           console.log("User data updated successfully.");
         } else {
@@ -531,6 +547,18 @@ const EditModal = (props) => {
     } catch (error) {
       console.error("Firebase Error Code:", error.code);
       console.error("Error updating user data:", error);
+    }
+  };
+
+  const uploadProfilePicture = async (userId, file) => {
+    try {
+      const storageRef = ref(storage, `user_profile_pictures/${userId}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+      return imageUrl;
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      throw error;
     }
   };
 
