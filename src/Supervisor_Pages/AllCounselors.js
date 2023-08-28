@@ -206,7 +206,7 @@ export const AllCounselors = () => {
       />
     ) : (
       <img
-        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_photos%2Favatar.png?alt=media&token=05925de3-c060-466f-a252-62a2140f6486"
+        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
         alt={counselor.firstName}
         width="100"
         height="100"
