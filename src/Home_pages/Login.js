@@ -11,7 +11,6 @@ import {
 import { auth } from "../firebase/firebase-config";
 import "../css/Login.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
-import loginInputImg from "../img/lunanHeader.png";
 import { Navbar } from "../Navbar";
 
 export const Login = () => {
