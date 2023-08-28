@@ -32,22 +32,18 @@ export const AllCounselors = () => {
 
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
-      // Query the "Users" collection for documents with role "Patient"
       const querySnapshot = await getDocs(
         query(collection(firestore, "Users"), where("Role", "==", "Patient"))
       );
   
-      // Get the list of patient documents
       const patientDocs = querySnapshot.docs;
       let patientsCount = 0;
   
-      // Find the counselor document with the specified counselorID
       const counselorDoc = await getDoc(doc(collection(firestore, "Users"), counselorID));
   
       if (counselorDoc.exists()) {
         const counselorData = counselorDoc.data();
   
-        // Iterate through patient documents and compare data with counselor ID
         for (const patientDoc of patientDocs) {
           const patientData = patientDoc.data();
           if (patientData.counselorID === counselorID) {
@@ -99,7 +95,6 @@ export const AllCounselors = () => {
       const userAccRef = collection(firestore, "Users");
       const counselorDocRef = doc(userAccRef, UID);
 
-      // Show confirmation dialog
       const confirmationResult = await Swal.fire({
         position: "top",
         title: "Are you sure?",
@@ -114,10 +109,7 @@ export const AllCounselors = () => {
       });
 
       if (confirmationResult.isConfirmed) {
-        // Delete the counselor document
         await deleteDoc(counselorDocRef);
-
-        // Show success message
         await Swal.fire({
           title: "Deleted!",
           text: "The counselor has been removed.",
@@ -125,7 +117,6 @@ export const AllCounselors = () => {
           color: "#FFFFFF",
         });
 
-        // Filter out the removed counselor from the counselorData state
         setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
 
         console.log("Counselor removed successfully.", UID);
@@ -133,7 +124,6 @@ export const AllCounselors = () => {
     } catch (error) {
       console.error("Error removing counselor:", error);
 
-      // Show error message
       await Swal.fire({
         title: "Error",
         text: "An error occurred while removing the counselor.",
@@ -144,14 +134,6 @@ export const AllCounselors = () => {
     }
   };
 
-  const handleEdit = (UID) => {
-    // Handle edit functionality for the counselor with the given ID
-  };
-
-  const handleAddCounselor = () => {
-    // Handle adding a new counselor
-  };
-
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -160,12 +142,10 @@ export const AllCounselors = () => {
     return imageUrl;
   };
 
-  //! Modal Behaviour for Add Button
   const [showAdd, setShowAdd] = useState(false);
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
 
-  //! Modal Behaviour for Edit Button
   const [showEdit, setShowEdit] = useState(false);
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (UID) => setShowEdit(UID);
@@ -242,7 +222,7 @@ export const AllCounselors = () => {
         <button
           className="rounded-5 fw-medium"
           id="editCounselor"
-          onClick={() => handleShowEdit(counselor.UID)} // Pass counselor UID to handleShowEdit
+          onClick={() => handleShowEdit(counselor.UID)}
         >
           Edit
         </button>
@@ -251,8 +231,8 @@ export const AllCounselors = () => {
           onHide={handleCloseEdit}
           handleClose={handleCloseEdit}
           userId={counselor.UID}
-          firstName={counselor.firstName} // Pass the firstName prop
-          ProfPic={counselor.ProfPic} // Pass the ProfPic prop
+          firstName={counselor.firstName}
+          ProfPic={counselor.ProfPic}
         />
       </td>
       <td>
@@ -315,7 +295,7 @@ const AddModal = (props) => {
     Email: "",
     firstName: "",
     ConNum: "",
-    ProfPic: null, // Initialize ProfPic as null
+    ProfPic: null,
   });
 
   const [fileError, setFileError] = useState("");
@@ -324,7 +304,7 @@ const AddModal = (props) => {
     const file = event.target.files[0];
     setLocalFormData({
       ...localFormData,
-      ProfPic: file, // Set the ProfPic value to the selected file
+      ProfPic: file, 
     });
   };
 
@@ -332,26 +312,22 @@ const AddModal = (props) => {
     try {
       const storageRef = ref(storage, `user_photos/${file.name}`);
 
-      // Set the content type metadata
       const metadata = {
-        contentType: file.type, // Use the file's actual content type
+        contentType: file.type, 
       };
 
-      // Upload the image file with the specified metadata
       const snapshot = await uploadBytes(storageRef, file, metadata);
 
-      // Retrieve the download URL and other metadata
       const downloadURL = await getDownloadURL(snapshot.ref);
       const updatedMetadata = await getMetadata(snapshot.ref);
 
       console.log("Download URL:", downloadURL);
       console.log("Updated Metadata:", updatedMetadata);
 
-      // Return the download URL
       return downloadURL;
     } catch (error) {
       console.error("Error uploading image:", error);
-      throw error; // Rethrow the error to handle it in the calling function
+      throw error;
     }
   };
 
@@ -372,10 +348,8 @@ const AddModal = (props) => {
     event.preventDefault();
 
     try {
-      // Generate a random password with length 8
       const password = generateRandomPassword(8);
 
-      // Create a user account with the provided email and generated password
       const { user } = await createUserWithEmailAndPassword(
         auth,
         localFormData.Email,
@@ -383,25 +357,22 @@ const AddModal = (props) => {
       );
       console.log("Generated Password:", password);
 
-      // Upload the profile picture to Firebase Storage
       let photoURL = "";
       if (localFormData.ProfPic) {
         photoURL = await uploadImage(localFormData.ProfPic);
       }
 
-      // Add user data to the "Users" collection
       const newUser = {
         dateCreated: new Date().toISOString().split("T")[0],
         Email: localFormData.Email,
         firstName: localFormData.firstName,
         ConNum: localFormData.ConNum,
-        ProfPic: photoURL, // Include the photoURL in the user data
+        ProfPic: photoURL,
         Role: "Counselor",
         UID: user.uid,
       };
       console.log("New User Data:", newUser);
 
-      // Add the document to Firestore
       await addDoc(userAccRef, newUser);
 
       console.log("New counselor added successfully.");
@@ -503,7 +474,7 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
-  const [updateName, setUpdateName] = useState(props.firstName || ""); // Changed the state variable name
+  const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
 
@@ -521,7 +492,7 @@ const EditModal = (props) => {
   };
 
   const handleUpdateName = (event) => {
-    setUpdateName(event.target.value); // Corrected the state update function
+    setUpdateName(event.target.value); 
   };
 
   const handleSubmitEdit = async (event) => {
@@ -529,7 +500,6 @@ const EditModal = (props) => {
     const userAccRef = collection(firestore, "Users");
     
     try {
-      // Ensure props.userId is valid before creating the document reference
       if (props.userId) {
         const userDocRef = doc(userAccRef, props.userId);
         const docSnapshot = await getDoc(userDocRef);
@@ -542,7 +512,6 @@ const EditModal = (props) => {
             firstName: updateName,
           };
 
-          // Update the profile picture if a new one was selected
           if (file) {
             const imageUrl = await uploadProfilePicture(props.userId, file);
             updateData.ProfPic = imageUrl;
