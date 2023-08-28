@@ -23,7 +23,6 @@ export const Home = () => {
               Get Started
             </button>
           </Link>
-          1
         </div>
       </div>
       <Footer />
