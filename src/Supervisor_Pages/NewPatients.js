@@ -200,11 +200,11 @@ const AssignPatient = (props) => {
               onChange={handleCounselorChange}
             >
               <option value="null">Select Counselor</option>
-              {counselors.map((counselor) => (
-                <option key={counselor.id} value={counselor.id}>
-                  {counselor.data.firstName}
-                </option>
-              ))}
+  {counselors.map((counselor) => (
+    <option key={counselor.id} value={counselor.id}>
+      {counselor.data.firstName}
+    </option>
+  ))}
             </Form.Control>
           </Form.Group>
 
