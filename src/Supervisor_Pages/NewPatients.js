@@ -120,6 +120,7 @@ export const NewPatients = () => {
 
 const AssignPatient = (props) => {
   const [selectedCounselor, setSelectedCounselor] = useState("");
+  const [selectedCounselorUID, setSelectedCounselorUID] = useState("");
   const [counselors, setCounselors] = useState([]);
 
   useEffect(() => {
@@ -144,23 +145,29 @@ const AssignPatient = (props) => {
 
   const handleCounselorChange = (event) => {
     setSelectedCounselor(event.target.value);
+    setSelectedCounselorUID(event.target.value);
   };
 
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
     const userAccRef = collection(firestore, "Users");
     const userDocRef = doc(userAccRef, props.userId);
-
+  
     try {
       const docSnapshot = await getDoc(userDocRef);
       if (docSnapshot.exists()) {
         const existingData = docSnapshot.data();
-
+  
+        // Find the selected counselor's UID from counselors array
+        const selectedCounselorData = counselors.find(counselor => counselor.id === selectedCounselor);
+        const selectedCounselorUID = selectedCounselorData ? selectedCounselorData.data.UID : '';
+  
         const updateData = {
           ...existingData,
           counselorID: selectedCounselor,
+          counselorUID: selectedCounselorUID,
         };
-
+  
         await updateDoc(userDocRef, updateData);
         console.log("User data updated successfully.");
       } else {
