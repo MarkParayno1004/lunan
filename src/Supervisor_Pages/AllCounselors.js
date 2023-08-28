@@ -474,6 +474,7 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
+  //
   const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
