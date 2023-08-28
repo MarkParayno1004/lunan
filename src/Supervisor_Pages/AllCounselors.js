@@ -13,6 +13,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore, storage } from "../firebase/firebase-config";
@@ -22,33 +23,76 @@ import {
   getDownloadURL,
   getMetadata,
   setMetadata,
+  deleteObject,
 } from "firebase/storage";
 
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
 
+  const fetchCounselorPatientsCount = async (counselorID) => {
+    try {
+      // Query the "Users" collection for documents with role "Patient"
+      const querySnapshot = await getDocs(
+        query(collection(firestore, "Users"), where("Role", "==", "Patient"))
+      );
+  
+      // Get the list of patient documents
+      const patientDocs = querySnapshot.docs;
+      let patientsCount = 0;
+  
+      // Find the counselor document with the specified counselorID
+      const counselorDoc = await getDoc(doc(collection(firestore, "Users"), counselorID));
+  
+      if (counselorDoc.exists()) {
+        const counselorData = counselorDoc.data();
+  
+        // Iterate through patient documents and compare data with counselor ID
+        for (const patientDoc of patientDocs) {
+          const patientData = patientDoc.data();
+          if (patientData.counselorID === counselorID) {
+            patientsCount++;
+          }
+        }
+      }
+  
+      return patientsCount;
+    } catch (error) {
+      console.error("Error fetching counselor patients count:", error);
+      return 0;
+    }
+  };
+  
+
   useEffect(() => {
     const fetchCounselorData = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(
-            collection(firestore, "Users"),
-            where("Role", "==", "Counselor")
-          )
+          query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
+          
         );
-        const counselor = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log("Counselor Data:", counselor); // Log the data
-
-        setCounselorData(counselor);
+  
+        const counselorDataWithPatientsCount = await Promise.all(
+          querySnapshot.docs.map(async (doc) => {
+            const patientsCount = await fetchCounselorPatientsCount(doc.id);
+            return {
+              ...doc.data(),
+              UID: doc.id,
+              patientsCount: patientsCount,
+            };
+          })
+        );
+  
+        console.log("Counselor Data:", counselorDataWithPatientsCount);
+        setCounselorData(counselorDataWithPatientsCount);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
     };
-
+  
     fetchCounselorData();
   }, []);
+  
 
   const handleRemove = async (UID) => {
     try {
@@ -76,20 +120,23 @@ export const AllCounselors = () => {
         // Show success message
         await Swal.fire({
           title: "Deleted!",
-          text: "Your file has been deleted.",
+          text: "The counselor has been removed.",
           background: "#7db9b6",
           color: "#FFFFFF",
         });
 
-        console.log("Counselor deleted successfully.", UID);
+        // Filter out the removed counselor from the counselorData state
+        setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
+
+        console.log("Counselor removed successfully.", UID);
       }
     } catch (error) {
-      console.error("Error deleting counselor:", error);
+      console.error("Error removing counselor:", error);
 
       // Show error message
       await Swal.fire({
         title: "Error",
-        text: "An error occurred while deleting the counselor.",
+        text: "An error occurred while removing the counselor.",
         background: "#7db9b6",
         color: "#FFFFFF",
         icon: "error",
@@ -121,7 +168,8 @@ export const AllCounselors = () => {
   //! Modal Behaviour for Edit Button
   const [showEdit, setShowEdit] = useState(false);
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = () => setShowEdit(true);
+  const handleShowEdit = (UID) => setShowEdit(UID);
+
 
   return (
     <div
@@ -166,49 +214,54 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-                {counselorData.map((counselor) => (
-                  <tr key={counselor.UID}>
-                    <td>
-                      {counselor.ProfPic && (
-                        <img
-                          src={fetchImageUrl(counselor.ProfPic)}
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
-                    </td>
-                    <td>{counselor.firstName}</td>
-                    <td>{counselor.dateCreated}</td>
-                    <td>{counselor.patients}</td>
-                    <td>
-                      <button
-                        className="rounded-5 fw-medium"
-                        id="editCounselor"
-                        onClick={handleShowEdit}
-                      >
-                        Edit
-                      </button>
-                      <EditModal
-                        show={showEdit}
-                        onHide={handleCloseEdit}
-                        handleClose={handleCloseEdit}
-                      />
-                    </td>
-                    <td>
-                      <button
-                        id="removeCounselor"
-                        className="rounded-5 fw-medium"
-                        onClick={() => {
-                          handleRemove(counselor.UID);
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+  {counselorData.map((counselor) => (
+    <tr key={counselor.UID}>
+      <td>
+        {counselor.ProfPic && (
+          <img
+            src={fetchImageUrl(counselor.ProfPic)}
+            alt={counselor.firstName}
+            width="100"
+            height="100"
+          />
+        )}
+      </td>
+      <td>{counselor.firstName}</td>
+      <td>{counselor.dateCreated}</td>
+      <td>
+        {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
+      </td>
+      <td>
+        <button
+          className="rounded-5 fw-medium"
+          id="editCounselor"
+          onClick={() => handleShowEdit(counselor.UID)} // Pass counselor UID to handleShowEdit
+        >
+          Edit
+        </button>
+        <EditModal
+          show={showEdit === counselor.UID}
+          onHide={handleCloseEdit}
+          handleClose={handleCloseEdit}
+          userId={counselor.UID}
+          firstName={counselor.firstName} // Pass the firstName prop
+          ProfPic={counselor.ProfPic} // Pass the ProfPic prop
+        />
+      </td>
+      <td>
+        <button
+          id="removeCounselor"
+          className="rounded-5 fw-medium"
+          onClick={() => {
+            handleRemove(counselor.UID);
+          }}
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
             </table>
           </div>
         </div>
@@ -232,10 +285,9 @@ export const AllCounselors = () => {
     </div>
   );
 };
-
 const AddModal = (props) => {
-  //! File Validation
   const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
 
   const handleFileChange = (event) => {
@@ -351,6 +403,8 @@ const AddModal = (props) => {
     }
   };
 
+
+
   return (
     <Modal
       className="container-fluid"
@@ -442,12 +496,9 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
+  const [updateName, setUpdateName] = useState(props.firstName || ""); // Changed the state variable name
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
-  // const [formData, setFormData] = useState({
-  //   firstName: props.counselor.firstName,
-  //   ProfPic: props.counselor.ProfPic
-  // });
 
   const handleFile = (event) => {
     const selectedFile = event.target.files[0];
@@ -462,30 +513,58 @@ const EditModal = (props) => {
     }
   };
 
-  const handleSubmitEdit = (event) => {
-    event.preventDefault(); // Prevent form submission
+  const handleUpdateName = (event) => {
+    setUpdateName(event.target.value); // Corrected the state update function
+  };
+
+  const handleSubmitEdit = async (event) => {
+    event.preventDefault();
     const userAccRef = collection(firestore, "Users");
-    const userDocRef = doc(userAccRef, props.userId); // Access UID from props
+    
+    try {
+      // Ensure props.userId is valid before creating the document reference
+      if (props.userId) {
+        const userDocRef = doc(userAccRef, props.userId);
+        const docSnapshot = await getDoc(userDocRef);
+        
+        if (docSnapshot.exists()) {
+          const existingData = docSnapshot.data();
 
-    // Update only the fields that are not null
-    const updateData = {};
-    // if (formData.firstName !== "") {
-    //   updateData.firstName = formData.firstName;
-    // }
-    // if (file !== null) {
-    //   updateData.profPic = file;
-    // }
+          const updateData = {
+            ...existingData,
+            firstName: updateName,
+          };
 
-    // Update the document with the new data
-    updateDoc(userDocRef, updateData)
-      .then(() => {
-        console.log("User data updated successfully.");
-        // Perform any additional actions after the update if needed
-      })
-      .catch((error) => {
-        console.error("Error updating user data:", error);
-        // Handle the error case if needed
-      });
+          // Update the profile picture if a new one was selected
+          if (file) {
+            const imageUrl = await uploadProfilePicture(props.userId, file);
+            updateData.ProfPic = imageUrl;
+          }
+
+          await updateDoc(userDocRef, updateData);
+          console.log("User data updated successfully.");
+        } else {
+          console.log("Document does not exist.");
+        }
+      } else {
+        console.log("Invalid userId.");
+      }
+    } catch (error) {
+      console.error("Firebase Error Code:", error.code);
+      console.error("Error updating user data:", error);
+    }
+  };
+
+  const uploadProfilePicture = async (userId, file) => {
+    try {
+      const storageRef = ref(storage, `user_profile_pictures/${userId}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+      return imageUrl;
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      throw error;
+    }
   };
 
   return (
@@ -506,10 +585,8 @@ const EditModal = (props) => {
             <Form.Control
               type="text"
               name="firstName"
-              // value={formData.firstName}
-              // onChange={(e) =>
-              //   setFormData({ ...formData, firstName: e.target.value })
-              // }
+              value={updateName}
+              onChange={handleUpdateName}
             />
           </Form.Group>
 
