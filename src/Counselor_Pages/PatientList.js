@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
+import { getAuth } from "firebase/auth";
 import "../css/PatientList.css";
 
 export const PatientList = () => {
@@ -30,6 +31,10 @@ export const PatientList = () => {
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  const auth = getAuth();
+  const loggedInUserUID = auth.currentUser ? auth.currentUser.uid : null;
+  console.log("Logged In User UID:", loggedInUserUID);
 
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
@@ -89,31 +94,30 @@ export const PatientList = () => {
                 </tr>
               </thead>
               <tbody>
-                {patientsData.map(
-                  (patient) =>
-                    patient.counselorUID && (
-                      <tr key={patient.UID}>
-                        <td>
-                          <button
-                            style={{ border: "none", background: "none" }}
-                            onClick={handleShow}
-                          >
-                            {patient.ProfPic && (
-                              <img
-                                src={fetchImageUrl(patient.ProfPic)}
-                                alt={patient.firstName}
-                                width="100"
-                                height="100"
-                              />
-                            )}
-                          </button>
-                        </td>
-                        <td>{patient.firstName}</td>
-                        <td>{patient.dateCreated}</td>
-                        <td>{patient.UID}</td>
-                      </tr>
-                    )
-                )}
+                {patientsData
+                  .filter((patient) => patient.counselorUID === loggedInUserUID) // Filter patients with matching counselorUID
+                  .map((patient) => (
+                    <tr key={patient.UID}>
+                      <td>
+                        <button
+                          style={{ border: "none", background: "none" }}
+                          onClick={handleShow}
+                        >
+                          {patient.ProfPic && (
+                            <img
+                              src={fetchImageUrl(patient.ProfPic)}
+                              alt={patient.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          )}
+                        </button>
+                      </td>
+                      <td>{patient.firstName}</td>
+                      <td>{patient.dateCreated}</td>
+                      <td>{patient.UID}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

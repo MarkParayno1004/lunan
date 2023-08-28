@@ -217,20 +217,27 @@ export const AllCounselors = () => {
   {counselorData.map((counselor) => (
     <tr key={counselor.UID}>
       <td>
-        {counselor.ProfPic && (
-          <img
-            src={fetchImageUrl(counselor.ProfPic)}
-            alt={counselor.firstName}
-            width="100"
-            height="100"
-          />
-        )}
-      </td>
-      <td>{counselor.firstName}</td>
-      <td>{counselor.dateCreated}</td>
-      <td>
-        {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
-      </td>
+    {counselor.ProfPic ? (
+      <img
+        src={fetchImageUrl(counselor.ProfPic)}
+        alt={counselor.firstName}
+        width="100"
+        height="100"
+      />
+    ) : (
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_photos%2Favatar.png?alt=media&token=05925de3-c060-466f-a252-62a2140f6486"
+        alt={counselor.firstName}
+        width="100"
+        height="100"
+      />
+    )}
+  </td>
+  <td>{counselor.firstName}</td>
+  <td>{counselor.dateCreated}</td>
+  <td>
+    {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
+  </td>
       <td>
         <button
           className="rounded-5 fw-medium"
