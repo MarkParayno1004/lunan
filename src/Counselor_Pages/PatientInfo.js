@@ -7,6 +7,8 @@ import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 
 export const PatientInfo = (props) => {
+  const patientData = props.patientData;
+  const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
   const [showAss, setShowAss] = useState(false);
   const handleCloseAss = () => setShowAss(false);
@@ -47,17 +49,17 @@ export const PatientInfo = (props) => {
   };
   return (
     <Modal
-      dialogClassName="modal-90w"
-      size="xl"
-      aria-labelledby="example-custom-modal-styling-title"
-      show={props.show}
-      onHide={props.onHide}
-    >
-      <Modal.Body id="piModal">
-        <Modal.Header closeButton>
-          <Modal.Title id="example-custom-modal-styling-title">
-            Patient Information
-          </Modal.Title>
+  dialogClassName="modal-90w"
+  size="xl"
+  aria-labelledby="example-custom-modal-styling-title"
+  show={props.show}
+  onHide={props.onHide}
+>
+<Modal.Body id="piModal">
+    <Modal.Header closeButton>
+      <Modal.Title id="example-custom-modal-styling-title">
+        Patient Information
+      </Modal.Title>
         </Modal.Header>
         <div className="container-fluid">
           <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
@@ -79,15 +81,15 @@ export const PatientInfo = (props) => {
                   <div className="row">
                     <div className="col">
                       <strong>Name: </strong>
-                      <span style={{ color: "red" }}>{props.name}</span>
+                      <span style={{ color: "red" }}>{props.patientData.firstName}</span>
                     </div>
                     <div className="col">
                       <strong>Age: </strong>
-                      <span style={{ color: "red" }}>{props.age}</span>
+                      <span style={{ color: "red" }}>{props.patientData.Age}</span>
                     </div>
                     <div className="col">
                       <strong>Gender: </strong>
-                      <span style={{ color: "red" }}>{props.gender}</span>
+                      <span style={{ color: "red" }}>{props.patientData.Gender}</span>
                     </div>
                   </div>
 
@@ -97,10 +99,21 @@ export const PatientInfo = (props) => {
                       <strong>Birthday: </strong>
                       <span style={{ color: "red" }}>{props.birthday}</span>
                     </div>
+
                     <div className="col">
-                      <strong>Address: </strong>
-                      <span style={{ color: "red" }}>{props.address}</span>
+                      <strong>Address: </strong><br></br>
+                      {intakeFormsData && intakeFormsData[0] ? (
+                      <span style={{ color: "red" }}>
+                      {intakeFormsData[0].StreetNum || "N/A"}{" "}
+                      {intakeFormsData[0].Barangay || ""}{" "}
+                      {intakeFormsData[0].City || ""} 
+                      {intakeFormsData[0].Zip || ""}
+                      </span>
+                      ) : (
+                      <span>Wala</span>
+                      )}
                     </div>
+
                     <div className="col">
                       <strong>Assigned Counselor: </strong>
                       <span style={{ color: "red" }}>{props.counselor}</span>
@@ -118,15 +131,16 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col ">
                   <strong>Cell Phone Number: </strong>
-                  <span style={{ color: "red" }}>{props.cellPhoneNum}</span>
+                  <span style={{ color: "red" }}>{props.patientData.CellPhone}</span>
                 </div>
+
                 <div className="col">
                   <strong>Home Phone Number: </strong>
-                  <span style={{ color: "red" }}>{props.homePhoneNumber}</span>
+                  <span style={{ color: "red" }}>{props.patientData.HomePhone}</span>
                 </div>
                 <div className="col">
-                  <strong>Email:</strong>
-                  <span style={{ color: "red" }}>{props.email}</span>
+                  <strong>Email: </strong>
+                  <span style={{ color: "red" }}>{props.patientData.Email}</span>
                 </div>
               </div>
 
@@ -134,37 +148,59 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Sexual Preference: </strong>
-                  <span style={{ color: "red" }}>{props.sexualPref}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].SexualPref}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
-                  <strong>Marital Status:</strong>
-                  <span style={{ color: "red" }}>{props.maritalStatus}</span>
+                  <strong>Marital Status: </strong>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].MaritalStatus}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Previous Psychotherapy: </strong>
-                  <span style={{ color: "red" }}>{props.yesorNo3}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].TherapyStatus}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
               {/*5th Row  */}
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
-                  <strong>Current prescribed psychiatric medications:</strong>
-                  <span style={{ color: "red" }}>
-                    {props.currentPsychiatricMedication}
-                  </span>
+                  <strong>Current prescribed psychiatric medications: </strong>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].CurrPsychMeds}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+                
                 <div className="col">
-                  <strong>Emergency contact person name:</strong>
-                  <span style={{ color: "red" }}>
-                    {props.contactEmergencyName}
-                  </span>
+                  <strong>Emergency contact person name: </strong>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].CPFname}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
-                  <strong>Emergency contact person number:</strong>
-                  <span style={{ color: "red" }}>
-                    {props.contactEmergencyNum}
-                  </span>
+                  <strong>Emergency contact person number: </strong>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].CPNum}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -172,19 +208,29 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Suicidal thoughts: </strong>
-                  <span style={{ color: "red" }}>{props.suicidalThoughts}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].SuicidalThoughts}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Past suicidal thoughts: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.pastSuicidalThoughts}
-                  </span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].SuicidalThoughtsPast}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Current homicidal thoughts: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.homicidalThoughts}
-                  </span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].CurrentHomicidal}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -192,15 +238,29 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Previous homicidal thoughts: </strong>
-                  <span style={{ color: "red" }}>{props.prevHomiThoughts}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].HadPreviousHomicide}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Current physical health: </strong>
-                  <span style={{ color: "red" }}>{props.currentPhyHealth}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].currentPhysicalHealth}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Last physical examination: </strong>
-                  <span style={{ color: "red" }}>{props.lastPhyExam}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].LastPhysicalExam}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -208,17 +268,29 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>List of chronic health problem: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.listChronicProblem}
-                  </span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].ChronicIll}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Any Allergies: </strong>
-                  <span style={{ color: "red" }}>{props.anyAllergies}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].AllergiesSel}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>List of maintenance medication: </strong>
-                  <span style={{ color: "red" }}>{props.listMainMeds}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].MaintMeds}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -226,19 +298,32 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Regular intake of alcohol: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.regularIntakeAlcohol}
-                  </span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].alcoholSubstanceAbuseSelNow}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Engage in recreational drug use: </strong>
-                  <span style={{ color: "red" }}>{props.recreateDrugUse}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>
+                    {intakeFormsData[0].DrugUseSel || ""}{" "}
+                    {intakeFormsData[0].DrugUse || ""} 
+                    </span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+                
                 <div className="col">
                   <strong>Habit of smoke: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.habitSmoke} # of cigar per day
-                  </span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].CiggDaily}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -246,15 +331,29 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Any past head injury: </strong>
-                  <span style={{ color: "red" }}>{props.headInjury}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].CPNum ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].HeadInjurySel}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Lately significant changes or stressors: </strong>
-                  <span style={{ color: "red" }}>{props.changesStressors}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].Stressors ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].Stressors}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Depressed Mood or Sadness: </strong>
-                  <span style={{ color: "red" }}>{props.DepressSad}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].depressedMoodNowSel ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].depressedMoodNowSel}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -262,15 +361,34 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col">
                   <strong>Axiety: </strong>
-                  <span style={{ color: "red" }}>{props.anxiety}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].anxietySelNow ? (
+                  <span style={{ color: "red" }}>{intakeFormsData[0].anxietySelNow}</span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Phobias: </strong>
-                  <span style={{ color: "red" }}>{props.phobias}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].phobiasSelNow ? (
+                  <span style={{ color: "red" }}>
+                    {intakeFormsData[0].phobiasSelNow || ""} {" "}
+                    {intakeFormsData[0].phobiasRatingNow || ""} </span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Hallucinations: </strong>
-                  <span style={{ color: "red" }}>{props.hallucinations}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].hallucinationsSelNow ? (
+                  <span style={{ color: "red" }}>
+                    {intakeFormsData[0].hallucinationsSelNow || ""} {" "}
+                    {intakeFormsData[0].hallucinationsRatingNow || ""}
+                    </span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
 
@@ -278,15 +396,38 @@ export const PatientInfo = (props) => {
               <div className="row ms-2 mt-2">
                 <div className="col">
                   <strong>Sexual Abuse: </strong>
-                  <span style={{ color: "red" }}>{props.sexualAbuse}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].sexualAbuseSelNow ? (
+                  <span style={{ color: "red" }}>
+                    {intakeFormsData[0].sexualAbuseSelNow || ""} {" "}
+                    {intakeFormsData[0].sexualAbuseRatingNow || ""}
+                    </span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Physical Abuse: </strong>
-                  <span style={{ color: "red" }}>{props.phyAbuse}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].physicalAbuseSelNow ? (
+                  <span style={{ color: "red" }}>
+                    {intakeFormsData[0].physicalAbuseSelNow || ""} {" "}
+                    {intakeFormsData[0].physicalAbuseRatingNow || ""}
+                    </span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
+
                 <div className="col">
                   <strong>Emotional Abuse: </strong>
-                  <span style={{ color: "red" }}>{props.emotionalAbuse}</span>
+                  {intakeFormsData && intakeFormsData[0] && intakeFormsData[0].emotionalAbuseSelNow ? (
+                  <span style={{ color: "red" }}>
+                    {intakeFormsData[0].emotionalAbuseSelNow || ""} {" "}
+                    {intakeFormsData[0].emotionalAbuseRatingNow || ""}
+                    </span>
+                  ) : (
+                  <span>N/A</span>
+                  )}
                 </div>
               </div>
             </div>
