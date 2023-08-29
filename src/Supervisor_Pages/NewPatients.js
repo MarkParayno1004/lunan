@@ -32,8 +32,17 @@ export const NewPatients = () => {
   };
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
   };
+
+  const filteredPatients = patientsData.filter((patient) => {
+    const patientData = patient.data;
+    return (
+      patientData.firstName?.toLowerCase().includes(searchQuery) ||
+      patientData.lastName?.toLowerCase().includes(searchQuery)
+    );
+  });
 
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (id) => setShowEdit(id);
@@ -76,7 +85,7 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {patientsData.map(
+                {filteredPatients.map(
                   (patientObj) =>
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
