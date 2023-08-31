@@ -146,14 +146,21 @@ export const PatientList = () => {
           style={{ border: "none", background: "none" }}
           onClick={() => handleShow(patient.UID)} // Pass the patient's UID
         >
-          {patient.ProfPic && (
-            <img
-              src={fetchImageUrl(patient.ProfPic)}
-              alt={patient.firstName}
-              width="100"
-              height="100"
-            />
-          )}
+            {patient.ProfPic ? (
+              <img
+                src={fetchImageUrl(patient.ProfPic)}
+                alt={patient.firstName}
+                width="100"
+                height="100"
+              />
+                ) : (
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                alt={patient.firstName}
+                width="100"
+                height="100"
+              />
+                )}
         </button>
       </td>
       <td>{patient.firstName}</td>
