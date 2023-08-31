@@ -992,7 +992,8 @@ const ViewWellnessForm = (props) => {
 };
 
 const CreateCaseNotes = (props) => {
-  const editorRef = useRef(null);
+  const editorRef = useRef();
+
   return (
     <Modal
       className="mt-3"
@@ -1004,7 +1005,7 @@ const CreateCaseNotes = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Create Case Note</Modal.Title>
         </Modal.Header>
-        <div class="form-floating mt-3 mb-3">
+        <div class="mt-3 mb-3">
           {/* <textarea
             className="form-control"
             id="CreateCaseNote"
@@ -1012,26 +1013,52 @@ const CreateCaseNotes = (props) => {
           ></textarea>
           <label for="CreateCaseNote">Case Note</label> */}
           <Editor
+            apiKey="q40km5ybfjgzeo6v9902hgylefi3uv633fo69epfu741q0by"
             onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue="<p>Input Case Note.</p>"
             init={{
-              height: 500,
               menubar: false,
               plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table paste code help wordcount",
+                "advlist",
+                "autolink",
+                "lists",
+                "link",
+                "image",
+                "charmap",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "code",
+                "fullscreen",
+                "insertdatetime",
+                "media",
+                "table",
+                "preview",
+                "help",
+                "wordcount",
               ],
               toolbar:
-                "undo redo | formatselect | " +
-                "bold italic backcolor | alignleft aligncenter " +
+                "undo redo | blocks | " +
+                "bold italic forecolor | alignleft aligncenter " +
                 "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
+                "removeformat",
               content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; }",
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
           />
         </div>
+        <label for="formFile" class="form-label">
+          Input Document File:
+        </label>
+        <div className="d-flex justify-content-start">
+          <input
+            class="form-control "
+            type="file"
+            id="formFile"
+            style={{ width: "33%" }}
+          />
+        </div>
+
         <div className="d-flex justify-content-end">
           <button
             className="btn"
