@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { collection, getDocs, query, where, updateDoc, doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
+import { sendEmail } from '../utils/email-ustils';
 
 export const NewPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
@@ -170,24 +171,31 @@ const AssignPatient = (props) => {
     event.preventDefault();
     const userAccRef = collection(firestore, "Users");
     const userDocRef = doc(userAccRef, props.userId);
-  
+
     try {
       const docSnapshot = await getDoc(userDocRef);
       if (docSnapshot.exists()) {
         const existingData = docSnapshot.data();
-  
-        // Find the selected counselor's UID from counselors array
+
         const selectedCounselorData = counselors.find(counselor => counselor.id === selectedCounselor);
         const selectedCounselorUID = selectedCounselorData ? selectedCounselorData.data.UID : '';
-  
+
         const updateData = {
           ...existingData,
           counselorID: selectedCounselor,
           counselorUID: selectedCounselorUID,
         };
-  
+
         await updateDoc(userDocRef, updateData);
         console.log("User data updated successfully.");
+
+        // Send existing temporary credentials to user's email
+        await sendEmail(
+          existingData.Email, // Use the appropriate field for the user's email
+          existingData.firstName, // Use the appropriate field for the username
+          existingData.password // Use the existing temporary password
+        );
+        console.log("Temporary credentials sent to user's email.");
       } else {
         console.log("Document does not exist.");
       }
