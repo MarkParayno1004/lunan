@@ -90,12 +90,21 @@ export const NewPatients = () => {
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
                         <td>
-                          <img
+                        {patientObj.data.ProfPic ? (
+                        <img
                             src={fetchImageUrl(patientObj.data.ProfPic)}
                             alt={patientObj.data.firstName}
                             width="100"
                             height="100"
                           />
+                      ) : (
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                          alt={patientObj.data.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      )}
                         </td>
                         <td>{patientObj.data.firstName}</td>
                         <td>{patientObj.data.dateCreated}</td>
