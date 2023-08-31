@@ -31,10 +31,6 @@ export const AllCounselors = () => {
   const [counselorData, setCounselorData] = useState([]);
   const [filteredCounselorData, setFilteredCounselorData] = useState([]);
  
-  const filteredCounselors = counselorData.filter((counselor) =>
-    counselor.firstName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
- 
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
       const querySnapshot = await getDocs(
@@ -70,12 +66,9 @@ export const AllCounselors = () => {
     const fetchCounselorData = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(
-            collection(firestore, "Users"),
-            where("Role", "==", "Counselor")
-          )
+          query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
         );
- 
+
         const counselorDataWithPatientsCount = await Promise.all(
           querySnapshot.docs.map(async (doc) => {
             const patientsCount = await fetchCounselorPatientsCount(doc.id);
@@ -86,14 +79,22 @@ export const AllCounselors = () => {
             };
           })
         );
- 
+
+        const fetchedCounselors = querySnapshot.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            UID: doc.id,
+          };
+        });
+
         console.log("Counselor Data:", counselorDataWithPatientsCount);
         setCounselorData(counselorDataWithPatientsCount);
+        setFilteredCounselorData(fetchedCounselors);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
     };
- 
+
     fetchCounselorData();
   }, []);
  
@@ -216,7 +217,7 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-                {counselorData.map((counselor) => (
+                 {filteredCounselorData.map((counselor) => (
                   <tr key={counselor.UID}>
                     <td>
                       {counselor.ProfPic ? (
