@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { collection, getDocs, query, where, updateDoc, doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
+import fetch from 'node-fetch';
 
 export const NewPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
@@ -166,9 +167,42 @@ const AssignPatient = (props) => {
     setSelectedCounselorUID(event.target.value);
   };
 
+
+  
+  async function sendTemporaryCredentialsToEmail(existingData) {
+    const emailData = {
+      to: existingData.Email,
+      subject: 'Your Temporary Credentials',
+      body: `Username: ${existingData.Email}\nPassword: ${existingData.password}`,
+    };
+  
+    console.log('Sending email data:', emailData);
+  
+    try {
+      const response = await fetch('http://localhost:3005/send-email', { // Adjust the URL as needed
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+  
+      console.log('Email sending response:', response);
+  
+      if (response.ok) {
+        console.log('Temporary credentials email sent successfully.');
+      } else {
+        console.error('Failed to send temporary credentials email.');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+  
+  // Define the function to handle form submission
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
-    const userAccRef = collection(firestore, "Users");
+    const userAccRef = collection(firestore, 'Users');
     const userDocRef = doc(userAccRef, props.userId);
   
     try {
@@ -176,9 +210,12 @@ const AssignPatient = (props) => {
       if (docSnapshot.exists()) {
         const existingData = docSnapshot.data();
   
-        // Find the selected counselor's UID from counselors array
-        const selectedCounselorData = counselors.find(counselor => counselor.id === selectedCounselor);
-        const selectedCounselorUID = selectedCounselorData ? selectedCounselorData.data.UID : '';
+        const selectedCounselorData = counselors.find(
+          (counselor) => counselor.id === selectedCounselor
+        );
+        const selectedCounselorUID = selectedCounselorData
+          ? selectedCounselorData.data.UID
+          : '';
   
         const updateData = {
           ...existingData,
@@ -187,13 +224,17 @@ const AssignPatient = (props) => {
         };
   
         await updateDoc(userDocRef, updateData);
-        console.log("User data updated successfully.");
+        console.log('User data updated successfully.');
+  
+        // Send existing temporary credentials to user's email
+        await sendTemporaryCredentialsToEmail(existingData);
+        console.log("Temporary credentials sent to user's email.");
       } else {
-        console.log("Document does not exist.");
+        console.log('Document does not exist.');
       }
     } catch (error) {
-      console.error("Firebase Error Code:", error.code);
-      console.error("Error updating user data:", error);
+      console.error('Firebase Error Code:', error.code);
+      console.error('Error updating user data:', error);
     }
   };
 
