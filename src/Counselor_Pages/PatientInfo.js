@@ -49,7 +49,7 @@ export const PatientInfo = (props) => {
   };
   return (
     <Modal
-      dialogClassName="modal-90w"
+      className="modal-90w"
       size="xl"
       aria-labelledby="example-custom-modal-styling-title"
       show={props.show}
@@ -996,10 +996,9 @@ const CreateCaseNotes = (props) => {
 
   return (
     <Modal
-      className="mt-3"
+      className="mt-3 modal-xl"
       show={props.show}
       onHide={props.handleClose}
-      size="lg"
     >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
@@ -1015,8 +1014,10 @@ const CreateCaseNotes = (props) => {
           <Editor
             apiKey="q40km5ybfjgzeo6v9902hgylefi3uv633fo69epfu741q0by"
             onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue="<p>Input Case Note.</p>"
             init={{
+              preview_styles: false,
+              height: "360",
+              placeholder: "Input Case Note",
               menubar: false,
               plugins: [
                 "advlist",
@@ -1043,7 +1044,7 @@ const CreateCaseNotes = (props) => {
                 "alignright alignjustify | bullist numlist outdent indent | " +
                 "removeformat",
               content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; } ",
             }}
           />
         </div>
@@ -1052,7 +1053,7 @@ const CreateCaseNotes = (props) => {
         </label>
         <div className="d-flex justify-content-start">
           <input
-            class="form-control "
+            class="form-control"
             type="file"
             id="formFile"
             style={{ width: "33%" }}

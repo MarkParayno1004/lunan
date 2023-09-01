@@ -1,3 +1,6 @@
+#mainModal {
+  background-color: none;
+}
 #pInfoBG {
   background-color: #f5e9cf;
   min-height: 100vh;
@@ -5,6 +8,7 @@
 #piModal {
   background-color: #7db9b6;
   color: white;
+  border-color: #7db9b6;
 }
 #piBG {
   background-color: #4d455d;
