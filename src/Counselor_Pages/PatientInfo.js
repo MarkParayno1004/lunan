@@ -1,10 +1,13 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
-import { Editor } from "@tinymce/tinymce-react";
+import "jodit";
+import "jodit/build/jodit.min.css";
+import JoditEditor from "jodit-react";
+import HTMLReactParser from "html-react-parser";
 
 export const PatientInfo = (props) => {
   const patientData = props.patientData;
@@ -45,6 +48,7 @@ export const PatientInfo = (props) => {
       showConfirmButton: false,
       timer: 2000,
     });
+
     setShowCreate(false);
   };
   return (
@@ -990,13 +994,36 @@ const ViewWellnessForm = (props) => {
     </Modal>
   );
 };
+const TextAreaEditor = ({ placeholder }) => {
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
 
-const CreateCaseNotes = (props) => {
-  const editorRef = useRef();
+  const config = useMemo(
+    () => ({
+      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
+      placeholder: placeholder || "Input your case note",
+    }),
+    [placeholder]
+  );
 
   return (
+    <div style={{ color: "black" }}>
+      <JoditEditor
+        ref={editor}
+        value={content}
+        config={config}
+        tabIndex={1} // tabIndex of textarea
+        onBlur={(newContent) => setContent(HTMLReactParser(newContent))} // preferred to use only this option to update the content for performance reasons
+        onChange={(newContent) => {}}
+      />
+      <div>{content}</div>
+    </div>
+  );
+};
+const CreateCaseNotes = (props) => {
+  return (
     <Modal
-      className="mt-3 modal-xl"
+      className="mt-3 modal-lg"
       show={props.show}
       onHide={props.handleClose}
     >
@@ -1011,42 +1038,7 @@ const CreateCaseNotes = (props) => {
             style={{ height: 150 + "px" }}
           ></textarea>
           <label for="CreateCaseNote">Case Note</label> */}
-          <Editor
-            apiKey="q40km5ybfjgzeo6v9902hgylefi3uv633fo69epfu741q0by"
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            init={{
-              preview_styles: false,
-              height: "360",
-              placeholder: "Input Case Note",
-              menubar: false,
-              plugins: [
-                "advlist",
-                "autolink",
-                "lists",
-                "link",
-                "image",
-                "charmap",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
-                "code",
-                "fullscreen",
-                "insertdatetime",
-                "media",
-                "table",
-                "preview",
-                "help",
-                "wordcount",
-              ],
-              toolbar:
-                "undo redo | blocks | " +
-                "bold italic forecolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; } ",
-            }}
-          />
+          <TextAreaEditor />
         </div>
         <label for="formFile" class="form-label">
           Input Document File:
