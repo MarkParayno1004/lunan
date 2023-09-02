@@ -1,12 +1,11 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef } from "react";
 import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
-import "jodit";
-import "jodit/build/jodit.min.css";
-import JoditEditor from "jodit-react";
+import Editor from "ckeditor5-custom-build/build/ckeditor";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import HTMLReactParser from "html-react-parser";
 
 export const PatientInfo = (props) => {
@@ -994,32 +993,7 @@ const ViewWellnessForm = (props) => {
     </Modal>
   );
 };
-const TextAreaEditor = ({ placeholder }) => {
-  const editor = useRef(null);
-  const [content, setContent] = useState("");
 
-  const config = useMemo(
-    () => ({
-      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-      placeholder: placeholder || "Input your case note",
-    }),
-    [placeholder]
-  );
-
-  return (
-    <div style={{ color: "black" }}>
-      <JoditEditor
-        ref={editor}
-        value={content}
-        config={config}
-        tabIndex={1} // tabIndex of textarea
-        onBlur={(newContent) => setContent(HTMLReactParser(newContent))} // preferred to use only this option to update the content for performance reasons
-        onChange={(newContent) => {}}
-      />
-      <div>{content}</div>
-    </div>
-  );
-};
 const CreateCaseNotes = (props) => {
   return (
     <Modal
@@ -1031,14 +1005,26 @@ const CreateCaseNotes = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Create Case Note</Modal.Title>
         </Modal.Header>
-        <div class="mt-3 mb-3">
+        <div class="mt-3 mb-3" style={{ color: "black" }}>
           {/* <textarea
             className="form-control"
             id="CreateCaseNote"
             style={{ height: 150 + "px" }}
           ></textarea>
           <label for="CreateCaseNote">Case Note</label> */}
-          <TextAreaEditor />
+          <CKEditor
+            editor={Editor}
+            config={{
+              placeholder: "Input your case note...",
+            }}
+            onReady={(editor) => {
+              console.log(`Editor is ready to use!`, editor);
+            }}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              console.log({ event, editor, data });
+            }}
+          />
         </div>
         <label for="formFile" class="form-label">
           Input Document File:
