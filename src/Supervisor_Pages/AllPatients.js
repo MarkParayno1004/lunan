@@ -76,6 +76,9 @@ export const AllPatients = () => {
     }
   };
   
+  const fetchImageUrl = (imageUrl) => {
+    return imageUrl;
+  };
 
   return (
     <div className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3" id="AllPatientForm">
@@ -103,12 +106,21 @@ export const AllPatients = () => {
                   (patient) => (
                     <tr key={patient.UID}>
                       <td>
+                      {patient.ProfPic ? (
                         <img
-                          src={patient.ProfPic}
+                            src={fetchImageUrl(patient.ProfPic)}
+                            alt={patient.firstName}
+                            width="100"
+                            height="100"
+                          />
+                      ) : (
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
                           alt={patient.firstName}
                           width="100"
                           height="100"
                         />
+                      )}
                       </td>
                       <td>{patient.firstName}</td>
                       <td>{patient.dateCreated}</td>
