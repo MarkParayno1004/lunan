@@ -995,6 +995,7 @@ const ViewWellnessForm = (props) => {
 };
 
 const CreateCaseNotes = (props) => {
+  const [editorData, setEditorData] = useState("");
   return (
     <Modal
       className="mt-3 modal-lg"
@@ -1006,22 +1007,14 @@ const CreateCaseNotes = (props) => {
           <Modal.Title>Create Case Note</Modal.Title>
         </Modal.Header>
         <div class="mt-3 mb-3" style={{ color: "black" }}>
-          {/* <textarea
-            className="form-control"
-            id="CreateCaseNote"
-            style={{ height: 150 + "px" }}
-          ></textarea>
-          <label for="CreateCaseNote">Case Note</label> */}
           <CKEditor
             editor={Editor}
             config={{
               placeholder: "Input your case note...",
             }}
-            onReady={(editor) => {
-              console.log(`Editor is ready to use!`, editor);
-            }}
             onChange={(event, editor) => {
               const data = editor.getData();
+              setEditorData(HTMLReactParser(data)); // Update the editorData state with the new content
               console.log({ event, editor, data });
             }}
           />
