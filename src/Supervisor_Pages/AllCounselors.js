@@ -19,9 +19,7 @@ import {
   uploadBytes,
   ref,
   getDownloadURL,
-  getMetadata,
-  setMetadata,
-  deleteObject,
+  getMetadata
 } from "firebase/storage";
 
 export const AllCounselors = () => {
@@ -304,7 +302,7 @@ const AddModal = (props) => {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
- 
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -502,7 +500,6 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
-  //
   const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
@@ -523,30 +520,31 @@ const EditModal = (props) => {
   const handleUpdateName = (event) => {
     setUpdateName(event.target.value); 
   };
- 
+
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
     const userAccRef = collection(firestore, "Users");
- 
+
     try {
       if (props.userId) {
         const userDocRef = doc(userAccRef, props.userId);
         const docSnapshot = await getDoc(userDocRef);
- 
+
         if (docSnapshot.exists()) {
           const existingData = docSnapshot.data();
- 
+
           const updateData = {
             ...existingData,
             firstName: updateName,
           };
- 
+
           if (file) {
             const imageUrl = await uploadProfilePicture(props.userId, file);
             updateData.ProfPic = imageUrl;
           }
- 
+
           await updateDoc(userDocRef, updateData);
+
           console.log("User data updated successfully.");
         } else {
           console.log("Document does not exist.");
@@ -557,6 +555,7 @@ const EditModal = (props) => {
     } catch (error) {
       console.error("Firebase Error Code:", error.code);
       console.error("Error updating user data:", error);
+      setError("Error updating user data."); // Set error message
     }
   };
  
