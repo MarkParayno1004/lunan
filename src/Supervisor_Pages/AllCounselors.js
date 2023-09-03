@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "../css/AllCounselors.css";
 import {
@@ -25,28 +23,28 @@ import {
   setMetadata,
   deleteObject,
 } from "firebase/storage";
- 
+
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
   const [filteredCounselorData, setFilteredCounselorData] = useState([]);
- 
+
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
       const querySnapshot = await getDocs(
         query(collection(firestore, "Users"), where("Role", "==", "Patient"))
       );
- 
+
       const patientDocs = querySnapshot.docs;
       let patientsCount = 0;
- 
+
       const counselorDoc = await getDoc(
         doc(collection(firestore, "Users"), counselorID)
       );
- 
+
       if (counselorDoc.exists()) {
         const counselorData = counselorDoc.data();
- 
+
         for (const patientDoc of patientDocs) {
           const patientData = patientDoc.data();
           if (patientData.counselorID === counselorID) {
@@ -54,14 +52,14 @@ export const AllCounselors = () => {
           }
         }
       }
- 
+
       return patientsCount;
     } catch (error) {
       console.error("Error fetching counselor patients count:", error);
       return 0;
     }
   };
- 
+
   useEffect(() => {
     const fetchCounselorData = async () => {
       try {
@@ -97,12 +95,12 @@ export const AllCounselors = () => {
 
     fetchCounselorData();
   }, []);
- 
+
   const handleRemove = async (UID) => {
     try {
       const userAccRef = collection(firestore, "Users");
       const counselorDocRef = doc(userAccRef, UID);
- 
+
       const confirmationResult = await Swal.fire({
         position: "top",
         title: "Are you sure?",
@@ -115,7 +113,7 @@ export const AllCounselors = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       });
- 
+
       if (confirmationResult.isConfirmed) {
         await deleteDoc(counselorDocRef);
         await Swal.fire({
@@ -124,16 +122,20 @@ export const AllCounselors = () => {
           background: "#7db9b6",
           color: "#FFFFFF",
         });
- 
+
         setCounselorData((prevData) =>
           prevData.filter((counselor) => counselor.UID !== UID)
         );
- 
+
+        setFilteredCounselorData((prevData) =>
+          prevData.filter((counselor) => counselor.UID !== UID)
+        );
+
         console.log("Counselor removed successfully.", UID);
       }
     } catch (error) {
       console.error("Error removing counselor:", error);
- 
+
       await Swal.fire({
         title: "Error",
         text: "An error occurred while removing the counselor.",
@@ -143,11 +145,11 @@ export const AllCounselors = () => {
       });
     }
   };
- 
+
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
- 
+
     if (query === "") {
       setFilteredCounselorData(counselorData); // Show all data when query is empty
     } else {
@@ -161,19 +163,19 @@ export const AllCounselors = () => {
       setFilteredCounselorData(filteredCounselors);
     }
   };
- 
+
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
   };
- 
+
   const [showAdd, setShowAdd] = useState(false);
   const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
- 
+
   const [showEdit, setShowEdit] = useState(false);
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (UID) => setShowEdit(UID);
- 
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -194,8 +196,8 @@ export const AllCounselors = () => {
                 aria-describedby="search"
                 className="w-25 form-control"
               />
- 
-              <span class="input-group-text" id="search">
+
+              <span className="input-group-text" id="search">
                 <button style={{ border: "none", background: "none" }}>
                   Search
                 </button>
@@ -217,7 +219,7 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-                 {filteredCounselorData.map((counselor) => (
+                {filteredCounselorData.map((counselor) => (
                   <tr key={counselor.UID}>
                     <td>
                       {counselor.ProfPic ? (
@@ -297,6 +299,7 @@ export const AllCounselors = () => {
     </div>
   );
 };
+
 const AddModal = (props) => {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -329,7 +332,7 @@ const AddModal = (props) => {
     const file = event.target.files[0];
     setLocalFormData({
       ...localFormData,
-      ProfPic: file,
+      ProfPic: file, 
     });
   };
  
@@ -338,7 +341,7 @@ const AddModal = (props) => {
       const storageRef = ref(storage, `user_photos/${file.name}`);
  
       const metadata = {
-        contentType: file.type,
+        contentType: file.type, 
       };
  
       const snapshot = await uploadBytes(storageRef, file, metadata);
@@ -405,6 +408,8 @@ const AddModal = (props) => {
       console.error("Error adding new counselor:", error);
     }
   };
+ 
+ 
  
   return (
     <Modal
@@ -495,7 +500,7 @@ const AddModal = (props) => {
     </Modal>
   );
 };
- 
+
 const EditModal = (props) => {
   //
   const [updateName, setUpdateName] = useState(props.firstName || "");
@@ -516,7 +521,7 @@ const EditModal = (props) => {
   };
  
   const handleUpdateName = (event) => {
-    setUpdateName(event.target.value);
+    setUpdateName(event.target.value); 
   };
  
   const handleSubmitEdit = async (event) => {
@@ -616,3 +621,5 @@ const EditModal = (props) => {
     </Modal>
   );
 };
+
+export default AllCounselors;
