@@ -37,6 +37,15 @@ export const PatientInfo = (props) => {
     setShowCreate(false);
   };
   const handleShowCreate = () => setShowCreate(true);
+
+  const [showPage, setShowPage] = useState(false);
+
+  const togglePage = () => {
+    setShowPage(!showPage);
+  };
+  const handleClose = () => {
+    props.handleClose();
+  };
   const handleSubmitCreate = () => {
     Swal.fire({
       background: "#4d455d",
@@ -50,6 +59,7 @@ export const PatientInfo = (props) => {
 
     setShowCreate(false);
   };
+
   return (
     <Modal
       className="modal-90w"
@@ -57,6 +67,8 @@ export const PatientInfo = (props) => {
       aria-labelledby="example-custom-modal-styling-title"
       show={props.show}
       onHide={props.onHide}
+      backdrop="static"
+      keyboard={false}
     >
       <Modal.Body id="piModal">
         <Modal.Header closeButton>
@@ -581,21 +593,24 @@ export const PatientInfo = (props) => {
 
               <button
                 className="rounded-5 fw-semibold"
-                onClick={handleShowCreate}
+                onClick={togglePage}
+                disabled={showPage}
                 id="viewButton"
               >
                 Create Case Notes
               </button>
+
               <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
               <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
               <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
               <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
-              <CreateCaseNotes
+              {/* <CreateCaseNotes
                 show={showCreate}
                 handleClose={handleCloseCreate}
                 handleSubmit={handleSubmitCreate}
-              />
+              /> */}
             </div>
+            <div>{showPage && <CreateCaseNotes onClose={togglePage} />}</div>
           </div>
         </div>
       </Modal.Body>
@@ -994,19 +1009,59 @@ const ViewWellnessForm = (props) => {
   );
 };
 
-const CreateCaseNotes = (props) => {
+const CreateCaseNotes = ({ onClose }) => {
   const [editorData, setEditorData] = useState("");
   return (
-    <Modal
-      className="mt-3 modal-lg"
-      show={props.show}
-      onHide={props.handleClose}
-    >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create Case Note</Modal.Title>
-        </Modal.Header>
-        <div class="mt-3 mb-3" style={{ color: "black" }}>
+    // <Modal
+    //   className="mt-3 modal-lg"
+    //   show={props.show}
+    //   onHide={props.handleClose}
+    // >
+    //   <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+    //     <Modal.Header closeButton>
+    //       <Modal.Title>Create Case Note</Modal.Title>
+    //     </Modal.Header>
+    //     <div class="mt-3 mb-3" style={{ color: "black" }}>
+    //       <CKEditor
+    //         editor={Editor}
+    //         config={{
+    //           placeholder: "Input your case note...",
+    //         }}
+    //         onChange={(event, editor) => {
+    //           const data = editor.getData();
+    //           setEditorData(HTMLReactParser(data)); // Update the editorData state with the new content
+    //           console.log({ event, editor, data });
+    //         }}
+    //       />
+    //     </div>
+    //     <label for="formFile" class="form-label">
+    //       Input Document File:
+    //     </label>
+    //     <div className="d-flex justify-content-start">
+    //       <input
+    //         class="form-control"
+    //         type="file"
+    //         id="formFile"
+    //         style={{ width: "33%" }}
+    //       />
+    //     </div>
+
+    //     <div className="d-flex justify-content-end">
+    //       <button
+    //         className="btn"
+    //         style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+    //         onClick={props.handleSubmit}
+    //       >
+    //         Submit
+    //       </button>
+    //     </div>
+    //   </Modal.Body>
+    // </Modal>
+    <div>
+      <div>
+        {/* Add your page content here */}
+        <h2>Input Case Note:</h2>
+        <div style={{ color: "black" }}>
           <CKEditor
             editor={Editor}
             config={{
@@ -1019,29 +1074,13 @@ const CreateCaseNotes = (props) => {
             }}
           />
         </div>
-        <label for="formFile" class="form-label">
-          Input Document File:
-        </label>
-        <div className="d-flex justify-content-start">
-          <input
-            class="form-control"
-            type="file"
-            id="formFile"
-            style={{ width: "33%" }}
-          />
-        </div>
-
-        <div className="d-flex justify-content-end">
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            onClick={props.handleSubmit}
-          >
-            Submit
+        <div className="mt-3 d-flex justify-content-end">
+          <button className="close-button mb-3" onClick={onClose}>
+            Close
           </button>
         </div>
-      </Modal.Body>
-    </Modal>
+      </div>
+    </div>
   );
 };
 
