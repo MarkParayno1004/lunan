@@ -8,10 +8,12 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { auth } from "../firebase/firebase-config";
+import { auth, firestore } from "../firebase/firebase-config";
 import "../css/Login.css";
+import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
+import {Form, Modal, Button} from "react-bootstrap";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -94,6 +96,12 @@ export const Login = () => {
     }
   }, [loggedIn, fetchUserData]);
 
+  const [showForget, setShowForget] = useState(false);
+
+  const handleCloseForget = () => setShowForget(false);
+
+  const handleForget = () => setShowForget(true);
+
   return (
     <>
       <Navbar />
@@ -142,15 +150,16 @@ export const Login = () => {
                   <div className="d-flex justify-content-end">
                     <Link
                       className="fw-light mt-2"
-                      to=""
+                      onClick={handleForget} // Open the modal when the link is clicked
                       style={{
                         color: "white",
                         textDecoration: "none",
-                        fontSize: 18 + "px",
+                        fontSize: "18px",
                       }}
                     >
                       Forgot Password
                     </Link>
+                    <AddModal show={showForget} onHide={handleCloseForget} />
                   </div>
                   <div className="d-flex justify-content-center">
                     <button
@@ -169,3 +178,57 @@ export const Login = () => {
     </>
   );
 };
+
+const AddModal = (props) => {
+  const [localFormData, setLocalFormData] = useState({
+    email: "",
+  });
+
+  const handleForgetPassword = async (event) => {
+    event.preventDefault();
+    console.log("inside forget password");
+    // Add your logic here to handle the password reset request
+  };
+
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.onHide}
+      style={{ border: "none", color: "white" }}
+    >
+      <Modal.Body id="BGmodal">
+        <Modal.Header className="mb-3" closeButton>
+          <Modal.Title>Forget Password</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={handleForgetPassword}>
+          <Form.Group>
+            <Form.Label>Email:</Form.Label>
+            <Form.Control
+              type="text"
+              name="email"
+              value={localFormData.email}
+              onChange={(event) =>
+                setLocalFormData({
+                  ...localFormData,
+                  email: event.target.value,
+                })
+              }
+              required
+            />
+          </Form.Group>
+          <Modal.Footer className="mt-3">
+            <Button
+              className="rounded-5 fw-medium"
+              variant="primary"
+              type="submit"
+              id="BtnSubmitAC"
+            >
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
