@@ -29,6 +29,7 @@ import {
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
+  const [filteredCounselorData, setFilteredCounselorData] = useState([]);
 
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
@@ -65,7 +66,6 @@ export const AllCounselors = () => {
       try {
         const querySnapshot = await getDocs(
           query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
-          
         );
   
         const counselorDataWithPatientsCount = await Promise.all(
@@ -81,6 +81,7 @@ export const AllCounselors = () => {
   
         console.log("Counselor Data:", counselorDataWithPatientsCount);
         setCounselorData(counselorDataWithPatientsCount);
+        setFilteredCounselorData(counselorDataWithPatientsCount);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
@@ -88,6 +89,7 @@ export const AllCounselors = () => {
   
     fetchCounselorData();
   }, []);
+  
   
 
   const handleRemove = async (UID) => {
@@ -135,7 +137,21 @@ export const AllCounselors = () => {
   };
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+  
+    if (query === "") {
+      setFilteredCounselorData(counselorData); // Show all data when query is empty
+    } else {
+      const filteredCounselors = counselorData.filter(
+        (counselor) =>
+          (counselor.firstName &&
+            counselor.firstName.toLowerCase().includes(query)) ||
+          (counselor.lastName &&
+            counselor.lastName.toLowerCase().includes(query))
+      );
+      setFilteredCounselorData(filteredCounselors);
+    }
   };
 
   const fetchImageUrl = (imageUrl) => {
@@ -194,7 +210,7 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-  {counselorData.map((counselor) => (
+              {filteredCounselorData.map((counselor) => (
     <tr key={counselor.UID}>
       <td>
     {counselor.ProfPic ? (
