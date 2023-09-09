@@ -33,15 +33,15 @@ export const AllCounselors = () => {
         query(collection(firestore, "Users"), where("Role", "==", "Patient"))
       );
 
+  
       const patientDocs = querySnapshot.docs;
       let patientsCount = 0;
-
-      const counselorDoc = await getDoc(
-        doc(collection(firestore, "Users"), counselorID)
-      );
-
+  
+      const counselorDoc = await getDoc(doc(collection(firestore, "Users"), counselorID));
+  
       if (counselorDoc.exists()) {
         const counselorData = counselorDoc.data();
+  
 
         for (const patientDoc of patientDocs) {
           const patientData = patientDoc.data();
@@ -58,13 +58,14 @@ export const AllCounselors = () => {
     }
   };
 
+
   useEffect(() => {
     const fetchCounselorData = async () => {
       try {
         const querySnapshot = await getDocs(
           query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
         );
-
+  
         const counselorDataWithPatientsCount = await Promise.all(
           querySnapshot.docs.map(async (doc) => {
             const patientsCount = await fetchCounselorPatientsCount(doc.id);
@@ -75,24 +76,18 @@ export const AllCounselors = () => {
             };
           })
         );
-
-        const fetchedCounselors = querySnapshot.docs.map((doc) => {
-          return {
-            ...doc.data(),
-            UID: doc.id,
-          };
-        });
-
+  
         console.log("Counselor Data:", counselorDataWithPatientsCount);
         setCounselorData(counselorDataWithPatientsCount);
-        setFilteredCounselorData(fetchedCounselors);
+        setFilteredCounselorData(counselorDataWithPatientsCount);
       } catch (error) {
         console.error("Error fetching counselor data:", error);
       }
     };
-
+  
     fetchCounselorData();
   }, []);
+
 
   const handleRemove = async (UID) => {
     try {
@@ -121,13 +116,8 @@ export const AllCounselors = () => {
           color: "#FFFFFF",
         });
 
-        setCounselorData((prevData) =>
-          prevData.filter((counselor) => counselor.UID !== UID)
-        );
+        setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
 
-        setFilteredCounselorData((prevData) =>
-          prevData.filter((counselor) => counselor.UID !== UID)
-        );
 
         console.log("Counselor removed successfully.", UID);
       }
@@ -174,6 +164,7 @@ export const AllCounselors = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (UID) => setShowEdit(UID);
 
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -195,7 +186,9 @@ export const AllCounselors = () => {
                 className="w-25 form-control"
               />
 
-              <span className="input-group-text" id="search">
+
+              <span class="input-group-text" id="search">
+
                 <button style={{ border: "none", background: "none" }}>
                   Search
                 </button>
@@ -217,63 +210,62 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredCounselorData.map((counselor) => (
-                  <tr key={counselor.UID}>
-                    <td>
-                      {counselor.ProfPic ? (
-                        <img
-                          src={fetchImageUrl(counselor.ProfPic)}
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      ) : (
-                        <img
-                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
-                    </td>
-                    <td>{counselor.firstName}</td>
-                    <td>{counselor.dateCreated}</td>
-                    <td>
-                      {counselor.patientsCount !== undefined
-                        ? counselor.patientsCount
-                        : 0}
-                    </td>
-                    <td>
-                      <button
-                        className="rounded-5 fw-medium"
-                        id="editCounselor"
-                        onClick={() => handleShowEdit(counselor.UID)}
-                      >
-                        Edit
-                      </button>
-                      <EditModal
-                        show={showEdit === counselor.UID}
-                        onHide={handleCloseEdit}
-                        handleClose={handleCloseEdit}
-                        userId={counselor.UID}
-                        firstName={counselor.firstName}
-                        ProfPic={counselor.ProfPic}
-                      />
-                    </td>
-                    <td>
-                      <button
-                        id="removeCounselor"
-                        className="rounded-5 fw-medium"
-                        onClick={() => {
-                          handleRemove(counselor.UID);
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              {filteredCounselorData.map((counselor) => (
+    <tr key={counselor.UID}>
+      <td>
+    {counselor.ProfPic ? (
+      <img
+        src={fetchImageUrl(counselor.ProfPic)}
+        alt={counselor.firstName}
+        width="100"
+        height="100"
+      />
+    ) : (
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+        alt={counselor.firstName}
+        width="100"
+        height="100"
+      />
+    )}
+  </td>
+  <td>{counselor.firstName}</td>
+  <td>{counselor.dateCreated}</td>
+  <td>
+    {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
+  </td>
+      <td>
+        <button
+          className="rounded-5 fw-medium"
+          id="editCounselor"
+          onClick={() => handleShowEdit(counselor.UID)}
+        >
+          Edit
+        </button>
+        <EditModal
+          show={showEdit === counselor.UID}
+          onHide={handleCloseEdit}
+          handleClose={handleCloseEdit}
+          userId={counselor.UID}
+          firstName={counselor.firstName}
+          ProfPic={counselor.ProfPic}
+        />
+      </td>
+      <td>
+        <button
+          id="removeCounselor"
+          className="rounded-5 fw-medium"
+          onClick={() => {
+            handleRemove(counselor.UID);
+          }}
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
             </table>
           </div>
         </div>
@@ -306,7 +298,7 @@ const AddModal = (props) => {
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
- 
+
     if (selectedFile && allowedTypes.includes(selectedFile.type)) {
       setFile(selectedFile);
       setError("");
@@ -315,7 +307,7 @@ const AddModal = (props) => {
       setError("Please select a valid image file (JPEG, PNG, GIF).");
     }
   };
- 
+
   const userAccRef = collection(firestore, "Users");
   const [localFormData, setLocalFormData] = useState({
     Email: "",
@@ -323,9 +315,9 @@ const AddModal = (props) => {
     ConNum: "",
     ProfPic: null,
   });
- 
+
   const [fileError, setFileError] = useState("");
- 
+
   const hanFileChange = (event) => {
     const file = event.target.files[0];
     setLocalFormData({
@@ -333,61 +325,61 @@ const AddModal = (props) => {
       ProfPic: file, 
     });
   };
- 
+
   const uploadImage = async (file) => {
     try {
       const storageRef = ref(storage, `user_photos/${file.name}`);
- 
+
       const metadata = {
         contentType: file.type, 
       };
- 
+
       const snapshot = await uploadBytes(storageRef, file, metadata);
- 
+
       const downloadURL = await getDownloadURL(snapshot.ref);
       const updatedMetadata = await getMetadata(snapshot.ref);
- 
+
       console.log("Download URL:", downloadURL);
       console.log("Updated Metadata:", updatedMetadata);
- 
+
       return downloadURL;
     } catch (error) {
       console.error("Error uploading image:", error);
       throw error;
     }
   };
- 
+
   const generateRandomPassword = (length) => {
     const charset =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let password = "";
- 
+
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * charset.length);
       password += charset.charAt(randomIndex);
     }
- 
+
     return password;
   };
- 
+
   const handleSubmitAdd = async (event) => {
     event.preventDefault();
- 
+
     try {
       const password = generateRandomPassword(8);
- 
+
       const { user } = await createUserWithEmailAndPassword(
         auth,
         localFormData.Email,
         password
       );
       console.log("Generated Password:", password);
- 
+
       let photoURL = "";
       if (localFormData.ProfPic) {
         photoURL = await uploadImage(localFormData.ProfPic);
       }
- 
+
       const newUser = {
         dateCreated: new Date().toISOString().split("T")[0],
         Email: localFormData.Email,
@@ -398,17 +390,15 @@ const AddModal = (props) => {
         UID: user.uid,
       };
       console.log("New User Data:", newUser);
- 
+
       await addDoc(userAccRef, newUser);
- 
+
       console.log("New counselor added successfully.");
     } catch (error) {
       console.error("Error adding new counselor:", error);
     }
   };
- 
- 
- 
+
   return (
     <Modal
       className="container-fluid"
@@ -437,7 +427,7 @@ const AddModal = (props) => {
               required
             />
           </Form.Group>
- 
+
           {/* Picture */}
           <Form.Group className="mt-3">
             <Form.Control
@@ -448,7 +438,7 @@ const AddModal = (props) => {
             />
             <Form.Text className="text-danger">{fileError}</Form.Text>
           </Form.Group>
- 
+
           {/* Contact Number */}
           <Form.Group>
             <Form.Label className="mt-2">Contact Number</Form.Label>
@@ -465,7 +455,7 @@ const AddModal = (props) => {
               required
             />
           </Form.Group>
- 
+
           {/* Email */}
           <Form.Group>
             <Form.Label className="mt-2">Email</Form.Label>
@@ -482,7 +472,7 @@ const AddModal = (props) => {
               required
             />
           </Form.Group>
- 
+
           <Modal.Footer className="mt-3">
             <Button
               className="rounded-5 fw-medium"
@@ -503,11 +493,11 @@ const EditModal = (props) => {
   const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
- 
+
   const handleFile = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
- 
+
     if (selectedFile && allowedTypes.includes(selectedFile.type)) {
       setFile(selectedFile);
       setError("");
@@ -516,7 +506,7 @@ const EditModal = (props) => {
       setError("Please select a valid image file (JPEG, PNG, GIF).");
     }
   };
- 
+
   const handleUpdateName = (event) => {
     setUpdateName(event.target.value); 
   };
@@ -558,7 +548,7 @@ const EditModal = (props) => {
       setError("Error updating user data."); // Set error message
     }
   };
- 
+
   const uploadProfilePicture = async (userId, file) => {
     try {
       const storageRef = ref(storage, `user_profile_pictures/${userId}`);
@@ -570,7 +560,7 @@ const EditModal = (props) => {
       throw error;
     }
   };
- 
+
   return (
     <Modal
       className="container-fluid"
@@ -593,7 +583,7 @@ const EditModal = (props) => {
               onChange={handleUpdateName}
             />
           </Form.Group>
- 
+
           {/* Picture */}
           <Form.Group className="mt-3">
             <Form.Control
@@ -604,7 +594,7 @@ const EditModal = (props) => {
             />
             <Form.Text className="text-danger">{error}</Form.Text>
           </Form.Group>
- 
+
           <Modal.Footer className="mt-3">
             <Button
               variant="primary"

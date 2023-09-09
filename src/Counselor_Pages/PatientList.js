@@ -12,6 +12,8 @@ export const PatientList = () => {
   const [patientsData, setPatientsData] = useState([]);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
   const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([null]);
+  const [selectedPatientUID, setSelectedPatientUID] = useState(null);
+  const [showPatientInfo, setShowPatientInfo] = useState(false);
   
 
   useEffect(() => {
@@ -45,6 +47,11 @@ export const PatientList = () => {
 
   //! Modal Behaviour
   const [show, setShow] = useState(false);
+
+  const handleSelectPatient = (UID) => {
+    setSelectedPatientUID(UID);
+    setShowPatientInfo(true);
+  };
 
   const handleClose = () => setShow(false);
 
@@ -144,7 +151,10 @@ export const PatientList = () => {
       <td>
         <button
           style={{ border: "none", background: "none" }}
-          onClick={() => handleShow(patient.UID)} // Pass the patient's UID
+          onClick={() => {
+            handleSelectPatient(patient.UID);
+            handleShow(patient.UID);
+          }}// Pass the patient's UID
         >
             {patient.ProfPic ? (
               <img
@@ -178,6 +188,7 @@ export const PatientList = () => {
     onHide={handleClose}
     patientData={selectedPatientData}
     intakeFormsData={selectedIntakeFormsData}
+    selectedPatientUID={selectedPatientUID}
   />
 )}
 
