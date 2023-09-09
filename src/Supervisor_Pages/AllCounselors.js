@@ -116,8 +116,13 @@ export const AllCounselors = () => {
           color: "#FFFFFF",
         });
 
-        setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
+        setCounselorData((prevData) =>
+          prevData.filter((counselor) => counselor.UID !== UID)
+        );
 
+        setFilteredCounselorData((prevData) =>
+          prevData.filter((counselor) => counselor.UID !== UID)
+        );
 
         console.log("Counselor removed successfully.", UID);
       }
