@@ -10,7 +10,33 @@ import { collection, getFirestore, addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import HTMLReactParser from "html-react-parser";
 
+//!Main Landing Page
 export const PatientInfo = (props) => {
+  return (
+    <Modal
+      size="xl"
+      aria-labelledby="example-custom-modal-styling-title"
+      show={props.show}
+      onHide={props.onHide}
+      backdrop="static"
+      keyboard={false}
+    >
+      <Modal.Body id="piModal">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Patient Information
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid">
+          <PatientData />
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+//!PATIENT DATA
+const PatientData = (props) => {
   const patientData = props.patientData;
   const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
@@ -19,7 +45,9 @@ export const PatientInfo = (props) => {
 
   const handleShowAss = (selectedPatientUID) => {
     // You can use the patientUID in this function
-    console.log(`Showing assignments for patient with UID: ${selectedPatientUID}`);
+    console.log(
+      `Showing assignments for patient with UID: ${selectedPatientUID}`
+    );
     setShowAss(true);
   };
 
@@ -68,568 +96,535 @@ export const PatientInfo = (props) => {
   };
 
   return (
-    <Modal
-      className="modal-90w"
-      size="xl"
-      aria-labelledby="example-custom-modal-styling-title"
-      show={props.show}
-      onHide={props.onHide}
-      backdrop="static"
-      keyboard={false}
-    >
-      <Modal.Body id="piModal">
-        <Modal.Header closeButton>
-          <Modal.Title id="example-custom-modal-styling-title">
-            Patient Information
-          </Modal.Title>
-        </Modal.Header>
-        <div className="container-fluid">
-          <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
-            <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
-              <div className="col-1 ">
-                <img
-                  src={Pic}
-                  alt={props.name}
-                  className="patient-picture"
-                  style={{ width: 100 + "px" }}
-                />
+    <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
+      <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
+        <div className="col-1 ">
+          <img
+            src={Pic}
+            alt={props.name}
+            className="patient-picture"
+            style={{ width: 100 + "px" }}
+          />
+        </div>
+        <div
+          className="col-8 ms-5 d-flex justify-content-center rounded-5"
+          id="colBG"
+        >
+          <div className="container-fluid patient-text">
+            {/*1st Row */}
+            <div className="row">
+              <div className="col">
+                <strong>Name: </strong>
+                <span style={{ color: "red" }}>
+                  {props.patientData.firstName}
+                </span>
               </div>
-              <div
-                className="col-8 ms-5 d-flex justify-content-center rounded-5"
-                id="colBG"
-              >
-                <div className="container-fluid patient-text">
-                  {/*1st Row */}
-                  <div className="row">
-                    <div className="col">
-                      <strong>Name: </strong>
-                      <span style={{ color: "red" }}>
-                        {props.patientData.firstName}
-                      </span>
-                    </div>
-                    <div className="col">
-                      <strong>Age: </strong>
-                      <span style={{ color: "red" }}>
-                        {props.patientData.Age}
-                      </span>
-                    </div>
-                    <div className="col">
-                      <strong>Gender: </strong>
-                      <span style={{ color: "red" }}>
-                        {props.patientData.Gender}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/*2nd Row */}
-                  <div className="row mt-3">
-                    <div className="col">
-                      <strong>Birthday: </strong>
-                      <span style={{ color: "red" }}>{props.birthday}</span>
-                    </div>
-
-                    <div className="col">
-                      <strong>Address: </strong>
-                      <br></br>
-                      {intakeFormsData && intakeFormsData[0] ? (
-                        <span style={{ color: "red" }}>
-                          {intakeFormsData[0].StreetNum || "N/A"}{" "}
-                          {intakeFormsData[0].Barangay || ""}{" "}
-                          {intakeFormsData[0].City || ""}
-                          {intakeFormsData[0].Zip || ""}
-                        </span>
-                      ) : (
-                        <span>Wala</span>
-                      )}
-                    </div>
-
-                    <div className="col">
-                      <strong>Assigned Counselor: </strong>
-                      <span style={{ color: "red" }}>{props.counselor}</span>
-                    </div>
-                  </div>
-                </div>
+              <div className="col">
+                <strong>Age: </strong>
+                <span style={{ color: "red" }}>{props.patientData.Age}</span>
+              </div>
+              <div className="col">
+                <strong>Gender: </strong>
+                <span style={{ color: "red" }}>{props.patientData.Gender}</span>
               </div>
             </div>
 
-            <div
-              className="container-fluid rounded-5 mt-3 pt-2 pb-2 pe-4"
-              id="colBG"
-            >
-              {/*3rd Row */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col ">
-                  <strong>Cell Phone Number: </strong>
+            {/*2nd Row */}
+            <div className="row mt-3">
+              <div className="col">
+                <strong>Birthday: </strong>
+                <span style={{ color: "red" }}>{props.birthday}</span>
+              </div>
+
+              <div className="col">
+                <strong>Address: </strong>
+                <br></br>
+                {intakeFormsData && intakeFormsData[0] ? (
                   <span style={{ color: "red" }}>
-                    {props.patientData.CellPhone}
+                    {intakeFormsData[0].StreetNum || "N/A"}{" "}
+                    {intakeFormsData[0].Barangay || ""}{" "}
+                    {intakeFormsData[0].City || ""}
+                    {intakeFormsData[0].Zip || ""}
                   </span>
-                </div>
-
-                <div className="col">
-                  <strong>Home Phone Number: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.patientData.HomePhone}
-                  </span>
-                </div>
-                <div className="col">
-                  <strong>Email: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.patientData.Email}
-                  </span>
-                </div>
+                ) : (
+                  <span>Wala</span>
+                )}
               </div>
 
-              {/*4th Row  */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Sexual Preference: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].SexualPref}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Marital Status: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].MaritalStatus}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Previous Psychotherapy: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].TherapyStatus}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
+              <div className="col">
+                <strong>Assigned Counselor: </strong>
+                <span style={{ color: "red" }}>{props.counselor}</span>
               </div>
-
-              {/*5th Row  */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Current prescribed psychiatric medications: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].CurrPsychMeds}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Emergency contact person name: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].CPFname}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Emergency contact person number: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].CPNum}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*6th Row  */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Suicidal thoughts: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].SuicidalThoughts}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Past suicidal thoughts: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].SuicidalThoughtsPast}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Current homicidal thoughts: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].CurrentHomicidal}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*7th Row  */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Previous homicidal thoughts: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].HadPreviousHomicide}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Current physical health: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].currentPhysicalHealth}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Last physical examination: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].LastPhysicalExam}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*8th Row  */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>List of chronic health problem: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].ChronicIll}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Any Allergies: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].AllergiesSel}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>List of maintenance medication: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].MaintMeds}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*9th Row */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Regular intake of alcohol: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].alcoholSubstanceAbuseSelNow}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Engage in recreational drug use: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].DrugUseSel || ""}{" "}
-                      {intakeFormsData[0].DrugUse || ""}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Habit of smoke: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].CiggDaily}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*10th Row */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Any past head injury: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].CPNum ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].HeadInjurySel}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Lately significant changes or stressors: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].Stressors ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].Stressors}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Depressed Mood or Sadness: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].depressedMoodNowSel ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].depressedMoodNowSel}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*11th Row */}
-              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-                <div className="col">
-                  <strong>Axiety: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].anxietySelNow ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].anxietySelNow}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Phobias: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].phobiasSelNow ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].phobiasSelNow || ""}{" "}
-                      {intakeFormsData[0].phobiasRatingNow || ""}{" "}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Hallucinations: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].hallucinationsSelNow ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].hallucinationsSelNow || ""}{" "}
-                      {intakeFormsData[0].hallucinationsRatingNow || ""}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-
-              {/*12th Row */}
-              <div className="row ms-2 mt-2">
-                <div className="col">
-                  <strong>Sexual Abuse: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].sexualAbuseSelNow ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].sexualAbuseSelNow || ""}{" "}
-                      {intakeFormsData[0].sexualAbuseRatingNow || ""}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Physical Abuse: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].physicalAbuseSelNow ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].physicalAbuseSelNow || ""}{" "}
-                      {intakeFormsData[0].physicalAbuseRatingNow || ""}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-
-                <div className="col">
-                  <strong>Emotional Abuse: </strong>
-                  {intakeFormsData &&
-                  intakeFormsData[0] &&
-                  intakeFormsData[0].emotionalAbuseSelNow ? (
-                    <span style={{ color: "red" }}>
-                      {intakeFormsData[0].emotionalAbuseSelNow || ""}{" "}
-                      {intakeFormsData[0].emotionalAbuseRatingNow || ""}
-                    </span>
-                  ) : (
-                    <span>N/A</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/*Buttons */}
-            <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
-              <button
-                className="me-2 rounded-5 fw-semibold"
-                onClick={() => handleShowAss(props.selectedPatientUID)}
-                id="viewButton"
-              >
-                View Assignment
-              </button>
-
-              <button
-                className="me-2 rounded-5 fw-semibold"
-                onClick={handleShowCase}
-                id="viewButton"
-              >
-                View Case Notes
-              </button>
-
-              <button
-                className="me-2 rounded-5 fw-semibold"
-                onClick={handleShowWeek}
-                id="viewButton"
-              >
-                View Weekly Form
-              </button>
-
-              <button
-                className="me-2 rounded-5 fw-semibold"
-                onClick={handleShowWell}
-                id="viewButton"
-              >
-                View Daily Form
-              </button>
-
-              <button
-                className="rounded-5 fw-semibold"
-                onClick={togglePage}
-                disabled={showPage}
-                id="viewButton"
-              >
-                Create Case Notes
-              </button>
-
-              <ViewModalAssign show={showAss} handleClose={handleCloseAss} selectedPatientUID={props.selectedPatientUID} />
-
-              <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
-              <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
-              <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
-              {/* <CreateCaseNotes
-                show={showCreate}
-                handleClose={handleCloseCreate}
-                handleSubmit={handleSubmitCreate}
-              /> */}
-            </div>
-            <div className="pb-5 pt-5">
-              {showPage && <CreateCaseNotes onClose={togglePage} />}
             </div>
           </div>
         </div>
-      </Modal.Body>
-    </Modal>
+      </div>
+
+      <div className="container-fluid rounded-5 mt-3 pt-2 pb-2 pe-4" id="colBG">
+        {/*3rd Row */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col ">
+            <strong>Cell Phone Number: </strong>
+            <span style={{ color: "red" }}>{props.patientData.CellPhone}</span>
+          </div>
+
+          <div className="col">
+            <strong>Home Phone Number: </strong>
+            <span style={{ color: "red" }}>{props.patientData.HomePhone}</span>
+          </div>
+          <div className="col">
+            <strong>Email: </strong>
+            <span style={{ color: "red" }}>{props.patientData.Email}</span>
+          </div>
+        </div>
+
+        {/*4th Row  */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Sexual Preference: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].SexualPref}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Marital Status: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].MaritalStatus}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Previous Psychotherapy: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].TherapyStatus}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*5th Row  */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Current prescribed psychiatric medications: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].CurrPsychMeds}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Emergency contact person name: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>{intakeFormsData[0].CPFname}</span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Emergency contact person number: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>{intakeFormsData[0].CPNum}</span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*6th Row  */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Suicidal thoughts: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].SuicidalThoughts}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Past suicidal thoughts: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].SuicidalThoughtsPast}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Current homicidal thoughts: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].CurrentHomicidal}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*7th Row  */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Previous homicidal thoughts: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].HadPreviousHomicide}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Current physical health: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].currentPhysicalHealth}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Last physical examination: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].LastPhysicalExam}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*8th Row  */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>List of chronic health problem: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].ChronicIll}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Any Allergies: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].AllergiesSel}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>List of maintenance medication: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].MaintMeds}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*9th Row */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Regular intake of alcohol: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].alcoholSubstanceAbuseSelNow}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Engage in recreational drug use: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].DrugUseSel || ""}{" "}
+                {intakeFormsData[0].DrugUse || ""}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Habit of smoke: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].CiggDaily}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*10th Row */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Any past head injury: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].CPNum ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].HeadInjurySel}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Lately significant changes or stressors: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].Stressors ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].Stressors}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Depressed Mood or Sadness: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].depressedMoodNowSel ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].depressedMoodNowSel}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*11th Row */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Axiety: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].anxietySelNow ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].anxietySelNow}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Phobias: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].phobiasSelNow ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].phobiasSelNow || ""}{" "}
+                {intakeFormsData[0].phobiasRatingNow || ""}{" "}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Hallucinations: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].hallucinationsSelNow ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].hallucinationsSelNow || ""}{" "}
+                {intakeFormsData[0].hallucinationsRatingNow || ""}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+
+        {/*12th Row */}
+        <div className="row ms-2 mt-2">
+          <div className="col">
+            <strong>Sexual Abuse: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].sexualAbuseSelNow ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].sexualAbuseSelNow || ""}{" "}
+                {intakeFormsData[0].sexualAbuseRatingNow || ""}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Physical Abuse: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].physicalAbuseSelNow ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].physicalAbuseSelNow || ""}{" "}
+                {intakeFormsData[0].physicalAbuseRatingNow || ""}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+
+          <div className="col">
+            <strong>Emotional Abuse: </strong>
+            {intakeFormsData &&
+            intakeFormsData[0] &&
+            intakeFormsData[0].emotionalAbuseSelNow ? (
+              <span style={{ color: "red" }}>
+                {intakeFormsData[0].emotionalAbuseSelNow || ""}{" "}
+                {intakeFormsData[0].emotionalAbuseRatingNow || ""}
+              </span>
+            ) : (
+              <span>N/A</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/*Buttons */}
+      <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          onClick={() => handleShowAss(props.selectedPatientUID)}
+          id="viewButton"
+        >
+          View Assignment
+        </button>
+
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          onClick={handleShowCase}
+          id="viewButton"
+        >
+          View Case Notes
+        </button>
+
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          onClick={handleShowWeek}
+          id="viewButton"
+        >
+          View Weekly Form
+        </button>
+
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          onClick={handleShowWell}
+          id="viewButton"
+        >
+          View Daily Form
+        </button>
+
+        <button
+          className="rounded-5 fw-semibold"
+          onClick={togglePage}
+          disabled={showPage}
+          id="viewButton"
+        >
+          Create Case Notes
+        </button>
+
+        <ViewModalAssign
+          show={showAss}
+          handleClose={handleCloseAss}
+          selectedPatientUID={props.selectedPatientUID}
+        />
+
+        <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
+        <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
+        <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
+        {/* <CreateCaseNotes
+        show={showCreate}
+        handleClose={handleCloseCreate}
+        handleSubmit={handleSubmitCreate}
+      /> */}
+      </div>
+      <div className="pb-5 pt-5">
+        {showPage && <CreateCaseNotes onClose={togglePage} />}
+      </div>
+    </div>
   );
 };
 
 //!MODALS
-
 const ViewModalAssign = (props) => {
   const [activeTab, setActiveTab] = useState("turnedIn");
   const handleTabChange = (tab) => {
@@ -639,7 +634,9 @@ const ViewModalAssign = (props) => {
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
-    console.log(`Creating assignments for patient with UID: ${selectedPatientUID}`);
+    console.log(
+      `Creating assignments for patient with UID: ${selectedPatientUID}`
+    );
     setShow(true);
   };
 
@@ -931,7 +928,7 @@ const ViewWellnessForm = (props) => {
   };
 
   const [show, setShow] = useState(false);
-  
+
   const handleClose = () => setShow(false);
 
   const handleShow = async (selectedPatientUID) => {
@@ -1266,8 +1263,8 @@ const CreateAssignment = (props) => {
     const db = getFirestore();
     const { currentUser } = getAuth();
     console.log("currentUser:", currentUser);
-  console.log("selectedPatientUID:", props.selectedPatientUID);
-  
+    console.log("selectedPatientUID:", props.selectedPatientUID);
+
     if (currentUser && props.selectedPatientUID) {
       const taskData = {
         Activity: activity,
@@ -1276,10 +1273,10 @@ const CreateAssignment = (props) => {
         counselorUID: currentUser.uid,
         PatientUID: props.selectedPatientUID,
       };
-  
+
       console.log("PatientUID:", props.selectedPatientUID);
-    console.log("counselorUID:", currentUser.uid);
-    
+      console.log("counselorUID:", currentUser.uid);
+
       addDoc(collection(db, "Tasks"), taskData)
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
@@ -1293,7 +1290,6 @@ const CreateAssignment = (props) => {
       console.error("currentUser or selectedPatientUID is undefined.");
     }
   };
-  
 
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
