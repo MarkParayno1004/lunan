@@ -26,6 +26,10 @@ export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
   const [filteredCounselorData, setFilteredCounselorData] = useState([]);
+  const addCounselorToData = (newCounselor) => {
+    setCounselorData((prevData) => [...prevData, newCounselor]);
+    setFilteredCounselorData((prevData) => [...prevData, newCounselor]);
+  };
 
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
@@ -287,6 +291,7 @@ export const AllCounselors = () => {
               show={showAdd}
               onHide={handleCloseAdd}
               handleClose={handleCloseAdd}
+              addCounselorToData={addCounselorToData}
             />
           </div>
         </div>
@@ -397,8 +402,10 @@ const AddModal = (props) => {
       console.log("New User Data:", newUser);
 
       await addDoc(userAccRef, newUser);
+      props.addCounselorToData(newUser);
 
       console.log("New counselor added successfully.");
+      props.handleClose();
     } catch (error) {
       console.error("Error adding new counselor:", error);
     }
