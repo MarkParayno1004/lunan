@@ -73,7 +73,7 @@ const PatientData = () => {
       {/*Body Column */}
       <div className="container-fluid rounded-5 mt-3 pt-2 pb-2 pe-4" id="colBG">
         {/*1st Row Body Column */}
-        <div className="row">
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
           <div className="col">
             <strong>Cell Phone Number: </strong>
             <span style={{ color: "red" }}></span>
@@ -89,7 +89,7 @@ const PatientData = () => {
         </div>
 
         {/*2nd Row Body Column */}
-        <div className="row">
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
           <div className="col">
             <strong>Sexual preference: </strong>
             <span style={{ color: "red" }}></span>
@@ -105,7 +105,7 @@ const PatientData = () => {
         </div>
 
         {/*3rd Row Body Column */}
-        <div className="row">
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
           <div className="col">
             <strong>Current prescribed psychiatric medications:</strong>
             <span style={{ color: "red" }}></span>
@@ -121,17 +121,97 @@ const PatientData = () => {
         </div>
 
         {/*4th Row Body Column */}
-        <div className="row">
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
           <div className="col">
             <strong>Suicidal thoughts:</strong>
             <span style={{ color: "red" }}></span>
           </div>
           <div className="col">
-            <strong>Emergency contact person name: </strong>
+            <strong>Past suicidal thoughts: </strong>
             <span style={{ color: "red" }}></span>
           </div>
           <div className="col">
-            <strong>Emergency contact person number: </strong>
+            <strong>Current homicidal thoughts: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+        </div>
+
+        {/*5th Row Body Column */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Previous homicidal thoughts:</strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Current physical health: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Last physical examination: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+        </div>
+
+        {/*6th Row Body Column */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>List of chronic health problem:</strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Any allergies: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>List of maintenance medication: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+        </div>
+
+        {/*7th Row Body Column */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Any past head injury:</strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Lately significant changes or stressors: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Depressed mood or sadness: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+        </div>
+
+        {/*8th Row Body Column */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Anxiety:</strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Phobias: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Hallucinations: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+        </div>
+
+        {/*9th Row Body Column */}
+        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+          <div className="col">
+            <strong>Sexual abuse:</strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Physical abuse: </strong>
+            <span style={{ color: "red" }}></span>
+          </div>
+          <div className="col">
+            <strong>Emotional abuse: </strong>
             <span style={{ color: "red" }}></span>
           </div>
         </div>

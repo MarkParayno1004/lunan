@@ -71,9 +71,7 @@ export const PatientInfo = (props) => {
 
   return (
     <Modal
-      className="modal-90w"
       size="xl"
-      aria-labelledby="example-custom-modal-styling-title"
       show={props.show}
       onHide={props.onHide}
       backdrop="static"
