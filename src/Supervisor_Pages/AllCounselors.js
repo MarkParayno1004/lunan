@@ -19,29 +19,35 @@ import {
   uploadBytes,
   ref,
   getDownloadURL,
-  getMetadata
+  getMetadata,
 } from "firebase/storage";
 
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
   const [filteredCounselorData, setFilteredCounselorData] = useState([]);
+  const [showAdd, setShowAdd] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [editSuccess, setEditSuccess] = useState(false);
+  const [newCounselorAdded, setNewCounselorAdded] = useState(false);
 
+  // Fetch the number of patients for a counselor
   const fetchCounselorPatientsCount = async (counselorID) => {
     try {
       const querySnapshot = await getDocs(
         query(collection(firestore, "Users"), where("Role", "==", "Patient"))
       );
 
-  
       const patientDocs = querySnapshot.docs;
       let patientsCount = 0;
-  
-      const counselorDoc = await getDoc(doc(collection(firestore, "Users"), counselorID));
-  
+
+      const counselorDoc = await getDoc(
+        doc(collection(firestore, "Users"), counselorID)
+      );
+
       if (counselorDoc.exists()) {
         const counselorData = counselorDoc.data();
-  
 
         for (const patientDoc of patientDocs) {
           const patientData = patientDoc.data();
@@ -58,36 +64,34 @@ export const AllCounselors = () => {
     }
   };
 
+  // Fetch counselor data and patients count
+  const fetchCounselorData = async () => {
+    try {
+      const querySnapshot = await getDocs(
+        query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
+      );
+
+      const counselorDataWithPatientsCount = await Promise.all(
+        querySnapshot.docs.map(async (doc) => {
+          const patientsCount = await fetchCounselorPatientsCount(doc.id);
+          return {
+            ...doc.data(),
+            UID: doc.id,
+            patientsCount: patientsCount,
+          };
+        })
+      );
+
+      setCounselorData(counselorDataWithPatientsCount);
+      setFilteredCounselorData(counselorDataWithPatientsCount);
+    } catch (error) {
+      console.error("Error fetching counselor data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchCounselorData = async () => {
-      try {
-        const querySnapshot = await getDocs(
-          query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
-        );
-  
-        const counselorDataWithPatientsCount = await Promise.all(
-          querySnapshot.docs.map(async (doc) => {
-            const patientsCount = await fetchCounselorPatientsCount(doc.id);
-            return {
-              ...doc.data(),
-              UID: doc.id,
-              patientsCount: patientsCount,
-            };
-          })
-        );
-  
-        console.log("Counselor Data:", counselorDataWithPatientsCount);
-        setCounselorData(counselorDataWithPatientsCount);
-        setFilteredCounselorData(counselorDataWithPatientsCount);
-      } catch (error) {
-        console.error("Error fetching counselor data:", error);
-      }
-    };
-  
     fetchCounselorData();
-  }, []);
-
+  }, [newCounselorAdded]);  // Fetch data on component mount
 
   const handleRemove = async (UID) => {
     try {
@@ -139,6 +143,41 @@ export const AllCounselors = () => {
     }
   };
 
+  const handleEdit = (counselor) => {
+    setEditData(counselor);
+    setShowEdit(true);
+  };
+
+  const handleEditSuccess = async (updatedData) => {
+    try {
+      // Update the counselorData with the updated data
+      const updatedCounselorData = counselorData.map((counselor) =>
+        counselor.UID === updatedData.UID ? updatedData : counselor
+      );
+  
+      // Update the state with the new data
+      setCounselorData(updatedCounselorData);
+      setFilteredCounselorData(updatedCounselorData);
+  
+      // Set the edit success flag and close the edit modal
+      setEditSuccess(true);
+      setShowEdit(false);
+  
+      // Fetch updated data from Firestore
+      await fetchCounselorData();
+    } catch (error) {
+      console.error("Error updating counselor:", error);
+    }
+  };
+
+  const handleAddSuccess = (newCounselor) => {
+    // Update the counselorData state to include the new counselor
+    setCounselorData((prevData) => [...prevData, newCounselor]);
+
+    // Update the filteredCounselorData state to include the new counselor
+    setFilteredCounselorData((prevData) => [...prevData, newCounselor]);
+  };
+
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
@@ -161,14 +200,15 @@ export const AllCounselors = () => {
     return imageUrl;
   };
 
-  const [showAdd, setShowAdd] = useState(false);
-  const handleCloseAdd = () => setShowAdd(false);
   const handleShowAdd = () => setShowAdd(true);
+  const handleCloseAdd = () => setShowAdd(false);
 
-  const [showEdit, setShowEdit] = useState(false);
+  const handleShowEdit = (UID) => {
+    setEditData(counselorData.find((counselor) => counselor.UID === UID));
+    setShowEdit(true);
+  };
+
   const handleCloseEdit = () => setShowEdit(false);
-  const handleShowEdit = (UID) => setShowEdit(UID);
-
 
   return (
     <div
@@ -190,11 +230,11 @@ export const AllCounselors = () => {
                 aria-describedby="search"
                 className="w-25 form-control"
               />
-
-
               <span class="input-group-text" id="search">
-
-                <button style={{ border: "none", background: "none" }}>
+                <button
+                  style={{ border: "none", background: "none" }}
+                  onClick={handleSearch}
+                >
                   Search
                 </button>
               </span>
@@ -215,62 +255,55 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-              {filteredCounselorData.map((counselor) => (
-    <tr key={counselor.UID}>
-      <td>
-    {counselor.ProfPic ? (
-      <img
-        src={fetchImageUrl(counselor.ProfPic)}
-        alt={counselor.firstName}
-        width="100"
-        height="100"
-      />
-    ) : (
-      <img
-        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-        alt={counselor.firstName}
-        width="100"
-        height="100"
-      />
-    )}
-  </td>
-  <td>{counselor.firstName}</td>
-  <td>{counselor.dateCreated}</td>
-  <td>
-    {counselor.patientsCount !== undefined ? counselor.patientsCount : 0}
-  </td>
-      <td>
-        <button
-          className="rounded-5 fw-medium"
-          id="editCounselor"
-          onClick={() => handleShowEdit(counselor.UID)}
-        >
-          Edit
-        </button>
-        <EditModal
-          show={showEdit === counselor.UID}
-          onHide={handleCloseEdit}
-          handleClose={handleCloseEdit}
-          userId={counselor.UID}
-          firstName={counselor.firstName}
-          ProfPic={counselor.ProfPic}
-        />
-      </td>
-      <td>
-        <button
-          id="removeCounselor"
-          className="rounded-5 fw-medium"
-          onClick={() => {
-            handleRemove(counselor.UID);
-          }}
-        >
-          Remove
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+                {filteredCounselorData.map((counselor) => (
+                  <tr key={counselor.UID}>
+                    <td>
+                      {counselor.ProfPic ? (
+                        <img
+                          src={fetchImageUrl(counselor.ProfPic)}
+                          alt={counselor.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      ) : (
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                          alt={counselor.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      )}
+                    </td>
+                    <td>{counselor.firstName}</td>
+                    <td>{counselor.dateCreated}</td>
+                    <td>
+                      {counselor.patientsCount !== undefined
+                        ? counselor.patientsCount
+                        : 0}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleShowEdit(counselor.UID)}
+                        className="rounded-5 fw-medium"
+                        id="editCounselor"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        id="removeCounselor"
+                        className="rounded-5 fw-medium"
+                        onClick={() => {
+                          handleRemove(counselor.UID);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         </div>
@@ -283,74 +316,50 @@ export const AllCounselors = () => {
             >
               Add
             </Button>
-            <AddModal
-              show={showAdd}
-              onHide={handleCloseAdd}
-              handleClose={handleCloseAdd}
-            />
           </div>
         </div>
       </div>
+      <AddModal show={showAdd} onHide={handleCloseAdd} />
+      {editData && (
+        <EditModal
+          show={showEdit}
+          onHide={handleCloseEdit}
+          userId={editData.UID}
+          firstName={editData.firstName}
+          ProfPic={editData.ProfPic}
+          onEditSuccess={handleEditSuccess}
+        />
+      )}
     </div>
   );
 };
 
 const AddModal = (props) => {
-  const [file, setFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
-  const [error, setError] = useState("");
+  const [localFormData, setLocalFormData] = useState({
+    firstName: "",
+    ConNum: "",
+    Email: "",
+    ProfPic: null,
+  });
+  const [fileError, setFileError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
     if (selectedFile && allowedTypes.includes(selectedFile.type)) {
-      setFile(selectedFile);
-      setError("");
+      setLocalFormData({
+        ...localFormData,
+        ProfPic: selectedFile,
+      });
+      setFileError("");
     } else {
-      setFile(null);
-      setError("Please select a valid image file (JPEG, PNG, GIF).");
-    }
-  };
-
-  const userAccRef = collection(firestore, "Users");
-  const [localFormData, setLocalFormData] = useState({
-    Email: "",
-    firstName: "",
-    ConNum: "",
-    ProfPic: null,
-  });
-
-  const [fileError, setFileError] = useState("");
-
-  const hanFileChange = (event) => {
-    const file = event.target.files[0];
-    setLocalFormData({
-      ...localFormData,
-      ProfPic: file, 
-    });
-  };
-
-  const uploadImage = async (file) => {
-    try {
-      const storageRef = ref(storage, `user_photos/${file.name}`);
-
-      const metadata = {
-        contentType: file.type, 
-      };
-
-      const snapshot = await uploadBytes(storageRef, file, metadata);
-
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      const updatedMetadata = await getMetadata(snapshot.ref);
-
-      console.log("Download URL:", downloadURL);
-      console.log("Updated Metadata:", updatedMetadata);
-
-      return downloadURL;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      throw error;
+      setLocalFormData({
+        ...localFormData,
+        ProfPic: null,
+      });
+      setFileError("Please select a valid image file (JPEG, PNG, GIF).");
     }
   };
 
@@ -369,22 +378,22 @@ const AddModal = (props) => {
 
   const handleSubmitAdd = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
+  
     try {
       const password = generateRandomPassword(8);
-
+  
       const { user } = await createUserWithEmailAndPassword(
         auth,
         localFormData.Email,
         password
       );
-      console.log("Generated Password:", password);
-
+  
       let photoURL = "";
       if (localFormData.ProfPic) {
         photoURL = await uploadImage(localFormData.ProfPic);
       }
-
+  
       const newUser = {
         dateCreated: new Date().toISOString().split("T")[0],
         Email: localFormData.Email,
@@ -394,13 +403,39 @@ const AddModal = (props) => {
         Role: "Counselor",
         UID: user.uid,
       };
-      console.log("New User Data:", newUser);
-
+  
+      const userAccRef = collection(firestore, "Users");
       await addDoc(userAccRef, newUser);
-
-      console.log("New counselor added successfully.");
+  
+      setLoading(false);
+  
+      // Close the modal after successful addition
+      props.onHide();
+  
+      // Automatically render the new counselor in the table
+      props.onAddSuccess(newUser);
     } catch (error) {
+      setLoading(false);
       console.error("Error adding new counselor:", error);
+    }
+  };
+
+  const uploadImage = async (file) => {
+    try {
+      const storageRef = ref(storage, `user_photos/${file.name}`);
+
+      const metadata = {
+        contentType: file.type,
+      };
+
+      const snapshot = await uploadBytes(storageRef, file, metadata);
+
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw error;
     }
   };
 
@@ -408,7 +443,7 @@ const AddModal = (props) => {
     <Modal
       className="container-fluid"
       show={props.show}
-      onHide={props.handleClose}
+      onHide={props.onHide}
       style={{ border: "none", color: "white" }}
     >
       <Modal.Body id="BGmodal">
@@ -439,7 +474,7 @@ const AddModal = (props) => {
               type="file"
               accept="image/*"
               name="ProfPic"
-              onChange={hanFileChange}
+              onChange={handleFileChange}
             />
             <Form.Text className="text-danger">{fileError}</Form.Text>
           </Form.Group>
@@ -479,14 +514,24 @@ const AddModal = (props) => {
           </Form.Group>
 
           <Modal.Footer className="mt-3">
-            <Button
-              className="rounded-5 fw-medium"
-              variant="primary"
-              type="submit"
-              id="BtnSubmitAC"
-            >
-              Submit
-            </Button>
+            {loading ? (
+              <Button
+                variant="primary"
+                className="rounded-5 fw-medium"
+                disabled
+              >
+                Adding...
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                type="submit"
+                className="rounded-5 fw-medium"
+                id="BtnSubmitAC"
+              >
+                Submit
+              </Button>
+            )}
           </Modal.Footer>
         </Form>
       </Modal.Body>
@@ -513,7 +558,7 @@ const EditModal = (props) => {
   };
 
   const handleUpdateName = (event) => {
-    setUpdateName(event.target.value); 
+    setUpdateName(event.target.value);
   };
 
   const handleSubmitEdit = async (event) => {
@@ -541,6 +586,8 @@ const EditModal = (props) => {
           await updateDoc(userDocRef, updateData);
 
           console.log("User data updated successfully.");
+          props.onEditSuccess(updateData); // Call the parent component's callback
+
         } else {
           console.log("Document does not exist.");
         }
@@ -550,7 +597,7 @@ const EditModal = (props) => {
     } catch (error) {
       console.error("Firebase Error Code:", error.code);
       console.error("Error updating user data:", error);
-      setError("Error updating user data."); // Set error message
+      setError("Error updating user data.");
     }
   };
 
