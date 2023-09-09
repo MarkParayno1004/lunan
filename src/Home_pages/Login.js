@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -13,7 +13,7 @@ import "../css/Login.css";
 import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
-import {Form, Modal, Button} from "react-bootstrap";
+import {Form, Modal, Button, Alert} from "react-bootstrap";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -159,7 +159,7 @@ export const Login = () => {
                     >
                       Forgot Password
                     </Link>
-                    <AddModal show={showForget} onHide={handleCloseForget} />
+                    <ForgotModal show={showForget} onHide={handleCloseForget} />
                   </div>
                   <div className="d-flex justify-content-center">
                     <button
@@ -179,22 +179,39 @@ export const Login = () => {
   );
 };
 
-const AddModal = (props) => {
+const ForgotModal = (props) => {
   const [localFormData, setLocalFormData] = useState({
-    email: "",
+    email: '',
+  });
+
+  const [resetStatus, setResetStatus] = useState({
+    message: '',
+    success: false,
   });
 
   const handleForgetPassword = async (event) => {
     event.preventDefault();
-    console.log("inside forget password");
-    // Add your logic here to handle the password reset request
+  
+    try {
+      await sendPasswordResetEmail(auth, localFormData.email);
+      setResetStatus({
+        message: 'Password reset instructions sent to your email.',
+        success: true,
+      });
+    } catch (error) {
+      console.error('Password reset error:', error);
+      setResetStatus({
+        message: 'Email is not existing in the system.',
+        success: false,
+      });
+    }
   };
 
   return (
     <Modal
       show={props.show}
       onHide={props.onHide}
-      style={{ border: "none", color: "white" }}
+      style={{ border: 'none', color: 'white' }}
     >
       <Modal.Body id="BGmodal">
         <Modal.Header className="mb-3" closeButton>
@@ -215,6 +232,14 @@ const AddModal = (props) => {
               }
               required
             />
+            {resetStatus.message && (
+          <Alert
+            variant={resetStatus.success ? 'success' : 'danger'}
+            className="mt-3"
+          >
+            {resetStatus.message}
+          </Alert>
+        )}
           </Form.Group>
           <Modal.Footer className="mt-3">
             <Button
@@ -231,4 +256,3 @@ const AddModal = (props) => {
     </Modal>
   );
 };
-
