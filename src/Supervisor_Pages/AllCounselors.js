@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "../css/AllCounselors.css";
 import {
@@ -21,9 +19,7 @@ import {
   uploadBytes,
   ref,
   getDownloadURL,
-  getMetadata,
-  setMetadata,
-  deleteObject,
+  getMetadata
 } from "firebase/storage";
 
 export const AllCounselors = () => {
@@ -36,6 +32,7 @@ export const AllCounselors = () => {
       const querySnapshot = await getDocs(
         query(collection(firestore, "Users"), where("Role", "==", "Patient"))
       );
+
   
       const patientDocs = querySnapshot.docs;
       let patientsCount = 0;
@@ -45,6 +42,7 @@ export const AllCounselors = () => {
       if (counselorDoc.exists()) {
         const counselorData = counselorDoc.data();
   
+
         for (const patientDoc of patientDocs) {
           const patientData = patientDoc.data();
           if (patientData.counselorID === counselorID) {
@@ -52,14 +50,14 @@ export const AllCounselors = () => {
           }
         }
       }
-  
+
       return patientsCount;
     } catch (error) {
       console.error("Error fetching counselor patients count:", error);
       return 0;
     }
   };
-  
+
 
   useEffect(() => {
     const fetchCounselorData = async () => {
@@ -89,8 +87,7 @@ export const AllCounselors = () => {
   
     fetchCounselorData();
   }, []);
-  
-  
+
 
   const handleRemove = async (UID) => {
     try {
@@ -121,6 +118,7 @@ export const AllCounselors = () => {
 
         setCounselorData((prevData) => prevData.filter((counselor) => counselor.UID !== UID));
 
+
         console.log("Counselor removed successfully.", UID);
       }
     } catch (error) {
@@ -139,7 +137,7 @@ export const AllCounselors = () => {
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
-  
+
     if (query === "") {
       setFilteredCounselorData(counselorData); // Show all data when query is empty
     } else {
@@ -188,7 +186,9 @@ export const AllCounselors = () => {
                 className="w-25 form-control"
               />
 
+
               <span class="input-group-text" id="search">
+
                 <button style={{ border: "none", background: "none" }}>
                   Search
                 </button>
@@ -265,6 +265,7 @@ export const AllCounselors = () => {
     </tr>
   ))}
 </tbody>
+
             </table>
           </div>
         </div>
@@ -288,6 +289,7 @@ export const AllCounselors = () => {
     </div>
   );
 };
+
 const AddModal = (props) => {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -397,8 +399,6 @@ const AddModal = (props) => {
     }
   };
 
-
-
   return (
     <Modal
       className="container-fluid"
@@ -490,7 +490,6 @@ const AddModal = (props) => {
 };
 
 const EditModal = (props) => {
-  //
   const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
@@ -515,12 +514,12 @@ const EditModal = (props) => {
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
     const userAccRef = collection(firestore, "Users");
-    
+
     try {
       if (props.userId) {
         const userDocRef = doc(userAccRef, props.userId);
         const docSnapshot = await getDoc(userDocRef);
-        
+
         if (docSnapshot.exists()) {
           const existingData = docSnapshot.data();
 
@@ -535,6 +534,7 @@ const EditModal = (props) => {
           }
 
           await updateDoc(userDocRef, updateData);
+
           console.log("User data updated successfully.");
         } else {
           console.log("Document does not exist.");
@@ -545,6 +545,7 @@ const EditModal = (props) => {
     } catch (error) {
       console.error("Firebase Error Code:", error.code);
       console.error("Error updating user data:", error);
+      setError("Error updating user data."); // Set error message
     }
   };
 
@@ -609,3 +610,5 @@ const EditModal = (props) => {
     </Modal>
   );
 };
+
+export default AllCounselors;
