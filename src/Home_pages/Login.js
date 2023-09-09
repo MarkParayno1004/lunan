@@ -13,7 +13,7 @@ import "../css/Login.css";
 import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
-import { Form, Modal, Button } from "react-bootstrap";
+import {Form, Modal, Button} from "react-bootstrap";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -32,7 +32,40 @@ export const Login = () => {
   };
 
   const fetchUserData = async (uid) => {
-    // ... Your existing code for fetching user data ...
+    try {
+      const db = getFirestore();
+      const usersCollection = collection(db, "Users");
+      const q = query(usersCollection, where("UID", "==", uid));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const docSnapshot = querySnapshot.docs[0];
+        const userData = docSnapshot.data();
+        const firstName = userData.firstName;
+        console.log("User data:", userData);
+        console.log("First name:", firstName);
+        setFirstName(firstName);
+
+        if (userData.Role === "Patient") {
+          navigate("/Patient Dashboard");
+          console.log("User role:", userData.Role);
+        } else if (userData.Role === "Counselor") {
+          navigate("/Counselor Dashboard");
+          console.log("User role:", userData.Role);
+        } else if (userData.Role === "Admin") {
+          navigate("/Supervisor Dashboard");
+          console.log("User role:", userData.Role);
+        } else {
+          console.log("Non-existing user role");
+        }
+      } else {
+        console.error("User data not found for email:", uid);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -61,7 +94,7 @@ export const Login = () => {
         console.error("Invalid user UID:", userUid);
       }
     }
-  }, [loggedIn]);
+  }, [loggedIn, fetchUserData]);
 
   const [showForget, setShowForget] = useState(false);
 
@@ -71,21 +104,77 @@ export const Login = () => {
 
   return (
     <>
-      {/* ... Your existing code ... */}
-      <div className="d-flex justify-content-end">
-        <Link
-          className="fw-light mt-2"
-          onClick={handleForget} // Open the modal when the link is clicked
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontSize: "18px",
-          }}
-        >
-          Forgot Password
-        </Link>
+      <Navbar />
+      <div className="container-fluid text-center " id="loginBG">
+        <div className="row d-flex align-items-center" id="rowHeight">
+          <div className="col ">
+            <img src={BloomFieldsLogo} style={{ width: "40%" }} alt="Logo" />
+          </div>
+          <div
+            className="col d-flex align-items-center d-flex justify-content-center"
+            id="loginInput"
+          >
+            <div className="mb-5" style={{ width: "60%" }}>
+              <div className="mt-5">
+                <p
+                  style={{ color: "white", fontSize: "50px" }}
+                  className="fs-1"
+                >
+                  Login
+                </p>
+                <form onSubmit={handleSubmit}>
+                  <div className="input-group flex-nowrap">
+                    <input
+                      type="email"
+                      className="form-control mt-3"
+                      placeholder="Email"
+                      aria-label="Email"
+                      aria-describedby="addon-wrapping"
+                      value={email}
+                      onChange={handleEmailChange}
+                      required
+                    />
+                  </div>
+                  <div className="input-group flex-nowrap">
+                    <input
+                      type="password"
+                      className="form-control mt-3"
+                      placeholder="Password"
+                      aria-label="Password"
+                      aria-describedby="addon-wrapping"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      required
+                    />
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <Link
+                      className="fw-light mt-2"
+                      onClick={handleForget} // Open the modal when the link is clicked
+                      style={{
+                        color: "white",
+                        textDecoration: "none",
+                        fontSize: "18px",
+                      }}
+                    >
+                      Forgot Password
+                    </Link>
+                    <AddModal show={showForget} onHide={handleCloseForget} />
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      className="d-flex align-items-center justify-content-center"
+                      id="LoginButton"
+                    >
+                      Login
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <AddModal show={showForget} onHide={handleCloseForget} />
     </>
   );
 };
@@ -142,3 +231,4 @@ const AddModal = (props) => {
     </Modal>
   );
 };
+
