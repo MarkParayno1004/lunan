@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  where,
+  query,
+} from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
 import { getAuth } from "firebase/auth";
@@ -11,10 +18,11 @@ export const PatientList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
-  const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([null]);
+  const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
+    null,
+  ]);
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [showPatientInfo, setShowPatientInfo] = useState(false);
-  
 
   useEffect(() => {
     const fetchPatientsData = async () => {
@@ -57,20 +65,20 @@ export const PatientList = () => {
 
   const handleShow = async (UID) => {
     console.log("Selected Patient UID:", UID);
-  
+
     try {
       // Query the collection to find the document with the matching UID
       const querySnapshot = await getDocs(collection(firestore, "Users"));
       console.log("Query Snapshot:", querySnapshot.docs);
-  
+
       const matchingDocument = querySnapshot.docs.find(
         (doc) => doc.data().UID === UID
       );
-  
+
       if (matchingDocument) {
         const patientData = matchingDocument.data();
         console.log("Selected Patient Data:", patientData);
-  
+
         // Fetch additional data from the "IntakeForms" collection
         const intakeFormsQuerySnapshot = await getDocs(
           query(collection(firestore, "IntakeForms"), where("UID", "==", UID))
@@ -78,13 +86,13 @@ export const PatientList = () => {
         const intakeFormsData = intakeFormsQuerySnapshot.docs.map((doc) =>
           doc.data()
         );
-  
+
         console.log("Intake Forms Data:", intakeFormsData);
-  
+
         // Set the patient data and intake forms data to state
         setSelectedPatientData(patientData);
         setSelectedIntakeFormsData(intakeFormsData);
-  
+
         setShow(true);
       } else {
         console.log("Patient document does not exist");
@@ -93,9 +101,7 @@ export const PatientList = () => {
       console.error("Error fetching patient data:", error);
     }
   };
-  
-  
-  
+
   return (
     <div
       className="container-lg mt-5 pb-3 rounded-4 fw-normal d-flex justify-content-center"
@@ -144,54 +150,53 @@ export const PatientList = () => {
                 </tr>
               </thead>
               <tbody>
-              {patientsData
-  .filter((patient) => patient.counselorUID === loggedInUserUID)
-  .map((patient) => (
-    <tr key={patient.UID}>
-      <td>
-        <button
-          style={{ border: "none", background: "none" }}
-          onClick={() => {
-            handleSelectPatient(patient.UID);
-            handleShow(patient.UID);
-          }}// Pass the patient's UID
-        >
-            {patient.ProfPic ? (
-              <img
-                src={fetchImageUrl(patient.ProfPic)}
-                alt={patient.firstName}
-                width="100"
-                height="100"
-              />
-                ) : (
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                alt={patient.firstName}
-                width="100"
-                height="100"
-              />
-                )}
-        </button>
-      </td>
-      <td>{patient.firstName}</td>
-      <td>{patient.dateCreated}</td>
-      <td>{patient.UID}</td>
-    </tr>
-  ))}
+                {patientsData
+                  .filter((patient) => patient.counselorUID === loggedInUserUID)
+                  .map((patient) => (
+                    <tr key={patient.UID}>
+                      <td>
+                        <button
+                          style={{ border: "none", background: "none" }}
+                          onClick={() => {
+                            handleSelectPatient(patient.UID);
+                            handleShow(patient.UID);
+                          }} // Pass the patient's UID
+                        >
+                          {patient.ProfPic ? (
+                            <img
+                              src={fetchImageUrl(patient.ProfPic)}
+                              alt={patient.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          ) : (
+                            <img
+                              src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                              alt={patient.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          )}
+                        </button>
+                      </td>
+                      <td>{patient.firstName}</td>
+                      <td>{patient.dateCreated}</td>
+                      <td>{patient.UID}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
         </div>
         {show && (
-  <PatientInfo
-    show={show}
-    onHide={handleClose}
-    patientData={selectedPatientData}
-    intakeFormsData={selectedIntakeFormsData}
-    selectedPatientUID={selectedPatientUID}
-  />
-)}
-
+          <PatientInfo
+            show={show}
+            onHide={handleClose}
+            patientData={selectedPatientData}
+            intakeFormsData={selectedIntakeFormsData}
+            selectedPatientUID={selectedPatientUID}
+          />
+        )}
       </div>
     </div>
   );
