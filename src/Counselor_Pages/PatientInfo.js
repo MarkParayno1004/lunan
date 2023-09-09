@@ -6,6 +6,8 @@ import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { collection, getFirestore, addDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import HTMLReactParser from "html-react-parser";
 
 export const PatientInfo = (props) => {
@@ -14,7 +16,12 @@ export const PatientInfo = (props) => {
   //!View Assignment Modal Behaviour
   const [showAss, setShowAss] = useState(false);
   const handleCloseAss = () => setShowAss(false);
-  const handleShowAss = () => setShowAss(true);
+
+  const handleShowAss = (selectedPatientUID) => {
+    // You can use the patientUID in this function
+    console.log(`Showing assignments for patient with UID: ${selectedPatientUID}`);
+    setShowAss(true);
+  };
 
   //!View Case Notes  Modal Behaviour
   const [showCase, setShowCase] = useState(false);
@@ -561,7 +568,7 @@ export const PatientInfo = (props) => {
             <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
               <button
                 className="me-2 rounded-5 fw-semibold"
-                onClick={handleShowAss}
+                onClick={() => handleShowAss(props.selectedPatientUID)}
                 id="viewButton"
               >
                 View Assignment
@@ -600,7 +607,8 @@ export const PatientInfo = (props) => {
                 Create Case Notes
               </button>
 
-              <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
+              <ViewModalAssign show={showAss} handleClose={handleCloseAss} selectedPatientUID={props.selectedPatientUID} />
+
               <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
               <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
               <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
@@ -628,7 +636,10 @@ const ViewModalAssign = (props) => {
 
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShowCreate = (selectedPatientUID) => {
+    console.log(`Creating assignments for patient with UID: ${selectedPatientUID}`);
+    setShow(true);
+  };
 
   const [showFiles, setShowFiles] = useState();
   const handleCloseFiles = () => setShowFiles(false);
@@ -736,7 +747,7 @@ const ViewModalAssign = (props) => {
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            onClick={handleShow}
+            onClick={() => handleShowCreate(props.selectedPatientUID)}
           >
             Create Assignment
           </button>
@@ -744,6 +755,7 @@ const ViewModalAssign = (props) => {
             show={show}
             handleClose={handleClose}
             handleSubmit={handleSubmit}
+            selectedPatientUID={props.selectedPatientUID}
           />
           <button
             className="btn"
@@ -917,8 +929,13 @@ const ViewWellnessForm = (props) => {
   };
 
   const [show, setShow] = useState(false);
+  
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const handleShow = async (selectedPatientUID) => {
+    console.log("Selected Patient UID:", props.selectedPatientUID);
+  };
+
   return (
     <Modal
       className="mt-3"
@@ -1240,11 +1257,55 @@ const ViewFormWell = (props) => {
 
 const CreateAssignment = (props) => {
   const [date, setDate] = useState("");
+  const [activity, setActivity] = useState("");
+  const [description, setDescription] = useState("");
   const dateInputRef = useRef(null);
 
   const handleChange = (e) => {
     setDate(e.target.value);
   };
+
+  const handleActivityChange = (e) => {
+    setActivity(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleSubmitCreate = () => {
+    const db = getFirestore();
+    const { currentUser } = getAuth();
+    console.log("currentUser:", currentUser);
+  console.log("selectedPatientUID:", props.selectedPatientUID);
+  
+    if (currentUser && props.selectedPatientUID) {
+      const taskData = {
+        Activity: activity,
+        Deadline: date,
+        Description: description,
+        counselorUID: currentUser.uid,
+        PatientUID: props.selectedPatientUID,
+      };
+  
+      console.log("PatientUID:", props.selectedPatientUID);
+    console.log("counselorUID:", currentUser.uid);
+    
+      addDoc(collection(db, "Tasks"), taskData)
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          // Perform any other actions after successful upload
+          props.handleClose();
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+    } else {
+      console.error("currentUser or selectedPatientUID is undefined.");
+    }
+  };
+  
+
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
@@ -1252,12 +1313,14 @@ const CreateAssignment = (props) => {
           <Modal.Title>Create Assignment:</Modal.Title>
         </Modal.Header>
         <h5>Input Activity:</h5>
-        <div class="input-group mb-3">
+        <div className="input-group mb-3">
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             aria-label="CreateAssignment"
             aria-describedby="basic-addon1"
+            onChange={handleActivityChange}
+            value={activity}
           />
         </div>
         <div>
@@ -1268,14 +1331,17 @@ const CreateAssignment = (props) => {
             onChange={handleChange}
             ref={dateInputRef}
             style={{ border: "none" }}
+            value={date}
           />
         </div>
-        <div class="form-floating mt-3 mb-3">
-          <h5>Input Descsription:</h5>
+        <div className="form-floating mt-3 mb-3">
+          <h5>Input Description:</h5>
           <textarea
             className="form-control"
             id="floatingTextarea2"
-            style={{ height: 150 + "px" }}
+            style={{ height: "150px" }}
+            onChange={handleDescriptionChange}
+            value={description}
           ></textarea>
         </div>
 
@@ -1283,7 +1349,7 @@ const CreateAssignment = (props) => {
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            onClick={props.handleSubmit}
+            onClick={handleSubmitCreate}
           >
             Submit
           </button>
