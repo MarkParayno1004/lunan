@@ -1,5 +1,6 @@
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { useState, useRef } from "react";
+import Swal from "sweetalert2";
 export const PatientInfo = (props) => {
   return (
     <>
@@ -19,7 +20,13 @@ export const PatientInfo = (props) => {
   );
 };
 
+//!PATIENT DATA
 const PatientData = () => {
+  //!View Assignment Modal Behaviour
+  const [showAss, setShowAss] = useState(false);
+
+  const handleAss = () => setShowAss(true);
+  const handleCloseAss = () => setShowAss(false);
   return (
     <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
       <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
@@ -219,7 +226,11 @@ const PatientData = () => {
 
       {/*Buttons */}
       <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
-        <button className="me-2 rounded-5 fw-semibold" id="viewButton">
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          id="viewButton"
+          onClick={handleAss}
+        >
           View Assignment
         </button>
 
@@ -235,14 +246,9 @@ const PatientData = () => {
           View Daily Form
         </button>
 
-        {/* 
-          <ViewModalAssign
-            show={showAss}
-            handleClose={handleCloseAss}
-            selectedPatientUID={props.selectedPatientUID}
-          />
+        <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
 
-          <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
+        {/* <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
           <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
           <ViewWellnessForm
             show={showWell}
@@ -250,5 +256,168 @@ const PatientData = () => {
           /> */}
       </div>
     </div>
+  );
+};
+
+//!MODALS
+
+//!Assignment Modals
+const ViewModalAssign = (props) => {
+  const [activeTab, setActiveTab] = useState("turnedIn");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const [show, setShow] = useState();
+  const handleClose = () => setShow(false);
+  const handleShowCreate = (selectedPatientUID) => {
+    console.log(
+      `Creating assignments for patient with UID: ${selectedPatientUID}`
+    );
+    setShow(true);
+  };
+
+  const [showFiles, setShowFiles] = useState();
+  const handleCloseFiles = () => setShowFiles(false);
+  const handleShowFiles = () => setShowFiles(true);
+
+  const handleSubmit = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Assignment successfully created!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setShow(false);
+  };
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+      className="mt-3"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Assignment</Modal.Title>
+        </Modal.Header>
+        <div className="tabs mt-4 mb-3 d-flex justify-content-start">
+          <button
+            className={`me-3 rounded-5 ${
+              activeTab === "turnedIn" ? "active" : ""
+            }`}
+            onClick={() => handleTabChange("turnedIn")}
+            style={{ borderStyle: "none" }}
+          >
+            Turned-in Assignments
+          </button>
+          <button
+            className={`me-3 rounded-5 ${
+              activeTab === "verified" ? "active" : ""
+            }`}
+            onClick={() => handleTabChange("verified")}
+            style={{ borderStyle: "none" }}
+          >
+            Verified Assignments
+          </button>
+        </div>
+        <table class="table table-dark table-hover">
+          {activeTab === "turnedIn" && (
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Descsription:</th>
+                  <th scope="col">Turned in on:</th>
+                  <th scope="col">Verify:</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr>
+                  <td>
+                    <span
+                      onClick={handleShowFiles}
+                      style={{ cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      Journal and Drawing Entry
+                    </span>
+                    <AssignmentFiles
+                      show={showFiles}
+                      handleClose={handleCloseFiles}
+                    />
+                  </td>
+                  <td>
+                    Make a Journal about yourself and make a drawing entry that
+                    represents you today.
+                  </td>
+                  <td>March 8, 2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                    >
+                      Verify
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </>
+          )}
+          {activeTab === "verified" && (
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Turned in on:</th>
+                  <th scope="col">Files:</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr>
+                  <td>Journal and Drawing Entry</td>
+                  <td>March 8, 2023</td>
+                  <td>JournalDrawingEntry.docx</td>
+                </tr>
+              </tbody>
+            </>
+          )}
+        </table>
+        <Modal.Footer>
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            variant="secondary"
+            onClick={props.handleClose}
+          >
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const AssignmentFiles = (props) => {
+  return (
+    <Modal show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Files Submitted</Modal.Title>
+        </Modal.Header>
+        <table class="table">
+          <tr>
+            <th scope="col">Files:</th>
+            <th scope="col">Date:</th>
+          </tr>
+          <tbody>
+            <td>JournalDrawingEntry.docx</td>
+            <td>06/29/2023</td>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
   );
 };
