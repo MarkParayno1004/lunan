@@ -7,6 +7,7 @@ import fetch from 'node-fetch';
 
 export const NewPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
+  const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showEdit, setShowEdit] = useState(false);
 
@@ -20,6 +21,7 @@ export const NewPatients = () => {
         }));
   
         setPatientsData(patients);
+        
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
@@ -35,6 +37,17 @@ export const NewPatients = () => {
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
+
+    const filteredPatients = patientsData.filter((patient) => {
+      const firstNameMatch =
+        patient.firstName && patient.firstName.toLowerCase().includes(query);
+      const lastNameMatch =
+        patient.lastName && patient.lastName.toLowerCase().includes(query);
+
+      return firstNameMatch || lastNameMatch;
+    });
+
+    setFilteredPatientsData(filteredPatients);
   };
 
   const filteredPatients = patientsData.filter((patient) => {
