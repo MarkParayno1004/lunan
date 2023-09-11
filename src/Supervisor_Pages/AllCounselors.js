@@ -21,6 +21,14 @@ import {
   getDownloadURL,
   getMetadata,
 } from "firebase/storage";
+import {
+  fetchCounselorPatientsCount,
+  fetchCounselorData,
+  handleRemove,
+  handleSubmitAdd,
+  handleAddSuccess,
+  addCounselorToData
+} from "./Backend/AllCounselorsHelper"
 
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -31,126 +39,17 @@ export const AllCounselors = () => {
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [newCounselorAdded, setNewCounselorAdded] = useState(false);
-  const addCounselorToData = (newCounselor) => {
-    setCounselorData((prevData) => [...prevData, newCounselor]);
-    setFilteredCounselorData((prevData) => [...prevData, newCounselor]);
-  };
-
-  // Fetch the number of patients for a counselor
-  const fetchCounselorPatientsCount = async (counselorID) => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "Users"), where("Role", "==", "Patient"))
-      );
-
-      const patientDocs = querySnapshot.docs;
-      let patientsCount = 0;
-
-      const counselorDoc = await getDoc(
-        doc(collection(firestore, "Users"), counselorID)
-      );
-
-      if (counselorDoc.exists()) {
-        const counselorData = counselorDoc.data();
-
-        for (const patientDoc of patientDocs) {
-          const patientData = patientDoc.data();
-          if (patientData.counselorID === counselorID) {
-            patientsCount++;
-          }
-        }
-      }
-
-      return patientsCount;
-    } catch (error) {
-      console.error("Error fetching counselor patients count:", error);
-      return 0;
-    }
-  };
-
-  // Fetch counselor data and patients count
-  const fetchCounselorData = async () => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
-      );
-
-      const counselorDataWithPatientsCount = await Promise.all(
-        querySnapshot.docs.map(async (doc) => {
-          const patientsCount = await fetchCounselorPatientsCount(doc.id);
-          return {
-            ...doc.data(),
-            UID: doc.id,
-            patientsCount: patientsCount,
-          };
-        })
-      );
-
-      setCounselorData(counselorDataWithPatientsCount);
-      setFilteredCounselorData(counselorDataWithPatientsCount);
-    } catch (error) {
-      console.error("Error fetching counselor data:", error);
-    }
-  };
-
+  
   useEffect(() => {
-    fetchCounselorData();
-  }, [newCounselorAdded]);  // Fetch data on component mount
+    fetchCounselorData(setCounselorData, setFilteredCounselorData);
+}, [newCounselorAdded]);  // Fetch data on component mount
 
-  const handleRemove = async (UID) => {
-    try {
-      const userAccRef = collection(firestore, "Users");
-      const counselorDocRef = doc(userAccRef, UID);
-
-      const confirmationResult = await Swal.fire({
-        position: "top",
-        title: "Are you sure?",
-        background: "#7db9b6",
-        color: "#FFFFFF",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      });
-
-      if (confirmationResult.isConfirmed) {
-        await deleteDoc(counselorDocRef);
-        await Swal.fire({
-          title: "Deleted!",
-          text: "The counselor has been removed.",
-          background: "#7db9b6",
-          color: "#FFFFFF",
-        });
-
-        setCounselorData((prevData) =>
-          prevData.filter((counselor) => counselor.UID !== UID)
-        );
-
-        setFilteredCounselorData((prevData) =>
-          prevData.filter((counselor) => counselor.UID !== UID)
-        );
-
-        console.log("Counselor removed successfully.", UID);
-      }
-    } catch (error) {
-      console.error("Error removing counselor:", error);
-
-      await Swal.fire({
-        title: "Error",
-        text: "An error occurred while removing the counselor.",
-        background: "#7db9b6",
-        color: "#FFFFFF",
-        icon: "error",
-      });
-    }
-  };
 
   const handleEdit = (counselor) => {
     setEditData(counselor);
     setShowEdit(true);
   };
+
 
   const handleEditSuccess = async (updatedData) => {
     try {
@@ -174,13 +73,7 @@ export const AllCounselors = () => {
     }
   };
 
-  const handleAddSuccess = (newCounselor) => {
-    // Update the counselorData state to include the new counselor
-    setCounselorData((prevData) => [...prevData, newCounselor]);
-
-    // Update the filteredCounselorData state to include the new counselor
-    setFilteredCounselorData((prevData) => [...prevData, newCounselor]);
-  };
+  
 
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
@@ -204,8 +97,8 @@ export const AllCounselors = () => {
     return imageUrl;
   };
 
-  const handleShowAdd = () => setShowAdd(true);
-  const handleCloseAdd = () => setShowAdd(false);
+  
+  
 
   const handleShowEdit = (UID) => {
     setEditData(counselorData.find((counselor) => counselor.UID === UID));
@@ -213,6 +106,9 @@ export const AllCounselors = () => {
   };
 
   const handleCloseEdit = () => setShowEdit(false);
+
+  const handleShowAdd = () => setShowAdd(true);
+  const handleCloseAdd = () => setShowAdd(false);
 
   return (
     <div
@@ -299,7 +195,7 @@ export const AllCounselors = () => {
                         id="removeCounselor"
                         className="rounded-5 fw-medium"
                         onClick={() => {
-                          handleRemove(counselor.UID);
+                          handleRemove(counselor.UID, setCounselorData, setFilteredCounselorData);
                         }}
                       >
                         Remove
@@ -324,13 +220,14 @@ export const AllCounselors = () => {
         </div>
       </div>
 
-          <AddModal
+      <AddModal
             show={showAdd}
             onHide={handleCloseAdd}
-            handleClose={handleCloseAdd}
             addCounselorToData={addCounselorToData}
+            onAddSuccess={handleAddSuccess}
+            setCounselorData={setCounselorData}
+            setFilteredCounselorData={setFilteredCounselorData}
           />
-
       {editData && (
         <EditModal
           show={showEdit}
@@ -387,49 +284,6 @@ const AddModal = (props) => {
     return password;
   };
 
-  const handleSubmitAdd = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-  
-    try {
-      const password = generateRandomPassword(8);
-  
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        localFormData.Email,
-        password
-      );
-  
-      let photoURL = "";
-      if (localFormData.ProfPic) {
-        photoURL = await uploadImage(localFormData.ProfPic);
-      }
-  
-      const newUser = {
-        dateCreated: new Date().toISOString().split("T")[0],
-        Email: localFormData.Email,
-        firstName: localFormData.firstName,
-        ConNum: localFormData.ConNum,
-        ProfPic: photoURL,
-        Role: "Counselor",
-        UID: user.uid,
-      };
-  
-      const userAccRef = collection(firestore, "Users");
-      await addDoc(userAccRef, newUser);
-      props.addCounselorToData(newUser);
-      setLoading(false);
-  
-      // Close the modal after successful addition
-      props.onHide();
-  
-      // Automatically render the new counselor in the table
-      props.onAddSuccess(newUser);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error adding new counselor:", error);
-    }
-  };
 
   const uploadImage = async (file) => {
     try {
@@ -461,7 +315,18 @@ const AddModal = (props) => {
         <Modal.Header className="mb-3" closeButton>
           <Modal.Title>Add Counselor</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleSubmitAdd}>
+        <Form onSubmit={(event) => 
+  handleSubmitAdd(
+    event, 
+    setLoading, 
+    localFormData, 
+    handleAddSuccess, 
+    props.onHide, // Pass props.onHide to close the modal
+    props.setCounselorData, // Pass props.setCounselorData
+    props.setFilteredCounselorData, // Pass props.setFilteredCounselorData
+    props.addCounselorToData
+  )
+}>
           {/* Name */}
           <Form.Group>
             <Form.Label>Name</Form.Label>
@@ -549,6 +414,7 @@ const AddModal = (props) => {
     </Modal>
   );
 };
+
 
 const EditModal = (props) => {
   const [updateName, setUpdateName] = useState(props.firstName || "");
