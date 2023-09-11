@@ -103,6 +103,7 @@ export const AllPatients = () => {
     return imageUrl;
   };
 
+  //!MODAL BEHAVIOUR IMG CLICK
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "../css/AllCounselors.css";
+import { CounselorInfo } from "./CounselorInfo";
 import {
   collection,
   addDoc,
@@ -95,7 +96,7 @@ export const AllCounselors = () => {
 
   useEffect(() => {
     fetchCounselorData();
-  }, [newCounselorAdded]);  // Fetch data on component mount
+  }, [newCounselorAdded]); // Fetch data on component mount
 
   const handleRemove = async (UID) => {
     try {
@@ -158,15 +159,15 @@ export const AllCounselors = () => {
       const updatedCounselorData = counselorData.map((counselor) =>
         counselor.UID === updatedData.UID ? updatedData : counselor
       );
-  
+
       // Update the state with the new data
       setCounselorData(updatedCounselorData);
       setFilteredCounselorData(updatedCounselorData);
-  
+
       // Set the edit success flag and close the edit modal
       setEditSuccess(true);
       setShowEdit(false);
-  
+
       // Fetch updated data from Firestore
       await fetchCounselorData();
     } catch (error) {
@@ -213,6 +214,11 @@ export const AllCounselors = () => {
   };
 
   const handleCloseEdit = () => setShowEdit(false);
+
+  //!MODAL BEHAVIOUR IMG CLICK
+  const [showCounselor, setShowCounselor] = useState(false);
+  const handleCloseCounselor = () => setShowCounselor(false);
+  const handleShowCounselor = () => setShowCounselor(true);
 
   return (
     <div
@@ -262,21 +268,30 @@ export const AllCounselors = () => {
                 {filteredCounselorData.map((counselor) => (
                   <tr key={counselor.UID}>
                     <td>
-                      {counselor.ProfPic ? (
-                        <img
-                          src={fetchImageUrl(counselor.ProfPic)}
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      ) : (
-                        <img
-                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
+                      <button
+                        style={{ border: "none", background: "none" }}
+                        onClick={handleShowCounselor}
+                      >
+                        {counselor.ProfPic ? (
+                          <img
+                            src={fetchImageUrl(counselor.ProfPic)}
+                            alt={counselor.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        ) : (
+                          <img
+                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                            alt={counselor.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        )}
+                      </button>
+                      <CounselorInfo
+                        show={showCounselor}
+                        handleClose={handleCloseCounselor}
+                      />
                     </td>
                     <td>{counselor.firstName}</td>
                     <td>{counselor.dateCreated}</td>
@@ -324,12 +339,12 @@ export const AllCounselors = () => {
         </div>
       </div>
 
-          <AddModal
-            show={showAdd}
-            onHide={handleCloseAdd}
-            handleClose={handleCloseAdd}
-            addCounselorToData={addCounselorToData}
-          />
+      <AddModal
+        show={showAdd}
+        onHide={handleCloseAdd}
+        handleClose={handleCloseAdd}
+        addCounselorToData={addCounselorToData}
+      />
 
       {editData && (
         <EditModal
@@ -390,21 +405,21 @@ const AddModal = (props) => {
   const handleSubmitAdd = async (event) => {
     event.preventDefault();
     setLoading(true);
-  
+
     try {
       const password = generateRandomPassword(8);
-  
+
       const { user } = await createUserWithEmailAndPassword(
         auth,
         localFormData.Email,
         password
       );
-  
+
       let photoURL = "";
       if (localFormData.ProfPic) {
         photoURL = await uploadImage(localFormData.ProfPic);
       }
-  
+
       const newUser = {
         dateCreated: new Date().toISOString().split("T")[0],
         Email: localFormData.Email,
@@ -414,15 +429,15 @@ const AddModal = (props) => {
         Role: "Counselor",
         UID: user.uid,
       };
-  
+
       const userAccRef = collection(firestore, "Users");
       await addDoc(userAccRef, newUser);
       props.addCounselorToData(newUser);
       setLoading(false);
-  
+
       // Close the modal after successful addition
       props.onHide();
-  
+
       // Automatically render the new counselor in the table
       props.onAddSuccess(newUser);
     } catch (error) {
@@ -598,7 +613,6 @@ const EditModal = (props) => {
 
           console.log("User data updated successfully.");
           props.onEditSuccess(updateData); // Call the parent component's callback
-
         } else {
           console.log("Document does not exist.");
         }
