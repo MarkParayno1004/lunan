@@ -688,10 +688,7 @@ const ViewFormDaily = (props) => {
 
   const handleClose = () => setShow(false);
 
-  const handleShow = async (selectedPatientUID) => {
-    console.log("Selected Patient UID:", props.selectedPatientUID);
-  };
-
+  const handleShow = () => setShow(true);
   return (
     <Modal
       className="mt-3"
@@ -703,7 +700,7 @@ const ViewFormDaily = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Patients Daily Form</Modal.Title>
         </Modal.Header>
-        <div className="tabs mt-4 d-flex justify-content-start">
+        <div className="tabs mt-4 mb-2 d-flex justify-content-start">
           <button
             className={`me-3 rounded-5 ${
               activeTab === "submitted" ? "active" : ""
@@ -837,14 +834,6 @@ const ViewFormWell = (props) => {
             </tr>
           </tbody>
         </table>
-        <div className="d-flex justify-content-end">
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-          >
-            Verify
-          </button>
-        </div>
       </Modal.Body>
     </Modal>
   );
