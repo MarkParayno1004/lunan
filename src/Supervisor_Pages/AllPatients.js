@@ -12,8 +12,11 @@ import {
 } from "firebase/firestore";
 
 export const AllPatients = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
+  const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [counselorNames, setCounselorNames] = useState({});
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const fetchPatientsData = async () => {
@@ -29,6 +32,7 @@ export const AllPatients = () => {
         console.log("Patients Data:", patients);
 
         setPatientsData(patients);
+        setFilteredPatientsData(patients);
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
@@ -79,11 +83,25 @@ export const AllPatients = () => {
     }
   };
 
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filteredPatients = patientsData.filter((patient) => {
+      const firstNameMatch =
+        patient.firstName && patient.firstName.toLowerCase().includes(query);
+      const lastNameMatch =
+        patient.lastName && patient.lastName.toLowerCase().includes(query);
+
+      return firstNameMatch || lastNameMatch;
+    });
+
+    setFilteredPatientsData(filteredPatients);
+  };
+
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
   };
-
-  const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -95,11 +113,21 @@ export const AllPatients = () => {
     >
       <div className="container-fluid">
         <div className="row">
-          <div className="col"></div>
-          <div className="col-4">
-            <h2 className="text-center mt-4 mb-4">All Patient List</h2>
+          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
+            <h1 className="mt-2 ms-5 ps-5">All Patient List</h1>
           </div>
-          <div className="col"></div>
+          <div className="col-3 col-sm-3 mb-3">
+            <div className="input-group mt-4">
+              <input
+                type="text"
+                placeholder="Search Patients Name:"
+                value={searchQuery}
+                onChange={handleSearch}
+                aria-describedby="search"
+                className="w-25 form-control"
+              />
+            </div>
+          </div>
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
@@ -113,7 +141,7 @@ export const AllPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {patientsData.map((patient) => (
+                {filteredPatientsData.map((patient) => (
                   <tr key={patient.UID}>
                     <td>
                       <button

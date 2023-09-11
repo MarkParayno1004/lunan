@@ -17,6 +17,7 @@ import "../css/PatientList.css";
 export const PatientList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
+  const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
   const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
     null,
@@ -33,6 +34,7 @@ export const PatientList = () => {
         console.log("Patients Data:", patients);
 
         setPatientsData(patients);
+        setFilteredPatientsData(patients);
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
@@ -42,7 +44,19 @@ export const PatientList = () => {
   }, []);
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+  
+    const filteredPatients = patientsData.filter((patient) => {
+      const firstNameMatch =
+        patient.firstName && patient.firstName.toLowerCase().includes(query);
+      const lastNameMatch =
+        patient.lastName && patient.lastName.toLowerCase().includes(query);
+  
+      return firstNameMatch || lastNameMatch;
+    });
+  
+    setFilteredPatientsData(filteredPatients);
   };
 
   const auth = getAuth();
@@ -150,7 +164,7 @@ export const PatientList = () => {
                 </tr>
               </thead>
               <tbody>
-                {patientsData
+                {filteredPatientsData
                   .filter((patient) => patient.counselorUID === loggedInUserUID)
                   .map((patient) => (
                     <tr key={patient.UID}>
