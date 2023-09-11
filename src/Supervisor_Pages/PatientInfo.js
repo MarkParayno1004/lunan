@@ -36,6 +36,12 @@ const PatientData = () => {
   const [showWeekly, setWeeklyForm] = useState(false);
   const handleWeekly = () => setWeeklyForm(true);
   const handleCloseWeekly = () => setWeeklyForm(false);
+
+  //!View Daily Form
+  const [showDaily, setDailyForm] = useState(false);
+  const handleDaily = () => setDailyForm(true);
+  const handleCloseDaily = () => setDailyForm(false);
+
   return (
     <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
       <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
@@ -259,7 +265,11 @@ const PatientData = () => {
           View Weekly Form
         </button>
 
-        <button className="me-2 rounded-5 fw-semibold" id="viewButton">
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          id="viewButton"
+          onClick={handleDaily}
+        >
           View Daily Form
         </button>
 
@@ -267,10 +277,7 @@ const PatientData = () => {
         <ViewModalCase show={showCase} handleClose={handleCloseCase} />
 
         <ViewModalWeekly show={showWeekly} handleClose={handleCloseWeekly} />
-        {/* <ViewWellnessForm
-            show={showWell}
-            handleClose={handleCloseWell}
-          /> */}
+        <ViewFormDaily show={showDaily} handleClose={handleCloseDaily} />
       </div>
     </div>
   );
@@ -536,16 +543,22 @@ const ViewModalWeekly = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Patients Weekly Form</Modal.Title>
         </Modal.Header>
-        <div className="tabs mt-4 d-flex justify-content-start">
+        <div className="tabs mt-4 mb-2 d-flex justify-content-start">
           <button
-            className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
+            className={`me-3 rounded-5 ${
+              activeTab === "submitted" ? "active" : ""
+            }`}
             onClick={() => handleTabChange("submitted")}
+            style={{ borderStyle: "none" }}
           >
             Submitted Assignment
           </button>
           <button
-            className={activeTab === "verified" ? "active" : ""}
+            className={`me-3 rounded-5 ${
+              activeTab === "verified" ? "active" : ""
+            }`}
             onClick={() => handleTabChange("verified")}
+            style={{ borderStyle: "none" }}
           >
             Verified Assignments
           </button>
@@ -659,6 +672,179 @@ const ViewFormWeek = (props) => {
             </tr>
           </tbody>
         </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+//!View Daily Form Modals
+const ViewFormDaily = (props) => {
+  const [activeTab, setActiveTab] = useState("submitted");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+
+  const handleShow = async (selectedPatientUID) => {
+    console.log("Selected Patient UID:", props.selectedPatientUID);
+  };
+
+  return (
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Patients Daily Form</Modal.Title>
+        </Modal.Header>
+        <div className="tabs mt-4 d-flex justify-content-start">
+          <button
+            className={`me-3 rounded-5 ${
+              activeTab === "submitted" ? "active" : ""
+            }`}
+            onClick={() => handleTabChange("submitted")}
+            style={{ borderStyle: "none" }}
+          >
+            Submitted Assignment
+          </button>
+          <button
+            className={`me-3 rounded-5 ${
+              activeTab === "verified" ? "active" : ""
+            }`}
+            onClick={() => handleTabChange("verified")}
+            style={{ borderStyle: "none" }}
+          >
+            Verified Assignments
+          </button>
+        </div>
+        {activeTab === "submitted" && (
+          <>
+            <h5>Submitted:</h5>
+            <table class="table table-dark table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name:</th>
+                  <th scope="col">Date Submited:</th>
+                  <th scope="col">View Form:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>06/22/2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                      onClick={handleShow}
+                    >
+                      Form
+                    </button>
+                    <ViewFormWell show={show} handleClose={handleClose} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
+        {activeTab === "verified" && (
+          <>
+            <h5>Verified:</h5>
+            <table class="table table-dark table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name:</th>
+                  <th scope="col">Date Submited:</th>
+                  <th scope="col">View Form:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>06/22/2023</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                      onClick={handleShow}
+                    >
+                      Form
+                    </button>
+                    <ViewFormWell show={show} handleClose={handleClose} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
+      </Modal.Body>
+    </Modal>
+  );
+};
+const ViewFormWell = (props) => {
+  return (
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div>View Daily Form:</div>
+          </Modal.Title>
+        </Modal.Header>
+        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
+        <table class="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Question:</th>
+              <th scope="col">Answer:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. In general, I consider myself:</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>2. Compared to most of my peers, I consider myself:</td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>
+                3. Some people are generally very happy. They enjoy life
+                regardless of what is going on, getting the most out of
+                everything. To what extent does this characterization describe
+                you?
+              </td>
+              <td>A very happy and joyful person</td>
+            </tr>
+            <tr>
+              <td>
+                4. Some people are generally not very happy. Although they are
+                not depressed, they never seem as happy as they might be. To
+                what extent does this characterization describe you?
+              </td>
+              <td>A very happy and joyful person</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+          >
+            Verify
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );
