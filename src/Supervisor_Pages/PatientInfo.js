@@ -24,9 +24,14 @@ export const PatientInfo = (props) => {
 const PatientData = () => {
   //!View Assignment Modal Behaviour
   const [showAss, setShowAss] = useState(false);
-
   const handleAss = () => setShowAss(true);
   const handleCloseAss = () => setShowAss(false);
+
+  //!View Case Note Modal Behaviour
+  const [showCase, setShowCase] = useState(false);
+  const handleCase = () => setShowCase(true);
+  const handleCloseCase = () => setShowCase(false);
+
   return (
     <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
       <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
@@ -234,7 +239,11 @@ const PatientData = () => {
           View Assignment
         </button>
 
-        <button className="me-2 rounded-5 fw-semibold" id="viewButton">
+        <button
+          className="me-2 rounded-5 fw-semibold"
+          id="viewButton"
+          onClick={handleCase}
+        >
           View Case Notes
         </button>
 
@@ -247,10 +256,10 @@ const PatientData = () => {
         </button>
 
         <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
+        <ViewModalCase show={showCase} handleClose={handleCloseCase} />
 
-        {/* <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
-          <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} />
-          <ViewWellnessForm
+        {/* <ViewWeeklyForm show={showWeek} handleClose={handleCloseWeek} /> */}
+        {/* <ViewWellnessForm
             show={showWell}
             handleClose={handleCloseWell}
           /> */}
@@ -419,5 +428,27 @@ const AssignmentFiles = (props) => {
         </table>
       </Modal.Body>
     </Modal>
+  );
+};
+
+//!Case Notes Modals
+const ViewModalCase = (props) => {
+  return (
+    <div>
+      <Modal show={props.show} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <button variant="secondary" onClick={props.handleClose}>
+            Close
+          </button>
+          <button variant="primary" onClick={props.handleClose}>
+            Save Changes
+          </button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 };
