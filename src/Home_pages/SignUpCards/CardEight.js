@@ -106,34 +106,6 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
         );
       }, [formData]);
 
-    // Radio Button for Experiences
-    // const [ExpNow, setExpNow] = useState({
-    //     depressedMoodNowSel: "No",
-    //     irritability: false,
-    //     moodSwings: false,
-    //     rapidSpeech: false,
-    //     racingThoughts: false,
-    //     anxiety: false,
-    //     constantWorry: false,
-    //     panicAttacks: false,
-    //     phobias: false,
-    //     sleepDisturbances: false,
-    //     hallucinations: false,
-    //     paranoia: false,
-    //     poorConcentration: false,
-    //     alcoholSubstanceAbuse: false,
-    //     frequentBodyComplaints: false,
-    //     eatingDisorder: false,
-    //     bodyImageProblems: false,
-    //     repetitiveThoughts: false,
-    //     repetitiveBehaviors: false,
-    //     poorImpulseControl: false,
-    //     selfMutilation: false,
-    //     sexualAbuse: false,
-    //     physicalAbuse: false,
-    //     emotionalAbuse: false,
-    // });
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         setLocalFormData((prevData) => ({
@@ -278,7 +250,7 @@ export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
                                             max="10"
                                             value={localFormData.moodSwingsRatingNow}
                                             onChange={handleChange}
-                                            
+
                                         />
                                     </div>
                                 )}    
