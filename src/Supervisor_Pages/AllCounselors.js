@@ -31,6 +31,10 @@ export const AllCounselors = () => {
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [newCounselorAdded, setNewCounselorAdded] = useState(false);
+  const addCounselorToData = (newCounselor) => {
+    setCounselorData((prevData) => [...prevData, newCounselor]);
+    setFilteredCounselorData((prevData) => [...prevData, newCounselor]);
+  };
 
   // Fetch the number of patients for a counselor
   const fetchCounselorPatientsCount = async (counselorID) => {
@@ -319,7 +323,14 @@ export const AllCounselors = () => {
           </div>
         </div>
       </div>
-      <AddModal show={showAdd} onHide={handleCloseAdd} />
+
+          <AddModal
+            show={showAdd}
+            onHide={handleCloseAdd}
+            handleClose={handleCloseAdd}
+            addCounselorToData={addCounselorToData}
+          />
+
       {editData && (
         <EditModal
           show={showEdit}
@@ -406,7 +417,7 @@ const AddModal = (props) => {
   
       const userAccRef = collection(firestore, "Users");
       await addDoc(userAccRef, newUser);
-  
+      props.addCounselorToData(newUser);
       setLoading(false);
   
       // Close the modal after successful addition
