@@ -14,6 +14,7 @@ import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
 import {Form, Modal, Button, Alert} from "react-bootstrap";
+import { fetchUserData, loginWithEmailAndPassword, sendResetPasswordEmail } from "./LoginBackend/LoginHelper"; // Adjust the import path accordingly
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,43 +30,6 @@ export const Login = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
-
-  const fetchUserData = async (uid) => {
-    try {
-      const db = getFirestore();
-      const usersCollection = collection(db, "Users");
-      const q = query(usersCollection, where("UID", "==", uid));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const docSnapshot = querySnapshot.docs[0];
-        const userData = docSnapshot.data();
-        const firstName = userData.firstName;
-        console.log("User data:", userData);
-        console.log("First name:", firstName);
-        setFirstName(firstName);
-
-        if (userData.Role === "Patient") {
-          navigate("/Patient Dashboard");
-          console.log("User role:", userData.Role);
-        } else if (userData.Role === "Counselor") {
-          navigate("/Counselor Dashboard");
-          console.log("User role:", userData.Role);
-        } else if (userData.Role === "Admin") {
-          navigate("/Supervisor Dashboard");
-          console.log("User role:", userData.Role);
-        } else {
-          console.log("Non-existing user role");
-        }
-      } else {
-        console.error("User data not found for email:", uid);
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -89,12 +53,13 @@ export const Login = () => {
       console.log("Retrieved user UID:", userUid);
       if (userUid) {
         setLoading(true);
-        fetchUserData(userUid);
+        // Pass setLoading as a parameter to fetchUserData
+        fetchUserData(userUid, navigate, setLoading, setFirstName);
       } else {
         console.error("Invalid user UID:", userUid);
       }
     }
-  }, [loggedIn, fetchUserData]);
+  }, [loggedIn]);
 
   const [showForget, setShowForget] = useState(false);
 
