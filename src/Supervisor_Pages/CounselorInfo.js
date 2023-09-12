@@ -58,7 +58,31 @@ const CounselorData = () => {
 
       {/*Body Column */}
       {/*1st Row Body Column */}
-      <table className="table table-dark table-hover mt-3">
+      <div>
+        <div className="mt-3">
+          <div className="row">
+            <div className="col">
+              <h3>List of Patients:</h3>
+            </div>
+            <div className="col">
+              <div class="input-group  d-flex justify-content-end mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-describedby="inputGroup-sizing-default"
+                  placeholder="Patient Name..."
+                  style={{ maxWidth: "50%" }}
+                />
+                <button class="input-group-text" id="inputGroup-sizing-default">
+                  Search
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table className="table table-dark table-hover ">
         <thead>
           <tr>
             <td>
