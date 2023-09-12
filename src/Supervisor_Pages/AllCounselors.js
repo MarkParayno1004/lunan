@@ -27,7 +27,9 @@ import {
   handleRemove,
   handleSubmitAdd,
   handleAddSuccess,
-  addCounselorToData
+  addCounselorToData,
+  handleSubmitEdit,
+  handleEditSuccess,
 } from "./Backend/AllCounselorsHelper"
 
 export const AllCounselors = () => {
@@ -51,29 +53,6 @@ export const AllCounselors = () => {
   };
 
 
-  const handleEditSuccess = async (updatedData) => {
-    try {
-      // Update the counselorData with the updated data
-      const updatedCounselorData = counselorData.map((counselor) =>
-        counselor.UID === updatedData.UID ? updatedData : counselor
-      );
-  
-      // Update the state with the new data
-      setCounselorData(updatedCounselorData);
-      setFilteredCounselorData(updatedCounselorData);
-  
-      // Set the edit success flag and close the edit modal
-      setEditSuccess(true);
-      setShowEdit(false);
-  
-      // Fetch updated data from Firestore
-      await fetchCounselorData();
-    } catch (error) {
-      console.error("Error updating counselor:", error);
-    }
-  };
-
-  
 
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
@@ -89,16 +68,13 @@ export const AllCounselors = () => {
           (counselor.lastName &&
             counselor.lastName.toLowerCase().includes(query))
       );
-      setFilteredCounselorData(filteredCounselors);
+      setFilteredCounselorData([...filteredCounselors]);
     }
   };
 
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
   };
-
-  
-  
 
   const handleShowEdit = (UID) => {
     setEditData(counselorData.find((counselor) => counselor.UID === UID));
@@ -229,15 +205,17 @@ export const AllCounselors = () => {
             setFilteredCounselorData={setFilteredCounselorData}
           />
       {editData && (
-        <EditModal
-          show={showEdit}
-          onHide={handleCloseEdit}
-          userId={editData.UID}
-          firstName={editData.firstName}
-          ProfPic={editData.ProfPic}
-          onEditSuccess={handleEditSuccess}
-        />
-      )}
+  <EditModal
+    show={showEdit}
+    onHide={handleCloseEdit}
+    editData={editData} // Pass the entire editData object
+    onEditSuccess={handleEditSuccess}
+    counselorData={counselorData}
+    setCounselorData={setCounselorData}
+    setFilteredCounselorData={setFilteredCounselorData}
+    setEditSuccess={setEditSuccess}
+  />
+)}
     </div>
   );
 };
@@ -417,7 +395,7 @@ const AddModal = (props) => {
 
 
 const EditModal = (props) => {
-  const [updateName, setUpdateName] = useState(props.firstName || "");
+  const [updateName, setUpdateName] = useState(props.editData.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
 
@@ -438,46 +416,6 @@ const EditModal = (props) => {
     setUpdateName(event.target.value);
   };
 
-  const handleSubmitEdit = async (event) => {
-    event.preventDefault();
-    const userAccRef = collection(firestore, "Users");
-
-    try {
-      if (props.userId) {
-        const userDocRef = doc(userAccRef, props.userId);
-        const docSnapshot = await getDoc(userDocRef);
-
-        if (docSnapshot.exists()) {
-          const existingData = docSnapshot.data();
-
-          const updateData = {
-            ...existingData,
-            firstName: updateName,
-          };
-
-          if (file) {
-            const imageUrl = await uploadProfilePicture(props.userId, file);
-            updateData.ProfPic = imageUrl;
-          }
-
-          await updateDoc(userDocRef, updateData);
-
-          console.log("User data updated successfully.");
-          props.onEditSuccess(updateData); // Call the parent component's callback
-
-        } else {
-          console.log("Document does not exist.");
-        }
-      } else {
-        console.log("Invalid userId.");
-      }
-    } catch (error) {
-      console.error("Firebase Error Code:", error.code);
-      console.error("Error updating user data:", error);
-      setError("Error updating user data.");
-    }
-  };
-
   const uploadProfilePicture = async (userId, file) => {
     try {
       const storageRef = ref(storage, `user_profile_pictures/${userId}`);
@@ -494,14 +432,29 @@ const EditModal = (props) => {
     <Modal
       className="container-fluid"
       show={props.show}
-      onHide={props.handleClose}
+      onHide={props.onHide}
       style={{ border: "none", color: "white" }}
     >
       <Modal.Body id="BGmodal">
         <Modal.Header className="mb-3" closeButton>
           <Modal.Title>Edit Counselor</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleSubmitEdit}>
+        <Form onSubmit={(event) => handleSubmitEdit(
+  event,
+  props.editData.UID, // Pass userId
+  updateName,
+  props.counselorData,
+  props.setCounselorData,
+  props.setFilteredCounselorData,
+  props.onHide,
+  props.editData,
+  props.onEditSuccess,
+  props.setEditSuccess,
+  file,
+  handleEditSuccess,
+  setError, // Pass setError
+)}>
+
           {/* Name */}
           <Form.Group>
             <Form.Label>Name</Form.Label>

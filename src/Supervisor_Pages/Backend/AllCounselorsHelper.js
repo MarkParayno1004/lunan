@@ -254,5 +254,82 @@ import {
           console.error("Error adding new counselor:", error);
         }
       };
+
+      export const handleEditSuccess = async (
+        updatedData,
+        setCounselorData,
+        setFilteredCounselorData,
+        setEditSuccess,
+        setShowEdit,
+        counselorData // Ensure you have this parameter
+      ) => {
+        try {
+          // Update the counselorData with the updated data
+          const updatedCounselorData = counselorData.map((counselor) =>
+            counselor.UID === updatedData.UID ? updatedData : counselor
+          );
       
+          // Update the state with the new data
+          setCounselorData(updatedCounselorData);
+          setFilteredCounselorData(updatedCounselorData);
+      
+          // Set the edit success flag and close the edit modal
+          setEditSuccess(true);
+          setShowEdit(false);
+      
+          // Fetch updated data from Firestore
+          await fetchCounselorData(setCounselorData, setFilteredCounselorData);
+        } catch (error) {
+          console.error("Error updating counselor:", error);
+        }
+      };
+      
+      
+      export const handleSubmitEdit = async (
+        event,
+        userId,
+        updateName,
+        file,
+        setError,
+        onEditSuccess,
+        onHide,
+        editData // Add editData as a parameter here
+      ) => {
+        event.preventDefault();
+        const userAccRef = collection(firestore, "Users");
+      
+        try {
+          if (userId) {
+            const userDocRef = doc(userAccRef, userId);
+            const docSnapshot = await getDoc(userDocRef);
+      
+            if (docSnapshot.exists()) {
+              const existingData = docSnapshot.data();
+      
+              const updateData = {
+                ...existingData,
+                firstName: updateName,
+              };
+      
+              if (file) {
+                const imageUrl = await uploadProfilePicture(userId, file);
+                updateData.ProfPic = imageUrl;
+              }
+      
+              await updateDoc(userDocRef, updateData);
+      
+              console.log("User data updated successfully.");
+              onEditSuccess(updateData);
+            } else {
+              console.log("Document does not exist.");
+            }
+          } else {
+            console.log("Invalid userId.");
+          }
+        } catch (error) {
+          console.error("Firebase Error Code:", error.code);
+          console.error("Error updating user data:", error);
+          setError("Error updating user data.");
+        }
+      };
       
