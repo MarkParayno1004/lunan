@@ -3,7 +3,13 @@ import { useState } from "react";
 export const CounselorInfo = (props) => {
   return (
     <>
-      <Modal show={props.show} onHide={props.handleClose} size="xl">
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        size="xl"
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Body id="piModal">
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
@@ -36,20 +42,32 @@ const CounselorData = () => {
           className="col-8 ms-5 d-flex justify-content-center rounded-5"
           id="colBG"
         >
-          <div className="container-fluid patient-text">
+          <div className="container-fluid patient-text pt-3 pb-3">
             {/*1st Row Header*/}
             <div className="row">
               <div className="col">
-                <strong>Name: </strong>
-                <span style={{ color: "red" }}>Micah Abalos</span>
+                <strong className="fs-5">Name: </strong>
+                <span className="fs-6" style={{ color: "red" }}>
+                  Micah Abalos
+                </span>
               </div>
               <div className="col">
-                <strong>Age: </strong>
-                <span style={{ color: "red" }}>25</span>
+                <strong className="fs-5">Age: </strong>
+                <span className="fs-6" style={{ color: "red" }}>
+                  25
+                </span>
               </div>
               <div className="col">
-                <strong>Gender: </strong>
-                <span style={{ color: "red" }}>Female</span>
+                <strong className="fs-5">Gender: </strong>
+                <span className="fs-6" style={{ color: "red" }}>
+                  Female
+                </span>
+              </div>
+              <div className="col">
+                <strong className="fs-5">Email: </strong>
+                <span className="fs-6" style={{ color: "red" }}>
+                  Email
+                </span>
               </div>
             </div>
           </div>
