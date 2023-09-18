@@ -132,22 +132,12 @@ export const SupervisorDashboard = () => {
                 right: 24 + "px",
               }}
             />
-            <AvatarSupervisor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
-            />
           </>
         ) : activeComponent === "patient" ? (
           <>
             <AllPatients />
             <AvatarSupervisor
-              style={{
-                position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
-              }}
-            />
-            <AvatarSupervisor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+              style={{ position: "fixed", bottom: 25 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "Counselors" ? (

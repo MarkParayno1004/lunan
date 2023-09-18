@@ -4,7 +4,13 @@ import Swal from "sweetalert2";
 export const PatientInfo = (props) => {
   return (
     <>
-      <Modal show={props.show} onHide={props.handleClose} size="xl">
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        size="xl"
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Body id="piModal">
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">

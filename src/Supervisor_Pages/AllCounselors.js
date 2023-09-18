@@ -27,9 +27,9 @@ import {
   handleRemove,
   handleSubmitAdd,
   handleAddSuccess,
-  addCounselorToData
-} from "./Backend/AllCounselorsHelper"
-
+  addCounselorToData,
+} from "./Backend/AllCounselorsHelper";
+import { CounselorInfo } from "./CounselorInfo";
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
@@ -39,17 +39,15 @@ export const AllCounselors = () => {
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [newCounselorAdded, setNewCounselorAdded] = useState(false);
-  
+
   useEffect(() => {
     fetchCounselorData(setCounselorData, setFilteredCounselorData);
-}, [newCounselorAdded]);  // Fetch data on component mount
-
+  }, [newCounselorAdded]); // Fetch data on component mount
 
   const handleEdit = (counselor) => {
     setEditData(counselor);
     setShowEdit(true);
   };
-
 
   const handleEditSuccess = async (updatedData) => {
     try {
@@ -57,23 +55,21 @@ export const AllCounselors = () => {
       const updatedCounselorData = counselorData.map((counselor) =>
         counselor.UID === updatedData.UID ? updatedData : counselor
       );
-  
+
       // Update the state with the new data
       setCounselorData(updatedCounselorData);
       setFilteredCounselorData(updatedCounselorData);
-  
+
       // Set the edit success flag and close the edit modal
       setEditSuccess(true);
       setShowEdit(false);
-  
+
       // Fetch updated data from Firestore
       await fetchCounselorData();
     } catch (error) {
       console.error("Error updating counselor:", error);
     }
   };
-
-  
 
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
@@ -97,9 +93,6 @@ export const AllCounselors = () => {
     return imageUrl;
   };
 
-  
-  
-
   const handleShowEdit = (UID) => {
     setEditData(counselorData.find((counselor) => counselor.UID === UID));
     setShowEdit(true);
@@ -110,6 +103,10 @@ export const AllCounselors = () => {
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseAdd = () => setShowAdd(false);
 
+  //!MODAL BEHAVIOUR
+  const [showCouncelor, setShowCounselor] = useState(false);
+  const handleShowCounselor = () => setShowCounselor(true);
+  const handleCloseCounselor = () => setShowCounselor(false);
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -158,21 +155,30 @@ export const AllCounselors = () => {
                 {filteredCounselorData.map((counselor) => (
                   <tr key={counselor.UID}>
                     <td>
-                      {counselor.ProfPic ? (
-                        <img
-                          src={fetchImageUrl(counselor.ProfPic)}
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      ) : (
-                        <img
-                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                          alt={counselor.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
+                      <button
+                        onClick={handleShowCounselor}
+                        style={{ border: "none", background: "none" }}
+                      >
+                        {counselor.ProfPic ? (
+                          <img
+                            src={fetchImageUrl(counselor.ProfPic)}
+                            alt={counselor.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        ) : (
+                          <img
+                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                            alt={counselor.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        )}
+                      </button>
+                      <CounselorInfo
+                        show={showCouncelor}
+                        handleClose={handleCloseCounselor}
+                      />
                     </td>
                     <td>{counselor.firstName}</td>
                     <td>{counselor.dateCreated}</td>
@@ -195,7 +201,11 @@ export const AllCounselors = () => {
                         id="removeCounselor"
                         className="rounded-5 fw-medium"
                         onClick={() => {
-                          handleRemove(counselor.UID, setCounselorData, setFilteredCounselorData);
+                          handleRemove(
+                            counselor.UID,
+                            setCounselorData,
+                            setFilteredCounselorData
+                          );
                         }}
                       >
                         Remove
@@ -221,13 +231,13 @@ export const AllCounselors = () => {
       </div>
 
       <AddModal
-            show={showAdd}
-            onHide={handleCloseAdd}
-            addCounselorToData={addCounselorToData}
-            onAddSuccess={handleAddSuccess}
-            setCounselorData={setCounselorData}
-            setFilteredCounselorData={setFilteredCounselorData}
-          />
+        show={showAdd}
+        onHide={handleCloseAdd}
+        addCounselorToData={addCounselorToData}
+        onAddSuccess={handleAddSuccess}
+        setCounselorData={setCounselorData}
+        setFilteredCounselorData={setFilteredCounselorData}
+      />
       {editData && (
         <EditModal
           show={showEdit}
@@ -284,7 +294,6 @@ const AddModal = (props) => {
     return password;
   };
 
-
   const uploadImage = async (file) => {
     try {
       const storageRef = ref(storage, `user_photos/${file.name}`);
@@ -315,18 +324,20 @@ const AddModal = (props) => {
         <Modal.Header className="mb-3" closeButton>
           <Modal.Title>Add Counselor</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={(event) => 
-  handleSubmitAdd(
-    event, 
-    setLoading, 
-    localFormData, 
-    handleAddSuccess, 
-    props.onHide, // Pass props.onHide to close the modal
-    props.setCounselorData, // Pass props.setCounselorData
-    props.setFilteredCounselorData, // Pass props.setFilteredCounselorData
-    props.addCounselorToData
-  )
-}>
+        <Form
+          onSubmit={(event) =>
+            handleSubmitAdd(
+              event,
+              setLoading,
+              localFormData,
+              handleAddSuccess,
+              props.onHide, // Pass props.onHide to close the modal
+              props.setCounselorData, // Pass props.setCounselorData
+              props.setFilteredCounselorData, // Pass props.setFilteredCounselorData
+              props.addCounselorToData
+            )
+          }
+        >
           {/* Name */}
           <Form.Group>
             <Form.Label>Name</Form.Label>
@@ -415,7 +426,6 @@ const AddModal = (props) => {
   );
 };
 
-
 const EditModal = (props) => {
   const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
@@ -464,7 +474,6 @@ const EditModal = (props) => {
 
           console.log("User data updated successfully.");
           props.onEditSuccess(updateData); // Call the parent component's callback
-
         } else {
           console.log("Document does not exist.");
         }
