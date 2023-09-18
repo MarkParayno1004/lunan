@@ -57,370 +57,389 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
 
   return (
     <div>
-      <div className="container-fluid d-flex justify-content-center mt-3">
-        <div className="card" style={{ width: 50 + "rem" }}>
-          <div className="card-header">Health Information</div>
-          <ul className="list-group list-group-flush">
-            {/* Sleeping Habits */}
-            <li className="list-group-item">
-              <div className="input-group">
-                <span>Are you having any problems with your sleep habits?</span>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="SleepProbSel"
-                  value="Yes"
-                  checked={localFormData.SleepProbSel === "Yes"}
-                  onChange={(e) => {
-                    setSleepHabits(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Yes</label>
+      <form onSubmit={handleNext}>
+        <div className="container-fluid d-flex justify-content-center mt-3">
+          <div className="card" style={{ width: 50 + "rem" }}>
+            <div className="card-header">Health Information</div>
+            <ul className="list-group list-group-flush">
+              {/* Sleeping Habits */}
+              <li className="list-group-item">
+                <div className="input-group">
+                  <span>
+                    Are you having any problems with your sleep habits?
+                  </span>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="SleepProbSel"
+                    value="Yes"
+                    checked={localFormData.SleepProbSel === "Yes"}
+                    onChange={(e) => {
+                      setSleepHabits(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
 
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="SleepProbSel"
-                  value="No"
-                  checked={localFormData.SleepProbSel === "No"}
-                  onChange={(e) => {
-                    setSleepHabits(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">No</label>
-              </div>
-              {showSleepHabits === "Yes" && (
-                <SleepHabits
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="SleepProbSel"
+                    value="No"
+                    checked={localFormData.SleepProbSel === "No"}
+                    onChange={(e) => {
+                      setSleepHabits(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                {showSleepHabits === "Yes" && (
+                  <SleepHabits
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
 
-            {/* Exercise Regularly */}
-            <li className="list-group-item">
-              <div className="input-group">
-                <span>Do you exercise regularly?</span>
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="ExerciseSel"
-                  value="Yes"
-                  checked={localFormData.ExerciseSel === "Yes"}
-                  onChange={(e) => {
-                    setER(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Yes</label>
+              {/* Exercise Regularly */}
+              <li className="list-group-item">
+                <div className="input-group">
+                  <span>Do you exercise regularly?</span>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="ExerciseSel"
+                    value="Yes"
+                    checked={localFormData.ExerciseSel === "Yes"}
+                    onChange={(e) => {
+                      setER(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
 
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="ExerciseSel"
-                  value="No"
-                  checked={localFormData.ExerciseSel === "No"}
-                  onChange={(e) => {
-                    setER(e.target.value === "No");
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">No</label>
-              </div>
-              {showER === "Yes" && (
-                <ERCOMPONENT
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="ExerciseSel"
+                    value="No"
+                    checked={localFormData.ExerciseSel === "No"}
+                    onChange={(e) => {
+                      setER(e.target.value === "No");
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                {showER === "Yes" && (
+                  <ERCOMPONENT
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
 
-            {/* Eating Habits */}
-            <li className="list-group-item">
-              <div className="input-group">
-                <span>
-                  Are you having any difficulty with appetite or eating habits?
-                </span>
-                <input
-                  className="form-input ms-2 "
-                  type="radio"
-                  name="AppetiteSel"
-                  value="Yes"
-                  checked={localFormData.AppetiteSel === "Yes"}
-                  onChange={(e) => {
-                    setEatingHabits(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Yes</label>
+              {/* Eating Habits */}
+              <li className="list-group-item">
+                <div className="input-group">
+                  <span>
+                    Are you having any difficulty with appetite or eating
+                    habits?
+                  </span>
+                  <input
+                    className="form-input ms-2 "
+                    type="radio"
+                    name="AppetiteSel"
+                    value="Yes"
+                    checked={localFormData.AppetiteSel === "Yes"}
+                    onChange={(e) => {
+                      setEatingHabits(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
 
-                <input
-                  className="form-input ms-2 "
-                  type="radio"
-                  name="AppetiteSel"
-                  value="No"
-                  checked={localFormData.AppetiteSel === "No"}
-                  onChange={(e) => {
-                    setEatingHabits(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">No</label>
-              </div>
-              {showEatingHabits === "Yes" && (
-                <EatingHabits
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
+                  <input
+                    className="form-input ms-2 "
+                    type="radio"
+                    name="AppetiteSel"
+                    value="No"
+                    checked={localFormData.AppetiteSel === "No"}
+                    onChange={(e) => {
+                      setEatingHabits(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                {showEatingHabits === "Yes" && (
+                  <EatingHabits
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
 
-            {/* Weight Change */}
-            <li className="list-group-item">
-              <div className="input-group">
-                <span>
-                  Have you experienced significant weight change in the last 2
-                  months?
-                </span>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="WeightChange"
-                  value="Yes"
-                  checked={localFormData.WeightChange === "Yes"}
-                  onChange={(e) => {
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Yes</label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="WeightChange"
-                  value="No"
-                  checked={localFormData.WeightChange === "No"}
-                  onChange={(e) => {
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
+              {/* Weight Change */}
+              <li className="list-group-item">
+                <div className="input-group">
+                  <span>
+                    Have you experienced significant weight change in the last 2
+                    months?
+                  </span>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="WeightChange"
+                    value="Yes"
+                    checked={localFormData.WeightChange === "Yes"}
+                    onChange={(e) => {
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="WeightChange"
+                    value="No"
+                    checked={localFormData.WeightChange === "No"}
+                    onChange={(e) => {
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
 
-                <label className="form-check-label ms-1">No</label>
-              </div>
-            </li>
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+              </li>
 
-            {/* Use of Alcohol */}
-            <li className="list-group-item">
-              <div className="input-group">
-                <span>Do you regularly use alcohol?</span>
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="AlcoholIntSel"
-                  value="Yes"
-                  checked={localFormData.AlcoholIntSel === "Yes"}
-                  onChange={(e) => {
-                    setUseAlcohol(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Yes</label>
+              {/* Use of Alcohol */}
+              <li className="list-group-item">
+                <div className="input-group">
+                  <span>Do you regularly use alcohol?</span>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="AlcoholIntSel"
+                    value="Yes"
+                    checked={localFormData.AlcoholIntSel === "Yes"}
+                    onChange={(e) => {
+                      setUseAlcohol(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Yes</label>
 
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="AlcoholIntSel"
-                  value="No"
-                  checked={localFormData.AlcoholIntSel === "No"}
-                  onChange={(e) => {
-                    setUseAlcohol(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">No</label>
-              </div>
-              {showUseAlcohol === "Yes" && (
-                <UseAlochol
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="AlcoholIntSel"
+                    value="No"
+                    checked={localFormData.AlcoholIntSel === "No"}
+                    onChange={(e) => {
+                      setUseAlcohol(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">No</label>
+                </div>
+                {showUseAlcohol === "Yes" && (
+                  <UseAlochol
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
 
-            {/* Engage of Drugs */}
-            <li className="list-group-item">
-              <div className="input-group">
-                <span>How often do you engage in recreational drug use?</span>
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="DrugUseSel"
-                  value="Daily"
-                  checked={localFormData.DrugUseSel === "Daily"}
-                  onChange={(e) => {
-                    setDrugUse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Daily</label>
+              {/* Engage of Drugs */}
+              <li className="list-group-item">
+                <div className="input-group">
+                  <span>How often do you engage in recreational drug use?</span>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="DrugUseSel"
+                    value="Daily"
+                    checked={localFormData.DrugUseSel === "Daily"}
+                    onChange={(e) => {
+                      setDrugUse(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Daily</label>
 
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="DrugUseSel"
-                  value="Weekly"
-                  checked={localFormData.DrugUseSel === "Weekly"}
-                  onChange={(e) => {
-                    setDrugUse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Weekly</label>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="DrugUseSel"
+                    value="Weekly"
+                    checked={localFormData.DrugUseSel === "Weekly"}
+                    onChange={(e) => {
+                      setDrugUse(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Weekly</label>
 
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="DrugUseSel"
-                  value="Monthly"
-                  checked={localFormData.DrugUseSel === "Monthly"}
-                  onChange={(e) => {
-                    setDrugUse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Monthly</label>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="DrugUseSel"
+                    value="Monthly"
+                    checked={localFormData.DrugUseSel === "Monthly"}
+                    onChange={(e) => {
+                      setDrugUse(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Monthly</label>
 
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="DrugUseSel"
-                  value="Rarely"
-                  checked={localFormData.DrugUseSel === "Rarely"}
-                  onChange={(e) => {
-                    setDrugUse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="DrugUseSel"
+                    value="Rarely"
+                    checked={localFormData.DrugUseSel === "Rarely"}
+                    onChange={(e) => {
+                      setDrugUse(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
 
-                <label className="form-check-label ms-1">Rarely</label>
-                <input
-                  className="form-input ms-2 rounded-5"
-                  type="radio"
-                  name="DrugUseSel"
-                  value="Never"
-                  checked={localFormData.DrugUseSel === "Never"}
-                  onChange={(e) => {
-                    setDrugUse(e.target.value);
-                    const { name, value } = e.target;
-                    setLocalFormData((prevData) => ({
-                      ...prevData,
-                      [name]: value,
-                    }));
-                  }}
-                />
-                <label className="form-check-label ms-1">Never</label>
-              </div>
-              {(showDrugUse === "Daily" && (
-                <RecreationalDrug
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )) ||
-                (showDrugUse === "Weekly" && (
+                  <label className="form-check-label ms-1">Rarely</label>
+                  <input
+                    className="form-input ms-2 rounded-5"
+                    type="radio"
+                    name="DrugUseSel"
+                    value="Never"
+                    checked={localFormData.DrugUseSel === "Never"}
+                    onChange={(e) => {
+                      setDrugUse(e.target.value);
+                      const { name, value } = e.target;
+                      setLocalFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                      }));
+                    }}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Never</label>
+                </div>
+                {(showDrugUse === "Daily" && (
                   <RecreationalDrug
                     setLocalFormData={setLocalFormData}
                     localFormData={localFormData}
                   />
                 )) ||
-                (showDrugUse === "Monthly" && (
-                  <RecreationalDrug
-                    setLocalFormData={setLocalFormData}
-                    localFormData={localFormData}
-                  />
-                )) ||
-                (showDrugUse === "Rarely" && (
-                  <RecreationalDrug
-                    setLocalFormData={setLocalFormData}
-                    localFormData={localFormData}
-                  />
-                ))}
-            </li>
-          </ul>
+                  (showDrugUse === "Weekly" && (
+                    <RecreationalDrug
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  )) ||
+                  (showDrugUse === "Monthly" && (
+                    <RecreationalDrug
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  )) ||
+                  (showDrugUse === "Rarely" && (
+                    <RecreationalDrug
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  ))}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="d-flex justify-content-end">
-        <button
-          className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-          id="buttonCard"
-          onClick={ButtonBack}
-        >
-          Back
-        </button>
-        <button
-          className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-          id="buttonCard"
-          onClick={handleNext}
-        >
-          Next
-        </button>
-      </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={ButtonBack}
+          >
+            Back
+          </button>
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+          >
+            Next
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
@@ -447,6 +466,7 @@ const SleepHabits = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
         <label className="form-check-label ms-1">Sleeping too little</label>
 
@@ -464,6 +484,7 @@ const SleepHabits = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
         <label className="form-check-label ms-1">Sleeping too much</label>
 
@@ -481,6 +502,7 @@ const SleepHabits = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
         <label className="form-check-label ms-1">Can't fall asleep</label>
         <input
@@ -497,6 +519,7 @@ const SleepHabits = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
         <label className="form-check-label ms-1">Can't stay asleep</label>
       </div>
@@ -533,6 +556,7 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
 
         <span className="d-flex align-items-center ms-1">For how long?</span>
@@ -549,6 +573,7 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
       </div>
 
@@ -569,6 +594,7 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
       </div>
     </>
@@ -596,6 +622,7 @@ const EatingHabits = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Eating less</label>
 
@@ -613,6 +640,7 @@ const EatingHabits = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Eating more</label>
 
@@ -630,6 +658,7 @@ const EatingHabits = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Bingeing</label>
 
@@ -647,6 +676,7 @@ const EatingHabits = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Purging</label>
     </div>
@@ -675,6 +705,7 @@ const UseAlochol = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Once a month</label>
 
@@ -692,6 +723,7 @@ const UseAlochol = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Once a week</label>
 
@@ -709,6 +741,7 @@ const UseAlochol = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Daily</label>
 
@@ -726,6 +759,7 @@ const UseAlochol = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">3 or more times a week</label>
       <input
@@ -742,6 +776,7 @@ const UseAlochol = ({ setLocalFormData, localFormData }) => {
             [name]: value,
           }));
         }}
+        required
       />
       <label className="form-check-label ms-1">Intoxicated daily</label>
     </>
@@ -772,6 +807,7 @@ const RecreationalDrug = ({ setLocalFormData, localFormData }) => {
               [name]: value,
             }));
           }}
+          required
         />
       </div>
     </div>

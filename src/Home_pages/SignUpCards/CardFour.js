@@ -91,258 +91,277 @@ export const CardFour = ({ ButtonBack, ButtonNext, formData }) => {
   };
   return (
     <div>
-      <div className="container-fluid d-flex justify-content-center mt-3">
-        <div className="card" style={{ width: 50 + "rem" }}>
-          <div className="card-header">
-            Please fill up this intake form: (This form will be your Sign Up
-            form or Register Form)
-          </div>
-          <ul className="list-group list-group-flush">
-            {/* Sexual Preference */}
-            <li className="list-group-item">
-              <span className="">Sexual Preference:</span>
-              <div className="form-check-inline ms-2">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="SexualPref"
-                  value="Men"
-                  checked={localFormData.SexualPref === "Men"}
-                  onChange={handleSexualPref}
-                />
-                <label className="form-check-label ms-1">Men</label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="SexualPref"
-                  value="Women"
-                  checked={localFormData.SexualPref === "Women"}
-                  onChange={handleSexualPref}
-                />
-                <label className="form-check-label ms-1">Women</label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="SexualPref"
-                  value="Both"
-                  checked={localFormData.SexualPref === "Both"}
-                  onChange={handleSexualPref}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Both
-                </label>
-              </div>
-            </li>
+      <form onSubmit={handleNext}>
+        <div className="container-fluid d-flex justify-content-center mt-3">
+          <div className="card" style={{ width: 50 + "rem" }}>
+            <div className="card-header">
+              Please fill up this intake form: (This form will be your Sign Up
+              form or Register Form)
+            </div>
+            <ul className="list-group list-group-flush">
+              {/* Sexual Preference */}
+              <li className="list-group-item">
+                <span className="">Sexual Preference:</span>
+                <div className="form-check-inline ms-2">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="SexualPref"
+                    value="Men"
+                    checked={localFormData.SexualPref === "Men"}
+                    onChange={handleSexualPref}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Men</label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="SexualPref"
+                    value="Women"
+                    checked={localFormData.SexualPref === "Women"}
+                    onChange={handleSexualPref}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Women</label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="SexualPref"
+                    value="Both"
+                    checked={localFormData.SexualPref === "Both"}
+                    onChange={handleSexualPref}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Both
+                  </label>
+                </div>
+              </li>
 
-            {/* Marital Status */}
-            <li className="list-group-item">
-              <span className="">Marital Status:</span>
-              <div className="form-check-inline ms-2">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="MaritalStatus"
-                  value="Never Married"
-                  checked={localFormData.MaritalStatus === "Never Married"}
-                  onChange={handleMaritalStatus}
-                />
-                <label className="form-check-label ms-1">Never Married</label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="MaritalStatus"
-                  value="Partnered"
-                  checked={localFormData.MaritalStatus === "Partnered"}
-                  onChange={handleMaritalStatus}
-                />
-                <label className="form-check-label ms-1">Partnered</label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="MaritalStatus"
-                  value="Married"
-                  checked={localFormData.MaritalStatus === "Married"}
-                  onChange={handleMaritalStatus}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Married
-                </label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="MaritalStatus"
-                  value="Separated"
-                  checked={localFormData.MaritalStatus === "Separated"}
-                  onChange={handleMaritalStatus}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Separated
-                </label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="MaritalStatus"
-                  value="Divorced"
-                  checked={localFormData.MaritalStatus === "Divorced"}
-                  onChange={handleMaritalStatus}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Divorced
-                </label>
-              </div>
-              <div className="form-check-inline">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="MaritalStatus"
-                  value="Widowed"
-                  checked={localFormData.MaritalStatus === "Widowed"}
-                  onChange={handleMaritalStatus}
-                />
-                <label className="form-check-label " for="exampleRadios1">
-                  Widowed
-                </label>
-              </div>
-            </li>
+              {/* Marital Status */}
+              <li className="list-group-item">
+                <span className="">Marital Status:</span>
+                <div className="form-check-inline ms-2">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="MaritalStatus"
+                    value="Never Married"
+                    checked={localFormData.MaritalStatus === "Never Married"}
+                    onChange={handleMaritalStatus}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Never Married</label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="MaritalStatus"
+                    value="Partnered"
+                    checked={localFormData.MaritalStatus === "Partnered"}
+                    onChange={handleMaritalStatus}
+                    required
+                  />
+                  <label className="form-check-label ms-1">Partnered</label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="MaritalStatus"
+                    value="Married"
+                    checked={localFormData.MaritalStatus === "Married"}
+                    onChange={handleMaritalStatus}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Married
+                  </label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="MaritalStatus"
+                    value="Separated"
+                    checked={localFormData.MaritalStatus === "Separated"}
+                    onChange={handleMaritalStatus}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Separated
+                  </label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="MaritalStatus"
+                    value="Divorced"
+                    checked={localFormData.MaritalStatus === "Divorced"}
+                    onChange={handleMaritalStatus}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Divorced
+                  </label>
+                </div>
+                <div className="form-check-inline">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="MaritalStatus"
+                    value="Widowed"
+                    checked={localFormData.MaritalStatus === "Widowed"}
+                    onChange={handleMaritalStatus}
+                    required
+                  />
+                  <label className="form-check-label " for="exampleRadios1">
+                    Widowed
+                  </label>
+                </div>
+              </li>
 
-            {/* Series of Questions */}
-            {/* Romantic RelationShip Question */}
-            <li className="list-group-item">
-              <span>Are you currently in a romantic relationship?</span>
-              <div className="form-check-inline ms-2">
+              {/* Series of Questions */}
+              {/* Romantic RelationShip Question */}
+              <li className="list-group-item">
+                <span>Are you currently in a romantic relationship?</span>
+                <div className="form-check-inline ms-2">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="RelStatus"
+                    value="Yes"
+                    checked={localFormData.RelStatus === "Yes"}
+                    onChange={handleRomanticRelationship}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Yes
+                  </label>
+                </div>
+
                 <input
                   className="form-input"
                   type="radio"
                   name="RelStatus"
-                  value="Yes"
-                  checked={localFormData.RelStatus === "Yes"}
+                  value="No"
+                  checked={localFormData.RelStatus === "No"}
                   onChange={handleRomanticRelationship}
+                  required
                 />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Yes
-                </label>
-              </div>
-
-              <input
-                className="form-input"
-                type="radio"
-                name="RelStatus"
-                value="No"
-                checked={localFormData.RelStatus === "No"}
-                onChange={handleRomanticRelationship}
-              />
-              <label className="form-check-label " for="exampleRadios1">
-                No
-              </label>
-              {showRomanticRelationship && (
-                <RomanticRelationShipYes
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
-
-            {/* Do you have a child? */}
-            <li className="list-group-item">
-              <span>Do you have a child?</span>
-              <div className="form-check-inline ms-2">
-                <input
-                  className="form-input"
-                  type="radio"
-                  name="Child"
-                  value="Yes"
-                  checked={localFormData.Child === "Yes"}
-                  onChange={handleChildren}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Yes
-                </label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="Child"
-                  value="No"
-                  checked={localFormData.Child === "No"}
-                  onChange={handleChildren}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
+                <label className="form-check-label " for="exampleRadios1">
                   No
                 </label>
-              </div>
-              {showChildren && (
-                <ChildrenYes
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
+                {showRomanticRelationship && (
+                  <RomanticRelationShipYes
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
 
-            {/* Previous psychotherapy */}
-            <li className="list-group-item">
-              <div className="form-check-inline ">
-                <span>Have you had previous psychotherapy?</span>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="TherapyStatus"
-                  value="Yes"
-                  checked={localFormData.TherapyStatus === "Yes"}
-                  onChange={handlePsychoTherapy}
-                />
-                <label className="form-check-label ms-1" for="exampleRadios1">
-                  Yes
-                </label>
-                <input
-                  className="form-input ms-2"
-                  type="radio"
-                  name="TherapyStatus"
-                  value="No"
-                  checked={localFormData.TherapyStatus === "No"}
-                  onChange={handlePsychoTherapy}
-                />
-                <label className="form-check-label ms-1 " for="exampleRadios1">
-                  No
-                </label>
-              </div>
+              {/* Do you have a child? */}
+              <li className="list-group-item">
+                <span>Do you have a child?</span>
+                <div className="form-check-inline ms-2">
+                  <input
+                    className="form-input"
+                    type="radio"
+                    name="Child"
+                    value="Yes"
+                    checked={localFormData.Child === "Yes"}
+                    onChange={handleChildren}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Yes
+                  </label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="Child"
+                    value="No"
+                    checked={localFormData.Child === "No"}
+                    onChange={handleChildren}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    No
+                  </label>
+                </div>
+                {showChildren && (
+                  <ChildrenYes
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
 
-              {showPsychoTherapy && (
-                <PsychoTherapy
-                  setLocalFormData={setLocalFormData}
-                  localFormData={localFormData}
-                />
-              )}
-            </li>
-          </ul>
+              {/* Previous psychotherapy */}
+              <li className="list-group-item">
+                <div className="form-check-inline ">
+                  <span>Have you had previous psychotherapy?</span>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="TherapyStatus"
+                    value="Yes"
+                    checked={localFormData.TherapyStatus === "Yes"}
+                    onChange={handlePsychoTherapy}
+                    required
+                  />
+                  <label className="form-check-label ms-1" for="exampleRadios1">
+                    Yes
+                  </label>
+                  <input
+                    className="form-input ms-2"
+                    type="radio"
+                    name="TherapyStatus"
+                    value="No"
+                    checked={localFormData.TherapyStatus === "No"}
+                    onChange={handlePsychoTherapy}
+                    required
+                  />
+                  <label
+                    className="form-check-label ms-1 "
+                    for="exampleRadios1"
+                  >
+                    No
+                  </label>
+                </div>
+
+                {showPsychoTherapy && (
+                  <PsychoTherapy
+                    setLocalFormData={setLocalFormData}
+                    localFormData={localFormData}
+                  />
+                )}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="d-flex justify-content-end">
-        <button
-          className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-          id="buttonCard"
-          onClick={ButtonBack}
-        >
-          Back
-        </button>
-        <button
-          className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-          id="buttonCard"
-          onClick={handleNext}
-        >
-          Next
-        </button>
-      </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+            onClick={ButtonBack}
+          >
+            Back
+          </button>
+          <button
+            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            id="buttonCard"
+          >
+            Next
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
@@ -382,6 +401,7 @@ const RomanticRelationShipYes = ({ setLocalFormData, localFormData }) => {
         value={localFormData.HowLong}
         className="form-control me-3 rounded-4"
         onChange={handleCurrentRelation}
+        required
       />
       <div className="input-group mt-3">
         <p className="me-2 d-flex align-items-center">
@@ -396,6 +416,7 @@ const RomanticRelationShipYes = ({ setLocalFormData, localFormData }) => {
           value={localFormData.QualRel}
           className="form-control me-3 rounded-4"
           onChange={handleScale}
+          required
         />
       </div>
     </>
@@ -437,6 +458,7 @@ const ChildrenYes = ({ setLocalFormData, localFormData }) => {
           value={localFormData.CountChild}
           className="form-control me-3 rounded-4"
           onChange={handleChildren}
+          required
         />
         <span className="d-flex align-items-center">Age?</span>
         <input
@@ -447,6 +469,7 @@ const ChildrenYes = ({ setLocalFormData, localFormData }) => {
           value={localFormData.ChildAge}
           className="form-control ms-1 rounded-4"
           onChange={handleChildrenAge}
+          required
         />
       </div>
     </>
@@ -484,6 +507,7 @@ const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
         value={localFormData.WhyTherapy}
         className="form-control me-3 rounded-4"
         onChange={handleWhyPsychoTherapyR}
+        required
       />
       <div className="input-group mt-3">
         <p className="me-2 d-flex align-items-center">If yes, when?</p>
@@ -495,6 +519,7 @@ const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
           value={localFormData.WhenTherapy}
           className="form-control me-3 rounded-4"
           onChange={handleWhenPsychoTherapy}
+          required
         />
       </div>
     </>
