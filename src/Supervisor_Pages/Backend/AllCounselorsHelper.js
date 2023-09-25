@@ -18,7 +18,39 @@ import {
     getDownloadURL,
     getMetadata,
   } from "firebase/storage";
+  import fetch from 'node-fetch';
   
+
+  async function sendTemporaryCredentialsToEmail(existingData) {
+    const emailData = {
+      to: existingData.Email,
+      subject: 'Your Temporary Credentials',
+      body: `Username: ${existingData.Email}\nPassword: ${existingData.TemporaryPass}`,
+    };
+  
+    console.log('Sending email data:', emailData);
+  
+    try {
+      const response = await fetch('http://localhost:3005/send-email', { // Adjust the URL as needed
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+  
+      console.log('Email sending response:', response);
+  
+      if (response.ok) {
+        console.log('Temporary credentials email sent successfully.');
+      } else {
+        console.error('Failed to send temporary credentials email.');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
   // Fetch the number of patients for a counselor
   export const fetchCounselorPatientsCount = async (counselorID) => {
     try {
@@ -208,6 +240,8 @@ import {
         try {
           const password = generateRandomPassword(8);
       
+          console.log("Generated Password:", password);
+      
           const { user } = await createUserWithEmailAndPassword(
             auth,
             localFormData.Email,
@@ -225,17 +259,18 @@ import {
             firstName: localFormData.firstName,
             ConNum: localFormData.ConNum,
             ProfPic: photoURL,
+            TemporaryPass: password,
             Role: "Counselor",
             UID: user.uid,
           };
       
           const userAccRef = collection(firestore, "Users");
-            await addDoc(userAccRef, newUser);
-            setLoading(false);
-  
-            // Close the modal after successful addition
-            onHide();
-
+          await addDoc(userAccRef, newUser);
+          setLoading(false);
+      
+          // Close the modal after successful addition
+          onHide();
+      
           // Update the counselorData state to include the new counselor
           setCounselorData((prevData) => [...prevData, newUser]);
       
@@ -245,9 +280,12 @@ import {
           // Automatically render the new counselor in the table
           onAddSuccess(newUser);
       
+          // Send temporary credentials to the counselor's email
+          await sendTemporaryCredentialsToEmail(newUser);
+          console.log("Temporary credentials sent to the counselor's email.");
+      
           setLoading(false);
       
-          // Close the modal after successful addition
           onHide();
         } catch (error) {
           setLoading(false);
