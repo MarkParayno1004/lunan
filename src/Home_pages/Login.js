@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import Swal from "sweetalert2";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -13,8 +17,12 @@ import "../css/Login.css";
 import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
-import {Form, Modal, Button, Alert} from "react-bootstrap";
-import { fetchUserData, loginWithEmailAndPassword, sendResetPasswordEmail } from "./LoginBackend/LoginHelper"; // Adjust the import path accordingly
+import { Form, Modal, Button, Alert } from "react-bootstrap";
+import {
+  fetchUserData,
+  loginWithEmailAndPassword,
+  sendResetPasswordEmail,
+} from "./LoginBackend/LoginHelper"; // Adjust the import path accordingly
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -43,6 +51,13 @@ export const Login = () => {
       const userUid = user.uid;
       sessionStorage.setItem("userUid", userUid);
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Invalid Usernamme & Password",
+        background: "#4B527E",
+        color: "#f5e9cf",
+      });
       console.error("Error logging in:", error.message);
     }
   };
@@ -146,27 +161,27 @@ export const Login = () => {
 
 const ForgotModal = (props) => {
   const [localFormData, setLocalFormData] = useState({
-    email: '',
+    email: "",
   });
 
   const [resetStatus, setResetStatus] = useState({
-    message: '',
+    message: "",
     success: false,
   });
 
   const handleForgetPassword = async (event) => {
     event.preventDefault();
-  
+
     try {
       await sendPasswordResetEmail(auth, localFormData.email);
       setResetStatus({
-        message: 'Password reset instructions sent to your email.',
+        message: "Password reset instructions sent to your email.",
         success: true,
       });
     } catch (error) {
-      console.error('Password reset error:', error);
+      console.error("Password reset error:", error);
       setResetStatus({
-        message: 'Email is not existing in the system.',
+        message: "Email is not existing in the system.",
         success: false,
       });
     }
@@ -176,7 +191,7 @@ const ForgotModal = (props) => {
     <Modal
       show={props.show}
       onHide={props.onHide}
-      style={{ border: 'none', color: 'white' }}
+      style={{ border: "none", color: "white" }}
     >
       <Modal.Body id="BGmodal">
         <Modal.Header className="mb-3" closeButton>
@@ -198,13 +213,13 @@ const ForgotModal = (props) => {
               required
             />
             {resetStatus.message && (
-          <Alert
-            variant={resetStatus.success ? 'success' : 'danger'}
-            className="mt-3"
-          >
-            {resetStatus.message}
-          </Alert>
-        )}
+              <Alert
+                variant={resetStatus.success ? "success" : "danger"}
+                className="mt-3"
+              >
+                {resetStatus.message}
+              </Alert>
+            )}
           </Form.Group>
           <Modal.Footer className="mt-3">
             <Button
