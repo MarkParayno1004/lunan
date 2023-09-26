@@ -21,11 +21,11 @@ import {
   import fetch from 'node-fetch';
   
 
-  async function sendTemporaryCredentialsToEmail(existingData) {
+  async function sendTemporaryCredentialsToEmail(newUser) {
     const emailData = {
-      to: existingData.Email,
+      to: newUser.Email,
       subject: 'Your Temporary Credentials',
-      body: `Username: ${existingData.Email}\nPassword: ${existingData.TemporaryPass}`,
+      body: `Username: ${newUser.Email}\nPassword: ${newUser.TemporaryPass}`,
     };
   
     console.log('Sending email data:', emailData);
@@ -266,6 +266,8 @@ import {
       
           const userAccRef = collection(firestore, "Users");
           await addDoc(userAccRef, newUser);
+          await sendTemporaryCredentialsToEmail(newUser);
+          console.log("Temporary credentials sent to the counselor's email.");
           setLoading(false);
       
           // Close the modal after successful addition
@@ -279,10 +281,6 @@ import {
       
           // Automatically render the new counselor in the table
           onAddSuccess(newUser);
-      
-          // Send temporary credentials to the counselor's email
-          await sendTemporaryCredentialsToEmail(newUser);
-          console.log("Temporary credentials sent to the counselor's email.");
       
           setLoading(false);
       

@@ -30,6 +30,9 @@ import {
   addCounselorToData,
 } from "./Backend/AllCounselorsHelper";
 import { CounselorInfo } from "./CounselorInfo";
+import fetch from 'node-fetch';
+
+
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
