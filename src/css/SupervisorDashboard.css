@@ -22,3 +22,8 @@
   color: #4d455d;
   border-radius: 15px;
 }
+
+#sdBG {
+  max-height: 100vh;
+  overflow: hidden;
+}

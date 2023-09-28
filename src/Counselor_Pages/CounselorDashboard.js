@@ -104,18 +104,22 @@ export const CounselorDashboard = (props) => {
                 Schedule
               </button>
             </li>
+            <div className="d-flex justify-content-start mt-5">
+              <Link to="/Login" style={{ textDecoration: "none" }}>
+                <button
+                  className="btn rounded-5"
+                  style={{
+                    backgroundColor: "#f5e9cf",
+                    color: "#4d455d",
+                    height: 35 + "px",
+                  }}
+                >
+                  Logout
+                </button>
+              </Link>
+            </div>
           </div>
         </ul>
-        <div className="d-flex justify-content-start">
-          <Link to="/Login" style={{ textDecoration: "none" }}>
-            <button
-              className="btn rounded-5"
-              style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            >
-              Logout
-            </button>
-          </Link>
-        </div>
       </div>
       <div className="container-fluid">
         {activeComponent === "default" ? (
