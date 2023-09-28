@@ -39,6 +39,13 @@ export const AllCounselors = () => {
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [newCounselorAdded, setNewCounselorAdded] = useState(false);
+  const [selectedCounselor, setSelectedCounselor] = useState(null);
+
+  const handleCounselorSelect = (counselorData) => {
+    setSelectedCounselor(counselorData);
+    setShowCounselor(true);
+  };
+
 
   useEffect(() => {
     fetchCounselorData(setCounselorData, setFilteredCounselorData);
@@ -156,7 +163,7 @@ export const AllCounselors = () => {
                   <tr key={counselor.UID}>
                     <td>
                       <button
-                        onClick={handleShowCounselor}
+                        onClick={() => handleCounselorSelect(counselor)}
                         style={{ border: "none", background: "none" }}
                       >
                         {counselor.ProfPic ? (
@@ -168,17 +175,20 @@ export const AllCounselors = () => {
                           />
                         ) : (
                           <img
-                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
                             alt={counselor.firstName}
                             width="100"
                             height="100"
                           />
                         )}
                       </button>
-                      <CounselorInfo
+                      {showCouncelor && (
+                        <CounselorInfo
                         show={showCouncelor}
                         handleClose={handleCloseCounselor}
-                      />
+                        counselor={selectedCounselor}
+                        />
+                      )}
                     </td>
                     <td>{counselor.firstName}</td>
                     <td>{counselor.dateCreated}</td>

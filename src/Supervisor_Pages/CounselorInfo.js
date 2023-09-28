@@ -1,6 +1,36 @@
 import Modal from "react-bootstrap/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { firestore } from "../firebase/firebase-config";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
 export const CounselorInfo = (props) => {
+  const { show, handleClose, counselor } = props;
+  const [patients, setPatients] = useState([]);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        console.log(counselor.UID)
+        const querySnapshot = await getDocs(
+          query(collection(firestore, "Users"), where("counselorID", "==", counselor.UID))
+        );
+        const patientData = querySnapshot.docs.map((doc) => doc.data());
+        setPatients(patientData);
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
+
+    fetchPatients();
+  }, [counselor, firestore]);
+
   return (
     <>
       <Modal
@@ -17,7 +47,7 @@ export const CounselorInfo = (props) => {
             </Modal.Title>
           </Modal.Header>
           <div className="container-fluid">
-            <CounselorData />
+            {counselor && <CounselorData counselorData={counselor} patients={patients} />}
           </div>
         </Modal.Body>
       </Modal>
@@ -25,8 +55,7 @@ export const CounselorInfo = (props) => {
   );
 };
 
-//!COUNSELOR DATA
-const CounselorData = () => {
+const CounselorData = ({ counselorData, patients }) => {
   return (
     <div className="patient-info rounded-5 mt-3 ps-5 pe-5 pb-3" id="piBG">
       <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
@@ -43,12 +72,12 @@ const CounselorData = () => {
           id="colBG"
         >
           <div className="container-fluid patient-text pt-3 pb-3">
-            {/*1st Row Header*/}
+            {/* 1st Row Header */}
             <div className="row">
               <div className="col">
                 <strong className="fs-5">Name: </strong>
                 <span className="fs-6" style={{ color: "red" }}>
-                  Micah Abalos
+                  {counselorData && counselorData.firstName}
                 </span>
               </div>
               <div className="col">
@@ -66,16 +95,13 @@ const CounselorData = () => {
               <div className="col">
                 <strong className="fs-5">Email: </strong>
                 <span className="fs-6" style={{ color: "red" }}>
-                  Email
+                  {counselorData && counselorData.Email}
                 </span>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/*Body Column */}
-      {/*1st Row Body Column */}
       <div>
         <div className="mt-3">
           <div className="row">
@@ -100,19 +126,26 @@ const CounselorData = () => {
         </div>
       </div>
 
-      <table className="table table-dark table-hover ">
+      <table className="table table-dark table-hover">
         <thead>
           <tr>
-            <td>
+            <th>
               <strong>Name: </strong>
-            </td>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            {/*Input Patients List */}
-            <td>Its yah boi Mark</td>
-          </tr>
+        {patients.length > 0 ? (
+          patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>{patient.firstName}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td>No patients found</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
