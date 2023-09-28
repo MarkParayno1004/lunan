@@ -21,7 +21,6 @@ export const SIGNUPCARD = () => {
   const [card, setCard] = useState(1);
   const [formData, setFormData] = useState({});
 
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -43,19 +42,11 @@ export const SIGNUPCARD = () => {
   };
 
   const handleSubmit = (data) => {
-    upload(formData, data); // Call the upload function with form data
     Swal.fire({
-      position: "center",
-      icon: "success",
-      background: "#7db9b6",
-      title: "Successfully Submitted",
-      color: "white",
-      showConfirmButton: false,
-      timer: 1500,
+      title: "You Successfully Registered",
     });
+    upload(formData, data);
   };
-
-  
 
   return (
     <div className="container-fluid">
