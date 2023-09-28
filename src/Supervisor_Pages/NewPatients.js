@@ -1,9 +1,17 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import { collection, getDocs, query, where, updateDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
 export const NewPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
@@ -19,14 +27,13 @@ export const NewPatients = () => {
           id: doc.id, // Include the document ID
           data: doc.data(), // Include the patient data
         }));
-  
+
         setPatientsData(patients);
-        
       } catch (error) {
         console.error("Error fetching patients data:", error);
       }
     };
-  
+
     fetchPatientsData();
   }, []);
 
@@ -62,7 +69,10 @@ export const NewPatients = () => {
   const handleShowEdit = (id) => setShowEdit(id);
 
   return (
-    <div className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3" id="NewPatientForm">
+    <div
+      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
+      id="NewPatientForm"
+    >
       <div className="container-fluid">
         <div className="row">
           <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
@@ -78,11 +88,6 @@ export const NewPatients = () => {
                 aria-describedby="search"
                 className="w-25 form-control"
               />
-              <span className="input-group-text" id="search">
-                <button style={{ border: "none", background: "none" }}>
-                  Search
-                </button>
-              </span>
             </div>
           </div>
         </div>
@@ -104,21 +109,21 @@ export const NewPatients = () => {
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
                         <td>
-                        {patientObj.data.ProfPic ? (
-                        <img
-                            src={fetchImageUrl(patientObj.data.ProfPic)}
-                            alt={patientObj.data.firstName}
-                            width="100"
-                            height="100"
-                          />
-                      ) : (
-                        <img
-                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                          alt={patientObj.data.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
+                          {patientObj.data.ProfPic ? (
+                            <img
+                              src={fetchImageUrl(patientObj.data.ProfPic)}
+                              alt={patientObj.data.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          ) : (
+                            <img
+                              src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                              alt={patientObj.data.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          )}
                         </td>
                         <td>{patientObj.data.firstName}</td>
                         <td>{patientObj.data.dateCreated}</td>
@@ -164,7 +169,10 @@ const AssignPatient = (props) => {
             where("Role", "==", "Counselor")
           )
         );
-        const counselorData = querySnapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }));
+        const counselorData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }));
 
         setCounselors(counselorData);
       } catch (error) {
@@ -180,74 +188,73 @@ const AssignPatient = (props) => {
     setSelectedCounselorUID(event.target.value);
   };
 
-
-  
   async function sendTemporaryCredentialsToEmail(existingData) {
     const emailData = {
       to: existingData.Email,
-      subject: 'Your Temporary Credentials',
+      subject: "Your Temporary Credentials",
       body: `Username: ${existingData.Email}\nPassword: ${existingData.password}`,
     };
-  
-    console.log('Sending email data:', emailData);
-  
+
+    console.log("Sending email data:", emailData);
+
     try {
-      const response = await fetch('http://localhost:3005/send-email', { // Adjust the URL as needed
-        method: 'POST',
+      const response = await fetch("http://localhost:3005/send-email", {
+        // Adjust the URL as needed
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(emailData),
       });
-  
-      console.log('Email sending response:', response);
-  
+
+      console.log("Email sending response:", response);
+
       if (response.ok) {
-        console.log('Temporary credentials email sent successfully.');
+        console.log("Temporary credentials email sent successfully.");
       } else {
-        console.error('Failed to send temporary credentials email.');
+        console.error("Failed to send temporary credentials email.");
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error("An error occurred:", error);
     }
   }
-  
+
   // Define the function to handle form submission
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
-    const userAccRef = collection(firestore, 'Users');
+    const userAccRef = collection(firestore, "Users");
     const userDocRef = doc(userAccRef, props.userId);
-  
+
     try {
       const docSnapshot = await getDoc(userDocRef);
       if (docSnapshot.exists()) {
         const existingData = docSnapshot.data();
-  
+
         const selectedCounselorData = counselors.find(
           (counselor) => counselor.id === selectedCounselor
         );
         const selectedCounselorUID = selectedCounselorData
           ? selectedCounselorData.data.UID
-          : '';
-  
+          : "";
+
         const updateData = {
           ...existingData,
           counselorID: selectedCounselor,
           counselorUID: selectedCounselorUID,
         };
-  
+
         await updateDoc(userDocRef, updateData);
-        console.log('User data updated successfully.');
-  
+        console.log("User data updated successfully.");
+
         // Send existing temporary credentials to user's email
         await sendTemporaryCredentialsToEmail(existingData);
         console.log("Temporary credentials sent to user's email.");
       } else {
-        console.log('Document does not exist.');
+        console.log("Document does not exist.");
       }
     } catch (error) {
-      console.error('Firebase Error Code:', error.code);
-      console.error('Error updating user data:', error);
+      console.error("Firebase Error Code:", error.code);
+      console.error("Error updating user data:", error);
     }
   };
 
@@ -272,11 +279,11 @@ const AssignPatient = (props) => {
               onChange={handleCounselorChange}
             >
               <option value="null">Select Counselor</option>
-  {counselors.map((counselor) => (
-    <option key={counselor.id} value={counselor.id}>
-      {counselor.data.firstName}
-    </option>
-  ))}
+              {counselors.map((counselor) => (
+                <option key={counselor.id} value={counselor.id}>
+                  {counselor.data.firstName}
+                </option>
+              ))}
             </Form.Control>
           </Form.Group>
 

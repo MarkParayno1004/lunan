@@ -127,14 +127,6 @@ export const AllCounselors = () => {
                 aria-describedby="search"
                 className="w-25 form-control"
               />
-              <span class="input-group-text" id="search">
-                <button
-                  style={{ border: "none", background: "none" }}
-                  onClick={handleSearch}
-                >
-                  Search
-                </button>
-              </span>
             </div>
           </div>
         </div>
@@ -218,7 +210,7 @@ export const AllCounselors = () => {
           </div>
         </div>
         <div className="row">
-          <div className="col mt-auto d-flex justify-content-end">
+          <div className="col mt-auto d-flex justify-content-start">
             <Button
               className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
               id="buttonCard"

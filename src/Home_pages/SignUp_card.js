@@ -42,12 +42,16 @@ export const SIGNUPCARD = () => {
   };
 
   const handleSubmit = (data) => {
+    upload(formData, data); // Call the upload function with form data
     Swal.fire({
-      title: "You Successfully Registered",
+      position: "center",
+      background: "#7db9b6",
+      title: "Successfully Submitted",
+      color: "white",
+      showConfirmButton: false,
+      timer: 1500,
     });
-    upload(formData, data);
   };
-
   return (
     <div className="container-fluid">
       {card === 1 && (
