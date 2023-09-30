@@ -6,9 +6,20 @@ import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { collection, getFirestore, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+  updateDoc,
+  getFirestore,
+  addDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import HTMLReactParser from "html-react-parser";
+import { auth, firestore, storage } from "../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
   const patientData = props.patientData;
@@ -17,18 +28,27 @@ export const PatientInfo = (props) => {
   const [showAss, setShowAss] = useState(false);
   const handleCloseAss = () => setShowAss(false);
 
-  const handleShowAss = (selectedPatientUID) => {
-    // You can use the patientUID in this function
-    console.log(
-      `Showing assignments for patient with UID: ${selectedPatientUID}`
-    );
-    setShowAss(true);
+  const handleShowAss = async (selectedPatientUID) => {
+    console.log("handleShowAss called with UID:", selectedPatientUID);
+  
+    try {
+      // Fetch tasks for the selected patient and set them in state
+      const tasks = await fetchTasksForPatient(selectedPatientUID);
+      setTasksForSelectedPatient(tasks);
+  
+      console.log("Tasks fetched", tasks);
+      setShowAss(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
   };
 
   //!View Case Notes  Modal Behaviour
   const [showCase, setShowCase] = useState(false);
   const handleCloseCase = () => setShowCase(false);
   const handleShowCase = () => setShowCase(true);
+
+  const [tasksForSelectedPatient, setTasksForSelectedPatient] = useState([]);
 
   //!View Weekly Form  Modal Behaviour
   const [showWeek, setShowWeek] = useState(false);
@@ -68,6 +88,19 @@ export const PatientInfo = (props) => {
 
     setShowCreate(false);
   };
+  const fetchTasksForPatient = async (selectedPatientUID) => {
+    try {
+      const q = query(collection(firestore, "Tasks"), where("PatientUID", "==", selectedPatientUID));
+      const querySnapshot = await getDocs(q);
+      const tasks = querySnapshot.docs.map((doc) => doc.data());
+      console.log("Fetched tasks for", selectedPatientUID, tasks);
+      return tasks;
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      return [];
+    }
+  };
+  
 
   return (
     <Modal
@@ -566,13 +599,18 @@ export const PatientInfo = (props) => {
 
             {/*Buttons */}
             <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
+            {console.log("Before 'View Assignment' button click")}
               <button
                 className="me-2 rounded-5 fw-semibold"
-                onClick={() => handleShowAss(props.selectedPatientUID)}
+                onClick={() => {
+                  console.log("View Assignment button clicked");
+                  handleShowAss(props.selectedPatientUID);
+                }}
                 id="viewButton"
               >
-                View Assignment
+                View Assingments
               </button>
+              {console.log("After 'View Assignment' button click")}
 
               <button
                 className="me-2 rounded-5 fw-semibold"
@@ -611,6 +649,7 @@ export const PatientInfo = (props) => {
                 show={showAss}
                 handleClose={handleCloseAss}
                 selectedPatientUID={props.selectedPatientUID}
+                tasks={tasksForSelectedPatient}
               />
 
               <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
@@ -635,11 +674,11 @@ export const PatientInfo = (props) => {
 //!MODALS
 
 const ViewModalAssign = (props) => {
-  const [activeTab, setActiveTab] = useState("turnedIn");
+  const [activeTab, setActiveTab] = useState("assigned");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
+  const [tasks, setTasks] = useState(props.tasks || []);
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
@@ -664,7 +703,28 @@ const ViewModalAssign = (props) => {
       timer: 2000,
     });
     setShow(false);
+    
   };
+  React.useEffect(() => {
+    // Update tasks when props.tasks changes
+    console.log("Entered Use Effect");
+    setTasks(props.tasks || []);
+  }, [props.tasks]);
+
+  const updateTaskStatus = async (taskId) => {
+    const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
+  
+    try {
+      // Update the Status field to "Verified"
+      await updateDoc(taskRef, {
+        Status: "Verified",
+      });
+      console.log("Task status updated to Verified");
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
   return (
     <Modal
       show={props.show}
@@ -677,6 +737,12 @@ const ViewModalAssign = (props) => {
           <Modal.Title>View Assignment</Modal.Title>
         </Modal.Header>
         <div className="tabs mt-4 d-flex justify-content-start">
+        <button
+            className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
+            onClick={() => handleTabChange("assigned")}
+          >
+            Assigned
+          </button>
           <button
             className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
             onClick={() => handleTabChange("turnedIn")}
@@ -691,6 +757,35 @@ const ViewModalAssign = (props) => {
           </button>
         </div>
         <table class="table table-dark table-hover">
+          {activeTab === "assigned" && (
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Descsription:</th>
+                </tr>
+              </thead>
+              <tbody className="table-group-divider">
+              {tasks
+        .filter((task) => task.Status === null)
+        .map((task, index) => (
+          <tr key={index}>
+            <td>{task.Activity}</td>
+            <td>{task.Description}</td>
+            <td>{task.turnInDate}</td>
+            <td>
+              <button
+                className="btn"
+                style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+              >
+                Verify
+              </button>
+            </td>
+          </tr>
+        ))}
+    </tbody>
+            </>
+          )}
           {activeTab === "turnedIn" && (
             <>
               <thead>
@@ -698,38 +793,29 @@ const ViewModalAssign = (props) => {
                   <th scope="col">Activity:</th>
                   <th scope="col">Descsription:</th>
                   <th scope="col">Turned in on:</th>
-                  <th scope="col">Verify:</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>
-                    <span
-                      onClick={handleShowFiles}
-                      style={{ cursor: "pointer", textDecoration: "underline" }}
-                    >
-                      Journal and Drawing Entry
-                    </span>
-                    <AssignmentFiles
-                      show={showFiles}
-                      handleClose={handleCloseFiles}
-                    />
-                  </td>
-                  <td>
-                    Make a Journal about yourself and make a drawing entry that
-                    represents you today.
-                  </td>
-                  <td>March 8, 2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                    >
-                      Verify
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody className="table-group-divider">
+      {tasks
+        .filter((task) => task.Status === "turnedIn")
+        .map((task, index) => (
+          <tr key={index}>
+            <td>{task.Activity}</td>
+            <td>{task.Description}</td>
+            <td>{task.id}</td>
+            <td>
+              <button
+                className="btn"
+                style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                onClick={() => updateTaskStatus(task.id)}
+              >
+                Verify
+              </button>
+            </td>
+          </tr>
+        ))}
+    </tbody>
             </>
           )}
           {activeTab === "verified" && (
