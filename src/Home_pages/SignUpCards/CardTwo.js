@@ -105,6 +105,8 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     placeholder="Zip:"
                     value={localFormData.Zip}
                     onChange={handleInputChange}
+                    min="0" 
+                    oninput="validity.valid||(value='');"
                     required
                   />
                 </div>

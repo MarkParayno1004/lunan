@@ -390,6 +390,8 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                       type="number"
                       name="Sleep"
                       className="form-control rounded-4 mt-2"
+                      min="0" 
+                      oninput="validity.valid||(value='');"
                       onChange={(e) => {
                         setHourSleep(e.target.value);
                         const { name, value } = e.target;
