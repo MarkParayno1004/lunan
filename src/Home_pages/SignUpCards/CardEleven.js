@@ -193,6 +193,8 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control ms-2"
                     name="SiblingsCount"
                     value={localFormData.SiblingsCount}
+                    min="0" 
+                    oninput="validity.valid||(value='');"
                     onChange={handleNumberOfSiblings}
                     required
                   />
@@ -202,6 +204,8 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control ms-2"
                     name="siblingAge"
                     value={localFormData.siblingAge}
+                    min="0" 
+                    oninput="validity.valid||(value='');"
                     onChange={handleSiblingAges}
                     required
                   />
@@ -378,6 +382,8 @@ const DeceasedYes = ({ setLocalFormData, localFormData }) => {
           type="number"
           name="AgeDeceased "
           value={localFormData.AgeDeceased}
+          min="0" 
+          oninput="validity.valid||(value='');"
           class="form-control rounded-4 ms-1"
           required
         />

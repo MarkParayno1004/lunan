@@ -312,6 +312,8 @@ const SmokeYes = ({ setLocalFormData, localFormData }) => {
           name="CiggDaily"
           value={localFormData.CiggDaily || ""}
           className="form-control me-3 rounded-4"
+          min="0" 
+          oninput="validity.valid||(value='');"
           onChange={(e) => {
             setSmoke(e.target.value);
             const { name, value } = e.target;
@@ -346,6 +348,8 @@ const CaffeinatedDrinksYes = ({ setLocalFormData, localFormData }) => {
           name="SodasPerDay"
           className="form-control me-3 rounded-4"
           value={localFormData.SodasPerDay || ""}
+          min="0" 
+          oninput="validity.valid||(value='');"
           onChange={(e) => {
             setSodas(e.target.value);
             const { name, value } = e.target;
@@ -365,6 +369,8 @@ const CaffeinatedDrinksYes = ({ setLocalFormData, localFormData }) => {
           name="CoffeePerDay"
           className="form-control me-3 rounded-4"
           value={localFormData.CoffeePerDay || ""}
+          min="0" 
+          oninput="validity.valid||(value='');"
           onChange={(e) => {
             setCoffee(e.target.value);
             const { name, value } = e.target;

@@ -548,6 +548,8 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
           name="ExerciseTimes"
           className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseTimes}
+          min="0" 
+          oninput="validity.valid||(value='');"
           onChange={(e) => {
             setPerWeek(e.target.value);
             const { name, value } = e.target;
@@ -565,6 +567,8 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
           name="ExerciseDur"
           className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseDur}
+          min="0" 
+          oninput="validity.valid||(value='');"
           onChange={(e) => {
             setHowLong(e.target.value);
             const { name, value } = e.target;

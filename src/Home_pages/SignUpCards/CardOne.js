@@ -12,12 +12,14 @@ export const CardOne = ({
     DateToday: new Date().toISOString().split("T")[0],
     BirthDate: "",
     Gender: "",
+    showSpecification: false,
   });
 
   useEffect(() => {
     setLocalFormData(formData);
   }, [formData]);
 
+  const [showSpecification, setSpecification] = useState(false);
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "BirthDate") {
@@ -32,11 +34,12 @@ export const CardOne = ({
         [name]: value,
       }));
     } else {
+      setSpecification(value === "Other");
       setLocalFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
       }));
-    }
+    } 
   };
 
   const handleNext = () => {
@@ -167,6 +170,12 @@ export const CardOne = ({
                   >
                     Other
                   </label>
+                  {showSpecification && (
+                    <Specification
+                      setLocalFormData={setLocalFormData}
+                      localFormData={localFormData}
+                    />
+                  )}
                 </div>
               </li>
             </ul>
@@ -182,3 +191,36 @@ export const CardOne = ({
     </>
   );
 };
+
+//! if patient chooses others, in the Gender category
+const Specification = ({ setLocalFormData, localFormData }) => {
+  // Store the answer
+  const [getOtherSpecification, setOtherSpecification] = useState("");
+
+  const handleOtherSpecification = (e) => {
+    const { name, value } = e.target;
+    setOtherSpecification(value);
+    setLocalFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <>
+      <div className="input-group">
+        <span className="me-2 d-flex align-items-center">
+          Please specify:
+        </span>
+        <input 
+          type='text' 
+          value={localFormData} 
+          onChange={handleOtherSpecification}
+          className="form-control rounded-4 me-1"
+          required
+        />
+      </div>
+    </>
+  )
+}
+
