@@ -92,7 +92,8 @@ export const PatientInfo = (props) => {
     try {
       const q = query(collection(firestore, "Tasks"), where("PatientUID", "==", selectedPatientUID));
       const querySnapshot = await getDocs(q);
-      const tasks = querySnapshot.docs.map((doc) => doc.data());
+      const tasks = querySnapshot.docs.map((doc) => ({ 
+        id: doc.id, ...doc.data() }));
       console.log("Fetched tasks for", selectedPatientUID, tasks);
       return tasks;
     } catch (error) {
@@ -772,38 +773,53 @@ const ViewModalAssign = (props) => {
           <tr key={index}>
             <td>{task.Activity}</td>
             <td>{task.Description}</td>
-            <td>{task.turnInDate}</td>
-            <td>
-              <button
-                className="btn"
-                style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-              >
-                Verify
-              </button>
-            </td>
           </tr>
         ))}
     </tbody>
             </>
           )}
+          {activeTab === "verified" && (
+  <>
+    <thead>
+      <tr>
+        <th scope="col">Activity:</th>
+        <th scope="col">Description:</th>
+        <th scope="col">Turn-In Date:</th> {/* Display Firestore document ID here */}
+      </tr>
+    </thead>
+    <tbody className="table-group-divider">
+    {console.log("Tasks:", tasks)}
+      {tasks
+        .filter((task) => task.Status === "Verified")
+        .map((task, index) => (
+          <tr key={index}>
+            <td>{task.Activity}</td>
+            <td>{task.Description}</td>
+            <td>{task.id}</td> {/* Display Firestore document ID here */}
+          </tr>
+        ))}
+    </tbody>
+  </>
+)}
           {activeTab === "turnedIn" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Descsription:</th>
-                  <th scope="col">Turned in on:</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
+  <>
+    <thead>
+      <tr>
+        <th scope="col">Activity:</th>
+        <th scope="col">Description:</th>
+        <th scope="col">Turn-In Date:</th> {/* Display Firestore document ID here */}
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody className="table-group-divider">
+    {console.log("Tasks:", tasks)}
       {tasks
         .filter((task) => task.Status === "turnedIn")
         .map((task, index) => (
           <tr key={index}>
             <td>{task.Activity}</td>
             <td>{task.Description}</td>
-            <td>{task.id}</td>
+            <td>{task.id}</td> {/* Display Firestore document ID here */}
             <td>
               <button
                 className="btn"
@@ -816,26 +832,8 @@ const ViewModalAssign = (props) => {
           </tr>
         ))}
     </tbody>
-            </>
-          )}
-          {activeTab === "verified" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Turned in on:</th>
-                  <th scope="col">Files:</th>
-                </tr>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>Journal and Drawing Entry</td>
-                  <td>March 8, 2023</td>
-                  <td>JournalDrawingEntry.docx</td>
-                </tr>
-              </tbody>
-            </>
-          )}
+  </>
+)}
         </table>
         <Modal.Footer>
           <button
