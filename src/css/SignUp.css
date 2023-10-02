@@ -6,14 +6,13 @@
   background-repeat: no-repeat;
   min-height: 100vh;
 }
-#textHead {
-  border-bottom: 1px solid #c8d9d3;
-}
+
 #signupForm {
   background-color: #84a29f;
   color: white;
-  width: auto;
-  height: auto;
+  width: 55vw;
+  padding-top: 45px;
+  padding-bottom: 5px;
 }
 #buttonCard {
   background-color: #f2e3d2;

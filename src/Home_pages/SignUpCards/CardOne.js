@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 export const CardOne = ({
   ButtonNext,
   ButtonBack,
@@ -39,7 +38,7 @@ export const CardOne = ({
         ...prevFormData,
         [name]: value,
       }));
-    } 
+    }
   };
 
   const handleNext = () => {
@@ -50,8 +49,8 @@ export const CardOne = ({
   return (
     <>
       <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div className="card" style={{ width: "50rem" }}>
+        <div className="container-fluid d-flex justify-content-center">
+          <div className="card" style={{ width: "60rem" }}>
             <div className="card-header">
               Please fill up this intake form: (This form will be your Sign Up
               form or Register Form)
@@ -85,7 +84,7 @@ export const CardOne = ({
                 <p>Date today & your birth date:</p>
                 <div className="input-group">
                   <input
-                    type="date"
+                    type="hidden"
                     name="DateToday"
                     className="form-control rounded-4 me-1"
                     value={localFormData.DateToday}
@@ -181,12 +180,18 @@ export const CardOne = ({
             </ul>
           </div>
         </div>
-        <button
-          className="nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-          id="buttonCard"
+        <div
+          className="d-flex justify-content-end"
+          style={{
+            paddingRight: 25 + "px",
+            paddingTop: 10 + "px",
+            paddingBottom: 5 + "px",
+          }}
         >
-          Next
-        </button>
+          <button className="nav-link fs-5 rounded-4 " id="buttonCard">
+            Next
+          </button>
+        </div>
       </form>
     </>
   );
@@ -209,18 +214,15 @@ const Specification = ({ setLocalFormData, localFormData }) => {
   return (
     <>
       <div className="input-group">
-        <span className="me-2 d-flex align-items-center">
-          Please specify:
-        </span>
-        <input 
-          type='text' 
-          value={localFormData} 
+        <span className="me-2 d-flex align-items-center">Please specify:</span>
+        <input
+          type="text"
+          value={localFormData}
           onChange={handleOtherSpecification}
           className="form-control rounded-4 me-1"
           required
         />
       </div>
     </>
-  )
-}
-
+  );
+};
