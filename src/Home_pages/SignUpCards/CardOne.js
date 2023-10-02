@@ -145,38 +145,17 @@ export const CardOne = ({
                     className="form-input"
                     type="radio"
                     name="Gender"
-                    value="Transgender"
-                    onChange={handleChange}
-                    checked={localFormData.Gender === "Transgender"}
-                  />
-                  <label
-                    className="form-check-label ms-1"
-                    htmlFor="exampleRadios1"
-                  >
-                    Transgender
-                  </label>
-                </div>
-                <div className="form-check-inline">
-                  <input
-                    className="form-input"
-                    type="radio"
-                    name="Gender"
                     value="Other"
                     onChange={handleChange}
                     checked={localFormData.Gender === "Other"}
                   />
                   <label
-                    className="form-check-label ms-1"
+                    className="form-check-label ms-1 me-2"
                     htmlFor="exampleRadios1"
                   >
-                    Other
+                    Other:
                   </label>
-                  {showSpecification && (
-                    <Specification
-                      setLocalFormData={setLocalFormData}
-                      localFormData={localFormData}
-                    />
-                  )}
+                  {showSpecification && <input type="text" />}
                 </div>
               </li>
             </ul>
