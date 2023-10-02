@@ -73,9 +73,9 @@ export const PatientInfo = (props) => {
   const handleShowWell = async (selectedPatientUID) => {
     console.log("handleShowWellness called with UID:", selectedPatientUID);
     try {
-      const wellForms = await fetchWellnessForPatient(selectedPatientUID);
-      setwellFormsForSelectedPatient(wellForms);
-      console.log("Wellness Forms fetched", wellForms);
+      const wellForm = await fetchWellnessForPatient(selectedPatientUID);
+      setwellFormsForSelectedPatient(wellForm);
+      console.log("Wellness Forms fetched", wellForm);
       setShowWell(true);
   } catch (error) {
     console.error("Error in handleShowAss:", error);
@@ -1163,10 +1163,7 @@ const ViewWellnessForm = (props) => {
   };
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = async (selectedPatientUID) => {
-    console.log("Selected Patient UID:", props.selectedPatientUID);
-    setShow(true);
-  };
+  const handleShow = () => setShow(true);
   const [wellForms, setwellForms] = useState(props.wellForms || []);
 
   React.useEffect(() => {
@@ -1174,11 +1171,12 @@ const ViewWellnessForm = (props) => {
     setwellForms(props.wellForms || []);
   }, [props.wellForms]);
 
+  const [selectedwellForm, setSelectedwellForm] = useState(null);
 
   const handleSelectwellForm = async (id) => {
     try {
       // Fetch the entire document by its ID
-      const selectedFormDocRef = doc(firestore, "WekkbessFirn", id); // Replace with your Firestore instance
+      const selectedFormDocRef = doc(firestore, "WellnessForm", id); // Replace with your Firestore instance
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
   
       // Check if the document exists
@@ -1188,7 +1186,7 @@ const ViewWellnessForm = (props) => {
   
         // Include the document ID in the data
         selectedFormData.id = selectedFormDocSnap.id;
-        // Set the entire document data to selectedwForm
+        // Set the entire document data to selectedwellForm
         setSelectedwellForm(selectedFormData);
         setShow(true);
         console.log("Fetched form for ID:", id);
@@ -1202,7 +1200,7 @@ const ViewWellnessForm = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
-  const [selectedwellForm, setSelectedwellForm] = useState(null);
+
 
   return (
     <Modal
@@ -1242,7 +1240,7 @@ const ViewWellnessForm = (props) => {
               </thead>
               <tbody>
                 {wellForms
-                  .filter((wellForms) => wellForms.Status === null)
+                  .filter((wellForm) => wellForm.Status === null)
                   .map((wellForm, index) => (
                     <tr key={index}>
                       <td>{wellForm.id}</td>
@@ -1277,29 +1275,36 @@ const ViewWellnessForm = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John Doe</td>
-                  <td>06/22/2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                      onClick={handleShow}
-                    >
-                      Form
-                    </button>
-                    <ViewFormWell 
-                    show={show} 
-                    handleClose={handleClose} 
-                    selectedwellForm={selectedwellForm}
-                    wellForm={selectedwellForm}
-                    />
-                  </td>
-                </tr>
+                {wellForms
+                  .filter((wellForm) => wellForm.Status === "Verified")
+                  .map((wellForm, index) => (
+                    <tr key={index}>
+                      <td>{wellForm.id}</td>
+                      <td>{wellForm.DateSubmitted}</td>
+                      <td>
+                        <button
+                          className="btn"
+                          style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                          onClick={() => {
+                            handleSelectwellForm(wellForm.id);
+                            handleShow(wellForm.id);
+                          }} // Pass the form's ID
+                        >
+                          View Form
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </>
         )}
+        <ViewFormWell 
+          show={show} 
+          handleClose={handleClose} 
+          selectedwellForm={selectedwellForm}
+          wellForm={selectedwellForm}
+          />
       </Modal.Body>
     </Modal>
   );
@@ -1493,6 +1498,50 @@ const ViewFormWeek = (props) => {
 };
 
 const ViewFormWell = (props) => {
+
+  const questionsAndAnswers = props.selectedwellForm 
+  ? [
+    {
+      question: "1. In general, I consider myself:",
+      answer: props.selectedwellForm.WellnessQ1 || "",  
+      id: props.selectedwellForm.id,
+    },
+    {
+      question: "2. Compared to most of my peers, I consider myself:",
+      answer: props.selectedwellForm.WellnessQ2 || "",  
+    },
+     {
+      question: "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
+      answer: props.selectedwellForm.WellnessQ3 || "",  
+    },
+    {
+      question: "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
+      answer: props.selectedwellForm.WellnessQ4 || "",  
+    },
+  ]
+  : [];
+
+  const selectedwellForm = props.selectedwellForm || {};
+  const q1 = selectedwellForm.WellnessQ1 || 0;  
+  const q2 = selectedwellForm.WellnessQ2 || 0;  
+  const q3 = selectedwellForm.WellnessQ3 || 0;  
+  const q4 = selectedwellForm.WellnessQ4 || 0;  
+
+  const totalScore = q1 + q2 + q3 + q4;
+  
+  const updatewellFormVerified = async (wellFormId) => {
+    const formRef = doc(firestore, "WellnessForm", wellFormId);
+    try {
+      // Update the 'Status' field to "Verified"
+      await updateDoc(formRef, {
+        Status: "Verified",
+      });
+      console.log("Form status updated to Verified");
+    } catch (error) {
+      console.error("Error updating form status:", error);
+    }
+  };
+
   return (
     <Modal
       className="mt-3"
@@ -1506,7 +1555,7 @@ const ViewFormWell = (props) => {
             <div>View Daily Form:</div>
           </Modal.Title>
         </Modal.Header>
-        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
+        <div className="d-flex justify-content-end mt-3"> Total Score: {totalScore}/25</div>
         <table class="table table-dark table-hover mt-3">
           <thead>
             <tr>
@@ -1515,37 +1564,19 @@ const ViewFormWell = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1. In general, I consider myself:</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>2. Compared to most of my peers, I consider myself:</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>
-                3. Some people are generally very happy. They enjoy life
-                regardless of what is going on, getting the most out of
-                everything. To what extent does this characterization describe
-                you?
-              </td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>
-                4. Some people are generally not very happy. Although they are
-                not depressed, they never seem as happy as they might be. To
-                what extent does this characterization describe you?
-              </td>
-              <td>A very happy and joyful person</td>
-            </tr>
+            {questionsAndAnswers.map((qa, index) => (
+              <tr key={index}>
+                <td>{qa.question}</td>
+                <td>{qa.answer}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <div className="d-flex justify-content-end">
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={() => updatewellFormVerified(props.selectedwellForm.id)}
           >
             Verify
           </button>
