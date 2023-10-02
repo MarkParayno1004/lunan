@@ -40,8 +40,7 @@ export const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in");
@@ -51,13 +50,6 @@ export const Login = () => {
       const userUid = user.uid;
       sessionStorage.setItem("userUid", userUid);
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Invalid Usernamme & Password",
-        background: "#4B527E",
-        color: "#f5e9cf",
-      });
       console.error("Error logging in:", error.message);
     }
   };
@@ -102,7 +94,20 @@ export const Login = () => {
                 >
                   Login
                 </p>
-                <form onSubmit={handleSubmit}>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit().then(
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Invalid Username & Password",
+                        background: "#4B527E",
+                        color: "#f5e9cf",
+                      })
+                    );
+                  }}
+                >
                   <div className="input-group flex-nowrap">
                     <input
                       type="email"
@@ -169,9 +174,7 @@ const ForgotModal = (props) => {
     success: false,
   });
 
-  const handleForgetPassword = async (event) => {
-    event.preventDefault();
-
+  const handleForgetPassword = async () => {
     try {
       await sendPasswordResetEmail(auth, localFormData.email);
       setResetStatus({
@@ -197,7 +200,20 @@ const ForgotModal = (props) => {
         <Modal.Header className="mb-3" closeButton>
           <Modal.Title>Forget Password</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleForgetPassword}>
+        <Form
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleForgetPassword().then(
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Email does not exist",
+                background: "#4B527E",
+                color: "#f5e9cf",
+              })
+            );
+          }}
+        >
           <Form.Group>
             <Form.Label>Email:</Form.Label>
             <Form.Control
@@ -222,14 +238,14 @@ const ForgotModal = (props) => {
             )}
           </Form.Group>
           <Modal.Footer className="mt-3">
-            <Button
+            <button
               className="rounded-5 fw-medium"
               variant="primary"
-              type="submit"
               id="BtnSubmitAC"
+              o
             >
               Submit
-            </Button>
+            </button>
           </Modal.Footer>
         </Form>
       </Modal.Body>
