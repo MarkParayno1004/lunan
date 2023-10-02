@@ -50,7 +50,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
     <div>
       <form onSubmit={handleNext}>
         <div className="container-fluid d-flex justify-content-center mt-3">
-          <div className="card" style={{ width: "50rem" }}>
+          <div className="card" style={{ width: "60rem" }}>
             <div className="card-header">
               Please fill up this intake form: (This form will be your Sign Up
               form or Register Form)
@@ -109,7 +109,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     placeholder="Zip:"
                     value={localFormData.Zip}
                     onChange={handleInputChange}
-                    min="0" 
+                    min="0"
                     oninput="validity.valid||(value='');"
                     required
                   />

@@ -29,12 +29,12 @@ export const PatientInfo = (props) => {
   const handleCloseAss = () => setShowAss(false);
   const handleShowAss = async (selectedPatientUID) => {
     console.log("handleShowAss called with UID:", selectedPatientUID);
-  
+
     try {
       // Fetch tasks for the selected patient and set them in state
       const tasks = await fetchTasksForPatient(selectedPatientUID);
       setTasksForSelectedPatient(tasks);
-  
+
       console.log("Tasks fetched", tasks);
       setShowAss(true);
     } catch (error) {
@@ -48,11 +48,11 @@ export const PatientInfo = (props) => {
       const wForm = await fetchWeeklyForPatient(selectedPatientUID);
       setwFormsForSelectedPatient(wForm);
       console.log("Weekly Forms fetched", wForm);
-    setShowWeek(true);
-  } catch (error) {
-    console.error("Error in handleShowAss:", error);
-  }
-};
+      setShowWeek(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
 
   //!View Case Notes  Modal Behaviour
   const [showCase, setShowCase] = useState(false);
@@ -102,10 +102,15 @@ export const PatientInfo = (props) => {
   const fetchTasksForPatient = async (selectedPatientUID) => {
     console.log("Fetching tasks for ", selectedPatientUID);
     try {
-      const q = query(collection(firestore, "Tasks"), where("PatientUID", "==", selectedPatientUID));
+      const q = query(
+        collection(firestore, "Tasks"),
+        where("PatientUID", "==", selectedPatientUID)
+      );
       const querySnapshot = await getDocs(q);
-      const tasks = querySnapshot.docs.map((doc) => ({ 
-        id: doc.id, ...doc.data() }));
+      const tasks = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       console.log("Fetched tasks for", selectedPatientUID, tasks);
       return tasks;
     } catch (error) {
@@ -117,18 +122,21 @@ export const PatientInfo = (props) => {
   const fetchWeeklyForPatient = async (selectedPatientUID) => {
     console.log("Fetching weekly forms for ", selectedPatientUID);
     try {
-      const q = query(collection(firestore, "WeeklyForm"), where("UID", "==", selectedPatientUID));
+      const q = query(
+        collection(firestore, "WeeklyForm"),
+        where("UID", "==", selectedPatientUID)
+      );
       const querySnapshot = await getDocs(q);
       const wForms = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-  
+
         // Convert specific number fields to strings
         data.WeeklyQ1 = String(data.WeeklyQ1);
         data.WeeklyQ2 = String(data.WeeklyQ2);
         data.WeeklyQ3 = String(data.WeeklyQ3);
         data.WeeklyQ4 = String(data.WeeklyQ4);
         data.WeeklyQ5 = String(data.WeeklyQ5);
-  
+
         return { id: doc.id, ...data };
       });
       console.log("Fetched Weekly Forms for", selectedPatientUID, wForms);
@@ -635,7 +643,7 @@ export const PatientInfo = (props) => {
 
             {/*Buttons */}
             <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
-            {console.log("Before 'View Assignment' button click")}
+              {console.log("Before 'View Assignment' button click")}
               <button
                 className="me-2 rounded-5 fw-semibold"
                 onClick={() => {
@@ -693,13 +701,12 @@ export const PatientInfo = (props) => {
 
               <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
 
-            
-              <ViewWeeklyForm 
-                show={showWeek} 
-                handleClose={handleCloseWeek} 
+              <ViewWeeklyForm
+                show={showWeek}
+                handleClose={handleCloseWeek}
                 selectedPatientUID={props.selectedPatientUID}
                 wForms={wFormsForSelectedPatient}
-                />
+              />
 
               <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
               {/* <CreateCaseNotes
@@ -750,7 +757,6 @@ const ViewModalAssign = (props) => {
       timer: 2000,
     });
     setShow(false);
-    
   };
   React.useEffect(() => {
     // Update tasks when props.tasks changes
@@ -760,7 +766,7 @@ const ViewModalAssign = (props) => {
 
   const updateTaskStatus = async (taskId) => {
     const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
-  
+
     try {
       // Update the Status field to "Verified"
       await updateDoc(taskRef, {
@@ -784,7 +790,7 @@ const ViewModalAssign = (props) => {
           <Modal.Title>View Assignment</Modal.Title>
         </Modal.Header>
         <div className="tabs mt-4 d-flex justify-content-start">
-        <button
+          <button
             className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
             onClick={() => handleTabChange("assigned")}
           >
@@ -813,73 +819,80 @@ const ViewModalAssign = (props) => {
                 </tr>
               </thead>
               <tbody className="table-group-divider">
-              {tasks
-        .filter((task) => task.Status === null)
-        .map((task, index) => (
-          <tr key={index}>
-            <td>{task.Activity}</td>
-            <td>{task.Description}</td>
-          </tr>
-        ))}
-    </tbody>
+                {tasks
+                  .filter((task) => task.Status === null)
+                  .map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.Activity}</td>
+                      <td>{task.Description}</td>
+                    </tr>
+                  ))}
+              </tbody>
             </>
           )}
           {activeTab === "verified" && (
-  <>
-    <thead>
-      <tr>
-        <th scope="col">Activity:</th>
-        <th scope="col">Description:</th>
-        <th scope="col">Turn-In Date:</th> {/* Display Firestore document ID here */}
-      </tr>
-    </thead>
-    <tbody className="table-group-divider">
-    {console.log("Tasks:", tasks)}
-      {tasks
-        .filter((task) => task.Status === "Verified")
-        .map((task, index) => (
-          <tr key={index}>
-            <td>{task.Activity}</td>
-            <td>{task.Description}</td>
-            <td>{task.id}</td> {/* Display Firestore document ID here */}
-          </tr>
-        ))}
-    </tbody>
-  </>
-)}
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Description:</th>
+                  <th scope="col">Turn-In Date:</th>{" "}
+                  {/* Display Firestore document ID here */}
+                </tr>
+              </thead>
+              <tbody className="table-group-divider">
+                {console.log("Tasks:", tasks)}
+                {tasks
+                  .filter((task) => task.Status === "Verified")
+                  .map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.Activity}</td>
+                      <td>{task.Description}</td>
+                      <td>{task.id}</td>{" "}
+                      {/* Display Firestore document ID here */}
+                    </tr>
+                  ))}
+              </tbody>
+            </>
+          )}
           {activeTab === "turnedIn" && (
-  <>
-    <thead>
-      <tr>
-        <th scope="col">Activity:</th>
-        <th scope="col">Description:</th>
-        <th scope="col">Turn-In Date:</th> {/* Display Firestore document ID here */}
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody className="table-group-divider">
-    {console.log("Tasks:", tasks)}
-      {tasks
-        .filter((task) => task.Status === "turnedIn")
-        .map((task, index) => (
-          <tr key={index}>
-            <td>{task.Activity}</td>
-            <td>{task.Description}</td>
-            <td>{task.id}</td> {/* Display Firestore document ID here */}
-            <td>
-              <button
-                className="btn"
-                style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                onClick={() => updateTaskStatus(task.id)}
-              >
-                Verify
-              </button>
-            </td>
-          </tr>
-        ))}
-    </tbody>
-  </>
-)}
+            <>
+              <thead>
+                <tr>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Description:</th>
+                  <th scope="col">Turn-In Date:</th>{" "}
+                  {/* Display Firestore document ID here */}
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody className="table-group-divider">
+                {console.log("Tasks:", tasks)}
+                {tasks
+                  .filter((task) => task.Status === "turnedIn")
+                  .map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.Activity}</td>
+                      <td>{task.Description}</td>
+                      <td>{task.id}</td>{" "}
+                      {/* Display Firestore document ID here */}
+                      <td>
+                        <button
+                          className="btn"
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
+                          onClick={() => updateTaskStatus(task.id)}
+                        >
+                          Verify
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </>
+          )}
         </table>
         <Modal.Footer>
           <button
@@ -982,12 +995,12 @@ const ViewWeeklyForm = (props) => {
       // Fetch the entire document by its ID
       const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
-  
+
       // Check if the document exists
       if (selectedFormDocSnap.exists()) {
         // Get the data from the document
         const selectedFormData = selectedFormDocSnap.data();
-  
+
         // Include the document ID in the data
         selectedFormData.id = selectedFormDocSnap.id;
         // Set the entire document data to selectedwForm
@@ -1005,9 +1018,13 @@ const ViewWeeklyForm = (props) => {
     }
   };
 
-  
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose} size="lg">
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Weekly Form</Modal.Title>
@@ -1047,7 +1064,10 @@ const ViewWeeklyForm = (props) => {
                       <td>
                         <button
                           className="btn"
-                          style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
                             handleShow(wForm.id);
@@ -1083,7 +1103,10 @@ const ViewWeeklyForm = (props) => {
                       <td>
                         <button
                           className="btn"
-                          style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
                             handleShow(wForm.id);
@@ -1098,17 +1121,16 @@ const ViewWeeklyForm = (props) => {
             </table>
           </>
         )}
-        <ViewFormWeek 
-          show={show} 
-          handleClose={handleClose} 
+        <ViewFormWeek
+          show={show}
+          handleClose={handleClose}
           selectedwForm={selectedwForm}
           weeklyForm={selectedwForm}
-          />
+        />
       </Modal.Body>
     </Modal>
   );
 };
-
 
 const ViewWellnessForm = (props) => {
   const [activeTab, setActiveTab] = useState("submitted");
@@ -1116,7 +1138,7 @@ const ViewWellnessForm = (props) => {
     setActiveTab(tab);
   };
 
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState();
 
   const handleClose = () => setShow(false);
 
@@ -1311,41 +1333,42 @@ const PublishCaseNotes = (props) => {
 
 const ViewFormWeek = (props) => {
   console.log("Selected Weekly Form Data:", props.selectedwForm);
-  const questionsAndAnswers = props.selectedwForm 
-  ? [
-    {
-      question: "1. I have felt cheerful and in good spirits.",
-      answer: props.selectedwForm.WeeklyQ1 || "",  
-      id: props.selectedwForm.id,
-    },
-    {
-      question: "2. I have felt calm and relaxed.",
-      answer: props.selectedwForm.WeeklyQ2 || "",  
-    },
-     {
-      question: "3. I have felt active and vigorous.",
-      answer: props.selectedwForm.WeeklyQ3 || "",  
-    },
-    {
-      question: "4. I woke up feeling fresh and rested.",
-      answer: props.selectedwForm.WeeklyQ4 || "",  
-    },
-    {
-      question: "5. My daily life has been filled with things that interest me.",
-      answer: props.selectedwForm.WeeklyQ5 || "",  
-    },
-  ]
-  : [];
+  const questionsAndAnswers = props.selectedwForm
+    ? [
+        {
+          question: "1. I have felt cheerful and in good spirits.",
+          answer: props.selectedwForm.WeeklyQ1 || "",
+          id: props.selectedwForm.id,
+        },
+        {
+          question: "2. I have felt calm and relaxed.",
+          answer: props.selectedwForm.WeeklyQ2 || "",
+        },
+        {
+          question: "3. I have felt active and vigorous.",
+          answer: props.selectedwForm.WeeklyQ3 || "",
+        },
+        {
+          question: "4. I woke up feeling fresh and rested.",
+          answer: props.selectedwForm.WeeklyQ4 || "",
+        },
+        {
+          question:
+            "5. My daily life has been filled with things that interest me.",
+          answer: props.selectedwForm.WeeklyQ5 || "",
+        },
+      ]
+    : [];
 
   const selectedwForm = props.selectedwForm || {};
-  const q1 = selectedwForm.WeeklyQ1 || 0;  
-  const q2 = selectedwForm.WeeklyQ2 || 0;  
-  const q3 = selectedwForm.WeeklyQ3 || 0;  
-  const q4 = selectedwForm.WeeklyQ4 || 0;  
+  const q1 = selectedwForm.WeeklyQ1 || 0;
+  const q2 = selectedwForm.WeeklyQ2 || 0;
+  const q3 = selectedwForm.WeeklyQ3 || 0;
+  const q4 = selectedwForm.WeeklyQ4 || 0;
   const q5 = selectedwForm.WeeklyQ5 || 0;
 
   const totalScore = q1 + q2 + q3 + q4 + q5;
-  
+
   const updatewFormVerified = async (wFormId) => {
     const formRef = doc(firestore, "WeeklyForm", wFormId);
     try {
@@ -1358,7 +1381,7 @@ const ViewFormWeek = (props) => {
       console.error("Error updating form status:", error);
     }
   };
-  
+
   return (
     <Modal
       className="mt-3"
@@ -1370,7 +1393,10 @@ const ViewFormWeek = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
-        <div className="d-flex justify-content-end mt-3"> Total Score: {totalScore}/25</div>
+        <div className="d-flex justify-content-end mt-3">
+          {" "}
+          Total Score: {totalScore}/25
+        </div>
         <table class="table table-dark table-hover mt-3">
           <thead>
             <tr>
@@ -1390,10 +1416,10 @@ const ViewFormWeek = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            style={{ backgroundColor: "#f5e9cf", color: "red" }}
             onClick={() => updatewFormVerified(props.selectedwForm.id)}
           >
-            Verify
+            Unverify
           </button>
         </div>
       </Modal.Body>
