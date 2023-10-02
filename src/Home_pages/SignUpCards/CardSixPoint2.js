@@ -58,8 +58,8 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div className="card" style={{ width: 50 + "rem" }}>
+        <div className="container-fluid d-flex justify-content-center">
+          <div className="card" style={{ width: 60 + "rem" }}>
             <div className="card-header">Health Information</div>
             <ul className="list-group list-group-flush">
               {/* Sleeping Habits */}
@@ -424,18 +424,22 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
             </ul>
           </div>
         </div>
-        <div className="d-flex justify-content-end">
+        <div
+          className="d-flex justify-content-end"
+          style={{
+            paddingRight: 25 + "px",
+            paddingTop: 10 + "px",
+            paddingBottom: 5 + "px",
+          }}
+        >
           <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            className="btn nav-link fs-5 rounded-4 me-3"
             id="buttonCard"
             onClick={ButtonBack}
           >
             Back
           </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-          >
+          <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
             Next
           </button>
         </div>
@@ -548,7 +552,7 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
           name="ExerciseTimes"
           className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseTimes}
-          min="0" 
+          min="0"
           oninput="validity.valid||(value='');"
           onChange={(e) => {
             setPerWeek(e.target.value);
@@ -567,7 +571,7 @@ const ERCOMPONENT = ({ setLocalFormData, localFormData }) => {
           name="ExerciseDur"
           className="form-control rounded-4 ms-1"
           value={localFormData.ExerciseDur}
-          min="0" 
+          min="0"
           oninput="validity.valid||(value='');"
           onChange={(e) => {
             setHowLong(e.target.value);
