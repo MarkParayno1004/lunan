@@ -964,7 +964,7 @@ const ViewWeeklyForm = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [wForms, setwForms] = useState(props.wFroms || []);
+  const [wForms, setwForms] = useState(props.wForms || []);
   const [activeTab, setActiveTab] = useState("submitted");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -975,33 +975,19 @@ const ViewWeeklyForm = (props) => {
     setwForms(props.wForms || []);
   }, [props.wForms]);
 
-  const updatewFormStatus = async (taskId) => {
-    const taskRef = doc(firestore, "WeeklyForm", taskId); // Replace with your Firestore instance
-  
-    try {
-      // Update the Status field to "Verified"
-      await updateDoc(taskRef, {
-        Status: "Verified",
-      });
-      console.log("Task status updated to Verified");
-    } catch (error) {
-      console.error("Error updating task status:", error);
-    }
-  };
-  
-  const [selectedwForm, setSelectedwForm ] = useState(null);
+  const [selectedwForm, setSelectedwForm] = useState(null);
 
   const handleSelectwForm = async (id) => {
     try {
       // Fetch the entire document by its ID
-      const selectedFormDocRef = doc(firestore, "WeeklyForm", id);
+      const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
-  
+
       // Check if the document exists
       if (selectedFormDocSnap.exists()) {
         // Get the data from the document
         const selectedFormData = selectedFormDocSnap.data();
-  
+
         // Set the entire document data to selectedwForm
         setSelectedwForm(selectedFormData);
         setShow(true);
@@ -1015,6 +1001,7 @@ const ViewWeeklyForm = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
+
   
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose} size="lg">
@@ -1317,28 +1304,41 @@ const PublishCaseNotes = (props) => {
 };
 
 const ViewFormWeek = (props) => {
-  const questionsAndAnswers = [
+  console.log("Selected Weekly Form Data:", props.selectedwForm);
+  const questionsAndAnswers = props.selectedwForm 
+  ? [
     {
       question: "1. I have felt cheerful and in good spirits.",
-      answer: props.weeklyForm.WeeklyQ1, // Replace with the actual field name from your Firebase document
+      answer: props.selectedwForm.WeeklyQ1 || "",  
     },
     {
       question: "2. I have felt calm and relaxed.",
-      answer: props.weeklyForm.WeeklyQ2, // Replace with the actual field name from your Firebase document
+      answer: props.selectedwForm.WeeklyQ2 || "",  
     },
-    {
+     {
       question: "3. I have felt active and vigorous.",
-      answer: props.weeklyForm.WeeklyQ3, // Replace with the actual field name from your Firebase document
+      answer: props.selectedwForm.WeeklyQ3 || "",  
     },
     {
       question: "4. I woke up feeling fresh and rested.",
-      answer: props.weeklyForm.WeeklyQ4, // Replace with the actual field name from your Firebase document
+      answer: props.selectedwForm.WeeklyQ4 || "",  
     },
     {
       question: "5. My daily life has been filled with things that interest me.",
-      answer: props.weeklyForm.WeeklyQ5, // Replace with the actual field name from your Firebase document
+      answer: props.selectedwForm.WeeklyQ5 || "",  
     },
-  ];
+  ]
+  : [];
+
+  const selectedwForm = props.selectedwForm || {};
+  const q1 = selectedwForm.WeeklyQ1 || 0;  
+  const q2 = selectedwForm.WeeklyQ2 || 0;  
+  const q3 = selectedwForm.WeeklyQ3 || 0;  
+  const q4 = selectedwForm.WeeklyQ4 || 0;  
+  const q5 = selectedwForm.WeeklyQ5 || 0;
+
+  const totalScore = q1 + q2 + q3 + q4 + q5;
+  
   return (
     <Modal
       className="mt-3"
@@ -1350,7 +1350,7 @@ const ViewFormWeek = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
-        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
+        <div className="d-flex justify-content-end mt-3"> Total Score: {totalScore}/25</div>
         <table class="table table-dark table-hover mt-3">
           <thead>
             <tr>
@@ -1359,10 +1359,10 @@ const ViewFormWeek = (props) => {
             </tr>
           </thead>
           <tbody>
-            {questionsAndAnswers.map((item, index) => (
+            {questionsAndAnswers.map((qa, index) => (
               <tr key={index}>
-                <td>{item.question}</td>
-                <td>{item.answer}</td>
+                <td>{qa.question}</td>
+                <td>{qa.answer}</td>
               </tr>
             ))}
           </tbody>
