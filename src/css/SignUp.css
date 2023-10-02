@@ -2,22 +2,22 @@
   background-image: url("/src/img/BLOOMFIELDS_LOGO-03.png");
   background-size: 80rem;
   background-position: center center;
-  background-color: rgba(255, 251, 225, 255);
+  background-color: #f2e3d2;
   background-repeat: no-repeat;
   min-height: 100vh;
 }
 #textHead {
-  border-bottom: 1px solid #4d455d;
+  border-bottom: 1px solid #c8d9d3;
 }
 #signupForm {
-  background-color: #7db9b6;
+  background-color: #84a29f;
   color: white;
   width: auto;
   height: auto;
 }
 #buttonCard {
-  background-color: rgba(255, 251, 225, 255);
+  background-color: #f2e3d2;
   border: none;
-  color: #7db9b6;
+  color: #84a29f;
   width: 5rem;
 }

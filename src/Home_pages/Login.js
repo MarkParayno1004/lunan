@@ -64,6 +64,13 @@ export const Login = () => {
         fetchUserData(userUid, navigate, setLoading, setFirstName);
       } else {
         console.error("Invalid user UID:", userUid);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Invalid Username & Password",
+          background: "#4B527E",
+          color: "#f5e9cf",
+        });
       }
     }
   }, [loggedIn]);
@@ -97,15 +104,7 @@ export const Login = () => {
                 <form
                   onSubmit={(event) => {
                     event.preventDefault();
-                    handleSubmit().then(
-                      Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Invalid Username & Password",
-                        background: "#4B527E",
-                        color: "#f5e9cf",
-                      })
-                    );
+                    handleSubmit();
                   }}
                 >
                   <div className="input-group flex-nowrap">
@@ -203,15 +202,7 @@ const ForgotModal = (props) => {
         <Form
           onSubmit={(event) => {
             event.preventDefault();
-            handleForgetPassword().then(
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Email does not exist",
-                background: "#4B527E",
-                color: "#f5e9cf",
-              })
-            );
+            handleForgetPassword();
           }}
         >
           <Form.Group>
