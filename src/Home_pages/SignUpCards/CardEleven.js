@@ -120,8 +120,8 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div className="card" style={{ width: 50 + "rem" }}>
+        <div className="container-fluid d-flex justify-content-center">
+          <div className="card" style={{ width: 60 + "rem" }}>
             <div className="card-header">Family History:</div>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
@@ -188,27 +188,31 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
               <li className="list-group-item">
                 <div className="form-check-inline">
                   <span>Number of Siblings:</span>
-                  <input
-                    type="number"
-                    className="form-control ms-2"
-                    name="SiblingsCount"
-                    value={localFormData.SiblingsCount}
-                    min="0" 
-                    oninput="validity.valid||(value='');"
-                    onChange={handleNumberOfSiblings}
-                    required
-                  />
-                  <span>Ages:</span>
-                  <input
-                    type="number"
-                    className="form-control ms-2"
-                    name="siblingAge"
-                    value={localFormData.siblingAge}
-                    min="0" 
-                    oninput="validity.valid||(value='');"
-                    onChange={handleSiblingAges}
-                    required
-                  />
+                  <div className="d-inline-flex">
+                    <input
+                      type="number"
+                      className="form-control ms-2 "
+                      name="SiblingsCount"
+                      value={localFormData.SiblingsCount}
+                      min="0"
+                      oninput="validity.valid||(value='');"
+                      onChange={handleNumberOfSiblings}
+                      required
+                    />
+                  </div>
+                  <span className="ms-5">Ages:</span>
+                  <div className="d-inline-flex">
+                    <input
+                      type="number"
+                      className="form-control ms-2"
+                      name="siblingAge"
+                      value={localFormData.siblingAge}
+                      min="0"
+                      oninput="validity.valid||(value='');"
+                      onChange={handleSiblingAges}
+                      required
+                    />
+                  </div>
                 </div>
               </li>
               <li className="list-group-item">
@@ -245,18 +249,22 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
             </ul>
           </div>
         </div>
-        <div className="d-flex justify-content-end">
+        <div
+          className="d-flex justify-content-end"
+          style={{
+            paddingRight: 25 + "px",
+            paddingTop: 10 + "px",
+            paddingBottom: 5 + "px",
+          }}
+        >
           <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            className="btn nav-link fs-5 rounded-4 me-3"
             id="buttonCard"
             onClick={ButtonBack}
           >
             Back
           </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-          >
+          <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
             Next
           </button>
         </div>
@@ -384,7 +392,7 @@ const DeceasedYes = ({ setLocalFormData, localFormData }) => {
           type="number"
           name="AgeDeceased "
           value={localFormData.AgeDeceased}
-          min="0" 
+          min="0"
           oninput="validity.valid||(value='');"
           class="form-control rounded-4 ms-1"
           required

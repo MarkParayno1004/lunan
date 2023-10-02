@@ -49,8 +49,8 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div className="card" style={{ width: "50rem" }}>
+        <div className="container-fluid d-flex justify-content-center ">
+          <div className="card" style={{ width: "60rem" }}>
             <div className="card-header">
               Please fill up this intake form: (This form will be your Sign Up
               form or Register Form)
@@ -109,7 +109,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     placeholder="Zip:"
                     value={localFormData.Zip}
                     onChange={handleInputChange}
-                    min="0" 
+                    min="0"
                     oninput="validity.valid||(value='');"
                     required
                   />
@@ -230,18 +230,22 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
             </ul>
           </div>
         </div>
-        <div className="d-flex justify-content-end">
+        <div
+          className="d-flex justify-content-end"
+          style={{
+            paddingRight: 25 + "px",
+            paddingTop: 10 + "px",
+            paddingBottom: 5 + "px",
+          }}
+        >
           <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            className="btn nav-link fs-5 rounded-4 me-3"
             id="buttonCard"
             onClick={ButtonBack}
           >
             Back
           </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-          >
+          <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
             Next
           </button>
         </div>
