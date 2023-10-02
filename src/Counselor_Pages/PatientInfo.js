@@ -69,7 +69,45 @@ export const PatientInfo = (props) => {
   //!View Wellness Form Modal Behaviour
   const [showWell, setShowWell] = useState(false);
   const handleCloseWell = () => setShowWell(false);
-  const handleShowWell = () => setShowWell(true);
+
+  const handleShowWell = async (selectedPatientUID) => {
+    console.log("handleShowWellness called with UID:", selectedPatientUID);
+    try {
+      const wellForms = await fetchWellnessForPatient(selectedPatientUID);
+      setwellFormsForSelectedPatient(wellForms);
+      console.log("Wellness Forms fetched", wellForms);
+      setShowWell(true);
+  } catch (error) {
+    console.error("Error in handleShowAss:", error);
+  }
+};
+
+const [wellFormsForSelectedPatient, setwellFormsForSelectedPatient] = useState([]);
+
+const fetchWellnessForPatient = async (selectedPatientUID) => {
+  console.log("Fetching wellness forms for ", selectedPatientUID);
+  try {
+    const q = query(collection(firestore, "WellnessForm"), where("UID", "==", selectedPatientUID));
+    const querySnapshot = await getDocs(q);
+    const wellForms = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+
+      // Convert specific number fields to strings
+      data.WellnessQ1 = String(data.WellnessQ1);
+      data.WellnessQ2 = String(data.WellnessQ2);
+      data.WellnessQ3 = String(data.WellnessQ3);
+      data.WellnessQ4 = String(data.WellnessQ4);
+
+      return { id: doc.id, ...data };
+    });
+    console.log("Fetched Weekly Forms for", selectedPatientUID, wellForms);
+    return wellForms;
+  } catch (error) {
+    console.error("Error fetching wForms:", error);
+    return [];
+  }
+};
+
 
   //!Create Case Notes Form Modal Behaviour
   const [showCreate, setShowCreate] = useState(false);
@@ -659,7 +697,6 @@ export const PatientInfo = (props) => {
               <button
                 className="me-2 rounded-5 fw-semibold"
                 onClick={() => {
-                  console.log("View Assignment button clicked");
                   handleShowWeek(props.selectedPatientUID);
                 }}
                 id="viewButton"
@@ -669,7 +706,10 @@ export const PatientInfo = (props) => {
 
               <button
                 className="me-2 rounded-5 fw-semibold"
-                onClick={handleShowWell}
+                onClick={() => {
+                  console.log("View Assignment button clicked");
+                  handleShowWell(props.selectedPatientUID);
+                }}
                 id="viewButton"
               >
                 View Daily Form
@@ -701,7 +741,13 @@ export const PatientInfo = (props) => {
                 wForms={wFormsForSelectedPatient}
                 />
 
-              <ViewWellnessForm show={showWell} handleClose={handleCloseWell} />
+              <ViewWellnessForm 
+              show={showWell} 
+              handleClose={handleCloseWell} 
+              selectedPatientUID={props.selectedPatientUID}
+              wellForms={wellFormsForSelectedPatient}
+              />
+            
               {/* <CreateCaseNotes
                 show={showCreate}
                 handleClose={handleCloseCreate}
@@ -1115,14 +1161,48 @@ const ViewWellnessForm = (props) => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
-
   const handleShow = async (selectedPatientUID) => {
     console.log("Selected Patient UID:", props.selectedPatientUID);
+    setShow(true);
   };
+  const [wellForms, setwellForms] = useState(props.wellForms || []);
+
+  React.useEffect(() => {
+    console.log("Entered Use Effect");
+    setwellForms(props.wellForms || []);
+  }, [props.wellForms]);
+
+
+  const handleSelectwellForm = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedFormDocRef = doc(firestore, "WekkbessFirn", id); // Replace with your Firestore instance
+      const selectedFormDocSnap = await getDoc(selectedFormDocRef);
+  
+      // Check if the document exists
+      if (selectedFormDocSnap.exists()) {
+        // Get the data from the document
+        const selectedFormData = selectedFormDocSnap.data();
+  
+        // Include the document ID in the data
+        selectedFormData.id = selectedFormDocSnap.id;
+        // Set the entire document data to selectedwForm
+        setSelectedwellForm(selectedFormData);
+        setShow(true);
+        console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedFormData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
+  };
+  const [selectedwellForm, setSelectedwellForm] = useState(null);
 
   return (
     <Modal
@@ -1140,13 +1220,13 @@ const ViewWellnessForm = (props) => {
             className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
             onClick={() => handleTabChange("submitted")}
           >
-            Submitted Assignment
+            Submitted Wellness Forms
           </button>
           <button
             className={activeTab === "verified" ? "active" : ""}
             onClick={() => handleTabChange("verified")}
           >
-            Verified Assignments
+            Verified Wellness Forms
           </button>
         </div>
         {activeTab === "submitted" && (
@@ -1161,20 +1241,26 @@ const ViewWellnessForm = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John Doe</td>
-                  <td>06/22/2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                      onClick={handleShow}
-                    >
-                      Form
-                    </button>
-                    <ViewFormWell show={show} handleClose={handleClose} />
-                  </td>
-                </tr>
+                {wellForms
+                  .filter((wellForms) => wellForms.Status === null)
+                  .map((wellForm, index) => (
+                    <tr key={index}>
+                      <td>{wellForm.id}</td>
+                      <td>{wellForm.DateSubmitted}</td>
+                      <td>
+                        <button
+                          className="btn"
+                          style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                          onClick={() => {
+                            handleSelectwellForm(wellForm.id);
+                            handleShow(wellForm.id);
+                          }} // Pass the form's ID
+                        >
+                          View Form
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </>
@@ -1202,7 +1288,12 @@ const ViewWellnessForm = (props) => {
                     >
                       Form
                     </button>
-                    <ViewFormWell show={show} handleClose={handleClose} />
+                    <ViewFormWell 
+                    show={show} 
+                    handleClose={handleClose} 
+                    selectedwellForm={selectedwellForm}
+                    wellForm={selectedwellForm}
+                    />
                   </td>
                 </tr>
               </tbody>
