@@ -249,6 +249,7 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                           <textarea
                             className="form-control rounded-4"
                             placeholder="Answer"
+                            pattern="^[a-zA-Z0-9]+$"
                             id="floatingTextarea2"
                             name="ChronicIll"
                             style={{ height: 70 + "px", width: 45 + "rem" }}
@@ -366,6 +367,7 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
                       <textarea
                         className="form-control rounded-4"
                         id="floatingTextarea2"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="MaintMeds"
                         onChange={(e) => {
                           setMedication(e.target.value);
@@ -442,6 +444,7 @@ const Allergies = () => {
           className="form-control rounded-4"
           placeholder="Answer"
           id="floatingTextarea2"
+          pattern="^[a-zA-Z0-9]+$"
           name="AllergyList"
           style={{ height: 70 + "px", width: 20 + "rem" }}
           onChange={(e) => {
