@@ -282,6 +282,7 @@ const SupportYes = ({ setLocalFormData, localFormData }) => {
         <input
           type="text"
           name="SupWhom"
+          pattern="^[a-zA-Z0-9]+$"
           value={localFormData.SupWhom}
           class="form-control rounded-4 me-1"
           onChange={handleFamilySupport}
@@ -371,6 +372,7 @@ const DeceasedYes = ({ setLocalFormData, localFormData }) => {
         <input
           type="text"
           name="DeceasedWho"
+          pattern="^[a-zA-Z0-9]+$"
           value={localFormData.DeceasedWho}
           class="form-control rounded-4 ms-1"
           required

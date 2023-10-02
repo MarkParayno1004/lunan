@@ -361,6 +361,7 @@ const EmployedYes = ({ setLocalFormData, localFormData }) => {
           class="form-control rounded-4 me-2"
           name="Employer"
           placeholder="Answer:"
+          pattern="^[a-zA-Z0-9]+$"
           value={localFormData.Employer}
           onChange={handleEmployed}
           required
@@ -370,6 +371,7 @@ const EmployedYes = ({ setLocalFormData, localFormData }) => {
           type="text"
           class="form-control rounded-4 me-1"
           placeholder="Answer:"
+          pattern="^[a-zA-Z0-9]+$"
           name="CurrPos"
           value={localFormData.CurrPos}
           onChange={handleEmployed}
@@ -384,6 +386,7 @@ const EmployedYes = ({ setLocalFormData, localFormData }) => {
           <textarea
             class="form-control rounded-4"
             placeholder="Answer:"
+            pattern="^[a-zA-Z0-9]+$"
             id="floatingTextarea1"
             name="Stressors"
             style={{ height: 70 + "px", width: 45 + "rem" }}
@@ -565,6 +568,7 @@ const LegalYes = ({ setLocalFormData, localFormData }) => {
           <textarea
             class="form-control rounded-4"
             placeholder="Answer:"
+            pattern="^[a-zA-Z0-9]+$"
             name="LegalExp"
             value={localFormData.LegalExp}
             id="floatingTextarea1"

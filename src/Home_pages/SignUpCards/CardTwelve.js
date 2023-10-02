@@ -109,6 +109,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="DepressionMem"
                         value={localFormData.DepressionMem}
                         required
@@ -148,6 +149,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="BipolarMem"
                         value={localFormData.BipolarMem}
                         required
@@ -187,6 +189,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="AnxietyMem"
                         value={localFormData.AnxietyMem}
                         required
@@ -226,6 +229,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="PanicMem"
                         value={localFormData.PanicMem}
                         required
@@ -265,6 +269,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="SchizoMem"
                         value={localFormData.SchizoMem}
                         required
@@ -306,6 +311,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                         name="AlcoholMem"
                         value={localFormData.AlcoholMem}
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         required
                       />
                     </div>
@@ -346,6 +352,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                         name="EatingMem"
                         value={localFormData.EatingMem}
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         required
                       />
                     </div>
@@ -383,6 +390,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="LearningMem"
                         value={localFormData.LearningMem}
                         required
@@ -422,6 +430,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="TraumaMem"
                         value={localFormData.TraumaMem}
                         required
@@ -461,6 +470,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="SuicideMem"
                         value={localFormData.SuicideMem}
                         required
@@ -500,6 +510,7 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
                       <input
                         type="text"
                         class="form-control rounded-4 me-1"
+                        pattern="^[a-zA-Z0-9]+$"
                         name="PsychiatricMem"
                         value={localFormData.PsychiatricMem}
                         required

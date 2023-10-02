@@ -65,6 +65,7 @@ export const CardOne = ({
                     name="Fname"
                     className="form-control rounded-4 me-1"
                     placeholder="Full Name:"
+                    pattern="^[a-zA-Z0-9]+$"
                     onChange={handleInputChange}
                     value={localFormData.Fname}
                     required
@@ -74,6 +75,7 @@ export const CardOne = ({
                     name="Age"
                     className="form-control rounded-4"
                     placeholder="Age:"
+                    pattern="^[a-zA-Z0-9]+$"
                     value={localFormData.Age}
                     readOnly
                   />

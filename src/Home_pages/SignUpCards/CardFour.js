@@ -503,6 +503,7 @@ const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
         type="text"
         aria-label="PsychoTherapyResult"
         placeholder="Answer:"
+        pattern="^[a-zA-Z0-9]+$"
         name="WhyTherapy"
         value={localFormData.WhyTherapy}
         className="form-control me-3 rounded-4"
@@ -515,6 +516,7 @@ const PsychoTherapy = ({ setLocalFormData, localFormData }) => {
           type="text"
           aria-label="PsychoTherapyResult"
           placeholder="Answer:"
+          pattern="^[a-zA-Z0-9]+$"
           name="WhenTherapy"
           value={localFormData.WhenTherapy}
           className="form-control me-3 rounded-4"
