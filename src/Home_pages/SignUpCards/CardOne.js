@@ -83,8 +83,8 @@ export const CardOne = ({
 
               {/* Input Date Today and Birth Date */}
               <li className="list-group-item">
-                <p>Date today & your birth date:</p>
-                <div className="input-group">
+                <div className="input-group d-flex align-items-center">
+                  <label className="me-3">Date today & your birth date:</label>
                   <input
                     type="hidden"
                     name="DateToday"
@@ -92,70 +92,74 @@ export const CardOne = ({
                     value={localFormData.DateToday}
                     readOnly
                   />
-                  <input
-                    type="date"
-                    name="BirthDate"
-                    className="form-control rounded-4"
-                    onChange={handleChange}
-                    value={localFormData.BirthDate}
-                    required
-                  />
+                  <div className="d-inline-flex">
+                    <input
+                      type="date"
+                      name="BirthDate"
+                      className="form-control rounded-4"
+                      onChange={handleChange}
+                      value={localFormData.BirthDate}
+                      required
+                    />
+                  </div>
                 </div>
               </li>
 
               {/* Radio Button for Gender */}
               <li className="list-group-item">
-                <div className="form-check-inline">
-                  <p>Gender:</p>
-                  <input
-                    className="form-input"
-                    type="radio"
-                    name="Gender"
-                    value="Male"
-                    onChange={handleChange}
-                    checked={localFormData.Gender === "Male"}
-                    required
-                  />
-                  <label
-                    className="form-check-label ms-1"
-                    htmlFor="exampleRadios1"
-                  >
-                    Male
-                  </label>
-                </div>
-                <div className="form-check-inline">
-                  <input
-                    className="form-input"
-                    type="radio"
-                    name="Gender"
-                    value="Female"
-                    onChange={handleChange}
-                    checked={localFormData.Gender === "Female"}
-                    required
-                  />
-                  <label
-                    className="form-check-label ms-1"
-                    htmlFor="exampleRadios1"
-                  >
-                    Female
-                  </label>
-                </div>
-                <div className="form-check-inline">
-                  <input
-                    className="form-input"
-                    type="radio"
-                    name="Gender"
-                    value="Other"
-                    onChange={handleChange}
-                    checked={localFormData.Gender === "Other"}
-                  />
-                  <label
-                    className="form-check-label ms-1 me-2"
-                    htmlFor="exampleRadios1"
-                  >
-                    Other:
-                  </label>
-                  {showSpecification && <input type="text" />}
+                <div className="form-check-inline d-flex align-items-center">
+                  <label className="">Gender:</label>
+                  <div className="d-inline-flex d-flex align-items-center">
+                    <input
+                      className="form-input ms-2 "
+                      type="radio"
+                      name="Gender"
+                      value="Male"
+                      onChange={handleChange}
+                      checked={localFormData.Gender === "Male"}
+                      required
+                    />
+                    <label
+                      className="form-check-label me-2"
+                      htmlFor="exampleRadios1"
+                    >
+                      Male
+                    </label>
+                    <input
+                      className="form-input"
+                      type="radio"
+                      name="Gender"
+                      value="Female"
+                      onChange={handleChange}
+                      checked={localFormData.Gender === "Female"}
+                      required
+                    />
+                    <label
+                      className="form-check-label ms-1"
+                      htmlFor="exampleRadios1"
+                    >
+                      Female
+                    </label>
+                    <input
+                      className="form-input ms-2"
+                      type="radio"
+                      name="Gender"
+                      value="Other"
+                      onChange={handleChange}
+                      checked={localFormData.Gender === "Other"}
+                    />
+                    <label
+                      className="form-check-label ms-1 me-2"
+                      htmlFor="exampleRadios1"
+                    >
+                      Other:
+                    </label>
+                    {showSpecification && (
+                      <div className="d-inline-flex">
+                        <input type="text" className="form-control" required />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </li>
             </ul>

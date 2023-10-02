@@ -69,8 +69,8 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div class="container-fluid d-flex justify-content-center mt-3">
-          <div class="card" style={{ width: 50 + "rem" }}>
+        <div class="container-fluid d-flex justify-content-center">
+          <div class="card" style={{ width: 60 + "rem" }}>
             <div class="card-header">
               Has anyone in your family (either immediate family members or
               relatives) experienced difficulties with the following? (circle
@@ -522,18 +522,22 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
             </ul>
           </div>
         </div>
-        <div className="d-flex justify-content-end">
+        <div
+          className="d-flex justify-content-end"
+          style={{
+            paddingRight: 25 + "px",
+            paddingTop: 10 + "px",
+            paddingBottom: 5 + "px",
+          }}
+        >
           <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            className="btn nav-link fs-5 rounded-4 me-3"
             id="buttonCard"
             onClick={ButtonBack}
           >
             Back
           </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-          >
+          <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
             Submit
           </button>
         </div>

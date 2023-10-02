@@ -114,8 +114,8 @@ export const CardTen = ({ ButtonBack, ButtonNext, formData }) => {
   return (
     <div>
       <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center mt-3">
-          <div class="card" style={{ width: 50 + "rem " }}>
+        <div className="container-fluid d-flex justify-content-center">
+          <div class="card" style={{ width: 60 + "rem " }}>
             <div class="card-header">
               Occupational, Educational, Legal Information:
             </div>
@@ -320,18 +320,22 @@ export const CardTen = ({ ButtonBack, ButtonNext, formData }) => {
             </ul>
           </div>
         </div>
-        <div className="d-flex justify-content-end">
+        <div
+          className="d-flex justify-content-end"
+          style={{
+            paddingRight: 25 + "px",
+            paddingTop: 10 + "px",
+            paddingBottom: 5 + "px",
+          }}
+        >
           <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
+            className="btn nav-link fs-5 rounded-4 me-3"
             id="buttonCard"
             onClick={ButtonBack}
           >
             Back
           </button>
-          <button
-            className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4"
-            id="buttonCard"
-          >
+          <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
             Next
           </button>
         </div>
