@@ -982,16 +982,19 @@ const ViewWeeklyForm = (props) => {
       // Fetch the entire document by its ID
       const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
-
+  
       // Check if the document exists
       if (selectedFormDocSnap.exists()) {
         // Get the data from the document
         const selectedFormData = selectedFormDocSnap.data();
-
+  
+        // Include the document ID in the data
+        selectedFormData.id = selectedFormDocSnap.id;
         // Set the entire document data to selectedwForm
         setSelectedwForm(selectedFormData);
         setShow(true);
         console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedFormData);
       } else {
         console.error("Document not found for ID:", id);
         // Handle the case where the document doesn't exist
@@ -1072,16 +1075,19 @@ const ViewWeeklyForm = (props) => {
               </thead>
               <tbody>
                 {wForms
-                  .filter((wForm) => wForm.Status === "verified")
+                  .filter((wForm) => wForm.Status === "Verified")
                   .map((wForm, index) => (
                     <tr key={index}>
-                      <td>{wForm.Name}</td>
+                      <td>{wForm.id}</td>
                       <td>{wForm.DateSubmitted}</td>
                       <td>
                         <button
                           className="btn"
                           style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                          onClick={handleShow}
+                          onClick={() => {
+                            handleSelectwForm(wForm.id);
+                            handleShow(wForm.id);
+                          }} // Pass the form's ID
                         >
                           View Form
                         </button>
@@ -1310,6 +1316,7 @@ const ViewFormWeek = (props) => {
     {
       question: "1. I have felt cheerful and in good spirits.",
       answer: props.selectedwForm.WeeklyQ1 || "",  
+      id: props.selectedwForm.id,
     },
     {
       question: "2. I have felt calm and relaxed.",
@@ -1338,6 +1345,19 @@ const ViewFormWeek = (props) => {
   const q5 = selectedwForm.WeeklyQ5 || 0;
 
   const totalScore = q1 + q2 + q3 + q4 + q5;
+  
+  const updatewFormVerified = async (wFormId) => {
+    const formRef = doc(firestore, "WeeklyForm", wFormId);
+    try {
+      // Update the 'Status' field to "Verified"
+      await updateDoc(formRef, {
+        Status: "Verified",
+      });
+      console.log("Form status updated to Verified");
+    } catch (error) {
+      console.error("Error updating form status:", error);
+    }
+  };
   
   return (
     <Modal
@@ -1371,6 +1391,7 @@ const ViewFormWeek = (props) => {
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={() => updatewFormVerified(props.selectedwForm.id)}
           >
             Verify
           </button>
