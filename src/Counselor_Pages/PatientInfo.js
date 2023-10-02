@@ -1407,28 +1407,48 @@ const PublishCaseNotes = (props) => {
 
 const ViewFormWeek = (props) => {
   console.log("Selected Weekly Form Data:", props.selectedwForm);
+
+  const mapAnswer = (value) => {
+  switch (value) {
+    case 0:
+      return "At no time - 0";
+    case 1:
+      return "Some of the time - 1";
+    case 2:
+      return "Less than half of the time - 2";
+    case 3:
+      return "More than half of the time - 3";
+    case 4:
+      return "Most of the time - 4";
+    case 5:
+      return "All the time - 5";
+    default:
+      return "";
+  }
+};
+
   const questionsAndAnswers = props.selectedwForm 
   ? [
     {
       question: "1. I have felt cheerful and in good spirits.",
-      answer: props.selectedwForm.WeeklyQ1 || "",  
+      answer: mapAnswer(props.selectedwForm.WeeklyQ1),  
       id: props.selectedwForm.id,
     },
     {
       question: "2. I have felt calm and relaxed.",
-      answer: props.selectedwForm.WeeklyQ2 || "",  
+      answer: mapAnswer(props.selectedwForm.WeeklyQ2),  
     },
      {
       question: "3. I have felt active and vigorous.",
-      answer: props.selectedwForm.WeeklyQ3 || "",  
+      answer: mapAnswer(props.selectedwForm.WeeklyQ3),  
     },
     {
       question: "4. I woke up feeling fresh and rested.",
-      answer: props.selectedwForm.WeeklyQ4 || "",  
+      answer: mapAnswer(props.selectedwForm.WeeklyQ4),  
     },
     {
       question: "5. My daily life has been filled with things that interest me.",
-      answer: props.selectedwForm.WeeklyQ5 || "",  
+      answer: mapAnswer(props.selectedwForm.WeeklyQ5),  
     },
   ]
   : [];
@@ -1497,38 +1517,62 @@ const ViewFormWeek = (props) => {
   );
 };
 
-const ViewFormWell = (props) => {
+const mapAnswer = (value) => {
 
+  switch (value) {
+    case 1:
+      return "Not a very happy person - 1";
+    case 2:
+      return "Rather unhappy - 2";
+    case 3:
+      return "Somewhat unhappy - 3";
+    case 4:
+      return "Neither happy nor unhappy - 4";
+    case 5:
+      return "Somewhat happy - 5";
+    case 6:
+      return "Rather happy - 6";
+    case 7:
+      return "A very happy person - 7";
+    default:
+      return "";
+  }
+};
+
+const ViewFormWell = (props) => {
   const questionsAndAnswers = props.selectedwellForm 
-  ? [
-    {
-      question: "1. In general, I consider myself:",
-      answer: props.selectedwellForm.WellnessQ1 || "",  
-      id: props.selectedwellForm.id,
-    },
-    {
-      question: "2. Compared to most of my peers, I consider myself:",
-      answer: props.selectedwellForm.WellnessQ2 || "",  
-    },
-     {
-      question: "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
-      answer: props.selectedwellForm.WellnessQ3 || "",  
-    },
-    {
-      question: "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
-      answer: props.selectedwellForm.WellnessQ4 || "",  
-    },
-  ]
-  : [];
+    ? [
+      {
+        question: "1. In general, I consider myself:",
+        answer: mapAnswer(props.selectedwellForm.WellnessQ1),
+        id: props.selectedwellForm.id,
+      },
+      {
+        question: "2. Compared to most of my peers, I consider myself:",
+        answer: mapAnswer(props.selectedwellForm.WellnessQ2),
+      },
+       {
+        question: "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
+        answer: mapAnswer(props.selectedwellForm.WellnessQ3),
+      },
+      {
+        question: "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
+        answer: mapAnswer(props.selectedwellForm.WellnessQ4),
+      },
+    ]
+    : [];
+
+
 
   const selectedwellForm = props.selectedwellForm || {};
-  const q1 = selectedwellForm.WellnessQ1 || 0;  
-  const q2 = selectedwellForm.WellnessQ2 || 0;  
-  const q3 = selectedwellForm.WellnessQ3 || 0;  
-  const q4 = selectedwellForm.WellnessQ4 || 0;  
 
-  const totalScore = q1 + q2 + q3 + q4;
-  
+  const totalScore = (
+    selectedwellForm.WellnessQ1 +
+    selectedwellForm.WellnessQ2 +
+    selectedwellForm.WellnessQ3 +
+    selectedwellForm.WellnessQ4
+  );
+
   const updatewellFormVerified = async (wellFormId) => {
     const formRef = doc(firestore, "WellnessForm", wellFormId);
     try {
@@ -1556,7 +1600,7 @@ const ViewFormWell = (props) => {
           </Modal.Title>
         </Modal.Header>
         <div className="d-flex justify-content-end mt-3"> Total Score: {totalScore}/25</div>
-        <table class="table table-dark table-hover mt-3">
+        <table className="table table-dark table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Question:</th>
