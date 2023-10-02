@@ -123,6 +123,7 @@ export const Login = () => {
                       aria-label="Password"
                       aria-describedby="addon-wrapping"
                       value={password}
+                      pattern="[^()/><\][\\\x22,;|]+"
                       onChange={handlePasswordChange}
                       required
                     />
