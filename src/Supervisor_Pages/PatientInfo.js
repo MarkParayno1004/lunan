@@ -246,9 +246,9 @@ const PatientData = () => {
       </div>
 
       {/*Buttons */}
-      <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
+      <div className="button-group d-flex justify-content-center pt-4 pb-4">
         <button
-          className="me-2 rounded-5 fw-semibold"
+          className="me-4 rounded-5 fw-semibold"
           id="viewButton"
           onClick={handleAss}
         >
@@ -256,7 +256,7 @@ const PatientData = () => {
         </button>
 
         <button
-          className="me-2 rounded-5 fw-semibold"
+          className="me-4 rounded-5 fw-semibold"
           id="viewButton"
           onClick={handleCase}
         >
@@ -264,7 +264,7 @@ const PatientData = () => {
         </button>
 
         <button
-          className="me-2 rounded-5 fw-semibold"
+          className="me-4 rounded-5 fw-semibold"
           id="viewButton"
           onClick={handleWeekly}
         >
@@ -272,11 +272,15 @@ const PatientData = () => {
         </button>
 
         <button
-          className="me-2 rounded-5 fw-semibold"
+          className="me-4 rounded-5 fw-semibold"
           id="viewButton"
           onClick={handleDaily}
         >
           View Daily Form
+        </button>
+
+        <button className=" rounded-5 fw-semibold" id="viewButton">
+          View Wellness Guide
         </button>
 
         <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
