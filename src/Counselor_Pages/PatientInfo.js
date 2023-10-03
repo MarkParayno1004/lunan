@@ -77,37 +77,40 @@ export const PatientInfo = (props) => {
       setwellFormsForSelectedPatient(wellForm);
       console.log("Wellness Forms fetched", wellForm);
       setShowWell(true);
-  } catch (error) {
-    console.error("Error in handleShowAss:", error);
-  }
-};
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
 
-const [wellFormsForSelectedPatient, setwellFormsForSelectedPatient] = useState([]);
+  const [wellFormsForSelectedPatient, setwellFormsForSelectedPatient] =
+    useState([]);
 
-const fetchWellnessForPatient = async (selectedPatientUID) => {
-  console.log("Fetching wellness forms for ", selectedPatientUID);
-  try {
-    const q = query(collection(firestore, "WellnessForm"), where("UID", "==", selectedPatientUID));
-    const querySnapshot = await getDocs(q);
-    const wellForms = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
+  const fetchWellnessForPatient = async (selectedPatientUID) => {
+    console.log("Fetching wellness forms for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "WellnessForm"),
+        where("UID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const wellForms = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
 
-      // Convert specific number fields to strings
-      data.WellnessQ1 = String(data.WellnessQ1);
-      data.WellnessQ2 = String(data.WellnessQ2);
-      data.WellnessQ3 = String(data.WellnessQ3);
-      data.WellnessQ4 = String(data.WellnessQ4);
+        // Convert specific number fields to strings
+        data.WellnessQ1 = String(data.WellnessQ1);
+        data.WellnessQ2 = String(data.WellnessQ2);
+        data.WellnessQ3 = String(data.WellnessQ3);
+        data.WellnessQ4 = String(data.WellnessQ4);
 
-      return { id: doc.id, ...data };
-    });
-    console.log("Fetched Weekly Forms for", selectedPatientUID, wellForms);
-    return wellForms;
-  } catch (error) {
-    console.error("Error fetching wForms:", error);
-    return [];
-  }
-};
-
+        return { id: doc.id, ...data };
+      });
+      console.log("Fetched Weekly Forms for", selectedPatientUID, wellForms);
+      return wellForms;
+    } catch (error) {
+      console.error("Error fetching wForms:", error);
+      return [];
+    }
+  };
 
   //!Create Case Notes Form Modal Behaviour
   const [showCreate, setShowCreate] = useState(false);
@@ -184,6 +187,11 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
       return [];
     }
   };
+
+  const [showWellnessGuide, setWellnessGuide] = useState(false);
+  const handleCloseWG = () => setWellnessGuide(false);
+  const handleShowWG = () => setWellnessGuide(true);
+
   return (
     <Modal
       size="xl"
@@ -680,10 +688,10 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
             </div>
 
             {/*Buttons */}
-            <div className="button-group d-flex justify-content-end pb-3 pe-4 mt-5">
+            <div className="button-group d-flex justify-content-center pt-4 pb-4">
               {console.log("Before 'View Assignment' button click")}
               <button
-                className="me-2 rounded-5 fw-semibold"
+                className="me-4 rounded-5 fw-semibold"
                 onClick={() => {
                   console.log("View Assignment button clicked");
                   handleShowAss(props.selectedPatientUID);
@@ -695,7 +703,7 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
               {console.log("After 'View Assignment' button click")}
 
               <button
-                className="me-2 rounded-5 fw-semibold"
+                className="me-4 rounded-5 fw-semibold"
                 onClick={handleShowCase}
                 id="viewButton"
               >
@@ -703,7 +711,7 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
               </button>
 
               <button
-                className="me-2 rounded-5 fw-semibold"
+                className="me-4 rounded-5 fw-semibold"
                 onClick={() => {
                   handleShowWeek(props.selectedPatientUID);
                 }}
@@ -713,7 +721,7 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
               </button>
 
               <button
-                className="me-2 rounded-5 fw-semibold"
+                className="me-4 rounded-5 fw-semibold"
                 onClick={() => {
                   console.log("View Assignment button clicked");
                   handleShowWell(props.selectedPatientUID);
@@ -721,6 +729,14 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
                 id="viewButton"
               >
                 View Daily Form
+              </button>
+
+              <button
+                className="me-4 rounded-5 fw-semibold"
+                id="viewButton"
+                onClick={handleShowWG}
+              >
+                View Wellness Guide
               </button>
 
               <button
@@ -732,6 +748,7 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
                 Create Case Notes
               </button>
 
+              {/*MODALS */}
               <ViewModalAssign
                 show={showAss}
                 handleClose={handleCloseAss}
@@ -748,22 +765,24 @@ const fetchWellnessForPatient = async (selectedPatientUID) => {
                 wForms={wFormsForSelectedPatient}
               />
 
-              <ViewWellnessForm 
-              show={showWell} 
-              handleClose={handleCloseWell} 
-              selectedPatientUID={props.selectedPatientUID}
-              wellForms={wellFormsForSelectedPatient}
+              <ViewWellnessForm
+                show={showWell}
+                handleClose={handleCloseWell}
+                selectedPatientUID={props.selectedPatientUID}
+                wellForms={wellFormsForSelectedPatient}
               />
-            
-              {/* <CreateCaseNotes
-                show={showCreate}
-                handleClose={handleCloseCreate}
-                handleSubmit={handleSubmitCreate}
-              /> */}
+
+              <ViewWellnessGuide
+                show={showWellnessGuide}
+                handleClose={handleCloseWG}
+              />
             </div>
-            <div className="pb-5 pt-5">
-              {showPage && <CreateCaseNotes onClose={togglePage} />}
-            </div>
+
+            {showPage && (
+              <div className="pb-5 pt-5">
+                <CreateCaseNotes onClose={togglePage} />
+              </div>
+            )}
           </div>
         </div>
       </Modal.Body>
@@ -1201,12 +1220,12 @@ const ViewWellnessForm = (props) => {
       // Fetch the entire document by its ID
       const selectedFormDocRef = doc(firestore, "WellnessForm", id); // Replace with your Firestore instance
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
-  
+
       // Check if the document exists
       if (selectedFormDocSnap.exists()) {
         // Get the data from the document
         const selectedFormData = selectedFormDocSnap.data();
-  
+
         // Include the document ID in the data
         selectedFormData.id = selectedFormDocSnap.id;
         // Set the entire document data to selectedwellForm
@@ -1223,7 +1242,6 @@ const ViewWellnessForm = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
-
 
   return (
     <Modal
@@ -1271,7 +1289,10 @@ const ViewWellnessForm = (props) => {
                       <td>
                         <button
                           className="btn"
-                          style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
                           onClick={() => {
                             handleSelectwellForm(wellForm.id);
                             handleShow(wellForm.id);
@@ -1307,7 +1328,10 @@ const ViewWellnessForm = (props) => {
                       <td>
                         <button
                           className="btn"
-                          style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
                           onClick={() => {
                             handleSelectwellForm(wellForm.id);
                             handleShow(wellForm.id);
@@ -1322,12 +1346,12 @@ const ViewWellnessForm = (props) => {
             </table>
           </>
         )}
-        <ViewFormWell 
-          show={show} 
-          handleClose={handleClose} 
+        <ViewFormWell
+          show={show}
+          handleClose={handleClose}
           selectedwellForm={selectedwellForm}
           wellForm={selectedwellForm}
-          />
+        />
       </Modal.Body>
     </Modal>
   );
@@ -1431,52 +1455,51 @@ const PublishCaseNotes = (props) => {
 const ViewFormWeek = (props) => {
   console.log("Selected Weekly Form Data:", props.selectedwForm);
 
-
   const mapAnswer = (value) => {
-  switch (value) {
-    case 0:
-      return "At no time - 0";
-    case 1:
-      return "Some of the time - 1";
-    case 2:
-      return "Less than half of the time - 2";
-    case 3:
-      return "More than half of the time - 3";
-    case 4:
-      return "Most of the time - 4";
-    case 5:
-      return "All the time - 5";
-    default:
-      return "";
-  }
-};
+    switch (value) {
+      case 0:
+        return "At no time - 0";
+      case 1:
+        return "Some of the time - 1";
+      case 2:
+        return "Less than half of the time - 2";
+      case 3:
+        return "More than half of the time - 3";
+      case 4:
+        return "Most of the time - 4";
+      case 5:
+        return "All the time - 5";
+      default:
+        return "";
+    }
+  };
 
-  const questionsAndAnswers = props.selectedwForm 
-  ? [
-    {
-      question: "1. I have felt cheerful and in good spirits.",
-      answer: mapAnswer(props.selectedwForm.WeeklyQ1),  
-      id: props.selectedwForm.id,
-    },
-    {
-      question: "2. I have felt calm and relaxed.",
-      answer: mapAnswer(props.selectedwForm.WeeklyQ2),  
-    },
-     {
-      question: "3. I have felt active and vigorous.",
-      answer: mapAnswer(props.selectedwForm.WeeklyQ3),  
-    },
-    {
-      question: "4. I woke up feeling fresh and rested.",
-      answer: mapAnswer(props.selectedwForm.WeeklyQ4),  
-    },
-    {
-      question: "5. My daily life has been filled with things that interest me.",
-      answer: mapAnswer(props.selectedwForm.WeeklyQ5),  
-    },
-  ]
-  : [];
-
+  const questionsAndAnswers = props.selectedwForm
+    ? [
+        {
+          question: "1. I have felt cheerful and in good spirits.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ1),
+          id: props.selectedwForm.id,
+        },
+        {
+          question: "2. I have felt calm and relaxed.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ2),
+        },
+        {
+          question: "3. I have felt active and vigorous.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ3),
+        },
+        {
+          question: "4. I woke up feeling fresh and rested.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ4),
+        },
+        {
+          question:
+            "5. My daily life has been filled with things that interest me.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ5),
+        },
+      ]
+    : [];
 
   const selectedwForm = props.selectedwForm || {};
   const q1 = selectedwForm.WeeklyQ1 || 0;
@@ -1546,7 +1569,6 @@ const ViewFormWeek = (props) => {
 };
 
 const mapAnswer = (value) => {
-
   switch (value) {
     case 1:
       return "Not a very happy person - 1";
@@ -1568,38 +1590,37 @@ const mapAnswer = (value) => {
 };
 
 const ViewFormWell = (props) => {
-  const questionsAndAnswers = props.selectedwellForm 
+  const questionsAndAnswers = props.selectedwellForm
     ? [
-      {
-        question: "1. In general, I consider myself:",
-        answer: mapAnswer(props.selectedwellForm.WellnessQ1),
-        id: props.selectedwellForm.id,
-      },
-      {
-        question: "2. Compared to most of my peers, I consider myself:",
-        answer: mapAnswer(props.selectedwellForm.WellnessQ2),
-      },
-       {
-        question: "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
-        answer: mapAnswer(props.selectedwellForm.WellnessQ3),
-      },
-      {
-        question: "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
-        answer: mapAnswer(props.selectedwellForm.WellnessQ4),
-      },
-    ]
+        {
+          question: "1. In general, I consider myself:",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ1),
+          id: props.selectedwellForm.id,
+        },
+        {
+          question: "2. Compared to most of my peers, I consider myself:",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ2),
+        },
+        {
+          question:
+            "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ3),
+        },
+        {
+          question:
+            "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ4),
+        },
+      ]
     : [];
-
-
 
   const selectedwellForm = props.selectedwellForm || {};
 
-  const totalScore = (
+  const totalScore =
     selectedwellForm.WellnessQ1 +
     selectedwellForm.WellnessQ2 +
     selectedwellForm.WellnessQ3 +
-    selectedwellForm.WellnessQ4
-  );
+    selectedwellForm.WellnessQ4;
 
   const updatewellFormVerified = async (wellFormId) => {
     const formRef = doc(firestore, "WellnessForm", wellFormId);
@@ -1627,7 +1648,10 @@ const ViewFormWell = (props) => {
             <div>View Daily Form:</div>
           </Modal.Title>
         </Modal.Header>
-        <div className="d-flex justify-content-end mt-3"> Total Score: {totalScore}/25</div>
+        <div className="d-flex justify-content-end mt-3">
+          {" "}
+          Total Score: {totalScore}/25
+        </div>
         <table className="table table-dark table-hover mt-3">
           <thead>
             <tr>
@@ -1761,23 +1785,22 @@ const CreateAssignment = (props) => {
   );
 };
 
-const AssignmentFiles = (props) => {
+const ViewWellnessGuide = (props) => {
   return (
-    <Modal show={props.show} onHide={props.handleClose}>
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Files Submitted</Modal.Title>
+          <Modal.Title>Wellness Guide:</Modal.Title>
         </Modal.Header>
-        <table class="table">
-          <tr>
-            <th scope="col">Files:</th>
-            <th scope="col">Date:</th>
-          </tr>
-          <tbody>
-            <td>JournalDrawingEntry.docx</td>
-            <td>06/29/2023</td>
-          </tbody>
-        </table>
+        <div>Wellness Body:</div>
+        <Modal.Footer>
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+          >
+            Submit
+          </button>
+        </Modal.Footer>
       </Modal.Body>
     </Modal>
   );
