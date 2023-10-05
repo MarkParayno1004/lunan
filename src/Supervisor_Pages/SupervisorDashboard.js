@@ -77,7 +77,7 @@ export const SupervisorDashboard = () => {
                   setActiveComponent("patient");
                 }}
               >
-                All Patient List
+                All Patient
               </button>
             </li>
             <li

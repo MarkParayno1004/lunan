@@ -1,6 +1,3 @@
-#mainModal {
-  background-color: none;
-}
 #pInfoBG {
   background-color: #f5e9cf;
   min-height: 100vh;
@@ -34,4 +31,7 @@
   background-color: #4d455d;
   color: #f5e9cf;
   border: none;
+}
+.custom-shadow-modal {
+  box-shadow: white; /* Adjust the shadow as needed */
 }

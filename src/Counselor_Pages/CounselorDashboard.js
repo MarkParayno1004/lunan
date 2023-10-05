@@ -8,7 +8,6 @@ import { PatientList } from "./PatientList";
 import CounselorScheduler from "./CounselorScheduler";
 import { DefaultCounselorPage } from "./DefaultCounselorPage";
 import { AvatarCounselor } from "../SupportEngine/AvatarCounselor";
-import { WellnessPage } from "./WellnessPage";
 
 export const CounselorDashboard = (props) => {
   const [counselorName, setCounselorName] = useState("");
@@ -76,20 +75,7 @@ export const CounselorDashboard = (props) => {
                 View Patients
               </button>
             </li>
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "ViewWellnessGuide" ? "active" : ""
-              }`}
-            >
-              <button
-                id="hoverPatientList"
-                onClick={() => {
-                  setActiveComponent("ViewWellnessGuide");
-                }}
-              >
-                Wellness Guide
-              </button>
-            </li>
+
             <li
               className={`d-flex justify-content-start ${
                 activeComponent === "Schedule" ? "active" : ""
@@ -125,20 +111,6 @@ export const CounselorDashboard = (props) => {
         {activeComponent === "default" ? (
           <>
             <DefaultCounselorPage />
-            <AvatarCounselor
-              style={{
-                position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
-              }}
-            />
-            <AvatarCounselor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
-            />
-          </>
-        ) : activeComponent === "ViewWellnessGuide" ? (
-          <>
-            <WellnessPage />
             <AvatarCounselor
               style={{
                 position: "fixed",
