@@ -5,6 +5,8 @@ import { useState, useRef } from "react";
 import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
+import "../css/customscroll.css";
+import "../css/WellnessPageCounselor.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import {
   collection,
@@ -199,6 +201,7 @@ export const PatientInfo = (props) => {
       onHide={props.onHide}
       backdrop="static"
       keyboard={false}
+      style={{ overflowY: "hidden" }}
     >
       <Modal.Body id="piModal">
         <Modal.Header closeButton>
@@ -1786,14 +1789,122 @@ const CreateAssignment = (props) => {
 };
 
 const ViewWellnessGuide = (props) => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+    <Modal
+      size="xl"
+      show={props.show}
+      onHide={props.handleClose}
+      style={{ overflowY: "hidden" }}
+    >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Wellness Guide:</Modal.Title>
+          <Modal.Title>View Wellness Guide:</Modal.Title>
         </Modal.Header>
-        <div>Wellness Body:</div>
-        <Modal.Footer>
+        <div class=" d-flex justify-content-center mt-2">
+          <div class="row custom-scroll-wellness text-center">
+            {/*Right Column*/}
+            <div class="col">
+              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 class="card-header fs-2 fw-light">Meditation Guide</h5>
+                <div class="card-body">
+                  <iframe
+                    src="https://www.youtube.com/embed/cyMxWXlX9sU"
+                    title="10 Minute Guided Meditation for Positive Energy, Peace &amp; Light 🌤"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
+              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 class="card-header fs-2 fw-light">Breathing Exercise</h5>
+                <div class="card-body">
+                  <iframe
+                    src="https://www.youtube.com/embed/-7-CAFhJn78"
+                    title="Breathing Exercises for Relaxation or COPD - Ask Doctor Jo"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
+              <div class="card rounded-5" style={{ width: "450px" }}>
+                <h5 class="card-header fs-2 fw-light">Sleep Meditation</h5>
+                <div class="card-body">
+                  <iframe
+                    src="https://www.youtube.com/embed/rvaqPPjtxng"
+                    title="Guided Sleep Meditation &amp; Deep Relaxation 🌙"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+
+            {/*Left Column*/}
+            <div class="col me-5">
+              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 class="card-header fs-2 fw-light">Stretching Guide</h5>
+                <div class="card-body">
+                  <iframe
+                    src="https://www.youtube.com/embed/8TuRYV71Rgo"
+                    title="10 Minute Yoga Stress and Anxiety"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
+              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 class="card-header fs-2 fw-light">Relaxation Guide</h5>
+                <div class="card-body">
+                  <iframe
+                    src="https://www.youtube.com/embed/krBvzDlL0mM"
+                    title="Guided Meditation for Relaxation"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
+              <div class="card rounded-5" style={{ width: "450px" }}>
+                <h5 class="card-header fs-2 fw-light">Positive Energy</h5>
+                <div class="card-body">
+                  <iframe
+                    width="1863"
+                    height="770"
+                    src="https://www.youtube.com/embed/C5L8Z3qA1DA"
+                    title="5 Minute Meditation for Positive Energy"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Modal.Footer className="mt-2">
+          <button
+            className="btn ms-3"
+            style={{ backgroundColor: "#f5e9cf" }}
+            onClick={handleShow}
+          >
+            Add Guide
+          </button>
+          <AddGuide show={show} handleClose={handleClose} />
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
@@ -1801,6 +1912,46 @@ const ViewWellnessGuide = (props) => {
             Submit
           </button>
         </Modal.Footer>
+      </Modal.Body>
+    </Modal>
+  );
+};
+const AddGuide = (props) => {
+  return (
+    <Modal show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Publish A Guide</Modal.Title>
+        </Modal.Header>
+        <div class="input-group mb-3 mt-3">
+          <h5>Input Title:</h5>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-label="VideoTitle"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <h5>Input Video Link:</h5>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-label="VideoLink"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf" }}
+            onClick={props.handleClose}
+          >
+            Submit
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../../css/customscroll.css";
+import "../../css/wellnessCustomScroll.css";
 export const CardEight = ({ ButtonBack, ButtonNext, formData }) => {
   const [localFormData, setLocalFormData] = useState({
     depressedMoodNowSel: "",
