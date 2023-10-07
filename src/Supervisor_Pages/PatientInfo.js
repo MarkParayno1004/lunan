@@ -1,321 +1,775 @@
-import Modal from "react-bootstrap/Modal";
+import React from "react";
+import { Modal } from "react-bootstrap";
+import Pic from "../img/ProfilePic.png";
 import { useState, useRef } from "react";
+import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
-export const PatientInfo = (props) => {
-  return (
-    <>
-      <Modal
-        show={props.show}
-        onHide={props.handleClose}
-        size="xl"
-        backdrop="static"
-        keyboard={false}
-        dialogClassName="custom-shadow-modal"
-      >
-        <Modal.Body id="piModal">
-          <Modal.Header closeButton>
-            <Modal.Title id="example-custom-modal-styling-title">
-              Patient Information
-            </Modal.Title>
-          </Modal.Header>
-          <div className="container-fluid">
-            <PatientData />
-          </div>
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-};
+import Editor from "ckeditor5-custom-build/build/ckeditor";
+import "../css/customscroll.css";
+import "../css/WellnessPageCounselor.css";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+  updateDoc,
+  getFirestore,
+  addDoc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import HTMLReactParser from "html-react-parser";
+import { auth, firestore, storage } from "../firebase/firebase-config";
 
-//!PATIENT DATA
-const PatientData = () => {
+export const PatientInfo = (props) => {
+  const patientData = props.patientData;
+  const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
   const [showAss, setShowAss] = useState(false);
-  const handleAss = () => setShowAss(true);
   const handleCloseAss = () => setShowAss(false);
+  const handleShowAss = async (selectedPatientUID) => {
+    console.log("handleShowAss called with UID:", selectedPatientUID);
 
-  //!View Case Note Modal Behaviour
+    try {
+      // Fetch tasks for the selected patient and set them in state
+      const tasks = await fetchTasksForPatient(selectedPatientUID);
+      setTasksForSelectedPatient(tasks);
+
+      console.log("Tasks fetched", tasks);
+      setShowAss(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+
+  const handleShowWeek = async (selectedPatientUID) => {
+    console.log("handleShowWeek called with UID:", selectedPatientUID);
+    try {
+      const wForm = await fetchWeeklyForPatient(selectedPatientUID);
+      setwFormsForSelectedPatient(wForm);
+      console.log("Weekly Forms fetched", wForm);
+      setShowWeek(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+
+  //!View Case Notes  Modal Behaviour
   const [showCase, setShowCase] = useState(false);
-  const handleCase = () => setShowCase(true);
   const handleCloseCase = () => setShowCase(false);
+  const handleShowCase = () => setShowCase(true);
 
-  //!View Weekly Form
-  const [showWeekly, setWeeklyForm] = useState(false);
-  const handleWeekly = () => setWeeklyForm(true);
-  const handleCloseWeekly = () => setWeeklyForm(false);
+  const [tasksForSelectedPatient, setTasksForSelectedPatient] = useState([]);
+  const [wFormsForSelectedPatient, setwFormsForSelectedPatient] = useState([]);
 
-  //!View Daily Form
-  const [showDaily, setDailyForm] = useState(false);
-  const handleDaily = () => setDailyForm(true);
-  const handleCloseDaily = () => setDailyForm(false);
+  //!View Weekly Form  Modal Behaviour
+  const [showWeek, setShowWeek] = useState(false);
+  const handleCloseWeek = () => setShowWeek(false);
 
-  //!View Wellness Guide
+  //!View Wellness Form Modal Behaviour
+  const [showWell, setShowWell] = useState(false);
+  const handleCloseWell = () => setShowWell(false);
+
+  const handleShowWell = async (selectedPatientUID) => {
+    console.log("handleShowWellness called with UID:", selectedPatientUID);
+    try {
+      const wellForm = await fetchWellnessForPatient(selectedPatientUID);
+      setwellFormsForSelectedPatient(wellForm);
+      console.log("Wellness Forms fetched", wellForm);
+      setShowWell(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+
+  const [wellFormsForSelectedPatient, setwellFormsForSelectedPatient] =
+    useState([]);
+
+  const fetchWellnessForPatient = async (selectedPatientUID) => {
+    console.log("Fetching wellness forms for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "WellnessForm"),
+        where("UID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const wellForms = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+
+        // Convert specific number fields to strings
+        data.WellnessQ1 = String(data.WellnessQ1);
+        data.WellnessQ2 = String(data.WellnessQ2);
+        data.WellnessQ3 = String(data.WellnessQ3);
+        data.WellnessQ4 = String(data.WellnessQ4);
+
+        return { id: doc.id, ...data };
+      });
+      console.log("Fetched Weekly Forms for", selectedPatientUID, wellForms);
+      return wellForms;
+    } catch (error) {
+      console.error("Error fetching wForms:", error);
+      return [];
+    }
+  };
+
+  //!Create Case Notes Form Modal Behaviour
+  const [showCreate, setShowCreate] = useState(false);
+  const handleCloseCreate = () => {
+    setShowCreate(false);
+  };
+  const handleShowCreate = () => setShowCreate(true);
+
+  const [showPage, setShowPage] = useState(false);
+
+  const togglePage = () => {
+    setShowPage(!showPage);
+  };
+  const handleClose = () => {
+    props.handleClose();
+  };
+  const handleSubmitCreate = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Case note has been created sucessfully!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
+    setShowCreate(false);
+  };
+  const fetchTasksForPatient = async (selectedPatientUID) => {
+    console.log("Fetching tasks for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "Tasks"),
+        where("PatientUID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const tasks = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Fetched tasks for", selectedPatientUID, tasks);
+      return tasks;
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      return [];
+    }
+  };
+
+  const fetchWeeklyForPatient = async (selectedPatientUID) => {
+    console.log("Fetching weekly forms for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "WeeklyForm"),
+        where("UID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const wForms = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+
+        // Convert specific number fields to strings
+        data.WeeklyQ1 = String(data.WeeklyQ1);
+        data.WeeklyQ2 = String(data.WeeklyQ2);
+        data.WeeklyQ3 = String(data.WeeklyQ3);
+        data.WeeklyQ4 = String(data.WeeklyQ4);
+        data.WeeklyQ5 = String(data.WeeklyQ5);
+
+        return { id: doc.id, ...data };
+      });
+      console.log("Fetched Weekly Forms for", selectedPatientUID, wForms);
+      return wForms;
+    } catch (error) {
+      console.error("Error fetching wForms:", error);
+      return [];
+    }
+  };
+
   const [showWellnessGuide, setWellnessGuide] = useState(false);
   const handleCloseWG = () => setWellnessGuide(false);
   const handleShowWG = () => setWellnessGuide(true);
 
   return (
-    <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
-      <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
-        <div className="col-1 ">
-          <img
-            src=""
-            className="patient-picture"
-            style={{ width: 100 + "px" }}
-          />
-        </div>
-        <div
-          className="col-8 ms-5 d-flex justify-content-center rounded-5"
-          id="colBG"
-        >
-          <div className="container-fluid patient-text">
-            {/*1st Row Header*/}
-            <div className="row">
-              <div className="col">
-                <strong>Name: </strong>
-                <span style={{ color: "red" }}></span>
+    <Modal
+      size="xl"
+      show={props.show}
+      onHide={props.onHide}
+      backdrop="static"
+      keyboard={false}
+    >
+      <Modal.Body id="piModal">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Patient Information
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid">
+          <div className="patient-info rounded-5 mt-3 ps-5 pe-5" id="piBG">
+            <div className="row d-flex align-items-start d-flex justify-content-start pt-3 ps-3 patient-details">
+              <div className="col-1 ">
+                <img
+                  src={Pic}
+                  alt={props.name}
+                  className="patient-picture"
+                  style={{ width: 100 + "px" }}
+                />
               </div>
-              <div className="col">
-                <strong>Age: </strong>
-                <span style={{ color: "red" }}></span>
-              </div>
-              <div className="col">
-                <strong>Gender: </strong>
-                <span style={{ color: "red" }}></span>
+              <div
+                className="col-8 ms-5 d-flex justify-content-center rounded-5"
+                id="colBG"
+              >
+                <div className="container-fluid patient-text">
+                  {/*1st Row */}
+                  <div className="row">
+                    <div className="col">
+                      <strong>Name: </strong>
+                      <span style={{ color: "red" }}>
+                        {props.patientData ? props.patientData.firstName : "N/A"}
+                      </span>
+                    </div>
+                    <div className="col">
+                      <strong>Age: </strong>
+                      <span style={{ color: "red" }}>
+                        {props.patientData ? props.patientData.Age : "N/A"}
+                      </span>
+                    </div>
+                    <div className="col">
+                      <strong>Gender: </strong>
+                      <span style={{ color: "red" }}>
+                        {props.patientData ? props.patientData.Gender : "N/A"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/*2nd Row */}
+                  <div className="row mt-3">
+                    <div className="col">
+                      <strong>Birthday: </strong>
+                      <span style={{ color: "red" }}>{props.birthday}</span>
+                    </div>
+
+                    <div className="col">
+                      <strong>Address: </strong>
+                      <br></br>
+                      {intakeFormsData && intakeFormsData[0] ? (
+                        <span style={{ color: "red" }}>
+                          {intakeFormsData[0].StreetNum || "N/A"}{" "}
+                          {intakeFormsData[0].Barangay || ""}{" "}
+                          {intakeFormsData[0].City || ""}
+                          {intakeFormsData[0].Zip || ""}
+                        </span>
+                      ) : (
+                        <span>Wala</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/*2nd Row Header*/}
-            <div className="row">
-              <div className="col">
-                <strong>Birthday: </strong>
-                <span style={{ color: "red" }}></span>
+            <div
+              className="container-fluid rounded-5 mt-3 pt-2 pb-2 pe-4"
+              id="colBG"
+            >
+              {/*3rd Row */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col ">
+                  <strong>Cell Phone Number: </strong>
+                  <span style={{ color: "red" }}>
+                    {props.patientData ? props.patientData.CellPhone : "N/A"}
+                  </span>
+                </div>
+
+                <div className="col">
+                  <strong>Home Phone Number: </strong>
+                  <span style={{ color: "red" }}>
+                    {props.patientData ? props.patientData.HomePhone : "N/A"}
+                  </span>
+                </div>
+                <div className="col">
+                  <strong>Email: </strong>
+                  <span style={{ color: "red" }}>
+                    {props.patientData ? props.patientData.Email : "N/A"}
+                  </span>
+                </div>
               </div>
-              <div className="col">
-                <strong>Address: </strong>
-                <span style={{ color: "red" }}></span>
+
+              {/*4th Row  */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Sexual Preference: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].SexualPref}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Marital Status: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].MaritalStatus}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Previous Psychotherapy: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].TherapyStatus}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
               </div>
-              <div className="col">
-                <strong>Assigned Counselor: </strong>
-                <span style={{ color: "red" }}></span>
+
+              {/*5th Row  */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Current prescribed psychiatric medications: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].CurrPsychMeds}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Emergency contact person name: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].CPFname}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Emergency contact person number: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].CPNum}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
               </div>
+
+              {/*6th Row  */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Suicidal thoughts: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].SuicidalThoughts}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Past suicidal thoughts: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].SuicidalThoughtsPast}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Current homicidal thoughts: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].CurrentHomicidal}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+
+              {/*7th Row  */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Previous homicidal thoughts: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].HadPreviousHomicide}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Current physical health: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].currentPhysicalHealth}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Last physical examination: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].LastPhysicalExam}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+
+              {/*8th Row  */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>List of chronic health problem: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].ChronicIll}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Any Allergies: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].AllergiesSel}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>List of maintenance medication: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].MaintMeds}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+
+              {/*9th Row */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Regular intake of alcohol: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].alcoholSubstanceAbuseSelNow}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Engage in recreational drug use: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].DrugUseSel || ""}{" "}
+                      {intakeFormsData[0].DrugUse || ""}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Habit of smoke: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].CiggDaily}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+
+              {/*10th Row */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Any past head injury: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].CPNum ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].HeadInjurySel}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Lately significant changes or stressors: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].Stressors ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].Stressors}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Depressed Mood or Sadness: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].depressedMoodNowSel ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].depressedMoodNowSel}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+
+              {/*11th Row */}
+              <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
+                <div className="col">
+                  <strong>Axiety: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].anxietySelNow ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].anxietySelNow}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Phobias: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].phobiasSelNow ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].phobiasSelNow || ""}{" "}
+                      {intakeFormsData[0].phobiasRatingNow || ""}{" "}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Hallucinations: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].hallucinationsSelNow ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].hallucinationsSelNow || ""}{" "}
+                      {intakeFormsData[0].hallucinationsRatingNow || ""}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+
+              {/*12th Row */}
+              <div className="row ms-2 mt-2">
+                <div className="col">
+                  <strong>Sexual Abuse: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].sexualAbuseSelNow ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].sexualAbuseSelNow || ""}{" "}
+                      {intakeFormsData[0].sexualAbuseRatingNow || ""}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Physical Abuse: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].physicalAbuseSelNow ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].physicalAbuseSelNow || ""}{" "}
+                      {intakeFormsData[0].physicalAbuseRatingNow || ""}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+
+                <div className="col">
+                  <strong>Emotional Abuse: </strong>
+                  {intakeFormsData &&
+                  intakeFormsData[0] &&
+                  intakeFormsData[0].emotionalAbuseSelNow ? (
+                    <span style={{ color: "red" }}>
+                      {intakeFormsData[0].emotionalAbuseSelNow || ""}{" "}
+                      {intakeFormsData[0].emotionalAbuseRatingNow || ""}
+                    </span>
+                  ) : (
+                    <span>N/A</span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/*Buttons */}
+            <div className="button-group d-flex justify-content-center pt-4 pb-4">
+              {console.log("Before 'View Assignment' button click")}
+              <button
+                className="me-4 rounded-5 fw-semibold"
+                onClick={() => {
+                  console.log("View Assignment button clicked");
+                  handleShowAss(props.selectedPatientUID);
+                }}
+                id="viewButton"
+              >
+                View Assingments
+              </button>
+              {console.log("After 'View Assignment' button click")}
+
+              <button
+                className="me-4 rounded-5 fw-semibold"
+                onClick={() => {
+                  handleShowWeek(props.selectedPatientUID);
+                }}
+                id="viewButton"
+              >
+                View Weekly Form
+              </button>
+
+              <button
+                className="me-4 rounded-5 fw-semibold"
+                onClick={() => {
+                  console.log("View Assignment button clicked");
+                  handleShowWell(props.selectedPatientUID);
+                }}
+                id="viewButton"
+              >
+                View Daily Form
+              </button>
+
+              <button
+                className="me-4 rounded-5 fw-semibold"
+                id="viewButton"
+                onClick={handleShowWG}
+              >
+                View Wellness Guide
+              </button>
+
+              {/*MODALS */}
+              <ViewModalAssign
+                show={showAss}
+                handleClose={handleCloseAss}
+                selectedPatientUID={props.selectedPatientUID}
+                tasks={tasksForSelectedPatient}
+              />
+
+              <ViewWeeklyForm
+                show={showWeek}
+                handleClose={handleCloseWeek}
+                selectedPatientUID={props.selectedPatientUID}
+                wForms={wFormsForSelectedPatient}
+              />
+
+              <ViewWellnessForm
+                show={showWell}
+                handleClose={handleCloseWell}
+                selectedPatientUID={props.selectedPatientUID}
+                wellForms={wellFormsForSelectedPatient}
+              />
+
+              <ViewWellnessGuide
+                show={showWellnessGuide}
+                handleClose={handleCloseWG}
+              />
             </div>
           </div>
         </div>
-      </div>
-
-      {/*Body Column */}
-      <div className="container-fluid rounded-5 mt-3 pt-2 pb-2 pe-4" id="colBG">
-        {/*1st Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Cell Phone Number: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Home Phone Number: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Email: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*2nd Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Sexual preference: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Marital status: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Previous psychotherapy: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*3rd Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Current prescribed psychiatric medications:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Emergency contact person name: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Emergency contact person number: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*4th Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Suicidal thoughts:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Past suicidal thoughts: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Current homicidal thoughts: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*5th Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Previous homicidal thoughts:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Current physical health: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Last physical examination: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*6th Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>List of chronic health problem:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Any allergies: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>List of maintenance medication: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*7th Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Any past head injury:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Lately significant changes or stressors: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Depressed mood or sadness: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*8th Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Anxiety:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Phobias: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Hallucinations: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-
-        {/*9th Row Body Column */}
-        <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
-          <div className="col">
-            <strong>Sexual abuse:</strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Physical abuse: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-          <div className="col">
-            <strong>Emotional abuse: </strong>
-            <span style={{ color: "red" }}></span>
-          </div>
-        </div>
-      </div>
-
-      {/*Buttons */}
-      <div className="button-group d-flex justify-content-center pt-4 pb-4">
-        <button
-          className="me-4 rounded-5 fw-semibold"
-          id="viewButton"
-          onClick={handleAss}
-        >
-          View Assignment
-        </button>
-
-        <button
-          className="me-4 rounded-5 fw-semibold"
-          id="viewButton"
-          onClick={handleCase}
-        >
-          View Case Notes
-        </button>
-
-        <button
-          className="me-4 rounded-5 fw-semibold"
-          id="viewButton"
-          onClick={handleWeekly}
-        >
-          View Weekly Form
-        </button>
-
-        <button
-          className="me-4 rounded-5 fw-semibold"
-          id="viewButton"
-          onClick={handleDaily}
-        >
-          View Daily Form
-        </button>
-
-        <button
-          className="me-4 rounded-5 fw-semibold"
-          id="viewButton"
-          onClick={handleShowWG}
-        >
-          View Wellness Guide
-        </button>
-
-        <ViewModalAssign show={showAss} handleClose={handleCloseAss} />
-        <ViewModalCase show={showCase} handleClose={handleCloseCase} />
-
-        <ViewModalWeekly show={showWeekly} handleClose={handleCloseWeekly} />
-        <ViewFormDaily show={showDaily} handleClose={handleCloseDaily} />
-        <ViewWellnessGuide
-          show={showWellnessGuide}
-          handleClose={handleCloseWG}
-        />
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 
 //!MODALS
 
-//!Assignment Modals
 const ViewModalAssign = (props) => {
-  const [activeTab, setActiveTab] = useState("turnedIn");
+  const [activeTab, setActiveTab] = useState("assigned");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
+  const [tasks, setTasks] = useState(props.tasks || []);
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
@@ -341,6 +795,14 @@ const ViewModalAssign = (props) => {
     });
     setShow(false);
   };
+  React.useEffect(() => {
+    // Update tasks when props.tasks changes
+    console.log("Entered Use Effect");
+    setTasks(props.tasks || []);
+  }, [props.tasks]);
+
+
+
   return (
     <Modal
       show={props.show}
@@ -352,56 +814,44 @@ const ViewModalAssign = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Assignment</Modal.Title>
         </Modal.Header>
-        <div className="tabs mt-4 mb-3 d-flex justify-content-start">
+        <div className="tabs mt-4 d-flex justify-content-start">
           <button
-            className={`me-3 rounded-5 ${
-              activeTab === "turnedIn" ? "active" : ""
-            }`}
+            className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
+            onClick={() => handleTabChange("assigned")}
+          >
+            Assigned
+          </button>
+          <button
+            className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
             onClick={() => handleTabChange("turnedIn")}
-            style={{ borderStyle: "none" }}
           >
             Turned-in Assignments
           </button>
           <button
-            className={`me-3 rounded-5 ${
-              activeTab === "verified" ? "active" : ""
-            }`}
+            className={activeTab === "verified" ? "active" : ""}
             onClick={() => handleTabChange("verified")}
-            style={{ borderStyle: "none" }}
           >
             Verified Assignments
           </button>
         </div>
         <table class="table table-dark table-hover">
-          {activeTab === "turnedIn" && (
+          {activeTab === "assigned" && (
             <>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
                   <th scope="col">Descsription:</th>
-                  <th scope="col">Turned in on:</th>
                 </tr>
               </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>
-                    <span
-                      onClick={handleShowFiles}
-                      style={{ cursor: "pointer", textDecoration: "underline" }}
-                    >
-                      Journal and Drawing Entry
-                    </span>
-                    <AssignmentFiles
-                      show={showFiles}
-                      handleClose={handleCloseFiles}
-                    />
-                  </td>
-                  <td>
-                    Make a Journal about yourself and make a drawing entry that
-                    represents you today.
-                  </td>
-                  <td>March 8, 2023</td>
-                </tr>
+              <tbody className="table-group-divider">
+                {tasks
+                  .filter((task) => task.Status === null)
+                  .map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.Activity}</td>
+                      <td>{task.Description}</td>
+                    </tr>
+                  ))}
               </tbody>
             </>
           )}
@@ -410,16 +860,51 @@ const ViewModalAssign = (props) => {
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
-                  <th scope="col">Turned in on:</th>
-                  <th scope="col">Files:</th>
+                  <th scope="col">Description:</th>
+                  <th scope="col">Turn-In Date:</th>{" "}
+                  {/* Display Firestore document ID here */}
                 </tr>
               </thead>
-              <tbody class="table-group-divider">
+              <tbody className="table-group-divider">
+                {console.log("Tasks:", tasks)}
+                {tasks
+                  .filter((task) => task.Status === "Verified")
+                  .map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.Activity}</td>
+                      <td>{task.Description}</td>
+                      <td>{task.id}</td>{" "}
+                      {/* Display Firestore document ID here */}
+                    </tr>
+                  ))}
+              </tbody>
+            </>
+          )}
+          {activeTab === "turnedIn" && (
+            <>
+              <thead>
                 <tr>
-                  <td>Journal and Drawing Entry</td>
-                  <td>March 8, 2023</td>
-                  <td>JournalDrawingEntry.docx</td>
+                  <th scope="col">Activity:</th>
+                  <th scope="col">Description:</th>
+                  <th scope="col">Turn-In Date:</th>{" "}
+                  {/* Display Firestore document ID here */}
+                  <th scope="col"></th>
                 </tr>
+              </thead>
+              <tbody className="table-group-divider">
+                {console.log("Tasks:", tasks)}
+                {tasks
+                  .filter((task) => task.Status === "turnedIn")
+                  .map((task, index) => (
+                    <tr key={index}>
+                      <td>{task.Activity}</td>
+                      <td>{task.Description}</td>
+                      <td>{task.id}</td>{" "}
+                      {/* Display Firestore document ID here */}
+                      <td>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </>
           )}
@@ -439,121 +924,50 @@ const ViewModalAssign = (props) => {
   );
 };
 
-const AssignmentFiles = (props) => {
-  return (
-    <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Files Submitted</Modal.Title>
-        </Modal.Header>
-        <table class="table">
-          <tr>
-            <th scope="col">Files:</th>
-            <th scope="col">Date:</th>
-          </tr>
-          <tbody>
-            <td>JournalDrawingEntry.docx</td>
-            <td>06/29/2023</td>
-          </tbody>
-        </table>
-      </Modal.Body>
-    </Modal>
-  );
-};
 
-//!Case Notes Modals
-const ViewModalCase = (props) => {
+const ViewWeeklyForm = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  return (
-    <Modal
-      className="mt-3"
-      show={props.show}
-      onHide={props.handleClose}
-      size="lg"
-    >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>View Case Notes</Modal.Title>
-        </Modal.Header>
-
-        <table class="table table-dark table-hover mt-3">
-          {}
-          <thead>
-            <tr>
-              <th scope="col">Name:</th>
-              <th scope="col">Date Created:</th>
-              <th scope="col">View Case:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>06/22/2023</td>
-              <td>
-                <button
-                  className="btn"
-                  style={{
-                    backgroundColor: "#f5e9cf",
-                    color: "#4d455d",
-                    width: "auto",
-                  }}
-                  onClick={handleShow}
-                >
-                  View Note
-                </button>
-              </td>
-              <PublishCaseNotes show={show} handleClose={handleClose} />
-            </tr>
-          </tbody>
-        </table>
-      </Modal.Body>
-    </Modal>
-  );
-};
-const PublishCaseNotes = (props) => {
-  return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Publish Case Notes:</Modal.Title>
-        </Modal.Header>
-        <table class="table table-dark table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">Case Notes:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                {" "}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </Modal.Body>
-    </Modal>
-  );
-};
-
-//!View Weekly Form Modals
-const ViewModalWeekly = (props) => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  const [wForms, setwForms] = useState(props.wForms || []);
   const [activeTab, setActiveTab] = useState("submitted");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  React.useEffect(() => {
+    console.log("Entered Use Effect");
+    setwForms(props.wForms || []);
+  }, [props.wForms]);
+
+  const [selectedwForm, setSelectedwForm] = useState(null);
+
+  const handleSelectwForm = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
+      const selectedFormDocSnap = await getDoc(selectedFormDocRef);
+
+      // Check if the document exists
+      if (selectedFormDocSnap.exists()) {
+        // Get the data from the document
+        const selectedFormData = selectedFormDocSnap.data();
+
+        // Include the document ID in the data
+        selectedFormData.id = selectedFormDocSnap.id;
+        // Set the entire document data to selectedwForm
+        setSelectedwForm(selectedFormData);
+        setShow(true);
+        console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedFormData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
   };
 
   return (
@@ -567,52 +981,55 @@ const ViewModalWeekly = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Patients Weekly Form</Modal.Title>
         </Modal.Header>
-        <div className="tabs mt-4 mb-2 d-flex justify-content-start">
+        <div className="tabs mt-4 d-flex justify-content-start">
           <button
-            className={`me-3 rounded-5 ${
-              activeTab === "submitted" ? "active" : ""
-            }`}
+            className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
             onClick={() => handleTabChange("submitted")}
-            style={{ borderStyle: "none" }}
           >
-            Submitted Assignment
+            Submitted Weekly Forms
           </button>
           <button
-            className={`me-3 rounded-5 ${
-              activeTab === "verified" ? "active" : ""
-            }`}
+            className={activeTab === "verified" ? "active" : ""}
             onClick={() => handleTabChange("verified")}
-            style={{ borderStyle: "none" }}
           >
-            Verified Assignments
+            Verified Weekly Forms
           </button>
         </div>
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table class="table table-dark table-hover mt-3">
+            <table className="table table-dark table-hover mt-3">
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
-                  <th scope="col">Date Submited:</th>
+                  <th scope="col">Date Submitted:</th>
                   <th scope="col">View Form:</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John Doe</td>
-                  <td>06/22/2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                      onClick={handleShow}
-                    >
-                      Form
-                    </button>
-                    <ViewFormWeek show={show} handleClose={handleClose} />
-                  </td>
-                </tr>
+                {wForms
+                  .filter((wForm) => wForm.Status === null)
+                  .map((wForm, index) => (
+                    <tr key={index}>
+                      <td>{wForm.id}</td>
+                      <td>{wForm.DateSubmitted}</td>
+                      <td>
+                        <button
+                          className="btn"
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
+                          onClick={() => {
+                            handleSelectwForm(wForm.id);
+                            handleShow(wForm.id);
+                          }} // Pass the form's ID
+                        >
+                          View Form
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </>
@@ -620,100 +1037,97 @@ const ViewModalWeekly = (props) => {
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table class="table table-dark table-hover mt-3">
+            <table className="table table-dark table-hover mt-3">
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
-                  <th scope="col">Date Submited:</th>
+                  <th scope="col">Date Submitted:</th>
                   <th scope="col">View Form:</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John Doe</td>
-                  <td>06/22/2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                      onClick={handleShow}
-                    >
-                      Form
-                    </button>
-                    <ViewFormWeek show={show} handleClose={handleClose} />
-                  </td>
-                </tr>
+                {wForms
+                  .filter((wForm) => wForm.Status === "Verified")
+                  .map((wForm, index) => (
+                    <tr key={index}>
+                      <td>{wForm.id}</td>
+                      <td>{wForm.DateSubmitted}</td>
+                      <td>
+                        <button
+                          className="btn"
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
+                          onClick={() => {
+                            handleSelectwForm(wForm.id);
+                            handleShow(wForm.id);
+                          }} // Pass the form's ID
+                        >
+                          View Form
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </>
         )}
-      </Modal.Body>
-    </Modal>
-  );
-};
-const ViewFormWeek = (props) => {
-  return (
-    <Modal
-      className="mt-3"
-      show={props.show}
-      onHide={props.handleClose}
-      size="lg"
-    >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>View Weekly Form:</Modal.Title>
-        </Modal.Header>
-        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
-        <table class="table table-dark table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">Question:</th>
-              <th scope="col">Answer:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1. I have felt cheerful and in good spirits.</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>2. I have felt calm and relaxed.</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>3. I have felt active and vigorous.</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>4. I woke up feeling fresh and rested.</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>
-                5. My daily life has been filled with things that interest me.
-              </td>
-              <td>A very happy and joyful person</td>
-            </tr>
-          </tbody>
-        </table>
+        <ViewFormWeek
+          show={show}
+          handleClose={handleClose}
+          selectedwForm={selectedwForm}
+          weeklyForm={selectedwForm}
+        />
       </Modal.Body>
     </Modal>
   );
 };
 
-//!View Daily Form Modals
-const ViewFormDaily = (props) => {
+const ViewWellnessForm = (props) => {
   const [activeTab, setActiveTab] = useState("submitted");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [wellForms, setwellForms] = useState(props.wellForms || []);
 
-  const handleShow = async (selectedPatientUID) => {
-    console.log("Selected Patient UID:", props.selectedPatientUID);
+  React.useEffect(() => {
+    console.log("Entered Use Effect");
+    setwellForms(props.wellForms || []);
+  }, [props.wellForms]);
+
+  const [selectedwellForm, setSelectedwellForm] = useState(null);
+
+  const handleSelectwellForm = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedFormDocRef = doc(firestore, "WellnessForm", id); // Replace with your Firestore instance
+      const selectedFormDocSnap = await getDoc(selectedFormDocRef);
+
+      // Check if the document exists
+      if (selectedFormDocSnap.exists()) {
+        // Get the data from the document
+        const selectedFormData = selectedFormDocSnap.data();
+
+        // Include the document ID in the data
+        selectedFormData.id = selectedFormDocSnap.id;
+        // Set the entire document data to selectedwellForm
+        setSelectedwellForm(selectedFormData);
+        setShow(true);
+        console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedFormData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
   };
 
   return (
@@ -729,22 +1143,16 @@ const ViewFormDaily = (props) => {
         </Modal.Header>
         <div className="tabs mt-4 d-flex justify-content-start">
           <button
-            className={`me-3 rounded-5 ${
-              activeTab === "submitted" ? "active" : ""
-            }`}
+            className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
             onClick={() => handleTabChange("submitted")}
-            style={{ borderStyle: "none" }}
           >
-            Submitted Assignment
+            Submitted Wellness Forms
           </button>
           <button
-            className={`me-3 rounded-5 ${
-              activeTab === "verified" ? "active" : ""
-            }`}
+            className={activeTab === "verified" ? "active" : ""}
             onClick={() => handleTabChange("verified")}
-            style={{ borderStyle: "none" }}
           >
-            Verified Assignments
+            Verified Wellness Forms
           </button>
         </div>
         {activeTab === "submitted" && (
@@ -759,20 +1167,29 @@ const ViewFormDaily = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John Doe</td>
-                  <td>06/22/2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                      onClick={handleShow}
-                    >
-                      Form
-                    </button>
-                    <ViewFormWell show={show} handleClose={handleClose} />
-                  </td>
-                </tr>
+                {wellForms
+                  .filter((wellForm) => wellForm.Status === null)
+                  .map((wellForm, index) => (
+                    <tr key={index}>
+                      <td>{wellForm.id}</td>
+                      <td>{wellForm.DateSubmitted}</td>
+                      <td>
+                        <button
+                          className="btn"
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
+                          onClick={() => {
+                            handleSelectwellForm(wellForm.id);
+                            handleShow(wellForm.id);
+                          }} // Pass the form's ID
+                        >
+                          View Form
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </>
@@ -789,29 +1206,195 @@ const ViewFormDaily = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John Doe</td>
-                  <td>06/22/2023</td>
-                  <td>
-                    <button
-                      className="btn"
-                      style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-                      onClick={handleShow}
-                    >
-                      Form
-                    </button>
-                    <ViewFormWell show={show} handleClose={handleClose} />
-                  </td>
-                </tr>
+                {wellForms
+                  .filter((wellForm) => wellForm.Status === "Verified")
+                  .map((wellForm, index) => (
+                    <tr key={index}>
+                      <td>{wellForm.id}</td>
+                      <td>{wellForm.DateSubmitted}</td>
+                      <td>
+                        <button
+                          className="btn"
+                          style={{
+                            backgroundColor: "#f5e9cf",
+                            color: "#4d455d",
+                          }}
+                          onClick={() => {
+                            handleSelectwellForm(wellForm.id);
+                            handleShow(wellForm.id);
+                          }} // Pass the form's ID
+                        >
+                          View Form
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </>
         )}
+        <ViewFormWell
+          show={show}
+          handleClose={handleClose}
+          selectedwellForm={selectedwellForm}
+          wellForm={selectedwellForm}
+        />
       </Modal.Body>
     </Modal>
   );
 };
+
+const ViewFormWeek = (props) => {
+  console.log("Selected Weekly Form Data:", props.selectedwForm);
+
+  const mapAnswer = (value) => {
+    switch (value) {
+      case 0:
+        return "At no time - 0";
+      case 1:
+        return "Some of the time - 1";
+      case 2:
+        return "Less than half of the time - 2";
+      case 3:
+        return "More than half of the time - 3";
+      case 4:
+        return "Most of the time - 4";
+      case 5:
+        return "All the time - 5";
+      default:
+        return "";
+    }
+  };
+
+  const questionsAndAnswers = props.selectedwForm
+    ? [
+        {
+          question: "1. I have felt cheerful and in good spirits.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ1),
+          id: props.selectedwForm.id,
+        },
+        {
+          question: "2. I have felt calm and relaxed.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ2),
+        },
+        {
+          question: "3. I have felt active and vigorous.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ3),
+        },
+        {
+          question: "4. I woke up feeling fresh and rested.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ4),
+        },
+        {
+          question:
+            "5. My daily life has been filled with things that interest me.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ5),
+        },
+      ]
+    : [];
+
+  const selectedwForm = props.selectedwForm || {};
+  const q1 = selectedwForm.WeeklyQ1 || 0;
+  const q2 = selectedwForm.WeeklyQ2 || 0;
+  const q3 = selectedwForm.WeeklyQ3 || 0;
+  const q4 = selectedwForm.WeeklyQ4 || 0;
+  const q5 = selectedwForm.WeeklyQ5 || 0;
+
+  const totalScore = q1 + q2 + q3 + q4 + q5;
+
+
+  return (
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Weekly Form:</Modal.Title>
+        </Modal.Header>
+        <div className="d-flex justify-content-end mt-3">
+          {" "}
+          Total Score: {totalScore}/25
+        </div>
+        <table class="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Question:</th>
+              <th scope="col">Answer:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questionsAndAnswers.map((qa, index) => (
+              <tr key={index}>
+                <td>{qa.question}</td>
+                <td>{qa.answer}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="d-flex justify-content-end">
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const mapAnswer = (value) => {
+  switch (value) {
+    case 1:
+      return "Not a very happy person - 1";
+    case 2:
+      return "Rather unhappy - 2";
+    case 3:
+      return "Somewhat unhappy - 3";
+    case 4:
+      return "Neither happy nor unhappy - 4";
+    case 5:
+      return "Somewhat happy - 5";
+    case 6:
+      return "Rather happy - 6";
+    case 7:
+      return "A very happy person - 7";
+    default:
+      return "";
+  }
+};
+
 const ViewFormWell = (props) => {
+  const questionsAndAnswers = props.selectedwellForm
+    ? [
+        {
+          question: "1. In general, I consider myself:",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ1),
+          id: props.selectedwellForm.id,
+        },
+        {
+          question: "2. Compared to most of my peers, I consider myself:",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ2),
+        },
+        {
+          question:
+            "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ3),
+        },
+        {
+          question:
+            "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
+          answer: mapAnswer(props.selectedwellForm.WellnessQ4),
+        },
+      ]
+    : [];
+
+  const selectedwellForm = props.selectedwellForm || {};
+
+  const totalScore =
+    selectedwellForm.WellnessQ1 +
+    selectedwellForm.WellnessQ2 +
+    selectedwellForm.WellnessQ3 +
+    selectedwellForm.WellnessQ4;
+
   return (
     <Modal
       className="mt-3"
@@ -825,8 +1408,11 @@ const ViewFormWell = (props) => {
             <div>View Daily Form:</div>
           </Modal.Title>
         </Modal.Header>
-        <div className="d-flex justify-content-end mt-3"> Total Score /25</div>
-        <table class="table table-dark table-hover mt-3">
+        <div className="d-flex justify-content-end mt-3">
+          {" "}
+          Total Score: {totalScore}/25
+        </div>
+        <table className="table table-dark table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Question:</th>
@@ -834,47 +1420,22 @@ const ViewFormWell = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1. In general, I consider myself:</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>2. Compared to most of my peers, I consider myself:</td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>
-                3. Some people are generally very happy. They enjoy life
-                regardless of what is going on, getting the most out of
-                everything. To what extent does this characterization describe
-                you?
-              </td>
-              <td>A very happy and joyful person</td>
-            </tr>
-            <tr>
-              <td>
-                4. Some people are generally not very happy. Although they are
-                not depressed, they never seem as happy as they might be. To
-                what extent does this characterization describe you?
-              </td>
-              <td>A very happy and joyful person</td>
-            </tr>
+            {questionsAndAnswers.map((qa, index) => (
+              <tr key={index}>
+                <td>{qa.question}</td>
+                <td>{qa.answer}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <div className="d-flex justify-content-end">
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-          >
-            Verify
-          </button>
         </div>
       </Modal.Body>
     </Modal>
   );
 };
 
-//!View Wellness Guide Modal
+
 const ViewWellnessGuide = (props) => {
   const [show, setShow] = useState(false);
 
