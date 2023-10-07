@@ -37,7 +37,8 @@ export const SIGNUPCARD = () => {
     setCard(card + 1);
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = (event) => {
+    event.preventDefault();
     setCard(card - 1);
   };
 

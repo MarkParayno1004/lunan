@@ -70,7 +70,8 @@ export const CardEleven = ({ ButtonBack, ButtonNext, formData }) => {
       [name]: value,
     }));
   };
-  const handleNext = () => {
+  const handleNext = (event) => {
+    event.preventDefault();
     console.log(localFormData); // Log form data
     ButtonNext(localFormData); // Call the ButtonNext function with form data
   };

@@ -51,7 +51,8 @@ export const CardSix = ({ ButtonBack, ButtonNext, formData }) => {
   //! List of medications
   const [showListMedication, setListMedication] = useState();
 
-  const handleNext = () => {
+  const handleNext = (event) => {
+    event.preventDefault();
     console.log(localFormData); // Log form data
     ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
