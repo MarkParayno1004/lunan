@@ -41,7 +41,8 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
     }));
   };
 
-  const handleNext = () => {
+  const handleNext = (event) => {
+    event.preventDefault();
     console.log(localFormData); // Log form data
     ButtonNext(localFormData); // Call the ButtonNext function with form data
   };
@@ -197,7 +198,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control  rounded-4 me-1"
                     name="Email"
                     placeholder="Email:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9@. ]+$"
                     value={localFormData.Email}
                     onChange={handleInputChange}
                     required

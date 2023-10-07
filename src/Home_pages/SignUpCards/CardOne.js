@@ -35,7 +35,8 @@ export const CardOne = ({
     }));
   };
 
-  const handleChange = (name, value) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     if (name === "BirthDate") {
       console.log("BirthDate:", value);
       const birthDate = new Date(value);
@@ -58,7 +59,8 @@ export const CardOne = ({
     }
   };
 
-  const handleNext = () => {
+  const handleNext = (event) => {
+    event.preventDefault();
     ButtonNext(localFormData);
   };
 
@@ -114,7 +116,7 @@ export const CardOne = ({
                         name="BirthDate"
                         className="form-control rounded-4"
                         onChange={handleDateAccept}
-                        value={localFormData.BirthDate}
+                        value={localFormData.BirthDate || null}
                       />
                     </LocalizationProvider>
                   </div>
@@ -135,6 +137,7 @@ export const CardOne = ({
                       checked={localFormData.Gender === "Male"}
                       required
                     />
+
                     <label
                       className="form-check-label me-2"
                       htmlFor="exampleRadios1"

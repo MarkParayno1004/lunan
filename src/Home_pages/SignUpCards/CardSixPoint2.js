@@ -50,7 +50,8 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
   //!Engage in recreational drug use
   const [showDrugUse, setDrugUse] = useState("");
 
-  const handleNext = () => {
+  const handleNext = (event) => {
+    event.preventDefault();
     console.log(localFormData); // Log form data
     ButtonNext(localFormData); // Call the ButtonNext function with form data
   };

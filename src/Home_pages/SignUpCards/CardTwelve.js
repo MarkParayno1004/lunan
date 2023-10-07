@@ -52,7 +52,8 @@ export const CardTwelve = ({ ButtonBack, ButtonSubmit, formData }) => {
     );
   }, [formData]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     console.log(localFormData); // Log form data
     ButtonSubmit(localFormData); // Call the ButtonNext function with form data
   };
