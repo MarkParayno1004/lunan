@@ -201,7 +201,6 @@ export const PatientInfo = (props) => {
       onHide={props.onHide}
       backdrop="static"
       keyboard={false}
-      style={{ overflowY: "hidden" }}
     >
       <Modal.Body id="piModal">
         <Modal.Header closeButton>
