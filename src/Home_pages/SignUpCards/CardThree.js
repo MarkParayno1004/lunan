@@ -58,7 +58,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                     type="text"
                     aria-label="EmergencyFullName"
                     placeholder="Full Name:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     name="CPFname"
                     className="form-control me-3 rounded-4"
                     value={localFormData.CPFname}
@@ -69,7 +69,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                     type="text"
                     aria-label="Relationship"
                     placeholder="Relationship to client"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     name="Rel"
                     className="form-control me-3 rounded-4"
                     value={localFormData.Rel}
@@ -80,7 +80,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                     type="text"
                     aria-label="Phone"
                     placeholder="Phone Number:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     name="CPNum"
                     value={localFormData.CPNum}
                     className="form-control rounded-4"
@@ -109,7 +109,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                     type="text"
                     aria-label="DoctorPhone"
                     placeholder="Phone Number:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     name="DocNum"
                     value={localFormData.DocNum}
                     className="form-control me-3 rounded-4"
@@ -123,7 +123,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control"
                     name="CommLearn"
                     placeholder="Leave a comment here"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     id="floatingTextarea"
                     value={localFormData.CommLearn}
                     onChange={handleInputChange}
@@ -139,7 +139,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control"
                     name="CommAssess"
                     placeholder="Leave a comment here"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     value={localFormData.CommAssess}
                     id="floatingTextarea"
                     onChange={handleInputChange}

@@ -66,7 +66,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control rounded-4 me-1"
                     name="StreetNum"
                     placeholder="Street and Number:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     value={localFormData.StreetNum}
                     onChange={handleInputChange}
                     required
@@ -76,7 +76,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control rounded-4 me-1"
                     name="Barangay"
                     placeholder="Barangay:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     value={localFormData.Barangay}
                     onChange={handleInputChange}
                     required
@@ -86,7 +86,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control rounded-4"
                     name="City"
                     placeholder="City:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     value={localFormData.City}
                     onChange={handleInputChange}
                     required
@@ -98,7 +98,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control rounded-4 mt-2 me-1"
                     name="Region"
                     placeholder="Region:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     value={localFormData.Region}
                     onChange={handleInputChange}
                     required
@@ -198,7 +198,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     className="form-control  rounded-4 me-1"
                     name="Email"
                     placeholder="Email:"
-                    pattern="^[a-zA-Z0-9@. ]+$"
+                    pattern="^[a-zA-Z0-9@. -_]+$"
                     value={localFormData.Email}
                     onChange={handleInputChange}
                     required

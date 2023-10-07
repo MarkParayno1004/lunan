@@ -405,7 +405,7 @@ const HeadInjuryYes = ({ setLocalFormData, localFormData }) => {
         <textarea
           className="form-control rounded-4"
           placeholder="Answer:"
-          pattern="^[a-zA-Z0-9]+$"
+          pattern="^[a-zA-Z0-9 ]+$"
           id="floatingTextarea1"
           name="HeadInjDef"
           style={{ height: 70 + "px", width: 20 + "rem" }}
