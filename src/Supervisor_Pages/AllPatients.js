@@ -17,6 +17,12 @@ export const AllPatients = () => {
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [counselorNames, setCounselorNames] = useState({});
   const [show, setShow] = useState(false);
+  const [selectedPatientUID, setSelectedPatientUID] = useState(null);
+  const [selectedPatientData, setSelectedPatientData] = useState(null);
+  const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
+    null,
+  ]);
+  const [showPatientInfo, setShowPatientInfo] = useState(false);
 
   useEffect(() => {
     const fetchPatientsData = async () => {
@@ -103,8 +109,50 @@ export const AllPatients = () => {
     return imageUrl;
   };
 
+  const handleSelectPatient = (UID) => {
+    setSelectedPatientUID(UID);
+    setShowPatientInfo(true);
+  };
+
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = async (UID) => {
+    console.log("Selected Patient UID:", UID);
+
+    try {
+      // Query the collection to find the document with the matching UID
+      const querySnapshot = await getDocs(collection(firestore, "Users"));
+      console.log("Query Snapshot:", querySnapshot.docs);
+
+      const matchingDocument = querySnapshot.docs.find(
+        (doc) => doc.data().UID === UID
+      );
+
+      if (matchingDocument) {
+        const patientData = matchingDocument.data();
+        console.log("Selected Patient Data:", patientData);
+
+        // Fetch additional data from the "IntakeForms" collection
+        const intakeFormsQuerySnapshot = await getDocs(
+          query(collection(firestore, "IntakeForms"), where("UID", "==", UID))
+        );
+        const intakeFormsData = intakeFormsQuerySnapshot.docs.map((doc) =>
+          doc.data()
+        );
+
+        console.log("Intake Forms Data:", intakeFormsData);
+
+        // Set the patient data and intake forms data to state
+        setSelectedPatientData(patientData);
+        setSelectedIntakeFormsData(intakeFormsData);
+
+        setShow(true);
+      } else {
+        console.log("Patient document does not exist");
+      }
+    } catch (error) {
+      console.error("Error fetching patient data:", error);
+    }
+  };
 
   return (
     <div
@@ -146,7 +194,10 @@ export const AllPatients = () => {
                     <td>
                       <button
                         style={{ border: "none", background: "none" }}
-                        onClick={handleShow}
+                        onClick={() => {
+                          handleSelectPatient(patient.UID);
+                          handleShow(patient.UID);
+                        }} // Pass the patient's UID
                       >
                         {patient.ProfPic ? (
                           <img
@@ -164,7 +215,13 @@ export const AllPatients = () => {
                           />
                         )}
                       </button>
-                      <PatientInfo show={show} handleClose={handleClose} />
+                      <PatientInfo 
+                      show={show} 
+                      handleClose={handleClose} 
+                      patientData={selectedPatientData}
+                      intakeFormsData={selectedIntakeFormsData}
+                      selectedPatientUID={selectedPatientUID}
+                      />
                     </td>
                     <td>{patient.firstName}</td>
                     <td>{patient.dateCreated}</td>
