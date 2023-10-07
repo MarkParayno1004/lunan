@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export const CardOne = ({
   ButtonNext,
   ButtonBack,
@@ -19,17 +22,31 @@ export const CardOne = ({
   }, [formData]);
 
   const [showSpecification, setSpecification] = useState(false);
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+
+  const handleDateAccept = (date) => {
+    console.log("BirthDate:", date); // Log the selected date
+    const today = new Date();
+    const age = Math.floor((today - date) / (365.25 * 24 * 60 * 60 * 1000));
+
+    setLocalFormData((prevFormData) => ({
+      ...prevFormData,
+      Age: age.toString(), // Update the Age value
+      BirthDate: date,
+    }));
+  };
+
+  const handleChange = (name, value) => {
     if (name === "BirthDate") {
+      console.log("BirthDate:", value);
       const birthDate = new Date(value);
       const today = new Date();
       const age = Math.floor(
         (today - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
       );
+
       setLocalFormData((prevFormData) => ({
         ...prevFormData,
-        Age: age.toString(),
+        Age: age.toString(), // Update the Age value
         [name]: value,
       }));
     } else {
@@ -42,8 +59,7 @@ export const CardOne = ({
   };
 
   const handleNext = () => {
-    console.log(localFormData); // Log form data
-    ButtonNext(localFormData); // Call the ButtonNext function with form data
+    ButtonNext(localFormData);
   };
 
   return (
@@ -93,14 +109,14 @@ export const CardOne = ({
                     readOnly
                   />
                   <div className="d-inline-flex">
-                    <input
-                      type="date"
-                      name="BirthDate"
-                      className="form-control rounded-4"
-                      onChange={handleChange}
-                      value={localFormData.BirthDate}
-                      required
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        name="BirthDate"
+                        className="form-control rounded-4"
+                        onChange={handleDateAccept}
+                        value={localFormData.BirthDate}
+                      />
+                    </LocalizationProvider>
                   </div>
                 </div>
               </li>
