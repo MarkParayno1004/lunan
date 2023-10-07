@@ -16,7 +16,7 @@ export const AllPatients = () => {
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [counselorNames, setCounselorNames] = useState({});
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState();
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
   const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
@@ -215,12 +215,12 @@ export const AllPatients = () => {
                           />
                         )}
                       </button>
-                      <PatientInfo 
-                      show={show} 
-                      handleClose={handleClose} 
-                      patientData={selectedPatientData}
-                      intakeFormsData={selectedIntakeFormsData}
-                      selectedPatientUID={selectedPatientUID}
+                      <PatientInfo
+                        show={show}
+                        onHide={handleClose}
+                        patientData={selectedPatientData}
+                        intakeFormsData={selectedIntakeFormsData}
+                        selectedPatientUID={selectedPatientUID}
                       />
                     </td>
                     <td>{patient.firstName}</td>
