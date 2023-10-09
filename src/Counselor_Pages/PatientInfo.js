@@ -1888,11 +1888,11 @@ const ViewWellnessGuide = (props) => {
             {/* Right Column - Static Guides */}
             <div className="col">
               <div className="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 className="card-header fs-2 fw-light">Static Guide 1</h5>
+                <h5 className="card-header fs-2 fw-light">Meditation Guide</h5>
                 <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/cyMxWXlX9sU"
-                    title="Static Guide 1"
+                    title="10 Minute Guided Meditation for Positive Energy, Peace &amp; Light 🌤"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
@@ -1901,11 +1901,11 @@ const ViewWellnessGuide = (props) => {
                 </div>
               </div>
               <div className="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 className="card-header fs-2 fw-light">Static Guide 2</h5>
+                <h5 className="card-header fs-2 fw-light">Breathing Exercise</h5>
                 <div className="card-body">
                   <iframe
-                    src="https://www.youtube.com/embed/static-guide-link-2"
-                    title="Static Guide 2"
+                    src="https://www.youtube.com/embed/-7-CAFhJn78"
+                    title="Breathing Exercises for Relaxation or COPD - Ask Doctor Jo"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
@@ -1913,26 +1913,44 @@ const ViewWellnessGuide = (props) => {
                   ></iframe>
                 </div>
               </div>
-              {/* Add more static guides as needed */}
+              <div className="card rounded-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Sleep Meditation</h5>
+                <div className="card-body">
+                  <iframe
+                    src="https://www.youtube.com/embed/rvaqPPjtxng"
+                    title="Guided Sleep Meditation &amp; Deep Relaxation 🌙"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    style={{ width: "400px" }}
+                  ></iframe>
+                </div>
+              </div>
             </div>
 
             {/* Left Column - Static and Dynamically Fetched Guides */}
             <div className="col me-5">
-              {guideData.map((guide, index) => (
-                <div className="card rounded-5 mb-5" style={{ width: "450px" }} key={index}>
-                  <h5 className="card-header fs-2 fw-light">{guide.Title}</h5>
-                  <div className="card-body">
-                    <iframe
-                      src={guide.Link}
-                      title={guide.Title}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      style={{ width: "400px" }}
-                    ></iframe>
+              {guideData
+                .filter((guide) => guide.PatientUID === props.selectedPatientUID)
+                .map((guide, index) => (
+                  <div
+                    className="card rounded-5 mb-5"
+                    style={{ width: "450px" }}
+                    key={index}
+                  >
+                    <h5 className="card-header fs-2 fw-light">{guide.Title}</h5>
+                    <div className="card-body">
+                      <iframe
+                        src={guide.Link}
+                        title={guide.Title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        style={{ width: "400px" }}
+                      ></iframe>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
