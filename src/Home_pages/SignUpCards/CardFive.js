@@ -485,7 +485,7 @@ const PsychiatricMedsTrue = ({ setLocalFormData, localFormData }) => {
           <textarea
             className="form-control rounded-4"
             placeholder="Answer"
-            pattern="^[a-zA-Z0-9]+$"
+            pattern="^[a-zA-Z0-9 ]+$"
             id="floatingTextarea2"
             name="CurrPsychMeds"
             style={{ height: 100 + "px", width: 30 + "rem" }}
@@ -578,7 +578,7 @@ const PrescribedMedication = ({ setLocalFormData, localFormData }) => {
           <textarea
             className="form-control rounded-4"
             placeholder="Answer"
-            pattern="^[a-zA-Z0-9]+$"
+            pattern="^[a-zA-Z0-9 ]+$"
             name="PrevPsychMeds"
             id="floatingTextarea2"
             value={localFormData.PrevPsychMeds}
@@ -694,7 +694,7 @@ const SuicidalThoughtsPast = ({ setLocalFormData, localFormData }) => {
         className="form-control rounded-4"
         name="SuicidalThoughtsPastTime"
         placeholder="Answer:"
-        pattern="^[a-zA-Z0-9]+$"
+        pattern="^[a-zA-Z0-9 ]+$"
         onChange={(e) => {
           setThoughts(e.target.value);
           const { name, value } = e.target;
@@ -721,7 +721,7 @@ const PreviouslyHomicideThoughts = ({ setLocalFormData, localFormData }) => {
           <textarea
             className="form-control rounded-4"
             placeholder="Answer"
-            pattern="^[a-zA-Z0-9]+$"
+            pattern="^[a-zA-Z0-9 ]+$"
             id="floatingTextarea2"
             name="PastHomicidalTime"
             style={{ height: 100 + "px", width: 40 + "rem" }}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from 'dayjs';
 export const CardOne = ({
   ButtonNext,
   ButtonBack,
@@ -25,13 +26,14 @@ export const CardOne = ({
 
   const handleDateAccept = (date) => {
     console.log("BirthDate:", date); // Log the selected date
+    const formattedDate = dayjs(date).format('YYYY-MM-DD');
     const today = new Date();
     const age = Math.floor((today - date) / (365.25 * 24 * 60 * 60 * 1000));
 
     setLocalFormData((prevFormData) => ({
       ...prevFormData,
       Age: age.toString(), // Update the Age value
-      BirthDate: date,
+      BirthDate: formattedDate,
     }));
   };
 
@@ -82,7 +84,7 @@ export const CardOne = ({
                     name="Fname"
                     className="form-control rounded-4 me-1"
                     placeholder="Full Name:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     onChange={handleInputChange}
                     value={localFormData.Fname}
                     required
@@ -92,7 +94,7 @@ export const CardOne = ({
                     name="Age"
                     className="form-control rounded-4"
                     placeholder="Age:"
-                    pattern="^[a-zA-Z0-9]+$"
+                    pattern="^[a-zA-Z0-9 ]+$"
                     value={localFormData.Age}
                     readOnly
                   />
