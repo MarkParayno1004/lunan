@@ -229,7 +229,9 @@ export const PatientInfo = (props) => {
                     <div className="col">
                       <strong>Name: </strong>
                       <span style={{ color: "red" }}>
-                        {props.patientData ? props.patientData.firstName : "N/A"}
+                        {props.patientData
+                          ? props.patientData.firstName
+                          : "N/A"}
                       </span>
                     </div>
                     <div className="col">
@@ -801,8 +803,6 @@ const ViewModalAssign = (props) => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
-
-
   return (
     <Modal
       show={props.show}
@@ -901,8 +901,7 @@ const ViewModalAssign = (props) => {
                       <td>{task.Description}</td>
                       <td>{task.id}</td>{" "}
                       {/* Display Firestore document ID here */}
-                      <td>
-                      </td>
+                      <td></td>
                     </tr>
                   ))}
               </tbody>
@@ -923,7 +922,6 @@ const ViewModalAssign = (props) => {
     </Modal>
   );
 };
-
 
 const ViewWeeklyForm = (props) => {
   const [show, setShow] = useState(false);
@@ -1302,7 +1300,6 @@ const ViewFormWeek = (props) => {
 
   const totalScore = q1 + q2 + q3 + q4 + q5;
 
-
   return (
     <Modal
       className="mt-3"
@@ -1334,8 +1331,7 @@ const ViewFormWeek = (props) => {
             ))}
           </tbody>
         </table>
-        <div className="d-flex justify-content-end">
-        </div>
+        <div className="d-flex justify-content-end"></div>
       </Modal.Body>
     </Modal>
   );
@@ -1428,13 +1424,11 @@ const ViewFormWell = (props) => {
             ))}
           </tbody>
         </table>
-        <div className="d-flex justify-content-end">
-        </div>
+        <div className="d-flex justify-content-end"></div>
       </Modal.Body>
     </Modal>
   );
 };
-
 
 const ViewWellnessGuide = (props) => {
   const [show, setShow] = useState(false);
