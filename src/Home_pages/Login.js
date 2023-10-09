@@ -51,6 +51,13 @@ export const Login = () => {
       sessionStorage.setItem("userUid", userUid);
     } catch (error) {
       console.error("Error logging in:", error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Invalid Username & Password",
+        background: "#4B527E",
+        color: "#f5e9cf",
+      });
     }
   };
 
@@ -101,60 +108,54 @@ export const Login = () => {
                 >
                   Login
                 </p>
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    handleSubmit();
-                  }}
-                >
-                  <div className="input-group flex-nowrap">
-                    <input
-                      type="email"
-                      className="form-control mt-3"
-                      placeholder="Email"
-                      aria-label="Email"
-                      aria-describedby="addon-wrapping"
-                      value={email}
-                      onChange={handleEmailChange}
-                      required
-                    />
-                  </div>
-                  <div className="input-group flex-nowrap">
-                    <input
-                      type="password"
-                      className="form-control mt-3"
-                      placeholder="Password"
-                      aria-label="Password"
-                      aria-describedby="addon-wrapping"
-                      value={password}
-                      pattern="^[a-zA-Z0-9]+$"
-                      onChange={handlePasswordChange}
-                      required
-                    />
-                  </div>
-                  <div className="d-flex justify-content-end">
-                    <Link
-                      className="fw-light mt-2"
-                      onClick={handleForget} // Open the modal when the link is clicked
-                      style={{
-                        color: "white",
-                        textDecoration: "none",
-                        fontSize: "18px",
-                      }}
-                    >
-                      Forgot Password
-                    </Link>
-                    <ForgotModal show={showForget} onHide={handleCloseForget} />
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      className="d-flex align-items-center justify-content-center"
-                      id="LoginButton"
-                    >
-                      Login
-                    </button>
-                  </div>
-                </form>
+                <div className="input-group flex-nowrap">
+                  <input
+                    type="email"
+                    className="form-control mt-3"
+                    placeholder="Email"
+                    aria-label="Email"
+                    aria-describedby="addon-wrapping"
+                    value={email}
+                    onChange={handleEmailChange}
+                    required
+                  />
+                </div>
+                <div className="input-group flex-nowrap">
+                  <input
+                    type="password"
+                    className="form-control mt-3"
+                    placeholder="Password"
+                    aria-label="Password"
+                    aria-describedby="addon-wrapping"
+                    value={password}
+                    pattern="^[a-zA-Z0-9]+$"
+                    onChange={handlePasswordChange}
+                    required
+                  />
+                </div>
+                <div className="d-flex justify-content-end">
+                  <Link
+                    className="fw-light mt-2"
+                    onClick={handleForget} // Open the modal when the link is clicked
+                    style={{
+                      color: "white",
+                      textDecoration: "none",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Forgot Password
+                  </Link>
+                  <ForgotModal show={showForget} onHide={handleCloseForget} />
+                </div>
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="d-flex align-items-center justify-content-center"
+                    id="LoginButton"
+                    onClick={handleSubmit} // Call handleSubmit when the button is clicked
+                  >
+                    Login
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -234,7 +235,6 @@ const ForgotModal = (props) => {
               className="rounded-5 fw-medium"
               variant="primary"
               id="BtnSubmitAC"
-              o
             >
               Submit
             </button>
