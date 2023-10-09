@@ -24,6 +24,10 @@ import {
   sendResetPasswordEmail,
 } from "./LoginBackend/LoginHelper"; // Adjust the import path accordingly
 
+function obfuscatePattern(pattern) {
+  // Replace characters with their ASCII codes, e.g., 'a' becomes '&#97;'
+  return pattern.replace(/./g, (char) => `&#${char.charCodeAt(0)};`);
+}
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,13 +75,6 @@ export const Login = () => {
         fetchUserData(userUid, navigate, setLoading, setFirstName);
       } else {
         console.error("Invalid user UID:", userUid);
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Invalid Username & Password",
-          background: "#4B527E",
-          color: "#f5e9cf",
-        });
       }
     }
   }, [loggedIn]);
@@ -108,59 +105,65 @@ export const Login = () => {
                 >
                   Login
                 </p>
-                <div className="input-group flex-nowrap">
-                  <input
-                    type="email"
-                    className="form-control mt-3"
-                    placeholder="Email"
-                    aria-label="Email"
-                    aria-describedby="addon-wrapping"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                  />
-                </div>
-                <div className="input-group flex-nowrap">
-                  <input
-                    type="password"
-                    className="form-control mt-3"
-                    placeholder="Password"
-                    aria-label="Password"
-                    aria-describedby="addon-wrapping"
-                    value={password}
-                    pattern="^[a-zA-Z0-9]+$"
-                    onChange={handlePasswordChange}
-                    required
-                  />
-                </div>
-                <div className="d-flex justify-content-end">
-                  <Link
-                    className="fw-light mt-2"
-                    onClick={handleForget} // Open the modal when the link is clicked
-                    style={{
-                      color: "white",
-                      textDecoration: "none",
-                      fontSize: "18px",
-                    }}
-                  >
-                    Forgot Password
-                  </Link>
-                  <ForgotModal show={showForget} onHide={handleCloseForget} />
-                </div>
-                <div className="d-flex justify-content-center">
-                  <button
-                    className="d-flex align-items-center justify-content-center"
-                    id="LoginButton"
-                    onClick={handleSubmit} // Call handleSubmit when the button is clicked
-                  >
-                    Login
-                  </button>
-                </div>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                >
+                  <div className="input-group flex-nowrap">
+                    <input
+                      type="email"
+                      className="form-control mt-3"
+                      placeholder="Email"
+                      aria-label="Email"
+                      aria-describedby="addon-wrapping"
+                      value={email}
+                      onChange={handleEmailChange}
+                      required
+                    />
+                  </div>
+                  <div className="input-group flex-nowrap">
+                    <input
+                      type="password"
+                      className="form-control mt-3"
+                      placeholder="Password"
+                      aria-label="Password"
+                      aria-describedby="addon-wrapping"
+                      value={password}
+                      pattern={obfuscatePattern("^[a-zA-Z0-9]+$")}
+                      onChange={handlePasswordChange}
+                      required
+                    />
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <Link
+                      className="fw-light mt-2"
+                      onClick={handleForget} // Open the modal when the link is clicked
+                      style={{
+                        color: "white",
+                        textDecoration: "none",
+                        fontSize: "18px",
+                      }}
+                    >
+                      Forgot Password
+                    </Link>
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      className="d-flex align-items-center justify-content-center"
+                      id="LoginButton"
+                    >
+                      Login
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <ForgotModal show={showForget} onHide={handleCloseForget} />
     </>
   );
 };
