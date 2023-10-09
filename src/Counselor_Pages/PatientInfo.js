@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
@@ -29,6 +29,7 @@ export const PatientInfo = (props) => {
   //!View Assignment Modal Behaviour
   const [showAss, setShowAss] = useState(false);
   const handleCloseAss = () => setShowAss(false);
+
   const handleShowAss = async (selectedPatientUID) => {
     console.log("handleShowAss called with UID:", selectedPatientUID);
 
@@ -192,7 +193,43 @@ export const PatientInfo = (props) => {
 
   const [showWellnessGuide, setWellnessGuide] = useState(false);
   const handleCloseWG = () => setWellnessGuide(false);
-  const handleShowWG = () => setWellnessGuide(true);
+  const [guideForSelectedPatient, setGuideForSelectedPatient] = useState([]);
+  
+  const handleShowWG = async (selectedPatientUID) =>   {
+  console.log("handleShowWG called with UID:", selectedPatientUID);
+
+    try {
+      // Fetch tasks for the selected patient and set them in state
+      const guide = await fetchGuideForPatient(selectedPatientUID);
+      setGuideForSelectedPatient(guide);
+
+      console.log("Guide fetched", guide);
+      setWellnessGuide(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+
+  const fetchGuideForPatient = async (selectedPatientUID) => {
+    console.log("Fetching Guides for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "Guide"),
+        where("PatientUID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const guide = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Fetched Guide for", selectedPatientUID, guide);
+      return guide;
+    } catch (error) {
+      console.error("Error fetching Guides:", error);
+      return [];
+    }
+  };
+  
 
   return (
     <Modal
@@ -736,7 +773,10 @@ export const PatientInfo = (props) => {
               <button
                 className="me-4 rounded-5 fw-semibold"
                 id="viewButton"
-                onClick={handleShowWG}
+                onClick={() => {
+                  console.log("View Guide button clicked");
+                  handleShowWG(props.selectedPatientUID);
+                }}
               >
                 View Wellness Guide
               </button>
@@ -777,6 +817,7 @@ export const PatientInfo = (props) => {
               <ViewWellnessGuide
                 show={showWellnessGuide}
                 handleClose={handleCloseWG}
+                selectedPatientUID={props.selectedPatientUID}
               />
             </div>
 
@@ -1715,6 +1756,7 @@ const CreateAssignment = (props) => {
         Description: description,
         counselorUID: currentUser.uid,
         PatientUID: props.selectedPatientUID,
+        Status: null,
       };
 
       console.log("PatientUID:", props.selectedPatientUID);
@@ -1789,9 +1831,46 @@ const CreateAssignment = (props) => {
 
 const ViewWellnessGuide = (props) => {
   const [show, setShow] = useState(false);
-
+  const [guideData, setGuideData] = useState([]);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShowAddGuide = () => setShow(true);
+  const handleSubmit = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Guide Added Successfully!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setShow(false);
+  };
+
+  const showAddGuideButton = props.selectedPatientUID !== null;
+
+  const fetchGuideData = async () => {
+    const db = getFirestore();
+    const q = query(collection(db, "Guide"));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      const guides = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        guides.push(data);
+      });
+      setGuideData(guides);
+    } catch (error) {
+      console.error("Error fetching guide data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (props.selectedPatientUID) {
+      fetchGuideData();
+    }
+  }, [props.selectedPatientUID]);
 
   return (
     <Modal
@@ -1804,118 +1883,151 @@ const ViewWellnessGuide = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Wellness Guide:</Modal.Title>
         </Modal.Header>
-        <div class=" d-flex justify-content-center mt-2">
-          <div class="row custom-scroll-wellness text-center">
-            {/*Right Column*/}
-            <div class="col">
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Meditation Guide</h5>
-                <div class="card-body">
+        <div className="d-flex justify-content-center mt-2">
+          <div className="row custom-scroll-wellness text-center">
+            {/* Right Column - Static Guides */}
+            <div className="col">
+              <div className="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Meditation Guide</h5>
+                <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/cyMxWXlX9sU"
                     title="10 Minute Guided Meditation for Positive Energy, Peace &amp; Light 🌤"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                     style={{ width: "400px" }}
                   ></iframe>
                 </div>
               </div>
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Breathing Exercise</h5>
-                <div class="card-body">
+              <div className="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Breathing Exercise</h5>
+                <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/-7-CAFhJn78"
                     title="Breathing Exercises for Relaxation or COPD - Ask Doctor Jo"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                     style={{ width: "400px" }}
                   ></iframe>
                 </div>
               </div>
-              <div class="card rounded-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Sleep Meditation</h5>
-                <div class="card-body">
+              <div className="card rounded-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Sleep Meditation</h5>
+                <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/rvaqPPjtxng"
                     title="Guided Sleep Meditation &amp; Deep Relaxation 🌙"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                     style={{ width: "400px" }}
                   ></iframe>
                 </div>
               </div>
             </div>
 
-            {/*Left Column*/}
-            <div class="col me-5">
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Stretching Guide</h5>
-                <div class="card-body">
-                  <iframe
-                    src="https://www.youtube.com/embed/8TuRYV71Rgo"
-                    title="10 Minute Yoga Stress and Anxiety"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </div>
-              </div>
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Relaxation Guide</h5>
-                <div class="card-body">
-                  <iframe
-                    src="https://www.youtube.com/embed/krBvzDlL0mM"
-                    title="Guided Meditation for Relaxation"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </div>
-              </div>
-              <div class="card rounded-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Positive Energy</h5>
-                <div class="card-body">
-                  <iframe
-                    width="1863"
-                    height="770"
-                    src="https://www.youtube.com/embed/C5L8Z3qA1DA"
-                    title="5 Minute Meditation for Positive Energy"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </div>
-              </div>
+            {/* Left Column - Static and Dynamically Fetched Guides */}
+            <div className="col me-5">
+              {guideData
+                .filter((guide) => guide.PatientUID === props.selectedPatientUID)
+                .map((guide, index) => (
+                  <div
+                    className="card rounded-5 mb-5"
+                    style={{ width: "450px" }}
+                    key={index}
+                  >
+                    <h5 className="card-header fs-2 fw-light">{guide.Title}</h5>
+                    <div className="card-body">
+                      <iframe
+                        src={guide.Link}
+                        title={guide.Title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        style={{ width: "400px" }}
+                      ></iframe>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
         <Modal.Footer className="mt-2">
-          <button
-            className="btn ms-3"
-            style={{ backgroundColor: "#f5e9cf" }}
-            onClick={handleShow}
-          >
-            Add Guide
-          </button>
-          <AddGuide show={show} handleClose={handleClose} />
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-          >
-            Submit
-          </button>
+          {showAddGuideButton && (
+            <button
+              className="btn ms-3"
+              style={{ backgroundColor: "#f5e9cf" }}
+              onClick={() => handleShowAddGuide(props.selectedPatientUID)}
+            >
+              Add Guide
+            </button>
+          )}
+          <AddGuide
+            show={show}
+            handleClose={handleClose}
+            handleSubmit={handleSubmit}
+            selectedPatientUID={props.selectedPatientUID}
+          />
         </Modal.Footer>
       </Modal.Body>
     </Modal>
   );
 };
+
 const AddGuide = (props) => {
+  const [guide, setGuide] = useState("");
+  const [link, setLink] = useState("");
+  const [title, setTitle] = useState("");
+  const [vidLink, setVidLink] = useState("");
+
+  const handleGuideChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleLinkChange = (e) => {
+    setVidLink(e.target.value);
+  };
+
+  function extractSrcFromIframe(iframeString) {
+    // Use regular expressions to extract the src attribute
+    const srcRegex = /src=["'](https:\/\/www\.youtube\.com\/embed\/[^"']+)/;
+    const match = iframeString.match(srcRegex);
+    return match ? match[1] : ''; // Return the extracted src or an empty string if not found
+  }
+  const handleAddGuide = () => {
+    const db = getFirestore();
+    const { currentUser } = getAuth();
+    console.log("currentUser:", currentUser.uid);
+    console.log("selectedPatientUID:", props.selectedPatientUID);
+
+    if (currentUser && props.selectedPatientUID) {
+      const guideData = {
+        Title: title,
+        Link: extractSrcFromIframe(vidLink),
+        dateAdded: new Date().toISOString().split("T")[0],
+        counselorUID: currentUser.uid,
+        PatientUID: props.selectedPatientUID,
+      };
+
+      console.log("PatientUID:", props.selectedPatientUID);
+      console.log("counselorUID:", currentUser.uid);
+
+      addDoc(collection(db, "Guide"), guideData)
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          // Perform any other actions after successful upload
+          props.handleClose();
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+    } else {
+      console.error("currentUser or selectedPatientUID is undefined.");
+    }
+  };
+
   return (
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
@@ -1930,6 +2042,8 @@ const AddGuide = (props) => {
               class="form-control"
               aria-label="VideoTitle"
               aria-describedby="basic-addon1"
+              onChange={handleGuideChange}
+              value={title}
             />
           </div>
           <h5>Input Video Link:</h5>
@@ -1939,6 +2053,8 @@ const AddGuide = (props) => {
               class="form-control"
               aria-label="VideoLink"
               aria-describedby="basic-addon1"
+              onChange={handleLinkChange}
+              value={vidLink}
             />
           </div>
         </div>
@@ -1946,7 +2062,7 @@ const AddGuide = (props) => {
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf" }}
-            onClick={props.handleClose}
+            onClick={handleAddGuide}
           >
             Submit
           </button>

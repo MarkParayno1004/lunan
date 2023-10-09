@@ -755,6 +755,7 @@ export const PatientInfo = (props) => {
               <ViewWellnessGuide
                 show={showWellnessGuide}
                 handleClose={handleCloseWG}
+                selectedPatientUID={props.selectedPatientUID}
               />
             </div>
           </div>
@@ -1432,9 +1433,46 @@ const ViewFormWell = (props) => {
 
 const ViewWellnessGuide = (props) => {
   const [show, setShow] = useState(false);
-
+  const [guideData, setGuideData] = useState([]);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShowAddGuide = () => setShow(true);
+  const handleSubmit = () => {
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Guide Added Successfully!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    setShow(false);
+  };
+
+  const showAddGuideButton = props.selectedPatientUID !== null;
+
+  const fetchGuideData = async () => {
+    const db = getFirestore();
+    const q = query(collection(db, "Guide"));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      const guides = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        guides.push(data);
+      });
+      setGuideData(guides);
+    } catch (error) {
+      console.error("Error fetching guide data: ", error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (props.selectedPatientUID) {
+      fetchGuideData();
+    }
+  }, [props.selectedPatientUID]);
 
   return (
     <Modal
@@ -1447,94 +1485,74 @@ const ViewWellnessGuide = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Wellness Guide:</Modal.Title>
         </Modal.Header>
-        <div class=" d-flex justify-content-center mt-2">
-          <div class="row custom-scroll-wellness text-center">
-            {/*Right Column*/}
-            <div class="col">
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Meditation Guide</h5>
-                <div class="card-body">
+        <div className="d-flex justify-content-center mt-2">
+          <div className="row custom-scroll-wellness text-center">
+            {/* Right Column - Static Guides */}
+            <div className="col">
+              <div className="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Meditation Guide</h5>
+                <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/cyMxWXlX9sU"
                     title="10 Minute Guided Meditation for Positive Energy, Peace &amp; Light 🌤"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                     style={{ width: "400px" }}
                   ></iframe>
                 </div>
               </div>
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Breathing Exercise</h5>
-                <div class="card-body">
+              <div className="card rounded-5 mb-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Breathing Exercise</h5>
+                <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/-7-CAFhJn78"
                     title="Breathing Exercises for Relaxation or COPD - Ask Doctor Jo"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                     style={{ width: "400px" }}
                   ></iframe>
                 </div>
               </div>
-              <div class="card rounded-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Sleep Meditation</h5>
-                <div class="card-body">
+              <div className="card rounded-5" style={{ width: "450px" }}>
+                <h5 className="card-header fs-2 fw-light">Sleep Meditation</h5>
+                <div className="card-body">
                   <iframe
                     src="https://www.youtube.com/embed/rvaqPPjtxng"
                     title="Guided Sleep Meditation &amp; Deep Relaxation 🌙"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    allowFullScreen
                     style={{ width: "400px" }}
                   ></iframe>
                 </div>
               </div>
             </div>
 
-            {/*Left Column*/}
-            <div class="col me-5">
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Stretching Guide</h5>
-                <div class="card-body">
-                  <iframe
-                    src="https://www.youtube.com/embed/8TuRYV71Rgo"
-                    title="10 Minute Yoga Stress and Anxiety"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </div>
-              </div>
-              <div class="card rounded-5 mb-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Relaxation Guide</h5>
-                <div class="card-body">
-                  <iframe
-                    src="https://www.youtube.com/embed/krBvzDlL0mM"
-                    title="Guided Meditation for Relaxation"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </div>
-              </div>
-              <div class="card rounded-5" style={{ width: "450px" }}>
-                <h5 class="card-header fs-2 fw-light">Positive Energy</h5>
-                <div class="card-body">
-                  <iframe
-                    width="1863"
-                    height="770"
-                    src="https://www.youtube.com/embed/C5L8Z3qA1DA"
-                    title="5 Minute Meditation for Positive Energy"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </div>
-              </div>
+            {/* Left Column - Static and Dynamically Fetched Guides */}
+            <div className="col me-5">
+              {guideData
+                .filter((guide) => guide.PatientUID === props.selectedPatientUID)
+                .map((guide, index) => (
+                  <div
+                    className="card rounded-5 mb-5"
+                    style={{ width: "450px" }}
+                    key={index}
+                  >
+                    <h5 className="card-header fs-2 fw-light">{guide.Title}</h5>
+                    <div className="card-body">
+                      <iframe
+                        src={guide.Link}
+                        title={guide.Title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        style={{ width: "400px" }}
+                      ></iframe>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
