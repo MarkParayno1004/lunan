@@ -24,10 +24,10 @@ import {
   sendResetPasswordEmail,
 } from "./LoginBackend/LoginHelper"; // Adjust the import path accordingly
 
-function obfuscatePattern(pattern) {
-  // Replace characters with their ASCII codes, e.g., 'a' becomes '&#97;'
-  return pattern.replace(/./g, (char) => `&#${char.charCodeAt(0)};`);
-}
+// function obfuscatePattern(pattern) {
+//   // Replace characters with their ASCII codes, e.g., 'a' becomes '&#97;'
+//   return pattern.replace(/./g, (char) => `&#${char.charCodeAt(0)};`);
+// }
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -131,7 +131,6 @@ export const Login = () => {
                       aria-label="Password"
                       aria-describedby="addon-wrapping"
                       value={password}
-                      pattern={obfuscatePattern("^[a-zA-Z0-9]+$")}
                       onChange={handlePasswordChange}
                       required
                     />
