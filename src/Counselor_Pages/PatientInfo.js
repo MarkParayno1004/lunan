@@ -60,7 +60,6 @@ export const PatientInfo = (props) => {
   //!View Case Notes  Modal Behaviour
   const [showCase, setShowCase] = useState(false);
   const handleCloseCase = () => setShowCase(false);
-  const handleShowCase = () => setShowCase(true);
 
   const [tasksForSelectedPatient, setTasksForSelectedPatient] = useState([]);
   const [wFormsForSelectedPatient, setwFormsForSelectedPatient] = useState([]);
@@ -229,8 +228,42 @@ export const PatientInfo = (props) => {
       return [];
     }
   };
-  
 
+  const [notesForSelectedPatient, setNotesForSelectedPatient] = useState([]);
+  const handleShowCase = async (selectedPatientUID) => {
+    console.log("handleShowAss called with UID:", selectedPatientUID);
+
+    try {
+      // Fetch notes for the selected patient and set them in state
+      const notes = await fetchNotesForPatient(selectedPatientUID);
+      setNotesForSelectedPatient(notes);
+
+      console.log("Tasks fetched", notes);
+      setShowCase(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+  const fetchNotesForPatient = async (selectedPatientUID) => {
+    console.log("Fetching notes for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "CaseNotes"),
+        where("patientUID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const notes = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Fetched notes for", selectedPatientUID, notes);
+      return notes;
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      return [];
+    }
+  };
+  
   return (
     <Modal
       size="xl"
@@ -743,7 +776,10 @@ export const PatientInfo = (props) => {
 
               <button
                 className="me-4 rounded-5 fw-semibold"
-                onClick={handleShowCase}
+                onClick={() => {
+                  console.log("View Case Notes button clicked");
+                  handleShowCase(props.selectedPatientUID);
+                }}
                 id="viewButton"
               >
                 View Case Notes
@@ -798,7 +834,12 @@ export const PatientInfo = (props) => {
                 tasks={tasksForSelectedPatient}
               />
 
-              <ViewCaseNotes show={showCase} handleClose={handleCloseCase} />
+              <ViewCaseNotes 
+              show={showCase} 
+              handleClose={handleCloseCase} 
+              selectedPatientUID={props.selectedPatientUID}
+              cNotes={notesForSelectedPatient}
+              />
 
               <ViewWeeklyForm
                 show={showWeek}
@@ -823,7 +864,10 @@ export const PatientInfo = (props) => {
 
             {showPage && (
               <div className="pb-5 pt-5">
-                <CreateCaseNotes onClose={togglePage} />
+                <CreateCaseNotes 
+                onClose={togglePage} 
+                selectedPatientUID={props.selectedPatientUID}
+                />
               </div>
             )}
           </div>
@@ -1034,6 +1078,42 @@ const ViewCaseNotes = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [cNotes, setcNotes] = useState(props.cNotes || []);
+
+  React.useEffect(() => {
+    console.log("Entered Use Effect");
+    setcNotes(props.cNotes || []);
+  }, [props.cNotes]);
+
+  const [selectedcNotes, setSelectedcNotes] = useState(null);
+
+  const handleSelectcNotes = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedcNotesRef = doc(firestore, "CaseNotes", id); // Replace with your Firestore instance
+      const selectedcNotesDocSnap = await getDoc(selectedcNotesRef);
+
+      // Check if the document exists
+      if (selectedcNotesDocSnap.exists()) {
+        // Get the data from the document
+        const selectedcNoteData = selectedcNotesDocSnap.data();
+
+        // Include the document ID in the data
+        selectedcNoteData.id = selectedcNotesDocSnap.id;
+        // Set the entire document data to selectedwForm
+        setSelectedcNotes(selectedcNoteData);
+        setShow(true);
+        console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedcNoteData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
+  };
   return (
     <Modal
       className="mt-3"
@@ -1056,9 +1136,11 @@ const ViewCaseNotes = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>06/22/2023</td>
+          {cNotes
+          .map((cNote, index) => (
+            <tr key={index}>
+              <td>{cNote.id}</td>
+              <td>{cNote.dateAdded}</td>
               <td>
                 <button
                   className="btn"
@@ -1067,13 +1149,22 @@ const ViewCaseNotes = (props) => {
                     color: "#4d455d",
                     width: "auto",
                   }}
-                  onClick={handleShow}
+                  onClick={() => {
+                    handleSelectcNotes(cNote.id);
+                    handleShow(cNote.id);
+                  }} // Pass the form's ID
                 >
                   View Note
                 </button>
               </td>
-              <PublishCaseNotes show={show} handleClose={handleClose} />
+              <PublishCaseNotes 
+              show={show} 
+              handleClose={handleClose} 
+              selectedcNotes={selectedcNotes}
+              caseNotes={selectedcNotes}
+              />
             </tr>
+            ))}
           </tbody>
         </table>
       </Modal.Body>
@@ -1400,13 +1491,32 @@ const ViewWellnessForm = (props) => {
   );
 };
 
-const CreateCaseNotes = ({ onClose }) => {
+const CreateCaseNotes = (props) => {
   const [editorData, setEditorData] = useState("");
 
-  //get data when submit is clicked
-  const handleSubmit = () => {
-    console.log("Editor Data:", editorData.props.children);
+  const handleSubmitCase = async () => {
+    const { currentUser } = getAuth();
+
+    // Create a new case note object
+    const caseNote = {
+      content: editorData, // The formatted content from CKEditor
+      patientUID: props.selectedPatientUID,
+      counselorUID: currentUser.uid,
+      dateAdded: new Date().toISOString().split("T")[0],
+    };
+
+    // Save the case note to Firebase
+    const db = getFirestore();
+    const caseNotesCollection = collection(db, "CaseNotes");
+
+    try {
+      await addDoc(caseNotesCollection, caseNote);
+      console.log("Case note saved successfully!");
+    } catch (error) {
+      console.error("Error saving case note: ", error);
+    }
   };
+
   return (
     <div>
       <div style={{ backgroundColor: "#f5e9cf" }} className="rounded-5">
@@ -1422,15 +1532,14 @@ const CreateCaseNotes = ({ onClose }) => {
             }}
             onChange={(event, editor) => {
               const data = editor.getData();
-              setEditorData(HTMLReactParser(data)); // Update the editorData state with the new content
-              console.log({ event, editor, data });
+              setEditorData(data); // Update the editorData state with the new content
             }}
           />
         </div>
         <div className="mt-3 d-flex justify-content-end pe-3">
           <button
             className="close-button mb-3 me-3"
-            onClick={onClose}
+            onClick={props.onClose}
             style={{
               backgroundColor: "#4d455d",
               color: "#f5e9cf",
@@ -1444,7 +1553,7 @@ const CreateCaseNotes = ({ onClose }) => {
           </button>
           <button
             className="close-button mb-3"
-            onClick={handleSubmit}
+            onClick={handleSubmitCase}
             style={{
               backgroundColor: "#4d455d",
               color: "#f5e9cf",
@@ -1463,13 +1572,22 @@ const CreateCaseNotes = ({ onClose }) => {
 };
 
 const PublishCaseNotes = (props) => {
+  const { selectedcNotes } = props;
+
+  // Create a function to decode HTML entities
+  const decodeHTML = (html) => {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  };
+
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
           <Modal.Title>Publish Case Notes:</Modal.Title>
         </Modal.Header>
-        <table class="table table-dark table-hover mt-3">
+        <table className="table table-dark table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Case Notes:</th>
@@ -1478,14 +1596,12 @@ const PublishCaseNotes = (props) => {
           <tbody>
             <tr>
               <td>
-                {" "}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                {/* Use dangerouslySetInnerHTML to display the HTML-parsed content */}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: decodeHTML(selectedcNotes?.content || ""),
+                  }}
+                ></div>
               </td>
             </tr>
           </tbody>
