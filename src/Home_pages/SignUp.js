@@ -51,7 +51,7 @@ const PrivacyModal = () => {
   const handleDecline = () => {
     handleClose();
     // Navigate to the home page when "Decline" is clicked
-    navigate("/Home");
+    navigate("/");
   };
   return (
     <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
