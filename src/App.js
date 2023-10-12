@@ -21,7 +21,7 @@ function App() {
           {/* 
           //!Home Pages Routes 
           */}
-          <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/About Us" element={<AboutUs />} />
           <Route path="/Sign Up" element={<SignUp />} />
