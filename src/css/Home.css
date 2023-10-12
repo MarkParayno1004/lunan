@@ -1,42 +1,24 @@
-#bodyBG {
-  background-image: url("/src/img/bgpic.png");
-  min-height: 100vh;
-  background-repeat: no-repeat;
-}
-#titleP {
-  font-family: "Playfair Display";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 60px;
-  color: #4d455d;
-}
-#titleP2 {
-  color: #e96479;
+/* In your CSS file or style block */
+.item-text {
+  display: inline; /* Change 'none' to 'inline' to make it visible by default */
+  opacity: 0;
+  transition: opacity 0.5s; /* You can adjust the duration as needed */
 }
 
-#GetStartedBody {
-  color: #4d455d;
-  font-family: "Montserrat Alternates";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 32px;
-  width: 291px;
-  height: 71px;
-  border: none;
-  background: #7db9b6;
-  box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 22px;
+#certified:hover .item-text {
+  opacity: 1; /* Change 'display: inline' to 'opacity: 1' to control visibility with animation */
 }
 
-@media only screen and (min-width: 992px) {
-  #bodyBG {
-    background-image: url("/src/img/bgpic.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    /* Full height */
-    height: 100%;
-
-    /* Center and scale the image nicely */
-    background-position: center;
-  }
+#wallet:hover .item-text {
+  opacity: 1;
 }
+
+#point:hover .item-text {
+  opacity: 1;
+}
+
+#comms:hover .item-text {
+  opacity: 1;
+}
+
+/* Add similar styles for other list items */
