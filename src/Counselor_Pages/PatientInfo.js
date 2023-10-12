@@ -24,6 +24,7 @@ import HTMLReactParser from "html-react-parser";
 import { auth, firestore, storage } from "../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
+  const [tasks, setTasks] = useState([]);
   const patientData = props.patientData;
   const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
@@ -128,19 +129,6 @@ export const PatientInfo = (props) => {
   };
   const handleClose = () => {
     props.handleClose();
-  };
-  const handleSubmitCreate = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Case note has been created sucessfully!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-
-    setShowCreate(false);
   };
   const fetchTasksForPatient = async (selectedPatientUID) => {
     console.log("Fetching tasks for ", selectedPatientUID);
@@ -832,6 +820,7 @@ export const PatientInfo = (props) => {
                 handleClose={handleCloseAss}
                 selectedPatientUID={props.selectedPatientUID}
                 tasks={tasksForSelectedPatient}
+                updateTasks={setTasks}
               />
 
               <ViewCaseNotes 
@@ -884,7 +873,7 @@ const ViewModalAssign = (props) => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  const [tasks, setTasks] = useState(props.tasks || []);
+  const [tasks, setTasks] = useState([]);
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
@@ -894,30 +883,17 @@ const ViewModalAssign = (props) => {
     setShow(true);
   };
 
-  const [showFiles, setShowFiles] = useState();
-  const handleCloseFiles = () => setShowFiles(false);
-  const handleShowFiles = () => setShowFiles(true);
-
   const handleSubmit = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Assignment successfully created!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
     setShow(false);
   };
-  React.useEffect(() => {
-    // Update tasks when props.tasks changes
-    console.log("Entered Use Effect");
+
+  useEffect(() => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
   const updateTaskStatus = async (taskId) => {
-    const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
+    const db = getFirestore(); // Initialize Firestore
+    const taskRef = doc(db, "Tasks", taskId);
 
     try {
       // Update the Status field to "Verified"
@@ -968,6 +944,7 @@ const ViewModalAssign = (props) => {
                 <tr>
                   <th scope="col">Activity:</th>
                   <th scope="col">Descsription:</th>
+                  <th scope="col">Turn-In Date:</th>{" "}
                 </tr>
               </thead>
               <tbody className="table-group-divider">
@@ -977,6 +954,7 @@ const ViewModalAssign = (props) => {
                     <tr key={index}>
                       <td>{task.Activity}</td>
                       <td>{task.Description}</td>
+                      <td>{task.Deadline}</td>
                     </tr>
                   ))}
               </tbody>
@@ -1000,7 +978,7 @@ const ViewModalAssign = (props) => {
                     <tr key={index}>
                       <td>{task.Activity}</td>
                       <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
+                      <td>{task.Deadline}</td>{" "}
                       {/* Display Firestore document ID here */}
                     </tr>
                   ))}
@@ -1026,7 +1004,7 @@ const ViewModalAssign = (props) => {
                     <tr key={index}>
                       <td>{task.Activity}</td>
                       <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
+                      <td>{task.Deadline}</td>{" "}
                       {/* Display Firestore document ID here */}
                       <td>
                         <button
@@ -1859,12 +1837,22 @@ const CreateAssignment = (props) => {
     setDescription(e.target.value);
   };
 
-  const handleSubmitCreate = () => {
+  const handleSubmitCreate = async () => {
     const db = getFirestore();
     const { currentUser } = getAuth();
     console.log("currentUser:", currentUser);
     console.log("selectedPatientUID:", props.selectedPatientUID);
 
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Assignment successfully created!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  
     if (currentUser && props.selectedPatientUID) {
       const taskData = {
         Activity: activity,
@@ -1874,19 +1862,20 @@ const CreateAssignment = (props) => {
         PatientUID: props.selectedPatientUID,
         Status: null,
       };
-
+  
       console.log("PatientUID:", props.selectedPatientUID);
       console.log("counselorUID:", currentUser.uid);
+  
+      try {
+        const docRef = await addDoc(collection(db, "Tasks"), taskData);
+        console.log("Document written with ID: ", docRef.id);
 
-      addDoc(collection(db, "Tasks"), taskData)
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          // Perform any other actions after successful upload
-          props.handleClose();
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
+        // Perform any other actions after successful upload
+        props.handleClose();
+        props.updateTasks([...props.tasks, { id: docRef.id, ...taskData }]);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
     } else {
       console.error("currentUser or selectedPatientUID is undefined.");
     }
