@@ -131,7 +131,7 @@ export const Login = () => {
                       aria-label="Password"
                       aria-describedby="addon-wrapping"
                       value={password}
-                      pattern={obfuscatePattern("^[a-zA-Z0-9]+$")}
+                      // pattern={obfuscatePattern("^[a-zA-Z0-9]+$")}
                       onChange={handlePasswordChange}
                       required
                     />
