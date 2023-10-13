@@ -32,14 +32,13 @@ const PrivacyModal = () => {
   const handleClose = () => {
     setShow(false);
     // Reset the body overflow style when the modal is closed
-    document.body.style.overflow = "auto";
   };
 
   const handleShow = () => {
     setShow(true);
     // Set the body overflow style to hidden when the modal is open
-    // removes white space
-    document.body.style.overflow = "hidden";
+    // // removes white space
+    // document.body.style.overflow = "hidden";
   };
 
   useEffect(() => {
@@ -51,10 +50,17 @@ const PrivacyModal = () => {
   const handleDecline = () => {
     handleClose();
     // Navigate to the home page when "Decline" is clicked
+    document.body.style.overflow = "auto";
     navigate("/");
   };
   return (
-    <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      backdrop="static"
+      keyboard={false}
+      style={{ overflow: "hidden" }}
+    >
       <Modal.Body>
         <div className="d-flex justify-content-center">
           <img src={PP} />
