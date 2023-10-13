@@ -274,7 +274,6 @@ const Footer = () => {
             <div>
               <p className="fs-3">Contact Us</p>
               <p className="fs-5">
-                <FontAwesomeIcon icon={faHouse} />
                 #98 SAN PEDRO BAUTISTA <br /> ST. BRGY. DAMAYAN
               </p>
             </div>
