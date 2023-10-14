@@ -18,6 +18,7 @@ import {
   updateDoc,
   getFirestore,
   addDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import HTMLReactParser from "html-react-parser";
@@ -899,15 +900,6 @@ const ViewModalAssign = (props) => {
   const handleShowFiles = () => setShowFiles(true);
 
   const handleSubmit = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Assignment successfully created!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
     setShow(false);
   };
   React.useEffect(() => {
@@ -915,6 +907,25 @@ const ViewModalAssign = (props) => {
     console.log("Entered Use Effect");
     setTasks(props.tasks || []);
   }, [props.tasks]);
+
+  useEffect(() => {
+    // Create a query to get tasks for the selected patient
+    const tasksQuery = query(
+      collection(firestore, "Tasks"),
+      where("PatientUID", "==", props.selectedPatientUID) // Replace "PatientUID" with the actual field name in your Firestore data
+    );
+
+    const unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
+      const updatedTasks = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTasks(updatedTasks);
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, [props.selectedPatientUID]);
 
   const updateTaskStatus = async (taskId) => {
     const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
@@ -1864,6 +1875,16 @@ const CreateAssignment = (props) => {
     const { currentUser } = getAuth();
     console.log("currentUser:", currentUser);
     console.log("selectedPatientUID:", props.selectedPatientUID);
+
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Assignment successfully created!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
 
     if (currentUser && props.selectedPatientUID) {
       const taskData = {
