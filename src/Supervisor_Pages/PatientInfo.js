@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../css/PatientInfo.css";
 import Swal from "sweetalert2";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
@@ -24,11 +24,13 @@ import HTMLReactParser from "html-react-parser";
 import { auth, firestore, storage } from "../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
+  const [tasks, setTasks] = useState([]);
   const patientData = props.patientData;
   const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
   const [showAss, setShowAss] = useState(false);
   const handleCloseAss = () => setShowAss(false);
+
   const handleShowAss = async (selectedPatientUID) => {
     console.log("handleShowAss called with UID:", selectedPatientUID);
 
@@ -59,7 +61,6 @@ export const PatientInfo = (props) => {
   //!View Case Notes  Modal Behaviour
   const [showCase, setShowCase] = useState(false);
   const handleCloseCase = () => setShowCase(false);
-  const handleShowCase = () => setShowCase(true);
 
   const [tasksForSelectedPatient, setTasksForSelectedPatient] = useState([]);
   const [wFormsForSelectedPatient, setwFormsForSelectedPatient] = useState([]);
@@ -129,19 +130,6 @@ export const PatientInfo = (props) => {
   const handleClose = () => {
     props.handleClose();
   };
-  const handleSubmitCreate = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Case note has been created sucessfully!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-
-    setShowCreate(false);
-  };
   const fetchTasksForPatient = async (selectedPatientUID) => {
     console.log("Fetching tasks for ", selectedPatientUID);
     try {
@@ -192,7 +180,77 @@ export const PatientInfo = (props) => {
 
   const [showWellnessGuide, setWellnessGuide] = useState(false);
   const handleCloseWG = () => setWellnessGuide(false);
-  const handleShowWG = () => setWellnessGuide(true);
+  const [guideForSelectedPatient, setGuideForSelectedPatient] = useState([]);
+
+  const handleShowWG = async (selectedPatientUID) => {
+    console.log("handleShowWG called with UID:", selectedPatientUID);
+
+    try {
+      // Fetch tasks for the selected patient and set them in state
+      const guide = await fetchGuideForPatient(selectedPatientUID);
+      setGuideForSelectedPatient(guide);
+
+      console.log("Guide fetched", guide);
+      setWellnessGuide(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+
+  const fetchGuideForPatient = async (selectedPatientUID) => {
+    console.log("Fetching Guides for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "Guide"),
+        where("PatientUID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const guide = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Fetched Guide for", selectedPatientUID, guide);
+      return guide;
+    } catch (error) {
+      console.error("Error fetching Guides:", error);
+      return [];
+    }
+  };
+
+  const [notesForSelectedPatient, setNotesForSelectedPatient] = useState([]);
+  const handleShowCase = async (selectedPatientUID) => {
+    console.log("handleShowAss called with UID:", selectedPatientUID);
+
+    try {
+      // Fetch notes for the selected patient and set them in state
+      const notes = await fetchNotesForPatient(selectedPatientUID);
+      setNotesForSelectedPatient(notes);
+
+      console.log("Tasks fetched", notes);
+      setShowCase(true);
+    } catch (error) {
+      console.error("Error in handleShowAss:", error);
+    }
+  };
+  const fetchNotesForPatient = async (selectedPatientUID) => {
+    console.log("Fetching notes for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "CaseNotes"),
+        where("patientUID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const notes = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Fetched notes for", selectedPatientUID, notes);
+      return notes;
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      return [];
+    }
+  };
 
   return (
     <Modal
@@ -229,21 +287,19 @@ export const PatientInfo = (props) => {
                     <div className="col">
                       <strong>Name: </strong>
                       <span style={{ color: "red" }}>
-                        {props.patientData
-                          ? props.patientData.firstName
-                          : "N/A"}
+                        {props.patientData.firstName}
                       </span>
                     </div>
                     <div className="col">
                       <strong>Age: </strong>
                       <span style={{ color: "red" }}>
-                        {props.patientData ? props.patientData.Age : "N/A"}
+                        {props.patientData.Age}
                       </span>
                     </div>
                     <div className="col">
                       <strong>Gender: </strong>
                       <span style={{ color: "red" }}>
-                        {props.patientData ? props.patientData.Gender : "N/A"}
+                        {props.patientData.Gender}
                       </span>
                     </div>
                   </div>
@@ -269,6 +325,11 @@ export const PatientInfo = (props) => {
                         <span>Wala</span>
                       )}
                     </div>
+
+                    <div className="col">
+                      <strong>Assigned Counselor: </strong>
+                      <span style={{ color: "red" }}>{props.counselor}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -283,20 +344,20 @@ export const PatientInfo = (props) => {
                 <div className="col ">
                   <strong>Cell Phone Number: </strong>
                   <span style={{ color: "red" }}>
-                    {props.patientData ? props.patientData.CellPhone : "N/A"}
+                    {props.patientData.CellPhone}
                   </span>
                 </div>
 
                 <div className="col">
                   <strong>Home Phone Number: </strong>
                   <span style={{ color: "red" }}>
-                    {props.patientData ? props.patientData.HomePhone : "N/A"}
+                    {props.patientData.HomePhone}
                   </span>
                 </div>
                 <div className="col">
                   <strong>Email: </strong>
                   <span style={{ color: "red" }}>
-                    {props.patientData ? props.patientData.Email : "N/A"}
+                    {props.patientData.Email}
                   </span>
                 </div>
               </div>
@@ -704,6 +765,17 @@ export const PatientInfo = (props) => {
               <button
                 className="me-4 rounded-5 fw-semibold"
                 onClick={() => {
+                  console.log("View Case Notes button clicked");
+                  handleShowCase(props.selectedPatientUID);
+                }}
+                id="viewButton"
+              >
+                View Case Notes
+              </button>
+
+              <button
+                className="me-4 rounded-5 fw-semibold"
+                onClick={() => {
                   handleShowWeek(props.selectedPatientUID);
                 }}
                 id="viewButton"
@@ -725,9 +797,21 @@ export const PatientInfo = (props) => {
               <button
                 className="me-4 rounded-5 fw-semibold"
                 id="viewButton"
-                onClick={handleShowWG}
+                onClick={() => {
+                  console.log("View Guide button clicked");
+                  handleShowWG(props.selectedPatientUID);
+                }}
               >
                 View Wellness Guide
+              </button>
+
+              <button
+                className="rounded-5 fw-semibold"
+                onClick={togglePage}
+                disabled={showPage}
+                id="viewButton"
+              >
+                Create Case Notes
               </button>
 
               {/*MODALS */}
@@ -736,6 +820,14 @@ export const PatientInfo = (props) => {
                 handleClose={handleCloseAss}
                 selectedPatientUID={props.selectedPatientUID}
                 tasks={tasksForSelectedPatient}
+                updateTasks={setTasks}
+              />
+
+              <ViewCaseNotes
+                show={showCase}
+                handleClose={handleCloseCase}
+                selectedPatientUID={props.selectedPatientUID}
+                cNotes={notesForSelectedPatient}
               />
 
               <ViewWeeklyForm
@@ -758,6 +850,15 @@ export const PatientInfo = (props) => {
                 selectedPatientUID={props.selectedPatientUID}
               />
             </div>
+
+            {showPage && (
+              <div className="pb-5 pt-5">
+                <CreateCaseNotes
+                  onClose={togglePage}
+                  selectedPatientUID={props.selectedPatientUID}
+                />
+              </div>
+            )}
           </div>
         </div>
       </Modal.Body>
@@ -772,7 +873,7 @@ const ViewModalAssign = (props) => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  const [tasks, setTasks] = useState(props.tasks || []);
+  const [tasks, setTasks] = useState([]);
   const [show, setShow] = useState();
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
@@ -782,143 +883,320 @@ const ViewModalAssign = (props) => {
     setShow(true);
   };
 
-  const [showFiles, setShowFiles] = useState();
-  const handleCloseFiles = () => setShowFiles(false);
-  const handleShowFiles = () => setShowFiles(true);
-
   const handleSubmit = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Assignment successfully created!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
     setShow(false);
   };
-  React.useEffect(() => {
-    // Update tasks when props.tasks changes
-    console.log("Entered Use Effect");
+
+  useEffect(() => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
+  const UpdateTaskStatus = async (taskId) => {
+    const db = getFirestore(); // Initialize Firestore
+    const taskRef = doc(db, "Tasks", taskId);
+
+    const [showAct, setShowAct] = useState(false);
+    const handleShowAct = () => setShowAct(true);
+    const handleCloseAct = () => setShowAct(false);
+
+    //!View Turned-In Assignments Modal
+    const [showTurnIn, setShowTurnIn] = useState(false);
+    const handleShowTurnIn = () => setShowTurnIn(true);
+    const handleCloseTurnIn = () => setShowTurnIn(false);
+
+    //!View Verified Assignments Modal
+    const [showVerified, setShowVerified] = useState(false);
+    const handleShowVerified = () => setShowVerified(true);
+    const handleCloseVerified = () => setShowVerified(false);
+    return (
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        size="lg"
+        className="mt-3"
+      >
+        <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+          <Modal.Header closeButton>
+            <Modal.Title>View Assignment</Modal.Title>
+          </Modal.Header>
+          <div className="tabs mt-4 d-flex justify-content-start">
+            <button
+              className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
+              onClick={() => handleTabChange("assigned")}
+            >
+              Assigned
+            </button>
+            <button
+              className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
+              onClick={() => handleTabChange("turnedIn")}
+            >
+              Turned-in Assignments
+            </button>
+            <button
+              className={activeTab === "verified" ? "active" : ""}
+              onClick={() => handleTabChange("verified")}
+            >
+              Verified Assignments
+            </button>
+          </div>
+          <table class="table table-dark table-hover mt-3">
+            {activeTab === "assigned" && (
+              <>
+                <thead>
+                  <tr>
+                    <th scope="col">Activity:</th>
+                    <th scope="col">Descsription:</th>
+                    <th scope="col">Turn-In Date:</th>{" "}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {tasks
+                    .filter((task) => task.Status === null)
+                    .map((task, index) => (
+                      <tr key={index}>
+                        <td>
+                          <button
+                            style={{
+                              background: "none",
+                              borderStyle: "none",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={handleShowAct}
+                          >
+                            {task.Activity}
+                          </button>
+                          <ViewAssignedActivity
+                            show={showAct}
+                            handleClose={handleCloseAct}
+                            Activity={task.Activity}
+                            Description={task.Description}
+                            DueDate={task.Deadline}
+                            TurnedInDate={""}
+                          />
+                        </td>
+                        <td>{task.Description}</td>
+
+                        <td>{task.Deadline}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </>
+            )}
+            {activeTab === "verified" && (
+              <>
+                <thead>
+                  <tr>
+                    <th scope="col">Activity:</th>
+                    <th scope="col">Description:</th>
+                    <th scope="col">Turn-In Date:</th>{" "}
+                    {/* Display Firestore document ID here */}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {console.log("Tasks:", tasks)}
+                  {tasks
+                    .filter((task) => task.Status === "Verified")
+                    .map((task, index) => (
+                      <tr key={index}>
+                        <td>
+                          {" "}
+                          <button
+                            style={{
+                              background: "none",
+                              borderStyle: "none",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={handleShowVerified}
+                          >
+                            {task.Activity}
+                          </button>
+                          <ViewVerifiedActivity
+                            show={showVerified}
+                            handleClose={handleCloseVerified}
+                          />
+                        </td>
+                        <td>{task.Description}</td>
+                        <td>{task.Deadline}</td>{" "}
+                        {/* Display Firestore document ID here */}
+                      </tr>
+                    ))}
+                </tbody>
+              </>
+            )}
+            {activeTab === "turnedIn" && (
+              <>
+                <thead>
+                  <tr>
+                    <th scope="col">Activity:</th>
+                    <th scope="col">Description:</th>
+                    <th scope="col">Turn-In Date:</th>{" "}
+                    {/* Display Firestore document ID here */}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {console.log("Tasks:", tasks)}
+                  {tasks
+                    .filter((task) => task.Status === "turnedIn")
+                    .map((task, index) => (
+                      <tr key={index}>
+                        <td>{task.Activity}</td>
+                        <td>{task.Description}</td>
+                        <td>{task.Deadline}</td>{" "}
+                        {/* Display Firestore document ID here */}
+                        <td>
+                          <button
+                            style={{
+                              background: "none",
+                              borderStyle: "none",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={handleShowTurnIn}
+                          >
+                            {task.Activity}
+                          </button>
+                          <ViewTurnedInActivity
+                            show={showTurnIn}
+                            handleClose={handleCloseTurnIn}
+                            Activity={task.Activity}
+                            Description={task.Description}
+                            DueDate={task.Deadline}
+                            TurnedInDate={""}
+                            task={task.id}
+                          />
+                        </td>
+                        <td>{task.Description}</td>
+                        <td>{task.id}</td>{" "}
+                        {/* Display Firestore document ID here */}
+                      </tr>
+                    ))}
+                </tbody>
+              </>
+            )}
+          </table>
+          <Modal.Footer>
+            <button
+              className="btn"
+              style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+              onClick={() => handleShowCreate(props.selectedPatientUID)}
+            >
+              Create Assignment
+            </button>
+            <CreateAssignment
+              show={show}
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+              selectedPatientUID={props.selectedPatientUID}
+            />
+            <button
+              className="btn"
+              style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+              variant="secondary"
+              onClick={props.handleClose}
+            >
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal.Body>
+      </Modal>
+    );
+  };
+};
+
+const ViewCaseNotes = (props) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [cNotes, setcNotes] = useState(props.cNotes || []);
+
+  React.useEffect(() => {
+    console.log("Entered Use Effect");
+    setcNotes(props.cNotes || []);
+  }, [props.cNotes]);
+
+  const [selectedcNotes, setSelectedcNotes] = useState(null);
+
+  const handleSelectcNotes = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedcNotesRef = doc(firestore, "CaseNotes", id); // Replace with your Firestore instance
+      const selectedcNotesDocSnap = await getDoc(selectedcNotesRef);
+
+      // Check if the document exists
+      if (selectedcNotesDocSnap.exists()) {
+        // Get the data from the document
+        const selectedcNoteData = selectedcNotesDocSnap.data();
+
+        // Include the document ID in the data
+        selectedcNoteData.id = selectedcNotesDocSnap.id;
+        // Set the entire document data to selectedwForm
+        setSelectedcNotes(selectedcNoteData);
+        setShow(true);
+        console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedcNoteData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
+  };
   return (
     <Modal
+      className="mt-3"
       show={props.show}
       onHide={props.handleClose}
       size="lg"
-      className="mt-3"
     >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>View Assignment</Modal.Title>
+          <Modal.Title>View Case Notes</Modal.Title>
         </Modal.Header>
-        <div className="tabs mt-4 d-flex justify-content-start">
-          <button
-            className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
-            onClick={() => handleTabChange("assigned")}
-          >
-            Assigned
-          </button>
-          <button
-            className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
-            onClick={() => handleTabChange("turnedIn")}
-          >
-            Turned-in Assignments
-          </button>
-          <button
-            className={activeTab === "verified" ? "active" : ""}
-            onClick={() => handleTabChange("verified")}
-          >
-            Verified Assignments
-          </button>
-        </div>
-        <table class="table table-dark table-hover">
-          {activeTab === "assigned" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Descsription:</th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {tasks
-                  .filter((task) => task.Status === null)
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-          {activeTab === "verified" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Description:</th>
-                  <th scope="col">Turn-In Date:</th>{" "}
-                  {/* Display Firestore document ID here */}
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {console.log("Tasks:", tasks)}
-                {tasks
-                  .filter((task) => task.Status === "Verified")
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
-                      {/* Display Firestore document ID here */}
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-          {activeTab === "turnedIn" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Description:</th>
-                  <th scope="col">Turn-In Date:</th>{" "}
-                  {/* Display Firestore document ID here */}
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {console.log("Tasks:", tasks)}
-                {tasks
-                  .filter((task) => task.Status === "turnedIn")
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
-                      {/* Display Firestore document ID here */}
-                      <td></td>
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
+
+        <table class="table table-dark table-hover mt-3">
+          {}
+          <thead>
+            <tr>
+              <th scope="col">Name:</th>
+              <th scope="col">Date Created:</th>
+              <th scope="col">View Case:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cNotes.map((cNote, index) => (
+              <tr key={index}>
+                <td>{cNote.id}</td>
+                <td>{cNote.dateAdded}</td>
+                <td>
+                  <button
+                    className="btn"
+                    style={{
+                      backgroundColor: "#f5e9cf",
+                      color: "#4d455d",
+                      width: "auto",
+                    }}
+                    onClick={() => {
+                      handleSelectcNotes(cNote.id);
+                      handleShow(cNote.id);
+                    }} // Pass the form's ID
+                  >
+                    View Note
+                  </button>
+                </td>
+                <PublishCaseNotes
+                  show={show}
+                  handleClose={handleClose}
+                  selectedcNotes={selectedcNotes}
+                  caseNotes={selectedcNotes}
+                />
+              </tr>
+            ))}
+          </tbody>
         </table>
-        <Modal.Footer>
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            variant="secondary"
-            onClick={props.handleClose}
-          >
-            Close
-          </button>
-        </Modal.Footer>
       </Modal.Body>
     </Modal>
   );
@@ -1243,6 +1521,126 @@ const ViewWellnessForm = (props) => {
   );
 };
 
+const CreateCaseNotes = (props) => {
+  const [editorData, setEditorData] = useState("");
+
+  const handleSubmitCase = async () => {
+    const { currentUser } = getAuth();
+
+    // Create a new case note object
+    const caseNote = {
+      content: editorData, // The formatted content from CKEditor
+      patientUID: props.selectedPatientUID,
+      counselorUID: currentUser.uid,
+      dateAdded: new Date().toISOString().split("T")[0],
+    };
+
+    // Save the case note to Firebase
+    const db = getFirestore();
+    const caseNotesCollection = collection(db, "CaseNotes");
+
+    try {
+      await addDoc(caseNotesCollection, caseNote);
+      console.log("Case note saved successfully!");
+    } catch (error) {
+      console.error("Error saving case note: ", error);
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ backgroundColor: "#f5e9cf" }} className="rounded-5">
+        {/* Add your page content here */}
+        <h2 className="pt-3 ps-3" style={{ color: "#4d455d" }}>
+          Input Case Note:
+        </h2>
+        <div style={{ color: "black" }} className="pe-3 ps-3">
+          <CKEditor
+            editor={Editor}
+            config={{
+              placeholder: "Input your case note...",
+            }}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setEditorData(data); // Update the editorData state with the new content
+            }}
+          />
+        </div>
+        <div className="mt-3 d-flex justify-content-end pe-3">
+          <button
+            className="close-button mb-3 me-3"
+            onClick={props.onClose}
+            style={{
+              backgroundColor: "#4d455d",
+              color: "#f5e9cf",
+              borderRadius: "30px",
+              width: "8%",
+              height: "40px",
+              borderStyle: "none",
+            }}
+          >
+            Close
+          </button>
+          <button
+            className="close-button mb-3"
+            onClick={handleSubmitCase}
+            style={{
+              backgroundColor: "#4d455d",
+              color: "#f5e9cf",
+              borderRadius: "30px",
+              width: "8%",
+              height: "40px",
+              borderStyle: "none",
+            }}
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PublishCaseNotes = (props) => {
+  const { selectedcNotes } = props;
+
+  // Create a function to decode HTML entities
+  const decodeHTML = (html) => {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  };
+
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Publish Case Notes:</Modal.Title>
+        </Modal.Header>
+        <table className="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Case Notes:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                {/* Use dangerouslySetInnerHTML to display the HTML-parsed content */}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: decodeHTML(selectedcNotes?.content || ""),
+                  }}
+                ></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
 const ViewFormWeek = (props) => {
   console.log("Selected Weekly Form Data:", props.selectedwForm);
 
@@ -1301,6 +1699,19 @@ const ViewFormWeek = (props) => {
 
   const totalScore = q1 + q2 + q3 + q4 + q5;
 
+  const updatewFormVerified = async (wFormId) => {
+    const formRef = doc(firestore, "WeeklyForm", wFormId);
+    try {
+      // Update the 'Status' field to "Verified"
+      await updateDoc(formRef, {
+        Status: "Verified",
+      });
+      console.log("Form status updated to Verified");
+    } catch (error) {
+      console.error("Error updating form status:", error);
+    }
+  };
+
   return (
     <Modal
       className="mt-3"
@@ -1332,7 +1743,15 @@ const ViewFormWeek = (props) => {
             ))}
           </tbody>
         </table>
-        <div className="d-flex justify-content-end"></div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "red" }}
+            onClick={() => updatewFormVerified(props.selectedwForm.id)}
+          >
+            Unverify
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -1392,6 +1811,19 @@ const ViewFormWell = (props) => {
     selectedwellForm.WellnessQ3 +
     selectedwellForm.WellnessQ4;
 
+  const updatewellFormVerified = async (wellFormId) => {
+    const formRef = doc(firestore, "WellnessForm", wellFormId);
+    try {
+      // Update the 'Status' field to "Verified"
+      await updateDoc(formRef, {
+        Status: "Verified",
+      });
+      console.log("Form status updated to Verified");
+    } catch (error) {
+      console.error("Error updating form status:", error);
+    }
+  };
+
   return (
     <Modal
       className="mt-3"
@@ -1425,7 +1857,130 @@ const ViewFormWell = (props) => {
             ))}
           </tbody>
         </table>
-        <div className="d-flex justify-content-end"></div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={() => updatewellFormVerified(props.selectedwellForm.id)}
+          >
+            Verify
+          </button>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const CreateAssignment = (props) => {
+  const [date, setDate] = useState("");
+  const [activity, setActivity] = useState("");
+  const [description, setDescription] = useState("");
+  const dateInputRef = useRef(null);
+
+  const handleChange = (e) => {
+    setDate(e.target.value);
+  };
+
+  const handleActivityChange = (e) => {
+    setActivity(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleSubmitCreate = async () => {
+    const db = getFirestore();
+    const { currentUser } = getAuth();
+    console.log("currentUser:", currentUser);
+    console.log("selectedPatientUID:", props.selectedPatientUID);
+
+    Swal.fire({
+      background: "#4d455d",
+      color: "#f5e9cf",
+      position: "center",
+      icon: "success",
+      title: "Assignment successfully created!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
+    if (currentUser && props.selectedPatientUID) {
+      const taskData = {
+        Activity: activity,
+        Deadline: date,
+        Description: description,
+        counselorUID: currentUser.uid,
+        PatientUID: props.selectedPatientUID,
+        Status: null,
+      };
+
+      console.log("PatientUID:", props.selectedPatientUID);
+      console.log("counselorUID:", currentUser.uid);
+
+      try {
+        const docRef = await addDoc(collection(db, "Tasks"), taskData);
+        console.log("Document written with ID: ", docRef.id);
+
+        // Perform any other actions after successful upload
+        props.handleClose();
+        props.updateTasks([...props.tasks, { id: docRef.id, ...taskData }]);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    } else {
+      console.error("currentUser or selectedPatientUID is undefined.");
+    }
+  };
+
+  return (
+    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Assignment:</Modal.Title>
+        </Modal.Header>
+        <h5>Input Activity:</h5>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            aria-label="CreateAssignment"
+            aria-describedby="basic-addon1"
+            onChange={handleActivityChange}
+            value={activity}
+          />
+        </div>
+        <div>
+          <h5>Input Date:</h5>
+          <input
+            className="input-group rounded-2"
+            type="date"
+            onChange={handleChange}
+            ref={dateInputRef}
+            style={{ border: "none" }}
+            value={date}
+          />
+        </div>
+        <div className="form-floating mt-3 mb-3">
+          <h5>Input Description:</h5>
+          <textarea
+            className="form-control"
+            id="floatingTextarea2"
+            style={{ height: "150px" }}
+            onChange={handleDescriptionChange}
+            value={description}
+          ></textarea>
+        </div>
+
+        <Modal.Footer>
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            onClick={handleSubmitCreate}
+          >
+            Submit
+          </button>
+        </Modal.Footer>
       </Modal.Body>
     </Modal>
   );
@@ -1468,7 +2023,7 @@ const ViewWellnessGuide = (props) => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.selectedPatientUID) {
       fetchGuideData();
     }
@@ -1554,6 +2109,240 @@ const ViewWellnessGuide = (props) => {
                 ))}
             </tbody>
           </table>
+        </div>
+        <Modal.Footer className="mt-2">
+          {showAddGuideButton && (
+            <button
+              className="btn ms-3"
+              style={{ backgroundColor: "#f5e9cf" }}
+              onClick={() => handleShowAddGuide(props.selectedPatientUID)}
+            >
+              Add Guide
+            </button>
+          )}
+          <AddGuide
+            show={show}
+            handleClose={handleClose}
+            handleSubmit={handleSubmit}
+            selectedPatientUID={props.selectedPatientUID}
+          />
+        </Modal.Footer>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const AddGuide = (props) => {
+  const [guide, setGuide] = useState("");
+  const [link, setLink] = useState("");
+  const [title, setTitle] = useState("");
+  const [vidLink, setVidLink] = useState("");
+
+  const handleGuideChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleLinkChange = (e) => {
+    setVidLink(e.target.value);
+  };
+
+  function extractSrcFromIframe(iframeString) {
+    // Use regular expressions to extract the src attribute
+    const srcRegex = /src=["'](https:\/\/www\.youtube\.com\/embed\/[^"']+)/;
+    const match = iframeString.match(srcRegex);
+    return match ? match[1] : ""; // Return the extracted src or an empty string if not found
+  }
+  const handleAddGuide = () => {
+    const db = getFirestore();
+    const { currentUser } = getAuth();
+    console.log("currentUser:", currentUser.uid);
+    console.log("selectedPatientUID:", props.selectedPatientUID);
+
+    if (currentUser && props.selectedPatientUID) {
+      const guideData = {
+        Title: title,
+        Link: extractSrcFromIframe(vidLink),
+        dateAdded: new Date().toISOString().split("T")[0],
+        counselorUID: currentUser.uid,
+        PatientUID: props.selectedPatientUID,
+      };
+
+      console.log("PatientUID:", props.selectedPatientUID);
+      console.log("counselorUID:", currentUser.uid);
+
+      addDoc(collection(db, "Guide"), guideData)
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          // Perform any other actions after successful upload
+          props.handleClose();
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+    } else {
+      console.error("currentUser or selectedPatientUID is undefined.");
+    }
+  };
+
+  return (
+    <Modal show={props.show} onHide={props.handleClose}>
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>Publish A Guide</Modal.Title>
+        </Modal.Header>
+        <div class="input-group mb-3 mt-3">
+          <h5>Input Title:</h5>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-label="VideoTitle"
+              aria-describedby="basic-addon1"
+              onChange={handleGuideChange}
+              value={title}
+            />
+          </div>
+          <h5>Input Video Link:</h5>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              aria-label="VideoLink"
+              aria-describedby="basic-addon1"
+              onChange={handleLinkChange}
+              value={vidLink}
+            />
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf" }}
+            onClick={handleAddGuide}
+          >
+            Submit
+          </button>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewAssignedActivity = (props) => {
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      className="mt-5"
+      style={{ borderStyle: "none" }}
+    >
+      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ color: "#F2E3D2" }}>View Activity:</Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid mt-3" style={{ color: "white" }}>
+          <span>
+            <strong>{props.Activity}</strong>
+          </span>
+          <p>{props.Description} </p>
+          <span>
+            <span> | </span>
+            <strong>Due Date:</strong> {props.DueDate}
+          </span>
+          <span>
+            <span> | </span>
+            <strong>Turned-in Date:</strong> {props.TurnedInDate}
+          </span>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewTurnedInActivity = (props) => {
+  const UpdateTaskStatus = async (taskId) => {
+    const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
+
+    try {
+      // Update the Status field to "Verified"
+      await updateDoc(taskRef, {
+        Status: "Verified",
+      });
+      console.log("Task status updated to Verified");
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      className="mt-5"
+      style={{ borderStyle: "none" }}
+    >
+      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ color: "#F2E3D2" }}>
+            View Turned-In Activity:
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid mt-3" style={{ color: "white" }}>
+          <span>
+            <strong>{props.Activity}</strong>
+          </span>
+          <p>{props.Description} </p>
+          <span>
+            <span> | </span>
+            <strong>Due Date:</strong> {props.DueDate}
+          </span>
+          <span>
+            <span> | </span>
+            <strong>Turned-in Date:</strong> {props.TurnedInDate}
+          </span>
+          <div className="d-flex justify-content-end">
+            <button
+              className="btn mt-3"
+              style={{
+                backgroundColor: "#f5e9cf",
+                color: "#4d455d",
+              }}
+              onClick={() => UpdateTaskStatus(props.task)}
+            >
+              Verify
+            </button>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewVerifiedActivity = (props) => {
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      className="mt-5"
+      style={{ borderStyle: "none" }}
+    >
+      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ color: "#F2E3D2" }}>
+            View Verified Activity:
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid mt-3" style={{ color: "white" }}>
+          <span>Activity Title:</span>
+          <p>Description: </p>
+          <div>File Attached:</div>
+          <span>
+            <span> | </span>
+            <strong>Due Date:</strong>
+          </span>
+          <span>
+            <span> | </span>
+            <strong>Turned-in Date:</strong>
+          </span>
         </div>
       </Modal.Body>
     </Modal>
