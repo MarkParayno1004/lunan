@@ -891,224 +891,218 @@ const ViewModalAssign = (props) => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
-
-  const updateTaskStatus = async (taskId) => {
+  const UpdateTaskStatus = async (taskId) => {
     const db = getFirestore(); // Initialize Firestore
     const taskRef = doc(db, "Tasks", taskId);
 
+    const [showAct, setShowAct] = useState(false);
+    const handleShowAct = () => setShowAct(true);
+    const handleCloseAct = () => setShowAct(false);
 
-  const handleShowAct = () => setShowAct(true);
-  const handleCloseAct = () => setShowAct(false);
+    //!View Turned-In Assignments Modal
+    const [showTurnIn, setShowTurnIn] = useState(false);
+    const handleShowTurnIn = () => setShowTurnIn(true);
+    const handleCloseTurnIn = () => setShowTurnIn(false);
 
-  //!View Turned-In Assignments Modal
-  const [showTurnIn, setShowTurnIn] = useState(false);
-  const handleShowTurnIn = () => setShowTurnIn(true);
-  const handleCloseTurnIn = () => setShowTurnIn(false);
+    //!View Verified Assignments Modal
+    const [showVerified, setShowVerified] = useState(false);
+    const handleShowVerified = () => setShowVerified(true);
+    const handleCloseVerified = () => setShowVerified(false);
+    return (
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        size="lg"
+        className="mt-3"
+      >
+        <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+          <Modal.Header closeButton>
+            <Modal.Title>View Assignment</Modal.Title>
+          </Modal.Header>
+          <div className="tabs mt-4 d-flex justify-content-start">
+            <button
+              className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
+              onClick={() => handleTabChange("assigned")}
+            >
+              Assigned
+            </button>
+            <button
+              className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
+              onClick={() => handleTabChange("turnedIn")}
+            >
+              Turned-in Assignments
+            </button>
+            <button
+              className={activeTab === "verified" ? "active" : ""}
+              onClick={() => handleTabChange("verified")}
+            >
+              Verified Assignments
+            </button>
+          </div>
+          <table class="table table-dark table-hover mt-3">
+            {activeTab === "assigned" && (
+              <>
+                <thead>
+                  <tr>
+                    <th scope="col">Activity:</th>
+                    <th scope="col">Descsription:</th>
+                    <th scope="col">Turn-In Date:</th>{" "}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {tasks
+                    .filter((task) => task.Status === null)
+                    .map((task, index) => (
+                      <tr key={index}>
+                        <td>
+                          <button
+                            style={{
+                              background: "none",
+                              borderStyle: "none",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={handleShowAct}
+                          >
+                            {task.Activity}
+                          </button>
+                          <ViewAssignedActivity
+                            show={showAct}
+                            handleClose={handleCloseAct}
+                            Activity={task.Activity}
+                            Description={task.Description}
+                            DueDate={task.Deadline}
+                            TurnedInDate={""}
+                          />
+                        </td>
+                        <td>{task.Description}</td>
 
-  //!View Verified Assignments Modal
-  const [showVerified, setShowVerified] = useState(false);
-  const handleShowVerified = () => setShowVerified(true);
-  const handleCloseVerified = () => setShowVerified(false);
-  return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
-      size="lg"
-      className="mt-3"
-    >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>View Assignment</Modal.Title>
-        </Modal.Header>
-        <div className="tabs mt-4 d-flex justify-content-start">
-          <button
-            className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
-            onClick={() => handleTabChange("assigned")}
-          >
-            Assigned
-          </button>
-          <button
-            className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
-            onClick={() => handleTabChange("turnedIn")}
-          >
-            Turned-in Assignments
-          </button>
-          <button
-            className={activeTab === "verified" ? "active" : ""}
-            onClick={() => handleTabChange("verified")}
-          >
-            Verified Assignments
-          </button>
-        </div>
-        <table class="table table-dark table-hover mt-3">
-          {activeTab === "assigned" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Descsription:</th>
-
-                  <th scope="col">Turn-In Date:</th>{" "}
-
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {tasks
-                  .filter((task) => task.Status === null)
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>
-                        <button
-                          style={{
-                            background: "none",
-                            borderStyle: "none",
-                            color: "white",
-                            textDecoration: "underline",
-                          }}
-                          onClick={handleShowAct}
-                        >
-                          {task.Activity}
-                        </button>
-                        <ViewAssignedActivity
-                          show={showAct}
-                          handleClose={handleCloseAct}
-                          Activity={task.Activity}
-                          Description={task.Description}
-                          DueDate={task.Deadline}
-                          TurnedInDate={""}
-                        />
-                      </td>
-                      <td>{task.Description}</td>
-
-                      <td>{task.Deadline}</td>
-
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-          {activeTab === "verified" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Description:</th>
-                  <th scope="col">Turn-In Date:</th>{" "}
-                  {/* Display Firestore document ID here */}
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {console.log("Tasks:", tasks)}
-                {tasks
-                  .filter((task) => task.Status === "Verified")
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>
-                        {" "}
-                        <button
-                          style={{
-                            background: "none",
-                            borderStyle: "none",
-                            color: "white",
-                            textDecoration: "underline",
-                          }}
-                          onClick={handleShowVerified}
-                        >
-                          {task.Activity}
-                        </button>
-                        <ViewVerifiedActivity
-                          show={showVerified}
-                          handleClose={handleCloseVerified}
-                        />
-                      </td>
-                      <td>{task.Description}</td>
-
-                      <td>{task.Deadline}</td>{" "}
-
-                      {/* Display Firestore document ID here */}
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-          {activeTab === "turnedIn" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Description:</th>
-                  <th scope="col">Turn-In Date:</th>{" "}
-                  {/* Display Firestore document ID here */}
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {console.log("Tasks:", tasks)}
-                {tasks
-                  .filter((task) => task.Status === "turnedIn")
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                      <td>{task.Deadline}</td>{" "}
-                      {/* Display Firestore document ID here */}
-
-                      <td>
-                        <button
-                          style={{
-                            background: "none",
-                            borderStyle: "none",
-                            color: "white",
-                            textDecoration: "underline",
-                          }}
-                          onClick={handleShowTurnIn}
-                        >
-                          {task.Activity}
-                        </button>
-                        <ViewTurnedInActivity
-                          show={showTurnIn}
-                          handleClose={handleCloseTurnIn}
-                          Activity={task.Activity}
-                          Description={task.Description}
-                          DueDate={task.Deadline}
-                          TurnedInDate={""}
-                          task={task.id}
-                        />
-                      </td>
-                      <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
-                      {/* Display Firestore document ID here */}
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-        </table>
-        <Modal.Footer>
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            onClick={() => handleShowCreate(props.selectedPatientUID)}
-          >
-            Create Assignment
-          </button>
-          <CreateAssignment
-            show={show}
-            handleClose={handleClose}
-            handleSubmit={handleSubmit}
-            selectedPatientUID={props.selectedPatientUID}
-          />
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
-            variant="secondary"
-            onClick={props.handleClose}
-          >
-            Close
-          </button>
-        </Modal.Footer>
-      </Modal.Body>
-    </Modal>
-  );
+                        <td>{task.Deadline}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </>
+            )}
+            {activeTab === "verified" && (
+              <>
+                <thead>
+                  <tr>
+                    <th scope="col">Activity:</th>
+                    <th scope="col">Description:</th>
+                    <th scope="col">Turn-In Date:</th>{" "}
+                    {/* Display Firestore document ID here */}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {console.log("Tasks:", tasks)}
+                  {tasks
+                    .filter((task) => task.Status === "Verified")
+                    .map((task, index) => (
+                      <tr key={index}>
+                        <td>
+                          {" "}
+                          <button
+                            style={{
+                              background: "none",
+                              borderStyle: "none",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={handleShowVerified}
+                          >
+                            {task.Activity}
+                          </button>
+                          <ViewVerifiedActivity
+                            show={showVerified}
+                            handleClose={handleCloseVerified}
+                          />
+                        </td>
+                        <td>{task.Description}</td>
+                        <td>{task.Deadline}</td>{" "}
+                        {/* Display Firestore document ID here */}
+                      </tr>
+                    ))}
+                </tbody>
+              </>
+            )}
+            {activeTab === "turnedIn" && (
+              <>
+                <thead>
+                  <tr>
+                    <th scope="col">Activity:</th>
+                    <th scope="col">Description:</th>
+                    <th scope="col">Turn-In Date:</th>{" "}
+                    {/* Display Firestore document ID here */}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {console.log("Tasks:", tasks)}
+                  {tasks
+                    .filter((task) => task.Status === "turnedIn")
+                    .map((task, index) => (
+                      <tr key={index}>
+                        <td>{task.Activity}</td>
+                        <td>{task.Description}</td>
+                        <td>{task.Deadline}</td>{" "}
+                        {/* Display Firestore document ID here */}
+                        <td>
+                          <button
+                            style={{
+                              background: "none",
+                              borderStyle: "none",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={handleShowTurnIn}
+                          >
+                            {task.Activity}
+                          </button>
+                          <ViewTurnedInActivity
+                            show={showTurnIn}
+                            handleClose={handleCloseTurnIn}
+                            Activity={task.Activity}
+                            Description={task.Description}
+                            DueDate={task.Deadline}
+                            TurnedInDate={""}
+                            task={task.id}
+                          />
+                        </td>
+                        <td>{task.Description}</td>
+                        <td>{task.id}</td>{" "}
+                        {/* Display Firestore document ID here */}
+                      </tr>
+                    ))}
+                </tbody>
+              </>
+            )}
+          </table>
+          <Modal.Footer>
+            <button
+              className="btn"
+              style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+              onClick={() => handleShowCreate(props.selectedPatientUID)}
+            >
+              Create Assignment
+            </button>
+            <CreateAssignment
+              show={show}
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+              selectedPatientUID={props.selectedPatientUID}
+            />
+            <button
+              className="btn"
+              style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+              variant="secondary"
+              onClick={props.handleClose}
+            >
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal.Body>
+      </Modal>
+    );
+  };
 };
 
 const ViewCaseNotes = (props) => {
@@ -1910,7 +1904,7 @@ const CreateAssignment = (props) => {
       showConfirmButton: false,
       timer: 2000,
     });
-  
+
     if (currentUser && props.selectedPatientUID) {
       const taskData = {
         Activity: activity,
@@ -1920,10 +1914,10 @@ const CreateAssignment = (props) => {
         PatientUID: props.selectedPatientUID,
         Status: null,
       };
-  
+
       console.log("PatientUID:", props.selectedPatientUID);
       console.log("counselorUID:", currentUser.uid);
-  
+
       try {
         const docRef = await addDoc(collection(db, "Tasks"), taskData);
         console.log("Document written with ID: ", docRef.id);
@@ -2266,7 +2260,7 @@ const ViewAssignedActivity = (props) => {
 };
 
 const ViewTurnedInActivity = (props) => {
-  const updateTaskStatus = async (taskId) => {
+  const UpdateTaskStatus = async (taskId) => {
     const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
 
     try {
@@ -2312,7 +2306,7 @@ const ViewTurnedInActivity = (props) => {
                 backgroundColor: "#f5e9cf",
                 color: "#4d455d",
               }}
-              onClick={() => updateTaskStatus(props.task)}
+              onClick={() => UpdateTaskStatus(props.task)}
             >
               Verify
             </button>
