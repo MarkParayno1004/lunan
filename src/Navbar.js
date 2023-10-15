@@ -27,16 +27,6 @@ export const Navbar = () => {
                   </li>
                   <li className="nav-item">
                     <Link
-                      to="/About Us"
-                      className="nav-link fs-4 me-2"
-                      aria-current="page"
-                      id="hoverNav"
-                    >
-                      About Us
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link
                       to="/FAQ"
                       className="nav-link fs-4 me-2"
                       aria-current="page"
