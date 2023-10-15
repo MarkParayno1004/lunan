@@ -46,7 +46,6 @@ export const AllCounselors = () => {
     setShowCounselor(true);
   };
 
-
   useEffect(() => {
     fetchCounselorData(setCounselorData, setFilteredCounselorData);
   }, [newCounselorAdded]); // Fetch data on component mount
@@ -114,6 +113,30 @@ export const AllCounselors = () => {
   const [showCouncelor, setShowCounselor] = useState(false);
   const handleShowCounselor = () => setShowCounselor(true);
   const handleCloseCounselor = () => setShowCounselor(false);
+
+  //!Pagination
+  // Step 1: Define the number of items to display per page
+  const itemsPerPage = 5; // You can change this value as needed
+
+  // Step 2: Create a state variable for the current page number
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Step 3: Calculate the start and end index for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Step 4: Update the component to display data for the current page
+  const currentCounselorData = filteredCounselorData.slice(
+    startIndex,
+    endIndex
+  );
+
+  // Step 5: Create pagination buttons to navigate between pages
+  const totalPages = Math.ceil(filteredCounselorData.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -151,7 +174,7 @@ export const AllCounselors = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredCounselorData.map((counselor) => (
+                {currentCounselorData.map((counselor) => (
                   <tr key={counselor.UID}>
                     <td>
                       <button
@@ -167,7 +190,7 @@ export const AllCounselors = () => {
                           />
                         ) : (
                           <img
-                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
                             alt={counselor.firstName}
                             width="100"
                             height="100"
@@ -176,9 +199,9 @@ export const AllCounselors = () => {
                       </button>
                       {showCouncelor && (
                         <CounselorInfo
-                        show={showCouncelor}
-                        handleClose={handleCloseCounselor}
-                        counselor={selectedCounselor}
+                          show={showCouncelor}
+                          handleClose={handleCloseCounselor}
+                          counselor={selectedCounselor}
                         />
                       )}
                     </td>
@@ -219,8 +242,31 @@ export const AllCounselors = () => {
             </table>
           </div>
         </div>
+
+        {/* Step 5: Create pagination buttons */}
         <div className="row">
-          <div className="col mt-auto d-flex justify-content-start">
+          <div className="col">
+            <nav>
+              <ul className="pagination">
+                {[...Array(totalPages)].map((_, index) => (
+                  <li
+                    key={index}
+                    className={`page-item ${
+                      currentPage === index + 1 ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageChange(index + 1)}
+                    >
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+          <div className="col d-flex justify-content-end">
             <Button
               className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
               id="buttonCard"
