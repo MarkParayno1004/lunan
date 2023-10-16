@@ -8,6 +8,7 @@ import Editor from "ckeditor5-custom-build/build/ckeditor";
 import "../css/customscroll.css";
 import "../css/WellnessPageCounselor.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { Pagination } from "react-bootstrap";
 import {
   collection,
   getDocs,
@@ -777,32 +778,45 @@ const ViewModalAssign = (props) => {
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
     console.log(
-      `Creating assignments for patient with UID: ${selectedPatientUID}`
+      `Creating assignments for a patient with UID: ${selectedPatientUID}`
     );
     setShow(true);
   };
 
-  const [showFiles, setShowFiles] = useState();
-  const handleCloseFiles = () => setShowFiles(false);
-  const handleShowFiles = () => setShowFiles(true);
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const handleSubmit = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Assignment successfully created!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    setShow(false);
-  };
   React.useEffect(() => {
     // Update tasks when props.tasks changes
     console.log("Entered Use Effect");
     setTasks(props.tasks || []);
   }, [props.tasks]);
+
+  // Calculate the index of the first and last items to be displayed on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  // Function to filter tasks based on the active tab
+  const filteredTasks = () => {
+    if (activeTab === "assigned") {
+      return tasks.filter((task) => task.Status === null);
+    } else if (activeTab === "verified") {
+      return tasks.filter((task) => task.Status === "Verified");
+    } else if (activeTab === "turnedIn") {
+      return tasks.filter((task) => task.Status === "turnedIn");
+    }
+    return [];
+  };
+
+  // Get the tasks to be displayed on the current page
+  const currentTasks = filteredTasks().slice(indexOfFirstItem, indexOfLastItem);
+
+  // Calculate the total number of pages for pagination
+  const totalPages = Math.ceil(filteredTasks().length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <Modal
@@ -815,100 +829,79 @@ const ViewModalAssign = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Assignment</Modal.Title>
         </Modal.Header>
-        <div className="tabs mt-4 d-flex justify-content-start">
-          <button
-            className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
-            onClick={() => handleTabChange("assigned")}
-          >
-            Assigned
-          </button>
-          <button
-            className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
-            onClick={() => handleTabChange("turnedIn")}
-          >
-            Turned-in Assignments
-          </button>
-          <button
-            className={activeTab === "verified" ? "active" : ""}
-            onClick={() => handleTabChange("verified")}
-          >
-            Verified Assignments
-          </button>
+        <div>
+          <div className="tabs mt-4 d-flex justify-content-start">
+            <button
+              className={`me-3 ${activeTab === "assigned" ? "active" : ""}`}
+              onClick={() => handleTabChange("assigned")}
+            >
+              Assigned
+            </button>
+            <button
+              className={`me-3 ${activeTab === "turnedIn" ? "active" : ""}`}
+              onClick={() => handleTabChange("turnedIn")}
+            >
+              Turned-in Assignments
+            </button>
+            <button
+              className={activeTab === "verified" ? "active" : ""}
+              onClick={() => handleTabChange("verified")}
+            >
+              Verified Assignments
+            </button>
+          </div>
+          <table className="table table-dark table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Activity:</th>
+                <th scope="col">Description:</th>
+                {activeTab !== "assigned" && (
+                  <>
+                    <th scope="col">Turn-In Date</th>
+                    <th scope="col">Firestore ID</th>
+                  </>
+                )}
+              </tr>
+            </thead>
+            <tbody className="table-group-divider">
+              {currentTasks.map((task, index) => (
+                <tr key={index}>
+                  <td>{task.Activity}</td>
+                  <td>{task.Description}</td>
+                  {activeTab !== "assigned" && (
+                    <>
+                      <td>{task.TurnInDate}</td>
+                      <td>{task.id}</td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Bootstrap Pagination */}
+          <div className="d-flex justify-content-center">
+            <Pagination>
+              <Pagination.Prev
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              />
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={index + 1 === currentPage}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              />
+            </Pagination>
+          </div>
         </div>
-        <table class="table table-dark table-hover">
-          {activeTab === "assigned" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Descsription:</th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {tasks
-                  .filter((task) => task.Status === null)
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-          {activeTab === "verified" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Description:</th>
-                  <th scope="col">Turn-In Date:</th>{" "}
-                  {/* Display Firestore document ID here */}
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {console.log("Tasks:", tasks)}
-                {tasks
-                  .filter((task) => task.Status === "Verified")
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
-                      {/* Display Firestore document ID here */}
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-          {activeTab === "turnedIn" && (
-            <>
-              <thead>
-                <tr>
-                  <th scope="col">Activity:</th>
-                  <th scope="col">Description:</th>
-                  <th scope="col">Turn-In Date:</th>{" "}
-                  {/* Display Firestore document ID here */}
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {console.log("Tasks:", tasks)}
-                {tasks
-                  .filter((task) => task.Status === "turnedIn")
-                  .map((task, index) => (
-                    <tr key={index}>
-                      <td>{task.Activity}</td>
-                      <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
-                      {/* Display Firestore document ID here */}
-                      <td></td>
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-        </table>
         <Modal.Footer>
           <button
             className="btn"
@@ -930,6 +923,7 @@ const ViewWeeklyForm = (props) => {
   const handleShow = () => setShow(true);
   const [wForms, setwForms] = useState(props.wForms || []);
   const [activeTab, setActiveTab] = useState("submitted");
+  const [selectedwForm, setSelectedwForm] = useState(null);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -938,8 +932,6 @@ const ViewWeeklyForm = (props) => {
     console.log("Entered Use Effect");
     setwForms(props.wForms || []);
   }, [props.wForms]);
-
-  const [selectedwForm, setSelectedwForm] = useState(null);
 
   const handleSelectwForm = async (id) => {
     try {
@@ -969,6 +961,48 @@ const ViewWeeklyForm = (props) => {
     }
   };
 
+  //!Pagination
+  // Pagination state for "submitted" table
+  const [submittedPage, setSubmittedPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
+
+  // Pagination state for "verified" table
+  const [verifiedPage, setVerifiedPage] = useState(1);
+
+  // Update the pagination based on the current page and tab
+  const handlePageChange = (page) => {
+    if (activeTab === "submitted") {
+      setSubmittedPage(page);
+    } else if (activeTab === "verified") {
+      setVerifiedPage(page);
+    }
+  };
+
+  // Filter data based on the active tab and current page
+  const currentPage = activeTab === "submitted" ? submittedPage : verifiedPage;
+  const filteredData =
+    activeTab === "submitted"
+      ? wForms
+      : wForms.filter((wForm) => wForm.Status === "Verified");
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = filteredData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // Handle "Next" and "Previous" button clicks
+  const handleNextPage = () => {
+    const nextPage = currentPage + 1;
+    if (nextPage <= totalPages) {
+      handlePageChange(nextPage);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    const previousPage = currentPage - 1;
+    if (previousPage >= 1) {
+      handlePageChange(previousPage);
+    }
+  };
   return (
     <Modal
       className="mt-3"
@@ -1006,7 +1040,7 @@ const ViewWeeklyForm = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {wForms
+                {currentData
                   .filter((wForm) => wForm.Status === null)
                   .map((wForm, index) => (
                     <tr key={index}>
@@ -1031,6 +1065,27 @@ const ViewWeeklyForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={currentPage === index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         {activeTab === "verified" && (
@@ -1045,7 +1100,7 @@ const ViewWeeklyForm = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {wForms
+                {currentData
                   .filter((wForm) => wForm.Status === "Verified")
                   .map((wForm, index) => (
                     <tr key={index}>
@@ -1070,6 +1125,27 @@ const ViewWeeklyForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={currentPage === index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         <ViewFormWeek
@@ -1129,6 +1205,48 @@ const ViewWellnessForm = (props) => {
     }
   };
 
+  //!Pagination
+  // Pagination state for "submitted" table
+  const [submittedPage, setSubmittedPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
+
+  // Pagination state for "verified" table
+  const [verifiedPage, setVerifiedPage] = useState(1);
+
+  // Update the pagination based on the current page and tab
+  const handlePageChange = (page) => {
+    if (activeTab === "submitted") {
+      setSubmittedPage(page);
+    } else if (activeTab === "verified") {
+      setVerifiedPage(page);
+    }
+  };
+
+  // Filter data based on the active tab and current page
+  const currentPage = activeTab === "submitted" ? submittedPage : verifiedPage;
+  const filteredData =
+    activeTab === "submitted"
+      ? wellForms
+      : wellForms.filter((wForm) => wForm.Status === "Verified");
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = filteredData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // Handle "Next" and "Previous" button clicks
+  const handleNextPage = () => {
+    const nextPage = currentPage + 1;
+    if (nextPage <= totalPages) {
+      handlePageChange(nextPage);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    const previousPage = currentPage - 1;
+    if (previousPage >= 1) {
+      handlePageChange(previousPage);
+    }
+  };
   return (
     <Modal
       className="mt-3"
@@ -1166,7 +1284,7 @@ const ViewWellnessForm = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {wellForms
+                {currentData
                   .filter((wellForm) => wellForm.Status === null)
                   .map((wellForm, index) => (
                     <tr key={index}>
@@ -1191,6 +1309,27 @@ const ViewWellnessForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={currentPage === index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         {activeTab === "verified" && (
@@ -1205,7 +1344,7 @@ const ViewWellnessForm = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {wellForms
+                {currentData
                   .filter((wellForm) => wellForm.Status === "Verified")
                   .map((wellForm, index) => (
                     <tr key={index}>
@@ -1230,6 +1369,27 @@ const ViewWellnessForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={currentPage === index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         <ViewFormWell
@@ -1432,24 +1592,7 @@ const ViewFormWell = (props) => {
 };
 
 const ViewWellnessGuide = (props) => {
-  const [show, setShow] = useState(false);
   const [guideData, setGuideData] = useState([]);
-  const handleClose = () => setShow(false);
-  const handleShowAddGuide = () => setShow(true);
-  const handleSubmit = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Guide Added Successfully!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    setShow(false);
-  };
-
-  const showAddGuideButton = props.selectedPatientUID !== null;
 
   const fetchGuideData = async () => {
     const db = getFirestore();
@@ -1473,6 +1616,47 @@ const ViewWellnessGuide = (props) => {
       fetchGuideData();
     }
   }, [props.selectedPatientUID]);
+
+  //!Pagination
+  const itemsPerPage = 5; // Number of items to display per page
+  const [activePage, setActivePage] = useState(1);
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
+
+  const handleNextPage = () => {
+    if (activePage < Math.ceil(guideData.length / itemsPerPage)) {
+      setActivePage(activePage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (activePage > 1) {
+      setActivePage(activePage - 1);
+    }
+  };
+
+  const indexOfLastItem = activePage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = guideData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = [];
+  for (
+    let number = 1;
+    number <= Math.ceil(guideData.length / itemsPerPage);
+    number++
+  ) {
+    pageNumbers.push(
+      <Pagination.Item
+        key={number}
+        active={number === activePage}
+        onClick={() => handlePageChange(number)}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
 
   return (
     <Modal
@@ -1533,7 +1717,7 @@ const ViewWellnessGuide = (props) => {
                 </td>
                 <th>Sleep Meditation</th>
               </tr>
-              {guideData
+              {currentItems
                 .filter(
                   (guide) => guide.PatientUID === props.selectedPatientUID
                 )
@@ -1554,6 +1738,21 @@ const ViewWellnessGuide = (props) => {
                 ))}
             </tbody>
           </table>
+        </div>
+        <div className="d-flex justify-content-center mt-2">
+          <Pagination>
+            <Pagination.Prev
+              onClick={handlePrevPage}
+              disabled={activePage === 1}
+            />
+            {pageNumbers}
+            <Pagination.Next
+              onClick={handleNextPage}
+              disabled={
+                activePage === Math.ceil(guideData.length / itemsPerPage)
+              }
+            />
+          </Pagination>
         </div>
       </Modal.Body>
     </Modal>

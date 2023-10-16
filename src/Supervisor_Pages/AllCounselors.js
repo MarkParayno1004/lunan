@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "../css/AllCounselors.css";
+import { Pagination } from "react-bootstrap";
 import {
   collection,
   addDoc,
@@ -13,8 +14,7 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, firestore, storage } from "../firebase/firebase-config";
+import { firestore, storage } from "../firebase/firebase-config";
 import {
   uploadBytes,
   ref,
@@ -49,11 +49,6 @@ export const AllCounselors = () => {
   useEffect(() => {
     fetchCounselorData(setCounselorData, setFilteredCounselorData);
   }, [newCounselorAdded]); // Fetch data on component mount
-
-  const handleEdit = (counselor) => {
-    setEditData(counselor);
-    setShowEdit(true);
-  };
 
   const handleEditSuccess = async (updatedData) => {
     try {
@@ -162,109 +157,111 @@ export const AllCounselors = () => {
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark">
-              <thead>
-                <tr>
-                  <th>Picture</th>
-                  <th>Name</th>
-                  <th>Date Added</th>
-                  <th>Patients</th>
-                  <th>Edit</th>
-                  <th>Remove</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentCounselorData.map((counselor) => (
-                  <tr key={counselor.UID}>
-                    <td>
-                      <button
-                        onClick={() => handleCounselorSelect(counselor)}
-                        style={{ border: "none", background: "none" }}
-                      >
-                        {counselor.ProfPic ? (
-                          <img
-                            src={fetchImageUrl(counselor.ProfPic)}
-                            alt={counselor.firstName}
-                            width="100"
-                            height="100"
-                          />
-                        ) : (
-                          <img
-                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                            alt={counselor.firstName}
-                            width="100"
-                            height="100"
+            <div className="table-responsive">
+              <table className="table table-dark">
+                <thead>
+                  <tr>
+                    <th>Picture</th>
+                    <th>Name</th>
+                    <th>Date Added</th>
+                    <th>Patients</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentCounselorData.map((counselor) => (
+                    <tr key={counselor.UID}>
+                      <td>
+                        <button
+                          onClick={() => handleCounselorSelect(counselor)}
+                          style={{ border: "none", background: "none" }}
+                        >
+                          {counselor.ProfPic ? (
+                            <img
+                              src={fetchImageUrl(counselor.ProfPic)}
+                              alt={counselor.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          ) : (
+                            <img
+                              src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                              alt={counselor.firstName}
+                              width="100"
+                              height="100"
+                            />
+                          )}
+                        </button>
+                        {showCouncelor && (
+                          <CounselorInfo
+                            show={showCouncelor}
+                            handleClose={handleCloseCounselor}
+                            counselor={selectedCounselor}
                           />
                         )}
-                      </button>
-                      {showCouncelor && (
-                        <CounselorInfo
-                          show={showCouncelor}
-                          handleClose={handleCloseCounselor}
-                          counselor={selectedCounselor}
-                        />
-                      )}
-                    </td>
-                    <td>{counselor.firstName}</td>
-                    <td>{counselor.dateCreated}</td>
-                    <td>
-                      {counselor.patientsCount !== undefined
-                        ? counselor.patientsCount
-                        : 0}
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleShowEdit(counselor.UID)}
-                        className="rounded-5 fw-medium"
-                        id="editCounselor"
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        id="removeCounselor"
-                        className="rounded-5 fw-medium"
-                        onClick={() => {
-                          handleRemove(
-                            counselor.UID,
-                            setCounselorData,
-                            setFilteredCounselorData
-                          );
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                      <td>{counselor.firstName}</td>
+                      <td>{counselor.dateCreated}</td>
+                      <td>
+                        {counselor.patientsCount !== undefined
+                          ? counselor.patientsCount
+                          : 0}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleShowEdit(counselor.UID)}
+                          className="rounded-5 fw-medium"
+                          id="editCounselor"
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          id="removeCounselor"
+                          className="rounded-5 fw-medium"
+                          onClick={() => {
+                            handleRemove(
+                              counselor.UID,
+                              setCounselorData,
+                              setFilteredCounselorData
+                            );
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
         {/* Step 5: Create pagination buttons */}
         <div className="row">
           <div className="col">
-            <nav>
-              <ul className="pagination">
-                {[...Array(totalPages)].map((_, index) => (
-                  <li
-                    key={index}
-                    className={`page-item ${
-                      currentPage === index + 1 ? "active" : ""
-                    }`}
-                  >
-                    <button
-                      className="page-link"
-                      onClick={() => handlePageChange(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <Pagination>
+              <Pagination.Prev
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              />
+              {[...Array(totalPages)].map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={currentPage === index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              />
+            </Pagination>
           </div>
           <div className="col d-flex justify-content-end">
             <Button

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Pagination } from "react-bootstrap";
 import "../css/NewPatients.css";
 import {
   collection,
@@ -69,23 +69,6 @@ export const NewPatients = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (id) => setShowEdit(id);
 
-  //!Pagination
-  const itemsPerPage = 10; // Number of items per page
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPatients = filteredPatients.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
-  const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -122,7 +105,7 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentPatients.map(
+                {filteredPatients.map(
                   (patientObj) =>
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
@@ -168,25 +151,6 @@ export const NewPatients = () => {
             </table>
           </div>
         </div>
-        <nav>
-          <ul className="pagination">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li
-                key={index}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
     </div>
   );
