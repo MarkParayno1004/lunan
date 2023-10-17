@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "../firebase/firebase-config";
+import { firestore } from "../../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
 import { Pagination } from "react-bootstrap";
-import "../css/AllPatients.css";
+import "../../css/AllPatients.css";
 import {
   collection,
   getDocs,
@@ -176,6 +176,11 @@ export const AllPatients = () => {
     setCurrentPage(newPage);
   };
 
+  //!Table style
+  const tableStyle = {
+    height: "650px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
@@ -201,7 +206,7 @@ export const AllPatients = () => {
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark">
+            <table className="table table-dark" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Picture</th>

@@ -1,32 +1,29 @@
-import React from "react";
-import { useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Modal, Pagination } from "react-bootstrap";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
-import { doc, getDoc } from "firebase/firestore";
 
 //!Main App Render
-export const ViewWellnessForm = (props) => {
+export const ViewWeeklyForm = (props) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [wForms, setwForms] = useState(props.wForms || []);
   const [activeTab, setActiveTab] = useState("submitted");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [wellForms, setwellForms] = useState(props.wellForms || []);
-
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Entered Use Effect");
-    setwellForms(props.wellForms || []);
-  }, [props.wellForms]);
+    setwForms(props.wForms || []);
+  }, [props.wForms]);
 
-  const [selectedwellForm, setSelectedwellForm] = useState(null);
+  const [selectedwForm, setSelectedwForm] = useState(null);
 
-  const handleSelectwellForm = async (id) => {
+  const handleSelectwForm = async (id) => {
     try {
       // Fetch the entire document by its ID
-      const selectedFormDocRef = doc(firestore, "WellnessForm", id); // Replace with your Firestore instance
+      const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
 
       // Check if the document exists
@@ -36,8 +33,8 @@ export const ViewWellnessForm = (props) => {
 
         // Include the document ID in the data
         selectedFormData.id = selectedFormDocSnap.id;
-        // Set the entire document data to selectedwellForm
-        setSelectedwellForm(selectedFormData);
+        // Set the entire document data to selectedwForm
+        setSelectedwForm(selectedFormData);
         setShow(true);
         console.log("Fetched form for ID:", id);
         console.log("Selected form data:", selectedFormData);
@@ -50,50 +47,30 @@ export const ViewWellnessForm = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
-
   //!Pagination
-  // Pagination state for "submitted" table
-  const [submittedPage, setSubmittedPage] = useState(1);
-  const itemsPerPage = 5; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const wFormsPerPage = 5; // Adjust as needed
 
-  // Pagination state for "verified" table
-  const [verifiedPage, setVerifiedPage] = useState(1);
+  const totalPages = Math.ceil(
+    wForms.filter((wForm) =>
+      activeTab === "submitted"
+        ? wForm.Status === null
+        : wForm.Status === "Verified"
+    ).length / wFormsPerPage
+  );
 
-  // Update the pagination based on the current page and tab
-  const handlePageChange = (page) => {
-    if (activeTab === "submitted") {
-      setSubmittedPage(page);
-    } else if (activeTab === "verified") {
-      setVerifiedPage(page);
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
-  // Filter data based on the active tab and current page
-  const currentPage = activeTab === "submitted" ? submittedPage : verifiedPage;
-  const filteredData =
-    activeTab === "submitted"
-      ? wellForms
-      : wellForms.filter((wForm) => wForm.Status === "Verified");
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = filteredData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-  // Handle "Next" and "Previous" button clicks
-  const handleNextPage = () => {
-    const nextPage = currentPage + 1;
-    if (nextPage <= totalPages) {
-      handlePageChange(nextPage);
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
-
-  const handlePreviousPage = () => {
-    const previousPage = currentPage - 1;
-    if (previousPage >= 1) {
-      handlePageChange(previousPage);
-    }
-  };
-  //!Table style
+  //!Table Size
   const tableStyle = {
     height: "300px", // Set the desired height
     overflow: "auto", // Add scrollbars when content overflows
@@ -107,40 +84,47 @@ export const ViewWellnessForm = (props) => {
     >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>Patients Daily Form</Modal.Title>
+          <Modal.Title>Patients Weekly Form</Modal.Title>
         </Modal.Header>
         <div className="tabs mt-4 d-flex justify-content-start">
           <button
             className={`me-3 ${activeTab === "submitted" ? "active" : ""}`}
             onClick={() => handleTabChange("submitted")}
           >
-            Submitted Wellness Forms
+            Submitted Weekly Forms
           </button>
           <button
             className={activeTab === "verified" ? "active" : ""}
             onClick={() => handleTabChange("verified")}
           >
-            Verified Wellness Forms
+            Verified Weekly Forms
           </button>
         </div>
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table
+              className="table table-dark table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
-                  <th scope="col">Date Submited:</th>
+                  <th scope="col">Date Submitted:</th>
                   <th scope="col">View Form:</th>
                 </tr>
               </thead>
               <tbody>
-                {currentData
-                  .filter((wellForm) => wellForm.Status === null)
-                  .map((wellForm, index) => (
+                {wForms
+                  .filter((wForm) => wForm.Status === null)
+                  .slice(
+                    (currentPage - 1) * wFormsPerPage,
+                    currentPage * wFormsPerPage
+                  )
+                  .map((wForm, index) => (
                     <tr key={index}>
-                      <td>{wellForm.id}</td>
-                      <td>{wellForm.DateSubmitted}</td>
+                      <td>{wForm.id}</td>
+                      <td>{wForm.DateSubmitted}</td>
                       <td>
                         <button
                           className="btn"
@@ -149,8 +133,8 @@ export const ViewWellnessForm = (props) => {
                             color: "#4d455d",
                           }}
                           onClick={() => {
-                            handleSelectwellForm(wellForm.id);
-                            handleShow(wellForm.id);
+                            handleSelectwForm(wForm.id);
+                            handleShow(wForm.id);
                           }} // Pass the form's ID
                         >
                           View Form
@@ -163,20 +147,20 @@ export const ViewWellnessForm = (props) => {
             <div className="d-flex justify-content-center">
               <Pagination>
                 <Pagination.Prev
-                  onClick={handlePreviousPage}
+                  onClick={handlePreviousClick}
                   disabled={currentPage === 1}
                 />
-                {[...Array(totalPages)].map((_, index) => (
+                {Array.from({ length: totalPages }).map((_, index) => (
                   <Pagination.Item
-                    key={index}
-                    active={currentPage === index + 1}
-                    onClick={() => handlePageChange(index + 1)}
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
                   >
                     {index + 1}
                   </Pagination.Item>
                 ))}
                 <Pagination.Next
-                  onClick={handleNextPage}
+                  onClick={handleNextClick}
                   disabled={currentPage === totalPages}
                 />
               </Pagination>
@@ -186,21 +170,28 @@ export const ViewWellnessForm = (props) => {
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table
+              className="table table-dark table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
-                  <th scope="col">Date Submited:</th>
+                  <th scope="col">Date Submitted:</th>
                   <th scope="col">View Form:</th>
                 </tr>
               </thead>
               <tbody>
-                {currentData
-                  .filter((wellForm) => wellForm.Status === "Verified")
-                  .map((wellForm, index) => (
+                {wForms
+                  .filter((wForm) => wForm.Status === "Verified")
+                  .slice(
+                    (currentPage - 1) * wFormsPerPage,
+                    currentPage * wFormsPerPage
+                  )
+                  .map((wForm, index) => (
                     <tr key={index}>
-                      <td>{wellForm.id}</td>
-                      <td>{wellForm.DateSubmitted}</td>
+                      <td>{wForm.id}</td>
+                      <td>{wForm.DateSubmitted}</td>
                       <td>
                         <button
                           className="btn"
@@ -209,8 +200,8 @@ export const ViewWellnessForm = (props) => {
                             color: "#4d455d",
                           }}
                           onClick={() => {
-                            handleSelectwellForm(wellForm.id);
-                            handleShow(wellForm.id);
+                            handleSelectwForm(wForm.id);
+                            handleShow(wForm.id);
                           }} // Pass the form's ID
                         >
                           View Form
@@ -223,70 +214,108 @@ export const ViewWellnessForm = (props) => {
             <div className="d-flex justify-content-center">
               <Pagination>
                 <Pagination.Prev
-                  onClick={handlePreviousPage}
+                  onClick={handlePreviousClick}
                   disabled={currentPage === 1}
                 />
-                {[...Array(totalPages)].map((_, index) => (
+                {Array.from({ length: totalPages }).map((_, index) => (
                   <Pagination.Item
-                    key={index}
-                    active={currentPage === index + 1}
-                    onClick={() => handlePageChange(index + 1)}
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
                   >
                     {index + 1}
                   </Pagination.Item>
                 ))}
                 <Pagination.Next
-                  onClick={handleNextPage}
+                  onClick={handleNextClick}
                   disabled={currentPage === totalPages}
                 />
               </Pagination>
             </div>
           </>
         )}
-        <ViewFormWell
+        <ViewFormWeek
           show={show}
           handleClose={handleClose}
-          selectedwellForm={selectedwellForm}
-          wellForm={selectedwellForm}
+          selectedwForm={selectedwForm}
+          weeklyForm={selectedwForm}
         />
       </Modal.Body>
     </Modal>
   );
 };
 
-//! Excess Modal
-const ViewFormWell = (props) => {
-  const questionsAndAnswers = props.selectedwellForm
+//!Excess Modal
+const ViewFormWeek = (props) => {
+  console.log("Selected Weekly Form Data:", props.selectedwForm);
+
+  const mapAnswer = (value) => {
+    switch (value) {
+      case 0:
+        return "At no time - 0";
+      case 1:
+        return "Some of the time - 1";
+      case 2:
+        return "Less than half of the time - 2";
+      case 3:
+        return "More than half of the time - 3";
+      case 4:
+        return "Most of the time - 4";
+      case 5:
+        return "All the time - 5";
+      default:
+        return "";
+    }
+  };
+
+  const questionsAndAnswers = props.selectedwForm
     ? [
         {
-          question: "1. In general, I consider myself:",
-          answer: mapAnswer(props.selectedwellForm.WellnessQ1),
-          id: props.selectedwellForm.id,
+          question: "1. I have felt cheerful and in good spirits.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ1),
+          id: props.selectedwForm.id,
         },
         {
-          question: "2. Compared to most of my peers, I consider myself:",
-          answer: mapAnswer(props.selectedwellForm.WellnessQ2),
+          question: "2. I have felt calm and relaxed.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ2),
+        },
+        {
+          question: "3. I have felt active and vigorous.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ3),
+        },
+        {
+          question: "4. I woke up feeling fresh and rested.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ4),
         },
         {
           question:
-            "3. Some people are generally very happy. They enjoy life regardless of what is going on, getting the most out of everything. To what extent does this characterization describe you?",
-          answer: mapAnswer(props.selectedwellForm.WellnessQ3),
-        },
-        {
-          question:
-            "4. Some people are generally not very happy. Although they are not depressed, they never seem as happy as they might be. To what extent does this characterization describe you?",
-          answer: mapAnswer(props.selectedwellForm.WellnessQ4),
+            "5. My daily life has been filled with things that interest me.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ5),
         },
       ]
     : [];
 
-  const selectedwellForm = props.selectedwellForm || {};
+  const selectedwForm = props.selectedwForm || {};
+  const q1 = selectedwForm.WeeklyQ1 || 0;
+  const q2 = selectedwForm.WeeklyQ2 || 0;
+  const q3 = selectedwForm.WeeklyQ3 || 0;
+  const q4 = selectedwForm.WeeklyQ4 || 0;
+  const q5 = selectedwForm.WeeklyQ5 || 0;
 
-  const totalScore =
-    selectedwellForm.WellnessQ1 +
-    selectedwellForm.WellnessQ2 +
-    selectedwellForm.WellnessQ3 +
-    selectedwellForm.WellnessQ4;
+  const totalScore = q1 + q2 + q3 + q4 + q5;
+
+  const updatewFormVerified = async (wFormId) => {
+    const formRef = doc(firestore, "WeeklyForm", wFormId);
+    try {
+      // Update the 'Status' field to "Verified"
+      await updateDoc(formRef, {
+        Status: "Verified",
+      });
+      console.log("Form status updated to Verified");
+    } catch (error) {
+      console.error("Error updating form status:", error);
+    }
+  };
 
   return (
     <Modal
@@ -297,15 +326,13 @@ const ViewFormWell = (props) => {
     >
       <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            <div>View Daily Form:</div>
-          </Modal.Title>
+          <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
         <div className="d-flex justify-content-end mt-3">
           {" "}
           Total Score: {totalScore}/25
         </div>
-        <table className="table table-dark table-hover mt-3">
+        <table class="table table-dark table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Question:</th>
@@ -321,29 +348,16 @@ const ViewFormWell = (props) => {
             ))}
           </tbody>
         </table>
-        <div className="d-flex justify-content-end"></div>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "red" }}
+            onClick={() => updatewFormVerified(props.selectedwForm.id)}
+          >
+            Unverify
+          </button>
+        </div>
       </Modal.Body>
     </Modal>
   );
-};
-
-const mapAnswer = (value) => {
-  switch (value) {
-    case 1:
-      return "Not a very happy person - 1";
-    case 2:
-      return "Rather unhappy - 2";
-    case 3:
-      return "Somewhat unhappy - 3";
-    case 4:
-      return "Neither happy nor unhappy - 4";
-    case 5:
-      return "Somewhat happy - 5";
-    case 6:
-      return "Rather happy - 6";
-    case 7:
-      return "A very happy person - 7";
-    default:
-      return "";
-  }
 };

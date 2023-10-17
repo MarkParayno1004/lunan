@@ -90,6 +90,11 @@ export const ViewWeeklyForm = (props) => {
       handlePageChange(previousPage);
     }
   };
+  //!Table style
+  const tableStyle = {
+    height: "300px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <Modal
       className="mt-3"
@@ -118,7 +123,10 @@ export const ViewWeeklyForm = (props) => {
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table className="table table-dark table-hover mt-3">
+            <table
+              className="table table-dark table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -178,7 +186,10 @@ export const ViewWeeklyForm = (props) => {
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table className="table table-dark table-hover mt-3">
+            <table
+              className="table table-dark table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Name:</th>

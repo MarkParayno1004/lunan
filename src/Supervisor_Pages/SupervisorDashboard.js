@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { firestore, auth } from "../firebase/firebase-config";
-import { AllPatients } from "./AllPatients";
-import { NewPatients } from "./NewPatients";
-import { AllCounselors } from "./AllCounselors";
+import { AllPatients } from "./Components/AllPatients";
+import { NewPatients } from "./Components/NewPatients";
+import { AllCounselors } from "./Components/AllCounselors";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
-import { DefaultPageSupervisor } from "./DefaultPageSupervisor";
+import { DefaultPageSupervisor } from "./Components/DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
 import { AvatarSupervisor } from "../SupportEngine/AvatarSupervisor";
 

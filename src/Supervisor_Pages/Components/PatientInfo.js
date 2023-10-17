@@ -1,14 +1,14 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import Pic from "../img/ProfilePic.png";
+import Pic from "../../img/ProfilePic.png";
 import { useState } from "react";
-import "../css/PatientInfo.css";
-import "../css/customscroll.css";
-import "../css/WellnessPageCounselor.css";
-import { ViewModalAssign } from "./Modals/ViewModalAssign";
-import { ViewWeeklyForm } from "./Modals/ViewWeeklyForm";
-import { ViewWellnessForm } from "./Modals/ViewWellnessForm";
-import { ViewWellnessGuide } from "./Modals/ViewWellnessGuide";
+import "../../css/PatientInfo.css";
+import "../../css/customscroll.css";
+import "../../css/WellnessPageCounselor.css";
+import { ViewModalAssign } from "../Modals/ViewModalAssign";
+import { ViewWeeklyForm } from "../Modals/ViewWeeklyForm";
+import { ViewWellnessForm } from "../Modals/ViewWellnessForm";
+import { ViewWellnessGuide } from "../Modals/ViewWellnessGuide";
 import {
   collection,
   getDocs,
@@ -16,7 +16,7 @@ import {
   where,
   getFirestore,
 } from "firebase/firestore";
-import { firestore } from "../firebase/firebase-config";
+import { firestore } from "../../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
   const patientData = props.patientData;

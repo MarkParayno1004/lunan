@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "../firebase/firebase-config";
+import { firestore } from "../../firebase/firebase-config";
 import { getDocs, query, where, collection } from "firebase/firestore";
 import { Modal } from "react-bootstrap";
 import { PatientInfo } from "./PatientInfo";
@@ -13,7 +13,10 @@ export const CounselorInfo = (props) => {
     const fetchPatients = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(collection(firestore, "Users"), where("counselorID", "==", counselor.UID))
+          query(
+            collection(firestore, "Users"),
+            where("counselorID", "==", counselor.UID)
+          )
         );
         const patientListData = querySnapshot.docs.map((doc) => doc.data());
         setPatients(patientListData);
@@ -42,11 +45,11 @@ export const CounselorInfo = (props) => {
           </Modal.Header>
           <div className="container-fluid">
             {counselor && (
-              <CounselorData 
-              counselorData={counselor}
-              patients={patients}
-              setSearchInput={setSearchInput}
-              searchInput={searchInput} // Pass setSearchInput
+              <CounselorData
+                counselorData={counselor}
+                patients={patients}
+                setSearchInput={setSearchInput}
+                searchInput={searchInput} // Pass setSearchInput
               />
             )}
           </div>
@@ -56,12 +59,19 @@ export const CounselorInfo = (props) => {
   );
 };
 
-const CounselorData = ({ counselorData, patients, setSearchInput, searchInput }) => {
+const CounselorData = ({
+  counselorData,
+  patients,
+  setSearchInput,
+  searchInput,
+}) => {
   const [showModal, setModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [showPatientInfo, setShowPatientInfo] = useState(false);
-  const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([null]);
+  const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
+    null,
+  ]);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
@@ -141,7 +151,10 @@ const CounselorData = ({ counselorData, patients, setSearchInput, searchInput })
           />
           Pic
         </div>
-        <div className="col-8 ms-5 d-flex justify-content-center rounded-5" id="colBG">
+        <div
+          className="col-8 ms-5 d-flex justify-content-center rounded-5"
+          id="colBG"
+        >
           <div className="container-fluid patient-text pt-3 pb-3">
             {/* 1st Row Header */}
             <div className="row">
@@ -203,24 +216,23 @@ const CounselorData = ({ counselorData, patients, setSearchInput, searchInput })
         </thead>
         <tbody>
           {filteredPatients.map((patient) => (
-              <tr key={patient.UID}>
-                <td>
-                  <button
-                    style={{
-                      border: "none",
-                      background: "none",
-                      color: "white",
-                    }}
-                    onClick={() => {
-                      handleSelectPatient(patient.UID);
-                    }}
-                  >
-                    {patient.firstName}
-                  </button>
-                </td>
-              </tr>
-            ))
-          }
+            <tr key={patient.UID}>
+              <td>
+                <button
+                  style={{
+                    border: "none",
+                    background: "none",
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    handleSelectPatient(patient.UID);
+                  }}
+                >
+                  {patient.firstName}
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       {showPatientInfo && (
@@ -235,4 +247,3 @@ const CounselorData = ({ counselorData, patients, setSearchInput, searchInput })
     </div>
   );
 };
-

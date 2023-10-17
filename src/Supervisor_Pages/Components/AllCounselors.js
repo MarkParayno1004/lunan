@@ -1,34 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import Swal from "sweetalert2";
-import "../css/AllCounselors.css";
+import "../../css/AllCounselors.css";
 import { Pagination } from "react-bootstrap";
+import { collection, doc, updateDoc, getDoc } from "firebase/firestore";
+import { firestore, storage } from "../../firebase/firebase-config";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import {
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  deleteDoc,
-  doc,
-  updateDoc,
-  getDoc,
-} from "firebase/firestore";
-import { firestore, storage } from "../firebase/firebase-config";
-import {
-  uploadBytes,
-  ref,
-  getDownloadURL,
-  getMetadata,
-} from "firebase/storage";
-import {
-  fetchCounselorPatientsCount,
   fetchCounselorData,
   handleRemove,
   handleSubmitAdd,
   handleAddSuccess,
   addCounselorToData,
-} from "./Backend/AllCounselorsHelper";
+} from "../Backend/AllCounselorsHelper";
 import { CounselorInfo } from "./CounselorInfo";
 export const AllCounselors = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -132,6 +115,11 @@ export const AllCounselors = () => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+  //!Table style
+  const tableStyle = {
+    height: "650px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -158,7 +146,7 @@ export const AllCounselors = () => {
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
             <div className="table-responsive">
-              <table className="table table-dark">
+              <table className="table table-dark" style={tableStyle}>
                 <thead>
                   <tr>
                     <th>Picture</th>

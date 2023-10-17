@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { Modal, Pagination } from "react-bootstrap";
+
+//!Main App Render
 export const ViewModalAssign = (props) => {
   const [activeTab, setActiveTab] = useState("assigned");
   const handleTabChange = (tab) => {
@@ -43,6 +45,11 @@ export const ViewModalAssign = (props) => {
     setCurrentPage(pageNumber);
   };
 
+  //!Table style
+  const tableStyle = {
+    height: "300px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <Modal
       show={props.show}
@@ -75,7 +82,7 @@ export const ViewModalAssign = (props) => {
               Verified Assignments
             </button>
           </div>
-          <table className="table table-dark table-hover">
+          <table className="table table-dark table-hover" style={tableStyle}>
             <thead>
               <tr>
                 <th scope="col">Activity:</th>
