@@ -20,9 +20,7 @@ import {
   getFirestore,
   addDoc,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import HTMLReactParser from "html-react-parser";
-import { auth, firestore, storage } from "../firebase/firebase-config";
+import { firestore } from "../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
   const patientData = props.patientData;
@@ -56,11 +54,6 @@ export const PatientInfo = (props) => {
       console.error("Error in handleShowAss:", error);
     }
   };
-
-  //!View Case Notes  Modal Behaviour
-  const [showCase, setShowCase] = useState(false);
-  const handleCloseCase = () => setShowCase(false);
-  const handleShowCase = () => setShowCase(true);
 
   const [tasksForSelectedPatient, setTasksForSelectedPatient] = useState([]);
   const [wFormsForSelectedPatient, setwFormsForSelectedPatient] = useState([]);
@@ -115,34 +108,6 @@ export const PatientInfo = (props) => {
     }
   };
 
-  //!Create Case Notes Form Modal Behaviour
-  const [showCreate, setShowCreate] = useState(false);
-  const handleCloseCreate = () => {
-    setShowCreate(false);
-  };
-  const handleShowCreate = () => setShowCreate(true);
-
-  const [showPage, setShowPage] = useState(false);
-
-  const togglePage = () => {
-    setShowPage(!showPage);
-  };
-  const handleClose = () => {
-    props.handleClose();
-  };
-  const handleSubmitCreate = () => {
-    Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
-      position: "center",
-      icon: "success",
-      title: "Case note has been created sucessfully!",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-
-    setShowCreate(false);
-  };
   const fetchTasksForPatient = async (selectedPatientUID) => {
     console.log("Fetching tasks for ", selectedPatientUID);
     try {
@@ -774,17 +739,6 @@ const ViewModalAssign = (props) => {
     setActiveTab(tab);
   };
   const [tasks, setTasks] = useState(props.tasks || []);
-  const [show, setShow] = useState();
-  const handleClose = () => setShow(false);
-  const handleShowCreate = (selectedPatientUID) => {
-    console.log(
-      `Creating assignments for a patient with UID: ${selectedPatientUID}`
-    );
-    setShow(true);
-  };
-
-  const itemsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
 
   React.useEffect(() => {
     // Update tasks when props.tasks changes
@@ -792,6 +746,9 @@ const ViewModalAssign = (props) => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
+  //!Pagination
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
   // Calculate the index of the first and last items to be displayed on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

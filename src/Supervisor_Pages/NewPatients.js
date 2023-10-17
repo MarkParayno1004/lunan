@@ -69,6 +69,18 @@ export const NewPatients = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (id) => setShowEdit(id);
 
+  //!Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Change this value according to your requirements
+  const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const NewPatients = filteredPatients.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -105,7 +117,7 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredPatients.map(
+                {NewPatients.map(
                   (patientObj) =>
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
@@ -149,6 +161,25 @@ export const NewPatients = () => {
                 )}
               </tbody>
             </table>
+            <Pagination>
+              <Pagination.Prev
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              />
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={currentPage === index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              />
+            </Pagination>
           </div>
         </div>
       </div>

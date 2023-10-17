@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Pagination } from "react-bootstrap";
 import Pic from "../img/ProfilePic.png";
 import { useState, useRef, useEffect } from "react";
 import "../css/PatientInfo.css";
@@ -20,8 +20,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import HTMLReactParser from "html-react-parser";
-import { auth, firestore, storage } from "../firebase/firebase-config";
+import { firestore } from "../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
   const patientData = props.patientData;
@@ -825,42 +824,41 @@ export const PatientInfo = (props) => {
               >
                 Create Case Notes
               </button>
-
-              {/*MODALS */}
-              <ViewModalAssign
-                show={showAss}
-                handleClose={handleCloseAss}
-                selectedPatientUID={props.selectedPatientUID}
-                tasks={tasksForSelectedPatient}
-              />
-
-              <ViewCaseNotes
-                show={showCase}
-                handleClose={handleCloseCase}
-                selectedPatientUID={props.selectedPatientUID}
-                cNotes={notesForSelectedPatient}
-              />
-
-              <ViewWeeklyForm
-                show={showWeek}
-                handleClose={handleCloseWeek}
-                selectedPatientUID={props.selectedPatientUID}
-                wForms={wFormsForSelectedPatient}
-              />
-
-              <ViewWellnessForm
-                show={showWell}
-                handleClose={handleCloseWell}
-                selectedPatientUID={props.selectedPatientUID}
-                wellForms={wellFormsForSelectedPatient}
-              />
-
-              <ViewWellnessGuide
-                show={showWellnessGuide}
-                handleClose={handleCloseWG}
-                selectedPatientUID={props.selectedPatientUID}
-              />
             </div>
+            {/*MODALS */}
+            <ViewModalAssign
+              show={showAss}
+              handleClose={handleCloseAss}
+              selectedPatientUID={props.selectedPatientUID}
+              tasks={tasksForSelectedPatient}
+            />
+
+            <ViewCaseNotes
+              show={showCase}
+              handleClose={handleCloseCase}
+              selectedPatientUID={props.selectedPatientUID}
+              cNotes={notesForSelectedPatient}
+            />
+
+            <ViewWeeklyForm
+              show={showWeek}
+              handleClose={handleCloseWeek}
+              selectedPatientUID={props.selectedPatientUID}
+              wForms={wFormsForSelectedPatient}
+            />
+
+            <ViewWellnessForm
+              show={showWell}
+              handleClose={handleCloseWell}
+              selectedPatientUID={props.selectedPatientUID}
+              wellForms={wellFormsForSelectedPatient}
+            />
+
+            <ViewWellnessGuide
+              show={showWellnessGuide}
+              handleClose={handleCloseWG}
+              selectedPatientUID={props.selectedPatientUID}
+            />
 
             {showPage && (
               <div className="pb-5 pt-5">
@@ -893,10 +891,6 @@ const ViewModalAssign = (props) => {
     );
     setShow(true);
   };
-
-  const [showFiles, setShowFiles] = useState();
-  const handleCloseFiles = () => setShowFiles(false);
-  const handleShowFiles = () => setShowFiles(true);
 
   const handleSubmit = () => {
     Swal.fire({
@@ -931,6 +925,40 @@ const ViewModalAssign = (props) => {
   const [showVerified, setShowVerified] = useState(false);
   const handleShowVerified = () => setShowVerified(true);
   const handleCloseVerified = () => setShowVerified(false);
+
+  //!Pagination
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  // Calculate the index of the first and last items to be displayed on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  // Function to filter tasks based on the active tab
+  const filteredTasks = () => {
+    if (activeTab === "assigned") {
+      return tasks.filter((task) => task.Status === null);
+    } else if (activeTab === "verified") {
+      return tasks.filter((task) => task.Status === "Verified");
+    } else if (activeTab === "turnedIn") {
+      return tasks.filter((task) => task.Status === "turnedIn");
+    }
+    return [];
+  };
+
+  // Get the tasks to be displayed on the current page
+  const currentTasks = filteredTasks().slice(indexOfFirstItem, indexOfLastItem);
+
+  // Calculate the total number of pages for pagination
+  const totalPages = Math.ceil(filteredTasks().length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  //!Table Size
+  const tableStyle = {
+    height: "300px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <Modal
       show={props.show}
@@ -962,9 +990,9 @@ const ViewModalAssign = (props) => {
             Verified Assignments
           </button>
         </div>
-        <table class="table table-dark table-hover mt-3">
-          {activeTab === "assigned" && (
-            <>
+        {activeTab === "assigned" && (
+          <>
+            <table class="table table-dark table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -975,7 +1003,7 @@ const ViewModalAssign = (props) => {
                 </tr>
               </thead>
               <tbody className="table-group-divider">
-                {tasks
+                {currentTasks
                   .filter((task) => task.Status === null)
                   .map((task, index) => (
                     <tr key={index}>
@@ -1029,10 +1057,33 @@ const ViewModalAssign = (props) => {
                     </tr>
                   ))}
               </tbody>
-            </>
-          )}
-          {activeTab === "verified" && (
-            <>
+            </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={index + 1 === currentPage}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
+          </>
+        )}
+        {activeTab === "verified" && (
+          <>
+            <table class="table table-dark table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -1043,7 +1094,7 @@ const ViewModalAssign = (props) => {
               </thead>
               <tbody className="table-group-divider">
                 {console.log("Tasks:", tasks)}
-                {tasks
+                {currentTasks
                   .filter((task) => task.Status === "Verified")
                   .map((task, index) => (
                     <tr key={index}>
@@ -1071,10 +1122,33 @@ const ViewModalAssign = (props) => {
                     </tr>
                   ))}
               </tbody>
-            </>
-          )}
-          {activeTab === "turnedIn" && (
-            <>
+            </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={index + 1 === currentPage}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
+          </>
+        )}
+        {activeTab === "turnedIn" && (
+          <>
+            <table class="table table-dark table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -1085,7 +1159,7 @@ const ViewModalAssign = (props) => {
               </thead>
               <tbody className="table-group-divider">
                 {console.log("Tasks:", tasks)}
-                {tasks
+                {currentTasks
                   .filter((task) => task.Status === "turnedIn")
                   .map((task, index) => (
                     <tr key={index}>
@@ -1117,9 +1191,31 @@ const ViewModalAssign = (props) => {
                     </tr>
                   ))}
               </tbody>
-            </>
-          )}
-        </table>
+            </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={index + 1 === currentPage}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
+          </>
+        )}
+
         <Modal.Footer>
           <button
             className="btn"
@@ -1188,6 +1284,29 @@ const ViewCaseNotes = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
+
+  //!Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const cNotesPerPage = 5; // Adjust as needed
+  const totalPages = Math.ceil(cNotes.length / cNotesPerPage);
+
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  //!Table Size
+  const tableStyle = {
+    height: "300px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <Modal
       className="mt-3"
@@ -1199,9 +1318,7 @@ const ViewCaseNotes = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>View Case Notes</Modal.Title>
         </Modal.Header>
-
-        <table class="table table-dark table-hover mt-3">
-          {}
+        <table class="table table-dark table-hover mt-3" style={tableStyle}>
           <thead>
             <tr>
               <th scope="col">Name:</th>
@@ -1210,36 +1327,61 @@ const ViewCaseNotes = (props) => {
             </tr>
           </thead>
           <tbody>
-            {cNotes.map((cNote, index) => (
-              <tr key={index}>
-                <td>{cNote.id}</td>
-                <td>{cNote.dateAdded}</td>
-                <td>
-                  <button
-                    className="btn"
-                    style={{
-                      backgroundColor: "#f5e9cf",
-                      color: "#4d455d",
-                      width: "auto",
-                    }}
-                    onClick={() => {
-                      handleSelectcNotes(cNote.id);
-                      handleShow(cNote.id);
-                    }} // Pass the form's ID
-                  >
-                    View Note
-                  </button>
-                </td>
-                <PublishCaseNotes
-                  show={show}
-                  handleClose={handleClose}
-                  selectedcNotes={selectedcNotes}
-                  caseNotes={selectedcNotes}
-                />
-              </tr>
-            ))}
+            {cNotes
+              .slice(
+                (currentPage - 1) * cNotesPerPage,
+                currentPage * cNotesPerPage
+              )
+              .map((cNote, index) => (
+                <tr key={index}>
+                  <td>{cNote.id}</td>
+                  <td>{cNote.dateAdded}</td>
+                  <td>
+                    <button
+                      className="btn"
+                      style={{
+                        backgroundColor: "#f5e9cf",
+                        color: "#4d455d",
+                        width: "auto",
+                      }}
+                      onClick={() => {
+                        handleSelectcNotes(cNote.id);
+                        handleShow(cNote.id);
+                      }} // Pass the form's ID
+                    >
+                      View Note
+                    </button>
+                  </td>
+                  <PublishCaseNotes
+                    show={show}
+                    handleClose={handleClose}
+                    selectedcNotes={selectedcNotes}
+                    caseNotes={selectedcNotes}
+                  />
+                </tr>
+              ))}
           </tbody>
         </table>
+
+        <Pagination>
+          <Pagination.Prev
+            onClick={handlePreviousClick}
+            disabled={currentPage === 1}
+          />
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === currentPage}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={handleNextClick}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
       </Modal.Body>
     </Modal>
   );
@@ -1289,7 +1431,34 @@ const ViewWeeklyForm = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
+  //!Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const wFormsPerPage = 5; // Adjust as needed
 
+  const totalPages = Math.ceil(
+    wForms.filter((wForm) =>
+      activeTab === "submitted"
+        ? wForm.Status === null
+        : wForm.Status === "Verified"
+    ).length / wFormsPerPage
+  );
+
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  //!Table Size
+  const tableStyle = {
+    height: "300px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <Modal
       className="mt-3"
@@ -1318,7 +1487,10 @@ const ViewWeeklyForm = (props) => {
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table className="table table-dark table-hover mt-3">
+            <table
+              className="table table-dark table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -1329,6 +1501,10 @@ const ViewWeeklyForm = (props) => {
               <tbody>
                 {wForms
                   .filter((wForm) => wForm.Status === null)
+                  .slice(
+                    (currentPage - 1) * wFormsPerPage,
+                    currentPage * wFormsPerPage
+                  )
                   .map((wForm, index) => (
                     <tr key={index}>
                       <td>{wForm.id}</td>
@@ -1352,12 +1528,36 @@ const ViewWeeklyForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousClick}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextClick}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table className="table table-dark table-hover mt-3">
+            <table
+              className="table table-dark table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -1368,6 +1568,10 @@ const ViewWeeklyForm = (props) => {
               <tbody>
                 {wForms
                   .filter((wForm) => wForm.Status === "Verified")
+                  .slice(
+                    (currentPage - 1) * wFormsPerPage,
+                    currentPage * wFormsPerPage
+                  )
                   .map((wForm, index) => (
                     <tr key={index}>
                       <td>{wForm.id}</td>
@@ -1391,6 +1595,27 @@ const ViewWeeklyForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousClick}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextClick}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         <ViewFormWeek
@@ -1449,7 +1674,34 @@ const ViewWellnessForm = (props) => {
       // Handle the error as needed (e.g., display an error message)
     }
   };
+  //!Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const wFormsPerPage = 5; // Adjust as needed
 
+  const totalPages = Math.ceil(
+    wellForms.filter((wellForm) =>
+      activeTab === "submitted"
+        ? wellForm.Status === null
+        : wellForm.Status === "Verified"
+    ).length / wFormsPerPage
+  );
+
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  //!Table Size
+  const tableStyle = {
+    height: "300px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <Modal
       className="mt-3"
@@ -1478,7 +1730,7 @@ const ViewWellnessForm = (props) => {
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table class="table table-dark table-hover mt-3">
+            <table class="table table-dark table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -1489,6 +1741,10 @@ const ViewWellnessForm = (props) => {
               <tbody>
                 {wellForms
                   .filter((wellForm) => wellForm.Status === null)
+                  .slice(
+                    (currentPage - 1) * wFormsPerPage,
+                    currentPage * wFormsPerPage
+                  )
                   .map((wellForm, index) => (
                     <tr key={index}>
                       <td>{wellForm.id}</td>
@@ -1512,12 +1768,33 @@ const ViewWellnessForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousClick}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextClick}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table class="table table-dark table-hover mt-3">
+            <table class="table table-dark table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -1528,6 +1805,10 @@ const ViewWellnessForm = (props) => {
               <tbody>
                 {wellForms
                   .filter((wellForm) => wellForm.Status === "Verified")
+                  .slice(
+                    (currentPage - 1) * wFormsPerPage,
+                    currentPage * wFormsPerPage
+                  )
                   .map((wellForm, index) => (
                     <tr key={index}>
                       <td>{wellForm.id}</td>
@@ -1551,6 +1832,27 @@ const ViewWellnessForm = (props) => {
                   ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={handlePreviousClick}
+                  disabled={currentPage === 1}
+                />
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={handleNextClick}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
+            </div>
           </>
         )}
         <ViewFormWell
@@ -2061,6 +2363,46 @@ const ViewWellnessGuide = (props) => {
     }
   }, [props.selectedPatientUID]);
 
+  //!Pagination
+  const itemsPerPage = 5; // Number of items to display per page
+  const [activePage, setActivePage] = useState(1);
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
+
+  const handleNextPage = () => {
+    if (activePage < Math.ceil(guideData.length / itemsPerPage)) {
+      setActivePage(activePage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (activePage > 1) {
+      setActivePage(activePage - 1);
+    }
+  };
+
+  const indexOfLastItem = activePage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = guideData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = [];
+  for (
+    let number = 1;
+    number <= Math.ceil(guideData.length / itemsPerPage);
+    number++
+  ) {
+    pageNumbers.push(
+      <Pagination.Item
+        key={number}
+        active={number === activePage}
+        onClick={() => handlePageChange(number)}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
   return (
     <Modal
       size="xl"
@@ -2120,7 +2462,7 @@ const ViewWellnessGuide = (props) => {
                 </td>
                 <th>Sleep Meditation</th>
               </tr>
-              {guideData
+              {currentItems
                 .filter(
                   (guide) => guide.PatientUID === props.selectedPatientUID
                 )
@@ -2142,24 +2484,41 @@ const ViewWellnessGuide = (props) => {
             </tbody>
           </table>
         </div>
-        <Modal.Footer className="mt-2">
+        <Modal.Footer className="d-flex justify-content-between align-items-center">
+          <div>
+            <Pagination>
+              <Pagination.Prev
+                onClick={handlePrevPage}
+                disabled={activePage === 1}
+              />
+              {pageNumbers}
+              <Pagination.Next
+                onClick={handleNextPage}
+                disabled={
+                  activePage === Math.ceil(guideData.length / itemsPerPage)
+                }
+              />
+            </Pagination>
+          </div>
+
           {showAddGuideButton && (
             <button
-              className="btn ms-3"
+              className="btn"
               style={{ backgroundColor: "#f5e9cf" }}
               onClick={() => handleShowAddGuide(props.selectedPatientUID)}
             >
               Add Guide
             </button>
           )}
-          <AddGuide
-            show={show}
-            handleClose={handleClose}
-            handleSubmit={handleSubmit}
-            selectedPatientUID={props.selectedPatientUID}
-          />
         </Modal.Footer>
       </Modal.Body>
+
+      <AddGuide
+        show={show}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+        selectedPatientUID={props.selectedPatientUID}
+      />
     </Modal>
   );
 };
