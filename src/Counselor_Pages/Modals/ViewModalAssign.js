@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
-import { useState, useRef } from "react";
 import { Modal, Pagination } from "react-bootstrap";
 import { getAuth } from "firebase/auth";
 import { firestore } from "../../firebase/firebase-config";
@@ -10,6 +9,9 @@ import {
   updateDoc,
   getFirestore,
   addDoc,
+  query,
+  where,
+  onSnapshot,
 } from "firebase/firestore";
 
 //!Main App Render
@@ -46,6 +48,24 @@ export const ViewModalAssign = (props) => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
+  useEffect(() => {
+    // Create a query to get tasks for the selected patient
+    const tasksQuery = query(
+      collection(firestore, "Tasks"),
+      where("PatientUID", "==", props.selectedPatientUID) // Replace "PatientUID" with the actual field name in your Firestore data
+    );
+
+    const unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
+      const updatedTasks = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTasks(updatedTasks);
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, [props.selectedPatientUID]);
   //!View Assigned Activity Modal
   const [showAct, setShowAct] = useState(false);
 
