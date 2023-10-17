@@ -12,15 +12,7 @@ import { ViewWeeklyForm } from "./Modals/ViewWeeklyForm";
 import { ViewWellnessForm } from "./Modals/ViewWellnessForm";
 import { CreateCaseNotes } from "./Modals/CreateCaseNotes";
 import { ViewWellnessGuide } from "./Modals/ViewWellnessGuide";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  getFirestore,
-  addDoc,
-} from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
@@ -870,104 +862,6 @@ export const PatientInfo = (props) => {
               </div>
             )}
           </div>
-        </div>
-      </Modal.Body>
-    </Modal>
-  );
-};
-
-//!MODALS
-
-const AddGuide = (props) => {
-  const [guide, setGuide] = useState("");
-  const [link, setLink] = useState("");
-  const [title, setTitle] = useState("");
-  const [vidLink, setVidLink] = useState("");
-
-  const handleGuideChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const handleLinkChange = (e) => {
-    setVidLink(e.target.value);
-  };
-
-  function extractSrcFromIframe(iframeString) {
-    // Use regular expressions to extract the src attribute
-    const srcRegex = /src=["'](https:\/\/www\.youtube\.com\/embed\/[^"']+)/;
-    const match = iframeString.match(srcRegex);
-    return match ? match[1] : ""; // Return the extracted src or an empty string if not found
-  }
-  const handleAddGuide = () => {
-    const db = getFirestore();
-    const { currentUser } = getAuth();
-    console.log("currentUser:", currentUser.uid);
-    console.log("selectedPatientUID:", props.selectedPatientUID);
-
-    if (currentUser && props.selectedPatientUID) {
-      const guideData = {
-        Title: title,
-        Link: extractSrcFromIframe(vidLink),
-        dateAdded: new Date().toISOString().split("T")[0],
-        counselorUID: currentUser.uid,
-        PatientUID: props.selectedPatientUID,
-      };
-
-      console.log("PatientUID:", props.selectedPatientUID);
-      console.log("counselorUID:", currentUser.uid);
-
-      addDoc(collection(db, "Guide"), guideData)
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          // Perform any other actions after successful upload
-          props.handleClose();
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-    } else {
-      console.error("currentUser or selectedPatientUID is undefined.");
-    }
-  };
-
-  return (
-    <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Publish A Guide</Modal.Title>
-        </Modal.Header>
-        <div class="input-group mb-3 mt-3">
-          <h5>Input Title:</h5>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              class="form-control"
-              aria-label="VideoTitle"
-              aria-describedby="basic-addon1"
-              onChange={handleGuideChange}
-              value={title}
-            />
-          </div>
-          <h5>Input Video Link:</h5>
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              class="form-control"
-              aria-label="VideoLink"
-              aria-describedby="basic-addon1"
-              onChange={handleLinkChange}
-              value={vidLink}
-            />
-          </div>
-        </div>
-        <div className="d-flex justify-content-end">
-          <button
-            className="btn"
-            style={{ backgroundColor: "#f5e9cf" }}
-            onClick={handleAddGuide}
-          >
-            Submit
-          </button>
         </div>
       </Modal.Body>
     </Modal>
