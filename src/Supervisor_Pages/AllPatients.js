@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
+import { Pagination } from "react-bootstrap";
 import "../css/AllPatients.css";
 import {
   collection,
@@ -254,25 +255,25 @@ export const AllPatients = () => {
           </div>
         </div>
         {/* Step 5: Create pagination buttons */}
-        <nav>
-          <ul className="pagination">
-            {[...Array(totalPages)].map((_, index) => (
-              <li
-                key={index}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <Pagination>
+          <Pagination.Prev
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+          {[...Array(totalPages)].map((_, index) => (
+            <Pagination.Item
+              key={index}
+              active={currentPage === index + 1}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
       </div>
     </div>
   );

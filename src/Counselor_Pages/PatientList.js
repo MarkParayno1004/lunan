@@ -1,17 +1,9 @@
 import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  where,
-  query,
-} from "firebase/firestore";
+import { collection, getDocs, where, query } from "firebase/firestore";
 import { firestore } from "../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
 import { getAuth } from "firebase/auth";
+import { Pagination } from "react-bootstrap";
 import "../css/PatientList.css";
 
 export const PatientList = () => {
@@ -46,16 +38,16 @@ export const PatientList = () => {
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
-  
+
     const filteredPatients = patientsData.filter((patient) => {
       const firstNameMatch =
         patient.firstName && patient.firstName.toLowerCase().includes(query);
       const lastNameMatch =
         patient.lastName && patient.lastName.toLowerCase().includes(query);
-  
+
       return firstNameMatch || lastNameMatch;
     });
-  
+
     setFilteredPatientsData(filteredPatients);
   };
 
@@ -116,6 +108,41 @@ export const PatientList = () => {
     }
   };
 
+  //!Pagination
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const patientsPerPage = 10; // Change this to your preferred number of patients per page
+
+  // Calculate the index of the first and last patient for the current page
+  const indexOfLastPatient = currentPage * patientsPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
+  const currentPatients = filteredPatientsData.slice(
+    indexOfFirstPatient,
+    indexOfLastPatient
+  );
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(filteredPatientsData.length / patientsPerPage);
+
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const tableStyle = {
+    height: "650px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
   return (
     <div
       className="container-lg mt-5 pb-3 rounded-4 fw-normal d-flex justify-content-center"
@@ -143,18 +170,13 @@ export const PatientList = () => {
                 aria-describedby="search"
                 className="w-25 form-control"
               />
-              <div className="input-group-append">
-                <span className="input-group-text" id="search">
-                  Search
-                </span>
-              </div>
             </div>
           </div>
         </div>
         <div className="col"></div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark">
+            <table className="table table-dark table-hover" style={tableStyle}>
               <thead>
                 <tr>
                   <th>Picture</th>
@@ -164,7 +186,7 @@ export const PatientList = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredPatientsData
+                {currentPatients
                   .filter((patient) => patient.counselorUID === loggedInUserUID)
                   .map((patient) => (
                     <tr key={patient.UID}>
@@ -202,6 +224,25 @@ export const PatientList = () => {
             </table>
           </div>
         </div>
+        <Pagination>
+          <Pagination.Prev
+            onClick={handlePreviousClick}
+            disabled={currentPage === 1}
+          />
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === currentPage}
+              onClick={() => paginate(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={handleNextClick}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
         {show && (
           <PatientInfo
             show={show}

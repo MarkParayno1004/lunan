@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Pagination } from "react-bootstrap";
 import "../css/NewPatients.css";
 import {
   collection,
@@ -70,20 +70,15 @@ export const NewPatients = () => {
   const handleShowEdit = (id) => setShowEdit(id);
 
   //!Pagination
-  const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPatients = filteredPatients.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
+  const itemsPerPage = 10; // Change this value according to your requirements
   const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const NewPatients = filteredPatients.slice(startIndex, endIndex);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -122,7 +117,7 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentPatients.map(
+                {NewPatients.map(
                   (patientObj) =>
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
@@ -166,27 +161,27 @@ export const NewPatients = () => {
                 )}
               </tbody>
             </table>
-          </div>
-        </div>
-        <nav>
-          <ul className="pagination">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li
-                key={index}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
+            <Pagination>
+              <Pagination.Prev
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              />
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={currentPage === index + 1}
                   onClick={() => handlePageChange(index + 1)}
                 >
                   {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              />
+            </Pagination>
+          </div>
+        </div>
       </div>
     </div>
   );
