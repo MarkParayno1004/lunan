@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Form, Pagination } from "react-bootstrap";
-import "../css/NewPatients.css";
+import "../../css/NewPatients.css";
 import {
   collection,
   getDocs,
@@ -10,7 +10,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { firestore } from "../firebase/firebase-config";
+import { firestore } from "../../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
 import fetch from "node-fetch";
 
@@ -81,6 +81,12 @@ export const NewPatients = () => {
     setCurrentPage(page);
   };
 
+  //!Table style
+  const tableStyle = {
+    height: "650px", // Set the desired height
+    overflow: "auto", // Add scrollbars when content overflows
+  };
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -106,7 +112,7 @@ export const NewPatients = () => {
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark">
+            <table className="table table-dark" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Picture</th>
@@ -119,7 +125,7 @@ export const NewPatients = () => {
               <tbody>
                 {NewPatients.map(
                   (patientObj) =>
-                    patientObj.data.counselorID === null && (
+                    patientObj.data.counselorID && (
                       <tr key={patientObj.id}>
                         <td>
                           {patientObj.data.ProfPic ? (
