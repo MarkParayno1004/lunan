@@ -102,51 +102,6 @@ export const ViewWellnessGuide = (props) => {
               </tr>
             </thead>
             <tbody>
-              {/* <tr>
-                <td scope="row">
-                  <iframe
-                    src="https://www.youtube.com/embed/-7-CAFhJn78"
-                    title="Breathing Exercises for Relaxation or COPD - Ask Doctor Jo"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </td>
-                <th style={{ textAlign: "center", width: "300px" }}>
-                  Breathing Exercise
-                </th>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <iframe
-                    src="https://www.youtube.com/embed/cyMxWXlX9sU"
-                    title="10 Minute Guided Meditation for Positive Energy, Peace &amp; Light 🌤"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </td>
-                <th style={{ textAlign: "center", width: "300px" }}>
-                  Meditation Guide
-                </th>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <iframe
-                    src="https://www.youtube.com/embed/rvaqPPjtxng"
-                    title="Guided Sleep Meditation &amp; Deep Relaxation 🌙"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    style={{ width: "400px" }}
-                  ></iframe>
-                </td>
-                <th style={{ textAlign: "center", width: "300px" }}>
-                  Sleep Meditation
-                </th>
-              </tr> */}
               {currentItems
                 .filter(
                   (guide) => guide.PatientUID === props.selectedPatientUID

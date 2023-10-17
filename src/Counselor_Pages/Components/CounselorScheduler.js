@@ -21,7 +21,7 @@ import Room from "@mui/icons-material/Room";
 import { styled } from "@mui/material/styles";
 import classNames from "clsx";
 
-import { appointments } from "../demo-data/month-appointments";
+import { appointments } from "../../demo-data/month-appointments";
 
 const PREFIX = "Demo";
 

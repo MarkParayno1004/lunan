@@ -1,19 +1,17 @@
 import React from "react";
-import { Modal, Pagination } from "react-bootstrap";
-import Pic from "../img/ProfilePic.png";
-import { useState, useEffect } from "react";
-import "../css/PatientInfo.css";
+import { Modal } from "react-bootstrap";
+import Pic from "../../img/ProfilePic.png";
+import { useState } from "react";
+import "../../css/PatientInfo.css";
 import Swal from "sweetalert2";
-import "../css/customscroll.css";
-import "../css/WellnessPageCounselor.css";
-import { ViewModalAssign } from "./Modals/ViewModalAssign";
-import { ViewCaseNotes } from "./Modals/ViewCaseNotes";
-import { ViewWeeklyForm } from "./Modals/ViewWeeklyForm";
-import { ViewWellnessForm } from "./Modals/ViewWellnessForm";
-import { CreateCaseNotes } from "./Modals/CreateCaseNotes";
-import { ViewWellnessGuide } from "./Modals/ViewWellnessGuide";
+import { ViewModalAssign } from "../Modals/ViewModalAssign";
+import { ViewCaseNotes } from "../Modals/ViewCaseNotes";
+import { ViewWeeklyForm } from "../Modals/ViewWeeklyForm";
+import { ViewWellnessForm } from "../Modals/ViewWellnessForm";
+import { CreateCaseNotes } from "../Modals/CreateCaseNotes";
+import { ViewWellnessGuide } from "../Modals/ViewWellnessGuide";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { firestore } from "../firebase/firebase-config";
+import { firestore } from "../../firebase/firebase-config";
 
 export const PatientInfo = (props) => {
   const patientData = props.patientData;

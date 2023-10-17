@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs, where, query } from "firebase/firestore";
-import { firestore } from "../firebase/firebase-config";
+import { firestore } from "../../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
 import { getAuth } from "firebase/auth";
 import { Pagination } from "react-bootstrap";
-import "../css/PatientList.css";
+import "../../css/PatientList.css";
 
+//!Main App Render
 export const PatientList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
