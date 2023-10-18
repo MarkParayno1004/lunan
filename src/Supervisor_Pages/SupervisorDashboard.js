@@ -5,6 +5,7 @@ import { firestore, auth } from "../firebase/firebase-config";
 import { AllPatients } from "./Components/AllPatients";
 import { NewPatients } from "./Components/NewPatients";
 import { AllCounselors } from "./Components/AllCounselors";
+import { Chat } from "./Components/Chat";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { DefaultPageSupervisor } from "./Components/DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
@@ -66,6 +67,20 @@ export const SupervisorDashboard = () => {
             </button>
           </li>
           <div className="ms-2 mt-1">
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "chat" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverList"
+                onClick={() => {
+                  setActiveComponent("chat");
+                }}
+              >
+                Chat
+              </button>
+            </li>
             <li
               className={`d-flex justify-content-start ${
                 activeComponent === "patient" ? "active" : ""
@@ -135,6 +150,13 @@ export const SupervisorDashboard = () => {
                 bottom: 120 + "px",
                 right: 24 + "px",
               }}
+            />
+          </>
+        ) : activeComponent === "chat" ? (
+          <>
+            <Chat />
+            <AvatarSupervisor
+              style={{ position: "fixed", bottom: 25 + "px", right: 24 + "px" }}
             />
           </>
         ) : activeComponent === "patient" ? (

@@ -12,7 +12,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-export const AllPatients = () => {
+export const Chat = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
@@ -155,23 +155,13 @@ export const AllPatients = () => {
     }
   };
 
-  //!Pagination
-  const itemsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPatientsData = filteredPatientsData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredPatientsData.length / itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
   //!Table style
   const tableStyle = {
     height: "650px", // Set the desired height
-    overflow: "auto", // Add scrollbars when content overflows
+    width: "100%px",
+    overflowX: "hidden", // Add scrollbars when content overflows
   };
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
@@ -180,7 +170,7 @@ export const AllPatients = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
-            <h1 className="mt-2 ms-5 ps-5">All Patient List</h1>
+            <h1 className="mt-2 ms-5 ps-5">Chat</h1>
           </div>
           <div className="col-3 col-sm-3 mb-3">
             <div className="input-group mt-4">
@@ -197,78 +187,58 @@ export const AllPatients = () => {
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark" style={tableStyle}>
-              <thead>
-                <tr>
-                  <th scope="col">Picture</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Date Added</th>
-                  <th scope="col">Counselor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentPatientsData.map((patient) => (
-                  <tr key={patient.UID}>
-                    <td>
-                      <button
-                        style={{ border: "none", background: "none" }}
-                        onClick={() => {
-                          handleSelectPatient(patient.UID);
-                          handleShow(patient.UID);
-                        }} // Pass the patient's UID
-                      >
-                        {patient.ProfPic ? (
-                          <img
-                            src={fetchImageUrl(patient.ProfPic)}
-                            alt={patient.firstName}
-                            width="100"
-                            height="100"
-                          />
-                        ) : (
-                          <img
-                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                            alt={patient.firstName}
-                            width="100"
-                            height="100"
-                          />
-                        )}
-                      </button>
-                      <PatientInfo
-                        show={show}
-                        onHide={handleClose}
-                        patientData={selectedPatientData}
-                        intakeFormsData={selectedIntakeFormsData}
-                        selectedPatientUID={selectedPatientUID}
-                      />
-                    </td>
-                    <td>{patient.firstName}</td>
-                    <td>{patient.dateCreated}</td>
-                    <td>{counselorNames[patient.counselorID] || "N/A"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="row">
+              <div className="col-3 table-responsive">
+                <table
+                  className="table table-borderless table-hover table-dark"
+                  style={tableStyle}
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Inbox</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredPatientsData.map((patient) => (
+                      <tr key={patient.UID}>
+                        <td>
+                          <button
+                            style={{
+                              border: "none",
+                              background: "none",
+                              color: "white",
+                            }}
+                            // Pass the patient's UID
+                          >
+                            {patient.ProfPic ? (
+                              <img
+                                src={fetchImageUrl(patient.ProfPic)}
+                                alt={patient.firstName}
+                                width="100"
+                                height="100"
+                              />
+                            ) : (
+                              <img
+                                src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+                                alt={patient.firstName}
+                                width="100"
+                                height="100"
+                              />
+                            )}
+                            <span className="ms-3">{patient.firstName}</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="col" style={{ backgroundColor: "white" }}>
+                Chat
+              </div>
+            </div>
           </div>
         </div>
-        <Pagination>
-          <Pagination.Prev
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
-          {[...Array(totalPages)].map((_, index) => (
-            <Pagination.Item
-              key={index}
-              active={currentPage === index + 1}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
       </div>
     </div>
   );
