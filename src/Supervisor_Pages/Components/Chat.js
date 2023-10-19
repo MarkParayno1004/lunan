@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase/firebase-config";
-import { PatientInfo } from "./PatientInfo";
-import { Pagination } from "react-bootstrap";
-import "../../css/AllPatients.css";
+import "../../css/Chat.css";
+import { db, auth } from "../../firebase/firebase-config";
 import {
   collection,
   getDocs,
@@ -10,6 +9,10 @@ import {
   where,
   doc,
   getDoc,
+  orderBy,
+  onSnapshot,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 
 export const Chat = () => {
@@ -154,18 +157,21 @@ export const Chat = () => {
       console.error("Error fetching patient data:", error);
     }
   };
-
+  //!Show Chat
+  const [showChat, setShowChat] = useState(false);
   //!Table style
   const tableStyle = {
     height: "650px", // Set the desired height
-    width: "100%px",
-    overflowX: "hidden", // Add scrollbars when content overflows
+    width: "342px",
+    overflow: "hidden", // Add scrollbars when content overflows
   };
+
+  const handleSetShowChat = () => setShowChat(true);
 
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
-      id="AllPatientForm"
+      id="ChatForm"
     >
       <div className="container-fluid">
         <div className="row">
@@ -188,9 +194,12 @@ export const Chat = () => {
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
             <div className="row">
-              <div className="col-3 table-responsive">
+              <div
+                className="col-3 table-responsive"
+                style={{ overflow: "hidden" }}
+              >
                 <table
-                  className="table table-borderless table-hover table-dark"
+                  className="table table-borderless table-hover table-dark rounded-3"
                   style={tableStyle}
                 >
                   <thead>
@@ -203,10 +212,13 @@ export const Chat = () => {
                       <tr key={patient.UID}>
                         <td>
                           <button
+                            className="d-flex justify-content-start align-items-center"
+                            onClick={handleSetShowChat}
                             style={{
                               border: "none",
                               background: "none",
                               color: "white",
+                              width: "334px",
                             }}
                             // Pass the patient's UID
                           >
@@ -225,7 +237,12 @@ export const Chat = () => {
                                 height="100"
                               />
                             )}
-                            <span className="ms-3">{patient.firstName}</span>
+                            <p
+                              className="ms-3 text-break text-wrap fs-5"
+                              style={{ width: "" }}
+                            >
+                              {patient.firstName}
+                            </p>
                           </button>
                         </td>
                       </tr>
@@ -233,13 +250,100 @@ export const Chat = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="col" style={{ backgroundColor: "white" }}>
-                Chat
+              <div
+                className="col rounded-end-3"
+                style={{
+                  backgroundColor: "#212529",
+                  height: "650px",
+                  color: "black",
+                }}
+              >
+                <div
+                  className="container-fluid mt-4 me-4 mb-4 rounded-3"
+                  style={{
+                    backgroundColor: "#4d455d",
+                    height: "600px",
+                    width: "1014px",
+                  }}
+                >
+                  <div>
+                    <span className="fs-1 ms-3 " style={{ color: "#f5e9cf" }}>
+                      Ryan Amador
+                    </span>
+                    <button style={{ marginLeft: "650px" }}>Call</button>
+                  </div>
+                  <ChatMessage />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+//! CHAT
+const ChatMessage = () => {
+  const [room, setRoom] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const messagesRef = collection(db, "messages");
+
+  useEffect(() => {
+    const queryMessages = query(
+      messagesRef,
+      where("room", "==", room),
+      orderBy("createdAt")
+    );
+    const unsuscribe = onSnapshot(queryMessages, (snapshot) => {
+      let messages = [];
+      snapshot.forEach((doc) => {
+        messages.push({ ...doc.data(), id: doc.id });
+      });
+      console.log(messages);
+      setMessages(messages);
+    });
+
+    return () => unsuscribe();
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (newMessage === "") return;
+    await addDoc(messagesRef, {
+      text: newMessage,
+      createdAt: serverTimestamp(),
+      user: auth.currentUser.displayName,
+      room,
+    });
+
+    setNewMessage("");
+  };
+
+  return (
+    <div className="chat-app mt-2">
+      <div className="messages" style={{ color: "#f5e9cf" }}>
+        {messages.map((message) => (
+          <div key={message.id} className="message">
+            <span className="user">{message.user}:</span> {message.text}
+          </div>
+        ))}
+      </div>
+      <form onSubmit={handleSubmit} className="new-message-form">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(event) => setNewMessage(event.target.value)}
+          style={{ color: "#f5e9cf" }}
+          className="new-message-input"
+          placeholder="Type your message here..."
+        />
+        <button type="submit" className="send-button">
+          Send
+        </button>
+      </form>
     </div>
   );
 };
