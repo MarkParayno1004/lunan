@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ActionType = void 0;
+var ActionType;
+(function (ActionType) {
+  ActionType["LOGIN"] = "LOGIN";
+  ActionType["LOGOUT"] = "LOGOUT";
+  ActionType["UPSERT_CONVERSATION"] = "UPSERT_CONVERSATION";
+  ActionType["REMOVE_CONVERSATION"] = "REMOVE_CONVERSATION";
+  ActionType["UPDATE_CURRENT_CONVERSATION"] = "UPDATE_CURRENT_CONVERSATION";
+  ActionType["CONVERSATION_LAST_READ_INDEX"] = "CONVERSATION_LAST_READ_INDEX";
+  ActionType["ADD_MESSAGES"] = "ADD_MESSAGES";
+  ActionType["PUSH_MESSAGES"] = "PUSH_MESSAGES";
+  ActionType["REMOVE_MESSAGES"] = "REMOVE_MESSAGES";
+  ActionType["UPDATE_LOADING_STATE"] = "update loading state";
+  ActionType["UPDATE_PARTICIPANTS"] = "UPDATE_PARTICIPANTS";
+  ActionType["UPDATE_USER"] = "UPDATE_USER";
+  ActionType["UPDATE_UNREAD_MESSAGES"] = "UPDATE_UNREAD_MESSAGES";
+  ActionType["UPDATE_CONVERSATION"] = "UPDATE_CONVERSATION";
+  ActionType["ADD_ATTACHMENT"] = "ADD_ATTACHMENT";
+  ActionType["CLEAR_ATTACHMENTS"] = "CLEAR_ATTACHMENTS";
+  ActionType["TYPING_STARTED"] = "TYPING_STARTED";
+  ActionType["TYPING_ENDED"] = "TYPING_ENDED";
+  ActionType["ADD_NOTIFICATIONS"] = "ADD_NOTIFICATIONS";
+  ActionType["REMOVE_NOTIFICATIONS"] = "REMOVE_NOTIFICATIONS";
+})(ActionType || (exports.ActionType = ActionType = {}));
