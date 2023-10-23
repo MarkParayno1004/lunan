@@ -1,0 +1,99 @@
+import { useEffect, useState } from "react";
+import {
+  Spinner,
+  ChatAttachment,
+  ChatAttachmentDescription,
+  ChatAttachmentLink,
+} from "@twilio-paste/core";
+import { DownloadIcon } from "@twilio-paste/icons/cjs/DownloadIcon";
+
+const MessageMedia = ({
+  onDownload,
+  onOpen,
+  images,
+  files,
+  sending,
+  attachments,
+}) => {
+  const [isMediaLoaded, setMediaLoaded] = useState(false);
+  useEffect(() => {
+    onDownload().then(() => {
+      setMediaLoaded(true);
+    });
+  }, []);
+  return (
+    <>
+      <div>
+        {images.map((img) => (
+          <div
+            key={img.sid}
+            style={{
+              minHeight: "200px",
+              minWidth: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+              borderRadius: "4px",
+            }}
+            onClick={() => isMediaLoaded && onOpen(img.sid, img)}
+          >
+            <div
+              style={{
+                zIndex: 7,
+                position: "absolute",
+                cursor: "pointer",
+              }}
+            >
+              {sending || !isMediaLoaded ? (
+                <Spinner
+                  size="sizeIcon60"
+                  decorative={false}
+                  color="colorTextInverse"
+                  title="Loading"
+                />
+              ) : null}
+            </div>
+            <img
+              style={{
+                maxHeight: "300px",
+                zIndex: 0,
+                maxWidth: "400px",
+                width: "100%",
+              }}
+              src={
+                isMediaLoaded
+                  ? (window.URL || window.webkitURL).createObjectURL(
+                      attachments[img.sid]
+                    )
+                  : undefined
+              }
+            />
+          </div>
+        ))}
+      </div>
+
+      {files.map((file) => (
+        <ChatAttachment
+          attachmentIcon={
+            !isMediaLoaded || sending ? (
+              <Spinner decorative={false} title="Loading" />
+            ) : (
+              <DownloadIcon decorative />
+            )
+          }
+          key={`${file.filename ?? ""}.index`}
+        >
+          <ChatAttachmentLink href="#">
+            {file?.filename ?? ""}
+          </ChatAttachmentLink>
+          <ChatAttachmentDescription>
+            {`${Math.round((file.size / Math.pow(2, 20)) * 100) / 100} MB`}
+          </ChatAttachmentDescription>
+        </ChatAttachment>
+      ))}
+    </>
+  );
+};
+
+export default MessageMedia;
