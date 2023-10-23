@@ -8,6 +8,7 @@ import { PatientList } from "./Components/PatientList";
 import CounselorScheduler from "./Components/CounselorScheduler";
 import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
 import { AvatarCounselor } from "../SupportEngine/AvatarCounselor";
+import { CounselorChat } from "./Components/CounselorChat";
 
 export const CounselorDashboard = (props) => {
   const [counselorName, setCounselorName] = useState("");
@@ -61,6 +62,20 @@ export const CounselorDashboard = (props) => {
             </button>
           </li>
           <div className="ms-2 mt-1">
+            <li
+              className={`d-flex justify-content-start ${
+                activeComponent === "chat" ? "active" : ""
+              }`}
+            >
+              <button
+                id="hoverList"
+                onClick={() => {
+                  setActiveComponent("chat");
+                }}
+              >
+                Chat
+              </button>
+            </li>
             <li
               className={`d-flex justify-content-start ${
                 activeComponent === "ViewPatients" ? "active" : ""
@@ -125,6 +140,20 @@ export const CounselorDashboard = (props) => {
         ) : activeComponent === "ViewPatients" ? (
           <>
             <PatientList />
+            <AvatarCounselor
+              style={{
+                position: "fixed",
+                bottom: 120 + "px",
+                right: 24 + "px",
+              }}
+            />
+            <AvatarCounselor
+              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+            />
+          </>
+        ) : activeComponent === "chat" ? (
+          <>
+            <CounselorChat />
             <AvatarCounselor
               style={{
                 position: "fixed",
