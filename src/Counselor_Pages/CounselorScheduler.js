@@ -1,252 +1,192 @@
-import React from "react";
-import Paper from "@mui/material/Paper";
-import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
-import {
-  Scheduler,
-  WeekView,
-  Appointments,
-  Toolbar,
-  ViewSwitcher,
-  MonthView,
-  DayView,
-  DateNavigator,
-  EditRecurrenceMenu,
-  TodayButton,
-  AppointmentTooltip,
-  AppointmentForm,
-  ConfirmationDialog,
-} from "@devexpress/dx-react-scheduler-material-ui";
-import Grid from "@mui/material/Grid";
-import Room from "@mui/icons-material/Room";
-import { styled } from "@mui/material/styles";
-import classNames from "clsx";
+import React, { useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Modal, Button, Form } from 'react-bootstrap';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { appointments } from "../demo-data/month-appointments";
+const localizer = momentLocalizer(moment);
 
-const PREFIX = "Demo";
+const CounselorScheduler = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [title, setTitle] = useState('');
+  const [startDateTime, setStartDateTime] = useState('');
+  const [endDateTime, setEndDateTime] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [events, setEvents] = useState([]);
 
-const Appointment = ({ children, style, ...restProps }) => (
-  <Appointments.Appointment
-    {...restProps}
-    style={{
-      ...style,
-      backgroundColor: "#7DB9B6",
-      borderRadius: "8px",
-    }}
-  >
-    {children}
-  </Appointments.Appointment>
-);
-
-const classes = {
-  icon: `${PREFIX}-icon`,
-  textCenter: `${PREFIX}-textCenter`,
-  firstRoom: `${PREFIX}-firstRoom`,
-  secondRoom: `${PREFIX}-secondRoom`,
-  thirdRoom: `${PREFIX}-thirdRoom`,
-  header: `${PREFIX}-header`,
-  commandButton: `${PREFIX}-commandButton`,
-};
-
-const StyledAppointmentTooltipHeader = styled(AppointmentTooltip.Header)(
-  () => ({
-    [`&.${classes.firstRoom}`]: {
-      background:
-        "url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/Lobby-4.jpg)",
-    },
-    [`&.${classes.secondRoom}`]: {
-      background:
-        "url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-4.jpg)",
-    },
-    [`&.${classes.thirdRoom}`]: {
-      background:
-        "url(https://js.devexpress.com/Demos/DXHotels/Content/Pictures/MeetingRoom-0.jpg)",
-    },
-    [`&.${classes.header}`]: {
-      height: "260px",
-      backgroundSize: "cover",
-    },
-  })
-);
-
-const StyledGrid = styled(Grid)(() => ({
-  [`&.${classes.textCenter}`]: {
-    textAlign: "center",
-  },
-}));
-
-const StyledRoom = styled(Room)(({ theme: { palette } }) => ({
-  [`&.${classes.icon}`]: {
-    color: palette.action.active,
-  },
-}));
-
-const StyledAppointmentTooltipCommandButton = styled(
-  AppointmentTooltip.CommandButton
-)(() => ({
-  [`&.${classes.commandButton}`]: {
-    backgroundColor: "rgba(255,255,255,0.65)",
-  },
-}));
-
-const getClassByLocation = (location) => {
-  if (location === "Room 1") return classes.firstRoom;
-  if (location === "Room 2") return classes.secondRoom;
-  return classes.thirdRoom;
-};
-
-const Header = ({ children, appointmentData, ...restProps }) => (
-  <StyledAppointmentTooltipHeader
-    {...restProps}
-    className={classNames(
-      getClassByLocation(appointmentData.location),
-      classes.header
-    )}
-    appointmentData={appointmentData}
-  />
-);
-
-const Content = ({ children, appointmentData, ...restProps }) => (
-  <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
-    <Grid container alignItems="center">
-      <StyledGrid item xs={2} className={classes.textCenter}>
-        <StyledRoom className={classes.icon} />
-      </StyledGrid>
-      <Grid item xs={10}>
-        <span>{appointmentData.location}</span>
-      </Grid>
-    </Grid>
-  </AppointmentTooltip.Content>
-);
-
-const CommandButton = ({ ...restProps }) => (
-  <StyledAppointmentTooltipCommandButton
-    {...restProps}
-    className={classes.commandButton}
-  />
-);
-
-class CounselorScheduler extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: appointments,
-      currentViewName: "work-week",
-      currentDate: "2018-07-25",
-      addedAppointment: {},
-      appointmentChanges: {},
-      editingAppointment: undefined,
-    };
-
-    this.commitChanges = this.commitChanges.bind(this);
-    this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
-    this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
-    this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
+  const handleCreateAppointment = (slotInfo) => {
+    setSelectedDate(slotInfo.start);
+    setShowModal(true);
   }
-  changeAddedAppointment = (addedAppointment) => {
-    this.setState({ addedAppointment });
+
+  const handleEventSelected = (event) => {
+    setSelectedEvent(event);
+    setEditMode(true);
+    setDeleteMode(true); // Set both editMode and deleteMode to true
+    setShowModal(true);
+  };
+  
+  const handleEditAppointment = () => {
+    // This function can remain the same
+    setTitle(selectedEvent.title);
+    setStartDateTime(moment(selectedEvent.start).format('HH:mm'));
+    setEndDateTime(moment(selectedEvent.end).format('HH:mm'));
+  };
+  
+  const handleDeleteAppointment = () => {
+    // This function can remain the same
+  };
+  
+  const handleCloseModal = () => {
+    setSelectedDate(null);
+    setShowModal(false);
+    setTitle('');
+    setStartDateTime('');
+    setEndDateTime('');
+    setSelectedEvent(null);
+    setEditMode(false);
+    setDeleteMode(false);
   };
 
-  changeAppointmentChanges = (appointmentChanges) => {
-    this.setState({ appointmentChanges });
-  };
+  const saveAppointment = () => {
+    if (title && startDateTime && endDateTime) {
+      const newAppointment = {
+        start: moment(selectedDate)
+          .set('hour', moment(startDateTime, 'HH:mm').hour())
+          .set('minute', moment(startDateTime, 'HH:mm').minute())
+          .toDate(),
+        end: moment(selectedDate)
+          .set('hour', moment(endDateTime, 'HH:mm').hour())
+          .set('minute', moment(endDateTime, 'HH:mm').minute())
+          .toDate(),
+        title: title,
+      };
 
-  changeEditingAppointment = (editingAppointment) => {
-    this.setState({ editingAppointment });
-  };
-
-  commitChanges = ({ added, changed, deleted }) => {
-    this.setState((state) => {
-      let { data } = state;
-      if (added) {
-        const startingAddedId =
-          data.length > 0 ? data[data.length - 1].id + 1 : 0;
-        data = [...data, { id: startingAddedId, ...added }];
-      }
-      if (changed) {
-        data = data.map((appointment) =>
-          changed[appointment.id]
-            ? { ...appointment, ...changed[appointment.id] }
-            : appointment
-        );
-      }
-      if (deleted !== undefined) {
-        data = data.filter((appointment) => appointment.id !== deleted);
-      }
-      return { data };
-    });
-  };
-
-  currentViewNameChange = (currentViewName) => {
-    this.setState({ currentViewName });
-  };
-
-  currentDateChange = (currentDate) => {
-    this.setState({ currentDate });
-  };
-
-  render() {
-    const {
-      data,
-      currentViewName,
-      currentDate,
-      addedAppointment,
-      appointmentChanges,
-      editingAppointment,
-    } = this.state;
-
-    return (
-      <div>
-        <h1>
-          <center>Counselor Scheduler</center>
-        </h1>
-        <Paper>
-          <Scheduler data={data} height={850}>
-            <ViewState
-              currentDate={currentDate}
-              currentViewName={currentViewName}
-              onCurrentViewNameChange={this.currentViewNameChange}
-            />
-
-            <EditingState
-              onCommitChanges={this.commitChanges}
-              addedAppointment={addedAppointment}
-              onAddedAppointmentChange={this.changeAddedAppointment}
-              appointmentChanges={appointmentChanges}
-              onAppointmentChangesChange={this.changeAppointmentChanges}
-              editingAppointment={editingAppointment}
-              onEditingAppointmentChange={this.changeEditingAppointment}
-            />
-
-            <WeekView startDayHour={10} endDayHour={19} />
-            <WeekView
-              name="work-week"
-              displayName="Work Week"
-              excludedDays={[0, 6]}
-              startDayHour={9}
-              endDayHour={19}
-            />
-            <MonthView />
-            <DayView />
-
-            <Toolbar />
-            <ViewSwitcher />
-            <DateNavigator />
-            <TodayButton />
-            <Appointments appointmentComponent={Appointment} />
-            <AppointmentTooltip
-              headerComponent={Header}
-              contentComponent={Content}
-              commandButtonComponent={CommandButton}
-              showCloseButton
-              showOpenButton
-            />
-            <AppointmentForm />
-          </Scheduler>
-        </Paper>
-      </div>
-    );
+      setEvents([...events, newAppointment]);
+      handleCloseModal();
+    }
   }
-}
+
+  const updateAppointment = () => {
+    if (title && startDateTime && endDateTime && selectedEvent) {
+      const updatedEvent = {
+        ...selectedEvent,
+        start: moment(selectedEvent.start)
+          .set('hour', moment(startDateTime, 'HH:mm').hour())
+          .set('minute', moment(startDateTime, 'HH:mm').minute())
+          .toDate(),
+        end: moment(selectedEvent.end)
+          .set('hour', moment(endDateTime, 'HH:mm').hour())
+          .set('minute', moment(endDateTime, 'HH:mm').minute())
+          .toDate(),
+        title: title,
+      };
+  
+      const updatedEvents = [...events];
+      const index = updatedEvents.findIndex((event) => event === selectedEvent);
+  
+      if (index !== -1) {
+        updatedEvents[index] = updatedEvent;
+        setEvents(updatedEvents);
+        setSelectedEvent(updatedEvent); // Set selectedEvent to the updated event
+        handleCloseModal();
+      }
+    }
+  };
+
+  const deleteAppointment = () => {
+    setDeleteMode(true); // Set deleteMode to true when deleting
+    setEditMode(false); // Set editMode to false
+    const updatedEvents = events.filter((event) => event !== selectedEvent);
+    setEvents(updatedEvents);
+    handleCloseModal();
+  }
+
+  return (
+    <div>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 650, marginTop: 40 }}
+        selectable={true}
+        onSelectSlot={handleCreateAppointment}
+        onSelectEvent={handleEventSelected}
+      />
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {editMode
+              ? 'Edit Appointment'
+              : deleteMode
+              ? 'Delete Appointment'
+              : 'Create Appointment'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Start Time</Form.Label>
+              <Form.Control
+                type="time"
+                value={startDateTime}
+                onChange={(e) => setStartDateTime(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>End Time</Form.Label>
+              <Form.Control
+                type="time"
+                value={endDateTime}
+                onChange={(e) => setEndDateTime(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          {editMode || deleteMode ? (
+            <div>
+              <Button
+                variant="danger"
+                onClick={deleteAppointment}
+                disabled={!deleteMode} // Keep this line as is
+              >
+                Delete
+              </Button>{' '}
+              <Button
+                variant="primary"
+                onClick={updateAppointment}
+                disabled={!editMode}
+              >
+                Update
+              </Button>
+            </div>
+          ) : (
+            <Button variant="primary" onClick={saveAppointment}>
+              Save Appointment
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+};
 
 export default CounselorScheduler;
