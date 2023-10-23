@@ -68,7 +68,7 @@ export const CounselorDashboard = (props) => {
               }`}
             >
               <button
-                id="hoverList"
+                id="hoverPatientList"
                 onClick={() => {
                   setActiveComponent("chat");
                 }}
