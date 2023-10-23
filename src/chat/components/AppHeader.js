@@ -35,7 +35,7 @@ const AppHeader = ({ user, onSignOut, connectionState, client }) => {
   };
 
   return (
-    <div style={styles.appHeader}>
+    <div style={styles.appHeader} className="rounded-top-5">
       <div style={styles.flex}>
         <div style={styles.appLogoWrapper}>
           <LogoTwilioIcon

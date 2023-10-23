@@ -25,9 +25,9 @@ const ConversationsContainer = (props) => {
         />
       </Box>
       <Box style={styles.convoList}>
-        {!listHidden ? <ConversationsList /> : null}
+        <ConversationsList />
       </Box>
-      <Box style={styles.collapseButtonBox}>
+      {/* <Box style={styles.collapseButtonBox}>
         <Box
           paddingTop="space30"
           style={{
@@ -42,7 +42,7 @@ const ConversationsContainer = (props) => {
             <ChevronDoubleLeftIcon decorative={false} title="Collapse" />
           )}
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

@@ -19,10 +19,8 @@ const CreateConversationButton = (props) => {
   return (
     <>
       <Button fullWidth variant="secondary" onClick={handleOpen}>
-        {/* <PlusIcon decorative={false} title="Add convo" /> */}
-        {/* {!props.collapsed ? "Create New Conversation" : null} */}
-        Create New Conversation
-        {console.log("Button Pressed")}
+        <PlusIcon decorative={false} title="Add convo" />
+        {!props.collapsed ? "Create New Conversation" : null}
       </Button>
       <ConversationTitleModal
         title=""

@@ -354,14 +354,19 @@ import {
 // };
 export const Chat = () => {
   return (
-    <Box>
-      <Provider store={store}>
-        <Theme.Provider theme="twilio">
-          <Box>
-            <App />
-          </Box>
-        </Theme.Provider>
-      </Provider>
-    </Box>
+    <div
+      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
+      id="ChatForm"
+    >
+      <Box className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3">
+        <Provider store={store}>
+          <Theme.Provider theme="twilio">
+            <Box>
+              <App />
+            </Box>
+          </Theme.Provider>
+        </Provider>
+      </Box>
+    </div>
   );
 };

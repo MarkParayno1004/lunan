@@ -144,60 +144,23 @@ export const SupervisorDashboard = () => {
         {activeComponent === "default" ? (
           <>
             <DefaultPageSupervisor />
-            <AvatarSupervisor
-              style={{
-                position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
-              }}
-            />
           </>
         ) : activeComponent === "chat" ? (
           <>
             <Chat />
-            <AvatarSupervisor
-              style={{ position: "fixed", bottom: 25 + "px", right: 24 + "px" }}
-            />
           </>
         ) : activeComponent === "patient" ? (
           <>
             <AllPatients />
-            <AvatarSupervisor
-              style={{ position: "fixed", bottom: 25 + "px", right: 24 + "px" }}
-            />
           </>
         ) : activeComponent === "Counselors" ? (
           <>
             <AllCounselors />
-            <AvatarSupervisor
-              style={{
-                position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
-              }}
-            />
-            <AvatarSupervisor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
-            />
           </>
         ) : (
           activeComponent === "new" && (
             <>
               <NewPatients />
-              <AvatarSupervisor
-                style={{
-                  position: "fixed",
-                  bottom: 120 + "px",
-                  right: 24 + "px",
-                }}
-              />
-              <AvatarSupervisor
-                style={{
-                  position: "fixed",
-                  bottom: 24 + "px",
-                  right: 24 + "px",
-                }}
-              />
             </>
           )
         )}

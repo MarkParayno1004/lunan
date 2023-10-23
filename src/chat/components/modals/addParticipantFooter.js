@@ -1,67 +1,41 @@
-import { ModalBody, Box } from "@twilio-paste/core";
-import ModalInputField from "./ModalInputField";
-import AddParticipantFooter from "./addParticipantFooter";
-import { ActionName } from "../../types";
-import ConvoModal from "./ConvoModal";
+import React from "react";
+import { ModalFooter, ModalFooterActions } from "@twilio-paste/modal";
+import { Button } from "@twilio-paste/button";
+import { ArrowBackIcon } from "@twilio-paste/icons/esm/ArrowBackIcon";
 
-const AddSMSParticipantModal = (props) => {
+const AddParticipantFooter = (props) => {
   return (
     <>
-      <ConvoModal
-        handleClose={() => props.handleClose()}
-        isModalOpen={props.isModalOpen}
-        title={props.title}
-        modalBody={
-          <ModalBody>
-            <h3>Add SMS participant</h3>
-            <Box
-              as="form"
-              onKeyPress={async (e) => {
-                if (e.key === "Enter") {
-                  if (props.action) {
-                    e.preventDefault();
-                    props.action();
-                  }
-                }
-              }}
-            >
-              <ModalInputField
-                isFocused={true}
-                label="Phone number"
-                input={props.name}
-                placeholder="123456789012"
-                onChange={props.setName}
-                error={props.error}
-                // error_text="Enter a valid phone number."
-                help_text="The phone number of the participant."
-                prefixType="SMS"
-              />
-              <ModalInputField
-                label="Proxy phone number"
-                input={props.proxyName}
-                placeholder="123456789012"
-                onChange={props.setProxyName}
-                error={props.errorProxy}
-                // error_text="Enter a valid Twilio phone number."
-                help_text="The Twilio phone number used by the participant in Conversations."
-                prefixType="SMS"
-              />
-            </Box>
-          </ModalBody>
-        }
-        modalFooter={
-          <AddParticipantFooter
-            isSaveDisabled={!props.name || !props.proxyName || !!props.error}
-            actionName={ActionName.Save}
-            onBack={() => {
+      <ModalFooter>
+        <ModalFooterActions justify="start">
+          <Button
+            variant="secondary"
+            onClick={() => {
               props.onBack();
             }}
-            action={props.action}
-          />
-        }
-      />
+          >
+            <ArrowBackIcon
+              decorative={true}
+              title="Back to manage participants"
+              size="sizeIcon10"
+            />
+            Back
+          </Button>
+        </ModalFooterActions>
+        <ModalFooterActions>
+          <Button
+            disabled={props.isSaveDisabled ?? false}
+            variant="primary"
+            onClick={() => {
+              props.action();
+            }}
+          >
+            {props.actionName}
+          </Button>
+        </ModalFooterActions>
+      </ModalFooter>
     </>
   );
 };
 
-export default AddSMSParticipantModal;
+export default AddParticipantFooter;

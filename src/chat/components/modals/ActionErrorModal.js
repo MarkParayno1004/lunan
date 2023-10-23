@@ -1,56 +1,45 @@
-import { ModalBody, Box } from "@twilio-paste/core";
-import ModalInputField from "./ModalInputField";
-import AddParticipantFooter from "./addParticipantFooter";
-import { ActionName } from "../../types";
-import ConvoModal from "./ConvoModal";
+import {
+  Modal,
+  ModalFooter,
+  ModalFooterActions,
+  ModalHeader,
+  ModalHeading,
+} from "@twilio-paste/modal";
+import { ModalBody } from "@twilio-paste/core";
+import { Button } from "@twilio-paste/button";
+import React from "react";
 
-const AddChatParticipantModal = (props) => {
-  return (
-    <>
-      <ConvoModal
-        handleClose={() => props.handleClose()}
-        isModalOpen={props.isModalOpen}
-        title={props.title}
-        modalBody={
-          <ModalBody>
-            <h3>Add Chat participant</h3>
-            <Box
-              as="form"
-              onKeyPress={async (e) => {
-                if (e.key === "Enter") {
-                  if (props.action) {
-                    e.preventDefault();
-                    props.action();
-                  }
-                }
-              }}
-            >
-              <ModalInputField
-                label="User identity"
-                isFocused={true}
-                input={props.name}
-                placeholder="exampleusername"
-                onChange={props.setName}
-                error={props.error}
-                // error_text="Enter a valid user identity."
-                help_text="The identity used by the participant in Conversations."
-              />
-            </Box>
-          </ModalBody>
-        }
-        modalFooter={
-          <AddParticipantFooter
-            isSaveDisabled={!props.name.trim() || !!props.error}
-            actionName={ActionName.Save}
-            onBack={() => {
-              props.onBack();
-            }}
-            action={props.action}
-          />
-        }
-      />
-    </>
-  );
-};
+const ActionErrorModal = ({ errorText, isOpened, onClose, error = {} }) => (
+  <Modal
+    ariaLabelledby="name-change-error"
+    isOpen={isOpened}
+    size="default"
+    onDismiss={onClose}
+  >
+    <ModalHeader>
+      <ModalHeading as="h3">{errorText.title}</ModalHeading>
+    </ModalHeader>
+    <ModalBody>
+      <div>
+        {errorText.description}
+        {error ? (
+          <>
+            <br />
+            <br />
+            Error code [<b>{error.code}</b>
+            ]: <b>{error.message}</b>
+          </>
+        ) : null}
+      </div>
+    </ModalBody>
+    <ModalFooter>
+      <ModalFooterActions>
+        <Button variant="primary" onClick={onClose}>
+          Close
+        </Button>
+      </ModalFooterActions>
+    </ModalFooter>
+  </Modal>
+);
 
-export default AddChatParticipantModal;
+export default ActionErrorModal;
