@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { collection, getFirestore, addDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -54,8 +56,9 @@ const CounselorScheduler = () => {
     setDeleteMode(false);
   };
 
-  const saveAppointment = () => {
+  const saveAppointment = async () => {
     if (title && startDateTime && endDateTime) {
+      // Create a new appointment object
       const newAppointment = {
         start: moment(selectedDate)
           .set('hour', moment(startDateTime, 'HH:mm').hour())
@@ -68,7 +71,18 @@ const CounselorScheduler = () => {
         title: title,
         patient: patient,
       };
-
+  
+      // Save the appointment to Firebase
+      const db = getFirestore();
+      const appointmentsCollection = collection(db, "Appointments");
+  
+      try {
+        await addDoc(appointmentsCollection, newAppointment);
+        console.log("Appointment saved successfully!");
+      } catch (error) {
+        console.error("Error saving appointment: ", error);
+      }
+  
       setEvents([...events, newAppointment]);
       handleCloseModal();
     }
