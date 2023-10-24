@@ -14,7 +14,11 @@ import {
 } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase-config";
 import "../css/Login.css";
+//twilio needs
 import { getToken } from "../../src/chat/api";
+import { Client } from "@twilio/conversations";
+import { useSelector } from "react-redux";
+//twilio needs
 import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
@@ -29,6 +33,7 @@ import {
 //   // Replace characters with their ASCII codes, e.g., 'a' becomes '&#97;'
 //   return pattern.replace(/./g, (char) => `&#${char.charCodeAt(0)};`);
 // }
+
 export const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +41,8 @@ export const Login = (props) => {
   const [firstName, setFirstName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [client, setClient] = useState();
+  const token = useSelector((state) => state.token);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -109,7 +116,10 @@ export const Login = (props) => {
       return message;
     }
   }
-
+  useEffect(() => {
+    const client = new Client(token);
+    setClient(client);
+  }, []);
   return (
     <>
       <Navbar />
