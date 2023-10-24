@@ -20,19 +20,19 @@ const CounselorScheduler = () => {
 
   const handleCreateAppointment = (slotInfo) => {
     setSelectedDate(slotInfo.start);
-    setShowModal(true); 
+    setShowModal(true);
   }
 
   const handleEventSelected = (event) => {
+    setPatient(selectedEvent.patient);
     setSelectedEvent(event);
     setEditMode(true);
     setDeleteMode(true); // Set both editMode and deleteMode to true
     setShowModal(true);
   };
-  
+
   const handleEditAppointment = () => {
     // This function can remain the same
-    setPatient(selectedEvent.patient);
     setTitle(selectedEvent.title);
     setStartDateTime(moment(selectedEvent.start).format('HH:mm'));
     setEndDateTime(moment(selectedEvent.end).format('HH:mm'));
@@ -41,7 +41,7 @@ const CounselorScheduler = () => {
   const handleDeleteAppointment = () => {
     // This function can remain the same
   };
-  
+
   const handleCloseModal = () => {
     setSelectedDate(null);
     setShowModal(false);
@@ -89,10 +89,10 @@ const CounselorScheduler = () => {
         title: title,
         patient: patient,
       };
-  
+
       const updatedEvents = [...events];
       const index = updatedEvents.findIndex((event) => event === selectedEvent);
-  
+
       if (index !== -1) {
         updatedEvents[index] = updatedEvent;
         setEvents(updatedEvents);
@@ -135,7 +135,7 @@ const CounselorScheduler = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-          <Form.Group>
+            <Form.Group>
               <Form.Label>Patient Name</Form.Label>
               <Form.Control
                 type="text"
