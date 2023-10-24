@@ -9,6 +9,7 @@ const localizer = momentLocalizer(moment);
 const CounselorScheduler = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [patient, setPatient] = useState('');
   const [title, setTitle] = useState('');
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
@@ -19,7 +20,7 @@ const CounselorScheduler = () => {
 
   const handleCreateAppointment = (slotInfo) => {
     setSelectedDate(slotInfo.start);
-    setShowModal(true);
+    setShowModal(true); 
   }
 
   const handleEventSelected = (event) => {
@@ -31,6 +32,7 @@ const CounselorScheduler = () => {
   
   const handleEditAppointment = () => {
     // This function can remain the same
+    setPatient(selectedEvent.patient);
     setTitle(selectedEvent.title);
     setStartDateTime(moment(selectedEvent.start).format('HH:mm'));
     setEndDateTime(moment(selectedEvent.end).format('HH:mm'));
@@ -43,6 +45,7 @@ const CounselorScheduler = () => {
   const handleCloseModal = () => {
     setSelectedDate(null);
     setShowModal(false);
+    setPatient('');
     setTitle('');
     setStartDateTime('');
     setEndDateTime('');
@@ -63,6 +66,7 @@ const CounselorScheduler = () => {
           .set('minute', moment(endDateTime, 'HH:mm').minute())
           .toDate(),
         title: title,
+        patient: patient,
       };
 
       setEvents([...events, newAppointment]);
@@ -83,6 +87,7 @@ const CounselorScheduler = () => {
           .set('minute', moment(endDateTime, 'HH:mm').minute())
           .toDate(),
         title: title,
+        patient: patient,
       };
   
       const updatedEvents = [...events];
@@ -130,6 +135,15 @@ const CounselorScheduler = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
+          <Form.Group>
+              <Form.Label>Patient Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter patient"
+                value={patient}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
             <Form.Group>
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -171,7 +185,7 @@ const CounselorScheduler = () => {
                 Delete
               </Button>{' '}
               <Button
-                variant="primary"
+                variant="success"
                 onClick={updateAppointment}
                 disabled={!editMode}
               >
@@ -179,7 +193,7 @@ const CounselorScheduler = () => {
               </Button>
             </div>
           ) : (
-            <Button variant="primary" onClick={saveAppointment}>
+            <Button variant="success" onClick={saveAppointment}>
               Save Appointment
             </Button>
           )}
