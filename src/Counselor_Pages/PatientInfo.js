@@ -251,7 +251,7 @@ export const PatientInfo = (props) => {
       return [];
     }
   };
-  
+
   return (
     <Modal
       size="xl"
@@ -823,11 +823,11 @@ export const PatientInfo = (props) => {
                 updateTasks={setTasks}
               />
 
-              <ViewCaseNotes 
-              show={showCase} 
-              handleClose={handleCloseCase} 
-              selectedPatientUID={props.selectedPatientUID}
-              cNotes={notesForSelectedPatient}
+              <ViewCaseNotes
+                show={showCase}
+                handleClose={handleCloseCase}
+                selectedPatientUID={props.selectedPatientUID}
+                cNotes={notesForSelectedPatient}
               />
 
               <ViewWeeklyForm
@@ -853,9 +853,9 @@ export const PatientInfo = (props) => {
 
             {showPage && (
               <div className="pb-5 pt-5">
-                <CreateCaseNotes 
-                onClose={togglePage} 
-                selectedPatientUID={props.selectedPatientUID}
+                <CreateCaseNotes
+                  onClose={togglePage}
+                  selectedPatientUID={props.selectedPatientUID}
                 />
               </div>
             )}
@@ -891,21 +891,24 @@ const ViewModalAssign = (props) => {
     setTasks(props.tasks || []);
   }, [props.tasks]);
 
+
   const updateTaskStatus = async (taskId) => {
     const db = getFirestore(); // Initialize Firestore
     const taskRef = doc(db, "Tasks", taskId);
 
-    try {
-      // Update the Status field to "Verified"
-      await updateDoc(taskRef, {
-        Status: "Verified",
-      });
-      console.log("Task status updated to Verified");
-    } catch (error) {
-      console.error("Error updating task status:", error);
-    }
-  };
 
+  const handleShowAct = () => setShowAct(true);
+  const handleCloseAct = () => setShowAct(false);
+
+  //!View Turned-In Assignments Modal
+  const [showTurnIn, setShowTurnIn] = useState(false);
+  const handleShowTurnIn = () => setShowTurnIn(true);
+  const handleCloseTurnIn = () => setShowTurnIn(false);
+
+  //!View Verified Assignments Modal
+  const [showVerified, setShowVerified] = useState(false);
+  const handleShowVerified = () => setShowVerified(true);
+  const handleCloseVerified = () => setShowVerified(false);
   return (
     <Modal
       show={props.show}
@@ -937,14 +940,16 @@ const ViewModalAssign = (props) => {
             Verified Assignments
           </button>
         </div>
-        <table class="table table-dark table-hover">
+        <table class="table table-dark table-hover mt-3">
           {activeTab === "assigned" && (
             <>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
                   <th scope="col">Descsription:</th>
+
                   <th scope="col">Turn-In Date:</th>{" "}
+
                 </tr>
               </thead>
               <tbody className="table-group-divider">
@@ -952,9 +957,31 @@ const ViewModalAssign = (props) => {
                   .filter((task) => task.Status === null)
                   .map((task, index) => (
                     <tr key={index}>
-                      <td>{task.Activity}</td>
+                      <td>
+                        <button
+                          style={{
+                            background: "none",
+                            borderStyle: "none",
+                            color: "white",
+                            textDecoration: "underline",
+                          }}
+                          onClick={handleShowAct}
+                        >
+                          {task.Activity}
+                        </button>
+                        <ViewAssignedActivity
+                          show={showAct}
+                          handleClose={handleCloseAct}
+                          Activity={task.Activity}
+                          Description={task.Description}
+                          DueDate={task.Deadline}
+                          TurnedInDate={""}
+                        />
+                      </td>
                       <td>{task.Description}</td>
+
                       <td>{task.Deadline}</td>
+
                     </tr>
                   ))}
               </tbody>
@@ -976,9 +1003,28 @@ const ViewModalAssign = (props) => {
                   .filter((task) => task.Status === "Verified")
                   .map((task, index) => (
                     <tr key={index}>
-                      <td>{task.Activity}</td>
+                      <td>
+                        {" "}
+                        <button
+                          style={{
+                            background: "none",
+                            borderStyle: "none",
+                            color: "white",
+                            textDecoration: "underline",
+                          }}
+                          onClick={handleShowVerified}
+                        >
+                          {task.Activity}
+                        </button>
+                        <ViewVerifiedActivity
+                          show={showVerified}
+                          handleClose={handleCloseVerified}
+                        />
+                      </td>
                       <td>{task.Description}</td>
+
                       <td>{task.Deadline}</td>{" "}
+
                       {/* Display Firestore document ID here */}
                     </tr>
                   ))}
@@ -993,7 +1039,6 @@ const ViewModalAssign = (props) => {
                   <th scope="col">Description:</th>
                   <th scope="col">Turn-In Date:</th>{" "}
                   {/* Display Firestore document ID here */}
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody className="table-group-divider">
@@ -1006,18 +1051,32 @@ const ViewModalAssign = (props) => {
                       <td>{task.Description}</td>
                       <td>{task.Deadline}</td>{" "}
                       {/* Display Firestore document ID here */}
+
                       <td>
                         <button
-                          className="btn"
                           style={{
-                            backgroundColor: "#f5e9cf",
-                            color: "#4d455d",
+                            background: "none",
+                            borderStyle: "none",
+                            color: "white",
+                            textDecoration: "underline",
                           }}
-                          onClick={() => updateTaskStatus(task.id)}
+                          onClick={handleShowTurnIn}
                         >
-                          Verify
+                          {task.Activity}
                         </button>
+                        <ViewTurnedInActivity
+                          show={showTurnIn}
+                          handleClose={handleCloseTurnIn}
+                          Activity={task.Activity}
+                          Description={task.Description}
+                          DueDate={task.Deadline}
+                          TurnedInDate={""}
+                          task={task.id}
+                        />
                       </td>
+                      <td>{task.Description}</td>
+                      <td>{task.id}</td>{" "}
+                      {/* Display Firestore document ID here */}
                     </tr>
                   ))}
               </tbody>
@@ -1114,34 +1173,33 @@ const ViewCaseNotes = (props) => {
             </tr>
           </thead>
           <tbody>
-          {cNotes
-          .map((cNote, index) => (
-            <tr key={index}>
-              <td>{cNote.id}</td>
-              <td>{cNote.dateAdded}</td>
-              <td>
-                <button
-                  className="btn"
-                  style={{
-                    backgroundColor: "#f5e9cf",
-                    color: "#4d455d",
-                    width: "auto",
-                  }}
-                  onClick={() => {
-                    handleSelectcNotes(cNote.id);
-                    handleShow(cNote.id);
-                  }} // Pass the form's ID
-                >
-                  View Note
-                </button>
-              </td>
-              <PublishCaseNotes 
-              show={show} 
-              handleClose={handleClose} 
-              selectedcNotes={selectedcNotes}
-              caseNotes={selectedcNotes}
-              />
-            </tr>
+            {cNotes.map((cNote, index) => (
+              <tr key={index}>
+                <td>{cNote.id}</td>
+                <td>{cNote.dateAdded}</td>
+                <td>
+                  <button
+                    className="btn"
+                    style={{
+                      backgroundColor: "#f5e9cf",
+                      color: "#4d455d",
+                      width: "auto",
+                    }}
+                    onClick={() => {
+                      handleSelectcNotes(cNote.id);
+                      handleShow(cNote.id);
+                    }} // Pass the form's ID
+                  >
+                    View Note
+                  </button>
+                </td>
+                <PublishCaseNotes
+                  show={show}
+                  handleClose={handleClose}
+                  selectedcNotes={selectedcNotes}
+                  caseNotes={selectedcNotes}
+                />
+              </tr>
             ))}
           </tbody>
         </table>
@@ -2170,6 +2228,127 @@ const AddGuide = (props) => {
           >
             Submit
           </button>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewAssignedActivity = (props) => {
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      className="mt-5"
+      style={{ borderStyle: "none" }}
+    >
+      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ color: "#F2E3D2" }}>View Activity:</Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid mt-3" style={{ color: "white" }}>
+          <span>
+            <strong>{props.Activity}</strong>
+          </span>
+          <p>{props.Description} </p>
+          <span>
+            <span> | </span>
+            <strong>Due Date:</strong> {props.DueDate}
+          </span>
+          <span>
+            <span> | </span>
+            <strong>Turned-in Date:</strong> {props.TurnedInDate}
+          </span>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewTurnedInActivity = (props) => {
+  const updateTaskStatus = async (taskId) => {
+    const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
+
+    try {
+      // Update the Status field to "Verified"
+      await updateDoc(taskRef, {
+        Status: "Verified",
+      });
+      console.log("Task status updated to Verified");
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      className="mt-5"
+      style={{ borderStyle: "none" }}
+    >
+      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ color: "#F2E3D2" }}>
+            View Turned-In Activity:
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid mt-3" style={{ color: "white" }}>
+          <span>
+            <strong>{props.Activity}</strong>
+          </span>
+          <p>{props.Description} </p>
+          <span>
+            <span> | </span>
+            <strong>Due Date:</strong> {props.DueDate}
+          </span>
+          <span>
+            <span> | </span>
+            <strong>Turned-in Date:</strong> {props.TurnedInDate}
+          </span>
+          <div className="d-flex justify-content-end">
+            <button
+              className="btn mt-3"
+              style={{
+                backgroundColor: "#f5e9cf",
+                color: "#4d455d",
+              }}
+              onClick={() => updateTaskStatus(props.task)}
+            >
+              Verify
+            </button>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewVerifiedActivity = (props) => {
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      className="mt-5"
+      style={{ borderStyle: "none" }}
+    >
+      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ color: "#F2E3D2" }}>
+            View Verified Activity:
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid mt-3" style={{ color: "white" }}>
+          <span>Activity Title:</span>
+          <p>Description: </p>
+          <div>File Attached:</div>
+          <span>
+            <span> | </span>
+            <strong>Due Date:</strong>
+          </span>
+          <span>
+            <span> | </span>
+            <strong>Turned-in Date:</strong>
+          </span>
         </div>
       </Modal.Body>
     </Modal>
