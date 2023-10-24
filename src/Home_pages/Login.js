@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase-config";
 import "../css/Login.css";
+import { getToken } from "../../src/chat/api";
 import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
@@ -28,7 +29,7 @@ import {
 //   // Replace characters with their ASCII codes, e.g., 'a' becomes '&#97;'
 //   return pattern.replace(/./g, (char) => `&#${char.charCodeAt(0)};`);
 // }
-export const Login = () => {
+export const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -84,6 +85,30 @@ export const Login = () => {
   const handleCloseForget = () => setShowForget(false);
 
   const handleForget = () => setShowForget(true);
+
+  //for twilio
+  async function login(username, password, setToken) {
+    try {
+      const token = await getToken(username.trim(), password);
+      if (token === "") {
+        return "Received an empty token from backend.";
+      }
+
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      setToken(token);
+
+      return "";
+    } catch (error) {
+      let message = "Unknown Error";
+      if (error instanceof Error) {
+        message = error.message;
+      } else {
+        message = String(error);
+      }
+      return message;
+    }
+  }
 
   return (
     <>
@@ -152,6 +177,17 @@ export const Login = () => {
                     <button
                       className="d-flex align-items-center justify-content-center"
                       id="LoginButton"
+                      onClick={async () => {
+                        const error = await login(
+                          email,
+                          password,
+                          props.setToken
+                        );
+                        if (error) {
+                          // Handle the error, e.g., set a form error state
+                          console.error(error);
+                        }
+                      }}
                     >
                       Login
                     </button>
