@@ -5,13 +5,16 @@ import {
   collection,
   getFirestore,
   addDoc,
-  doc, // Import doc
-  setDoc, // Import setDoc
-  deleteDoc, // Import deleteDoc
-  getDocs, // Import getDocs
+  getDoc,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  where,
+  query,
 } from 'firebase/firestore';
-import { firestore } from "../../firebase/firebase-config";
-import { getAuth } from 'firebase/auth'; // Import getAuth to retrieve the current user
+import { firestore } from '../../firebase/firebase-config';
+import { getAuth } from 'firebase/auth';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -23,6 +26,7 @@ const CounselorScheduler = (props) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [selectedPatient, setSelectedPatient] = useState('');
   const [title, setTitle] = useState('');
   const [startDateTime, setStartDateTime] = useState('');
@@ -31,33 +35,27 @@ const CounselorScheduler = (props) => {
   const [callMode, setCallMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const [events, setEvents] = useState([]);
   const { currentUser } = getAuth();
 
-  const fetchEvents = async () => {
-    const db = getFirestore();
-    const eventsCollection = collection(db, "Appointments");
-  
-    try {
-      const querySnapshot = await getDocs(eventsCollection);
-      const eventsData = querySnapshot.docs.map((doc) => doc.data());
-      setEvents(eventsData);
-      console.log("Events fetched successfully!");
-    } catch (error) {
-      console.error('Error fetching events data:', error);
-    }
-  };
-
   useEffect(() => {
-    // Retrieve appointment data from local storage on component load
-    const storedEvents = JSON.parse(localStorage.getItem('appointments')) || [];
-    setEvents(storedEvents);
+    const fetchPatientsData = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          query(collection(firestore, 'Users'), where('counselorID', '!=', null))
+        );
+        const patients = querySnapshot.docs.map((doc) => doc.data());
+
+        setPatientsData(patients);
+        setFilteredPatientsData(patients);
+      } catch (error) {
+        console.error('Error fetching patients data:', error);
+      }
+    };
+
+    fetchPatientsData();
   }, []);
-
-  useEffect(() => {
-    // Update local storage when the events state changes
-    localStorage.setItem('appointments', JSON.stringify(events));
-  }, [events]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -66,7 +64,10 @@ const CounselorScheduler = (props) => {
 
       try {
         const querySnapshot = await getDocs(eventsCollection);
-        const eventsData = querySnapshot.docs.map((doc) => doc.data());
+        const eventsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id, // Set the appointment ID
+          ...doc.data(),
+        }));
         setEvents(eventsData);
       } catch (error) {
         console.error('Error fetching events data:', error);
@@ -76,10 +77,30 @@ const CounselorScheduler = (props) => {
     fetchEvents();
   }, []);
 
+  const handleSelectAppointment = async (id) => {
+    try {
+      const db = getFirestore();
+      const appointmentsCollection = collection(db, 'Appointments');
+      const appointmentDocRef = doc(appointmentsCollection, id);
+      const appointmentDocSnap = await getDoc(appointmentDocRef);
+
+      if (appointmentDocSnap.exists()) {
+        const selectedAppointmentData = appointmentDocSnap.data();
+        setSelectedAppointment(selectedAppointmentData);
+        setSelectedAppointmentId(id);
+        setShowModal(true);
+      } else {
+        console.error('Appointment not found for ID:', id);
+      }
+    } catch (error) {
+      console.error('Error fetching appointment for ID:', id, error);
+    }
+  };
+
   const handleCreateAppointment = (slotInfo) => {
     setSelectedDate(slotInfo.start);
     setShowModal(true);
-  }
+  };
 
   const handleEventSelected = (event) => {
     setSelectedPatient(event.patient);
@@ -87,14 +108,18 @@ const CounselorScheduler = (props) => {
     setStartDateTime(moment(event.start).format('HH:mm'));
     setEndDateTime(moment(event.end).format('HH:mm'));
     setSelectedEvent(event);
-    setEditMode(true); // Set edit mode to false initially
+    setEditMode(true);
     setShowModal(true);
+
+    if (event.id) {
+      setSelectedAppointmentId(event.id);
+    }
   };
-  
+
   const handleCloseModal = () => {
     setSelectedDate(null);
     setShowModal(false);
-    setSelectedPatient(''); // Reset the selected patient
+    setSelectedPatient('');
     setTitle('');
     setStartDateTime('');
     setEndDateTime('');
@@ -124,98 +149,95 @@ const CounselorScheduler = (props) => {
         patient: selectedPatient.UID,
         counselorUID: currentUser.uid,
       };
-  
+
       const db = getFirestore();
-      const appointmentsCollection = collection(db, "Appointments");
-  
+      const appointmentsCollection = collection(db, 'Appointments');
+
       try {
-        await addDoc(appointmentsCollection, newAppointment);
-        console.log("Appointment saved successfully!");
-        setEvents([...events, newAppointment]);
+        const docRef = await addDoc(appointmentsCollection, newAppointment);
+        newAppointment.id = docRef.id; // Set the appointment's ID
+        const updatedEvents = [...events, newAppointment];
+        setEvents(updatedEvents);
         handleCloseModal();
       } catch (error) {
-        console.error("Error saving appointment: ", error);
+        console.error('Error saving appointment: ', error);
       }
     } else {
-      console.error("Missing required data for appointment creation.");
+      console.error('Missing required data for appointment creation.');
     }
   };
-  
 
   const updateAppointment = async () => {
-    if (title && startDateTime && endDateTime && selectedEvent) {
-      const updatedEvent = {
-        start: moment(selectedEvent.start)
-          .set('hour', moment(startDateTime, 'HH:mm').hour())
-          .set('minute', moment(startDateTime, 'HH:mm').minute())
-          .toDate(),
-        end: moment(selectedEvent.end)
-          .set('hour', moment(endDateTime, 'HH:mm').hour())
-          .set('minute', moment(endDateTime, 'HH:mm').minute())
-          .toDate(),
-        title: title,
-      };
+    if (title && startDateTime && endDateTime && selectedAppointmentId) {
+      // Use moment.js to parse the time values
+      const startTime = moment(startDateTime, 'HH:mm', true);
+      const endTime = moment(endDateTime, 'HH:mm', true);
   
-      const db = getFirestore();
-      const appointmentsCollection = collection(db, "Appointments");
+      if (startTime.isValid() && endTime.isValid()) {
+        // Create updatedEvent using the valid time values
+        const updatedEvent = {
+          start: moment(selectedAppointment.start)
+            .set('hour', startTime.hour())
+            .set('minute', startTime.minute())
+            .toDate(),
+          end: moment(selectedAppointment.end)
+            .set('hour', endTime.hour())
+            .set('minute', endTime.minute())
+            .toDate(),
+          title: title,
+        };
   
-      try {
-        // Get the document reference for the selectedEvent
-        const docRef = doc(appointmentsCollection, selectedEvent.counselorUID);
-        // Update the document with the updatedEvent data
-        await setDoc(docRef, updatedEvent, { merge: true });
-        console.log("Appointment updated successfully!");
+        const db = getFirestore();
+        const appointmentsCollection = collection(db, 'Appointments');
   
-        // Update the local state with the updated event
-        const updatedEvents = events.map((event) =>
-          event === selectedEvent ? { ...event, ...updatedEvent } : event
-        );
+        try {
+          const docRef = doc(appointmentsCollection, selectedAppointmentId);
+          await setDoc(docRef, updatedEvent, { merge: true });
+          console.log('Appointment updated successfully!');
   
-        setEvents(updatedEvents);
-        setSelectedEvent(updatedEvent);
-      } catch (error) {
-        console.error("Error updating appointment: ", error);
+          const updatedEvents = events.map((event) =>
+            event.id === selectedAppointmentId ? { ...event, ...updatedEvent } : event
+          );
+  
+          setEvents(updatedEvents);
+        } catch (error) {
+          console.error('Error updating appointment: ', error);
+        }
+  
+        setSelectedAppointment(null);
+        setSelectedAppointmentId(null);
+        setShowUpdateModal(false);
+        setShowModal(false);
+      } else {
+        console.error('Invalid time format for startDateTime or endDateTime');
       }
-  
-      handleCloseUpdateModal();
-      handleCloseModal();
     }
   };
-  
+
   const deleteAppointment = async () => {
-    // Set deleteMode to true when deleting
-    setDeleteMode(true);
-    // Set editMode to false
-    setEditMode(false);
-  
-    // Show a confirmation dialog to make sure the user wants to delete
     if (window.confirm('Are you sure you want to delete this appointment?')) {
       try {
         const db = getFirestore();
-        const appointmentsCollection = collection(db, "Appointments");
-        const docRef = doc(appointmentsCollection, selectedEvent.counselorUID);
-  
-        // Delete the document from the collection
-        await deleteDoc(docRef);
-        console.log("Appointment deleted successfully!");
-  
-        // Remove the deleted event from the local state
-        const updatedEvents = events.filter((event) => event !== selectedEvent);
+        const appointmentsCollection = collection(db, 'Appointments');
+        await deleteDoc(doc(appointmentsCollection, selectedAppointmentId));
+        console.log('Appointment deleted successfully!');
+        const updatedEvents = events.filter((event) => event.id !== selectedAppointmentId);
         setEvents(updatedEvents);
       } catch (error) {
-        console.error("Error deleting appointment: ", error);
+        console.error('Error deleting appointment: ', error);
       }
     } else {
-      console.log('Appointment deletion cancelled.');
+      console.log('Appointment deletion canceled.');
     }
-  
-    // Close the modal whether the user confirmed the deletion or not
-    handleCloseModal();
+
+    setSelectedAppointment(null);
+    setSelectedAppointmentId(null);
+    setShowModal(false);
   };
-  
+
   const handleCallAppointment = () => {
     setCallMode(true);
-  };  
+  };
 
   return (
     <div>
@@ -227,7 +249,10 @@ const CounselorScheduler = (props) => {
         style={{ height: 650, marginTop: 40 }}
         selectable={true}
         onSelectSlot={handleCreateAppointment}
-        onSelectEvent={handleEventSelected}
+        onSelectEvent={(event, e) => {
+          handleEventSelected(event); // Call handleEventSelected with the event
+          handleSelectAppointment(event.id); // Call handleSelectAppointment with the event's ID
+        }}
       />
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -248,9 +273,7 @@ const CounselorScheduler = (props) => {
                 value={selectedPatient ? selectedPatient.UID : ''}
                 onChange={(e) => {
                   const selectedUID = e.target.value;
-                  const selectedPatient = filteredPatientsData.find(
-                    (patient) => patient.UID === selectedUID
-                  );
+                  const selectedPatient = filteredPatientsData.find((patient) => patient.UID === selectedUID);
                   setSelectedPatient(selectedPatient || null);
                 }}
                 disabled={editMode}
