@@ -100,7 +100,6 @@ export const NewPatients = () => {
                   <th scope="col">Picture</th>
                   <th scope="col">Name</th>
                   <th scope="col">Date Added</th>
-                  <th scope="col">Counselor</th>
                   <th scope="col">Assign Patient</th>
                 </tr>
               </thead>
@@ -128,7 +127,6 @@ export const NewPatients = () => {
                         </td>
                         <td>{patientObj.data.firstName}</td>
                         <td>{patientObj.data.dateCreated}</td>
-                        <td>{patientObj.data.UID}</td>
                         <td>
                           <button
                             className="rounded-5 fw-medium"
