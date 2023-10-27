@@ -36,6 +36,7 @@ export const AllCounselors = () => {
   const handleCounselorSelect = (counselorData) => {
     setSelectedCounselor(counselorData);
     setShowCounselor(true);
+    console.log(counselorData.UID);
   };
 
   useEffect(() => {

@@ -66,7 +66,7 @@ export const fetchCounselorData = async (
         const patientsCount = await fetchCounselorPatientsCount(doc.id);
         return {
           ...doc.data(),
-          UID: doc.id,
+          id: doc.id,
           patientsCount: patientsCount,
         };
       })
