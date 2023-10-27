@@ -53,7 +53,7 @@ export const fetchCounselorPatientsCount = async (counselorID) => {
 
 // Fetch counselor data and patients count
 export const fetchCounselorData = async (
-  setCounselorData,
+  // setCounselorData,
   setFilteredCounselorData
 ) => {
   try {
@@ -72,7 +72,7 @@ export const fetchCounselorData = async (
       })
     );
 
-    setCounselorData(counselorDataWithPatientsCount);
+    // setCounselorData(counselorDataWithPatientsCount);
     setFilteredCounselorData(counselorDataWithPatientsCount);
   } catch (error) {
     console.error("Error fetching counselor data:", error);
@@ -203,9 +203,9 @@ export const handleSubmitAdd = async (
   setLoading,
   localFormData,
   onAddSuccess,
-  onHide,
-  setCounselorData,
-  setFilteredCounselorData
+  onHide
+  // setCounselorData,
+  // setFilteredCounselorData
 ) => {
   event.preventDefault();
   setLoading(true);
@@ -246,10 +246,10 @@ export const handleSubmitAdd = async (
     await sendTemporaryCredentialsToEmail(newUser);
 
     // Update the counselorData state to include the new counselor
-    setCounselorData((prevData) => [...prevData, newUser]);
+    // setCounselorData((prevData) => [...prevData, newUser]);
 
     // Update the filteredCounselorData state to include the new counselor
-    setFilteredCounselorData((prevData) => [...prevData, newUser]);
+    // setFilteredCounselorData((prevData) => [...prevData, newUser]);
 
     // Automatically render the new counselor in the table
     onAddSuccess(newUser);
