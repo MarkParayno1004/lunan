@@ -9,6 +9,7 @@ import {
   updateDoc,
   doc,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
@@ -21,21 +22,20 @@ export const NewPatients = () => {
   const [showEdit, setShowEdit] = useState(false);
 
   useEffect(() => {
-    const fetchPatientsData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(firestore, "Users"));
-        const patients = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Include the document ID
-          data: doc.data(), // Include the patient data
-        }));
+    // Create a query to get Forms for the selected patient
+    const patientQuery = query(collection(firestore, "Users"));
 
-        setPatientsData(patients);
-      } catch (error) {
-        console.error("Error fetching patients data:", error);
-      }
-    };
+    const unsubscribe = onSnapshot(patientQuery, (snapshot) => {
+      const updatedPatientList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
+      }));
+      setPatientsData(updatedPatientList);
+      setFilteredPatientsData(updatedPatientList);
+    });
 
-    fetchPatientsData();
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   const fetchImageUrl = (imageUrl) => {
@@ -69,24 +69,6 @@ export const NewPatients = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (id) => setShowEdit(id);
 
-  //!Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Change this value according to your requirements
-  const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const NewPatients = filteredPatients.slice(startIndex, endIndex);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  //!Table style
-  const tableStyle = {
-    height: "650px", // Set the desired height
-    overflow: "auto", // Add scrollbars when content overflows
-  };
-
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -112,7 +94,7 @@ export const NewPatients = () => {
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark" style={tableStyle}>
+            <table className="table table-dark">
               <thead>
                 <tr>
                   <th scope="col">Picture</th>
@@ -123,9 +105,9 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {NewPatients.map(
+                {filteredPatients.map(
                   (patientObj) =>
-                    patientObj.data.counselorID && (
+                    patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
                         <td>
                           {patientObj.data.ProfPic ? (
@@ -167,25 +149,6 @@ export const NewPatients = () => {
                 )}
               </tbody>
             </table>
-            <Pagination>
-              <Pagination.Prev
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              />
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <Pagination.Item
-                  key={index}
-                  active={currentPage === index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              />
-            </Pagination>
           </div>
         </div>
       </div>
