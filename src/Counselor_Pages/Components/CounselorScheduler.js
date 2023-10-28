@@ -61,13 +61,14 @@ const CounselorScheduler = (props) => {
     const fetchEvents = async () => {
       const db = getFirestore();
       const eventsCollection = collection(db, 'Appointments');
-
+    
       try {
         const querySnapshot = await getDocs(eventsCollection);
         const eventsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Set the appointment ID
+          id: doc.id,
           ...doc.data(),
         }));
+        console.log('Fetched events data:', eventsData); // Add this line for debugging
         setEvents(eventsData);
       } catch (error) {
         console.error('Error fetching events data:', error);
@@ -83,9 +84,10 @@ const CounselorScheduler = (props) => {
       const appointmentsCollection = collection(db, 'Appointments');
       const appointmentDocRef = doc(appointmentsCollection, id);
       const appointmentDocSnap = await getDoc(appointmentDocRef);
-
+  
       if (appointmentDocSnap.exists()) {
         const selectedAppointmentData = appointmentDocSnap.data();
+        console.log('Selected appointment data:', selectedAppointmentData); // Add this line for debugging
         setSelectedAppointment(selectedAppointmentData);
         setSelectedAppointmentId(id);
         setShowModal(true);
@@ -96,6 +98,7 @@ const CounselorScheduler = (props) => {
       console.error('Error fetching appointment for ID:', id, error);
     }
   };
+  
 
   const handleCreateAppointment = (slotInfo) => {
     setSelectedDate(slotInfo.start);
@@ -168,51 +171,59 @@ const CounselorScheduler = (props) => {
   };
 
   const updateAppointment = async () => {
-    if (title && startDateTime && endDateTime && selectedAppointmentId) {
-      // Use moment.js to parse the time values
-      const startTime = moment(startDateTime, 'HH:mm', true);
-      const endTime = moment(endDateTime, 'HH:mm', true);
-  
-      if (startTime.isValid() && endTime.isValid()) {
-        // Create updatedEvent using the valid time values
-        const updatedEvent = {
-          start: moment(selectedAppointment.start)
-            .set('hour', startTime.hour())
-            .set('minute', startTime.minute())
-            .toDate(),
-          end: moment(selectedAppointment.end)
-            .set('hour', endTime.hour())
-            .set('minute', endTime.minute())
-            .toDate(),
-          title: title,
-        };
-  
-        const db = getFirestore();
-        const appointmentsCollection = collection(db, 'Appointments');
-  
-        try {
-          const docRef = doc(appointmentsCollection, selectedAppointmentId);
-          await setDoc(docRef, updatedEvent, { merge: true });
-          console.log('Appointment updated successfully!');
-  
-          const updatedEvents = events.map((event) =>
-            event.id === selectedAppointmentId ? { ...event, ...updatedEvent } : event
-          );
-  
-          setEvents(updatedEvents);
-        } catch (error) {
-          console.error('Error updating appointment: ', error);
-        }
-  
-        setSelectedAppointment(null);
-        setSelectedAppointmentId(null);
-        setShowUpdateModal(false);
-        setShowModal(false);
-      } else {
-        console.error('Invalid time format for startDateTime or endDateTime');
-      }
+    // Check if all required variables are defined
+    if (!title || !startDateTime || !endDateTime || !selectedAppointmentId) {
+      console.error('Missing required data for updating appointment');
+      return;
     }
-  };
+  
+    console.log('startDateTime:', startDateTime);
+    console.log('endDateTime:', endDateTime);
+  
+    const startTime = moment(startDateTime, 'HH:mm', true);
+    const endTime = moment(endDateTime, 'HH:mm', true);
+  
+    if (startTime.isValid() && endTime.isValid()) {
+      const updatedStart = startTime
+        .set('hour', startTime.hour())
+        .set('minute', startTime.minute())
+        .toDate();
+      const updatedEnd = endTime
+        .set('hour', endTime.hour())
+        .set('minute', endTime.minute())
+        .toDate();
+  
+      const updatedEvent = {
+        start: updatedStart,
+        end: updatedEnd,
+        title: title,
+      };
+  
+      const db = getFirestore();
+      const appointmentsCollection = collection(db, 'Appointments');
+  
+      try {
+        const docRef = doc(appointmentsCollection, selectedAppointmentId);
+        await setDoc(docRef, updatedEvent, { merge: true });
+        console.log('Appointment updated successfully!');
+  
+        const updatedEvents = events.map((event) =>
+          event.id === selectedAppointmentId ? { ...event, ...updatedEvent } : event
+        );
+  
+        setEvents(updatedEvents);
+      } catch (error) {
+        console.error('Error updating appointment: ', error);
+      }
+  
+      setSelectedAppointment(null);
+      setSelectedAppointmentId(null);
+      setShowUpdateModal(false);
+      setShowModal(false);
+    } else {
+      console.error('Invalid time format for startDateTime or endDateTime');
+    }
+  };  
 
   const deleteAppointment = async () => {
     if (window.confirm('Are you sure you want to delete this appointment?')) {
