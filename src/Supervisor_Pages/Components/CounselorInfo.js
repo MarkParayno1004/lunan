@@ -263,7 +263,7 @@ const CounselorData = ({
       {showPatientInfo && (
         <PatientInfo
           show={showModal}
-          handleClose={handleClose}
+          onHide={handleClose}
           patientData={selectedPatientData}
           intakeFormsData={selectedIntakeFormsData}
           selectedPatientUID={selectedPatientUID}

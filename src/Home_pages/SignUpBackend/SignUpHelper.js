@@ -267,6 +267,7 @@ export async function upload(data, formData) {
       AlcoholIntSel: data.AlcoholIntSel || "N/A",
       AlcoholInt: data.AlcoholInt || "N/A",
       DrugUseSel: data.DrugUseSel || "N/A",
+      DrugUse: data.DrugUse || "N/A",
     };
     console.log("New Intake Form:", newIntake);
     await addDoc(intakeRef, newIntake);
