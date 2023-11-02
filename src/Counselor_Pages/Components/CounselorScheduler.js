@@ -5,13 +5,13 @@ import {
   collection,
   getFirestore,
   addDoc,
-  getDoc,
+  getDocs,
   doc,
   setDoc,
   deleteDoc,
-  getDocs,
-  where,
   query,
+  where,
+  getDoc
 } from 'firebase/firestore';
 import { firestore } from '../../firebase/firebase-config';
 import { getAuth } from 'firebase/auth';
@@ -20,7 +20,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
-const CounselorScheduler = (props) => {
+const CounselorScheduler = () => {
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -58,23 +58,21 @@ const CounselorScheduler = (props) => {
   }, []);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchEvents = () => {
       const db = getFirestore();
-      const eventsCollection = collection(db, 'Appointments');
-    
-      try {
-        const querySnapshot = await getDocs(eventsCollection);
-        const eventsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log('Fetched events data:', eventsData); // Add this line for debugging
-        setEvents(eventsData);
-      } catch (error) {
-        console.error('Error fetching events data:', error);
-      }
+      const appointmentsCollection = collection(db, 'Appointments');
+  
+      getDocs(appointmentsCollection)
+        .then((querySnapshot) => {
+          const events = querySnapshot.docs.map((doc) => doc.data());
+          console.log('Appointments Data:', events);
+          setEvents(events);
+        })
+        .catch((error) => {
+          console.error('Error fetching appointments data:', error);
+        });
     };
-
+  
     fetchEvents();
   }, []);
 
@@ -84,10 +82,10 @@ const CounselorScheduler = (props) => {
       const appointmentsCollection = collection(db, 'Appointments');
       const appointmentDocRef = doc(appointmentsCollection, id);
       const appointmentDocSnap = await getDoc(appointmentDocRef);
-  
+
       if (appointmentDocSnap.exists()) {
         const selectedAppointmentData = appointmentDocSnap.data();
-        console.log('Selected appointment data:', selectedAppointmentData); // Add this line for debugging
+        console.log('Selected appointment data:', selectedAppointmentData);
         setSelectedAppointment(selectedAppointmentData);
         setSelectedAppointmentId(id);
         setShowModal(true);
@@ -260,7 +258,7 @@ const CounselorScheduler = (props) => {
         style={{ height: 650, marginTop: 40 }}
         selectable={true}
         onSelectSlot={handleCreateAppointment}
-        onSelectEvent={(event, e) => {
+        onSelectEvent={(event) => {
           handleEventSelected(event); // Call handleEventSelected with the event
           handleSelectAppointment(event.id); // Call handleSelectAppointment with the event's ID
         }}
