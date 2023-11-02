@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore, auth } from "../firebase/firebase-config";
 import "../css/CounselorDashboard.css";
@@ -9,10 +8,16 @@ import CounselorScheduler from "./Components/CounselorScheduler";
 import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
 import { AvatarCounselor } from "../SupportEngine/AvatarCounselor";
 import { CounselorChat } from "./Components/CounselorChat";
+import { getToken } from "../../src/chat/api"; // Import the function to get the Twilio token
+import { Client } from "@twilio/conversations";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export const CounselorDashboard = (props) => {
   const [counselorName, setCounselorName] = useState("");
   const [activeComponent, setActiveComponent] = useState("default");
+  const [client, setClient] = useState(null);
+  const token = useSelector((state) => state.token); // Get the Twilio token from your state
 
   useEffect(() => {
     const fetchCounselorName = async () => {
@@ -38,11 +43,29 @@ export const CounselorDashboard = (props) => {
 
     fetchCounselorName();
   }, []);
+
+  // Initialize Twilio client with the token
+  useEffect(() => {
+    const initTwilioClient = async () => {
+      try {
+        if (token) {
+          const client = new Client(token);
+          setClient(client);
+          console.log("Twilio Client:", client);
+        }
+      } catch (error) {
+        console.error("Error initializing Twilio client:", error);
+      }
+    };
+
+    initTwilioClient();
+  }, [token]); // Make sure to include token in the dependency array
+
   return (
     <div className=" d-flex align-items-start" id="sdBG">
       <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarPatient">
         <div className="d-flex justify-content-center">
-          <img src={SideLogo} style={{ width: 13 + "rem" }} />
+          <img src={SideLogo} style={{ width: "13rem" }} alt="Side Logo" />
         </div>
         <h5>Welcome {counselorName} </h5>
         <hr />
@@ -112,7 +135,7 @@ export const CounselorDashboard = (props) => {
                   style={{
                     backgroundColor: "#f5e9cf",
                     color: "#4d455d",
-                    height: 35 + "px",
+                    height: "35px",
                   }}
                 >
                   Logout
@@ -129,12 +152,12 @@ export const CounselorDashboard = (props) => {
             <AvatarCounselor
               style={{
                 position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
+                bottom: "120px",
+                right: "24px",
               }}
             />
             <AvatarCounselor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+              style={{ position: "fixed", bottom: "24px", right: "24px" }}
             />
           </>
         ) : activeComponent === "ViewPatients" ? (
@@ -143,26 +166,26 @@ export const CounselorDashboard = (props) => {
             <AvatarCounselor
               style={{
                 position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
+                bottom: "120px",
+                right: "24px",
               }}
             />
             <AvatarCounselor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+              style={{ position: "fixed", bottom: "24px", right: "24px" }}
             />
           </>
         ) : activeComponent === "chat" ? (
           <>
-            <CounselorChat />
+            <CounselorChat client={client} />
             <AvatarCounselor
               style={{
                 position: "fixed",
-                bottom: 120 + "px",
-                right: 24 + "px",
+                bottom: "120px",
+                right: "24px",
               }}
             />
             <AvatarCounselor
-              style={{ position: "fixed", bottom: 24 + "px", right: 24 + "px" }}
+              style={{ position: "fixed", bottom: "24px", right: "24px" }}
             />
           </>
         ) : (

@@ -14,7 +14,11 @@ import {
 } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase-config";
 import "../css/Login.css";
+//twilio needs
 import { getToken } from "../../src/chat/api";
+// import { Client } from "@twilio/conversations";
+// import { useSelector } from "react-redux";
+//twilio needs
 import "../css/AllCounselors.css";
 import BloomFieldsLogo from "../img/Bloomfields_logo_only.png";
 import { Navbar } from "../Navbar";
@@ -29,6 +33,7 @@ import {
 //   // Replace characters with their ASCII codes, e.g., 'a' becomes '&#97;'
 //   return pattern.replace(/./g, (char) => `&#${char.charCodeAt(0)};`);
 // }
+
 export const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +41,8 @@ export const Login = (props) => {
   const [firstName, setFirstName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  // const [client, setClient] = useState();
+  // const token = useSelector((state) => state.token);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -88,16 +95,20 @@ export const Login = (props) => {
 
   //for twilio
   async function login(username, password, setToken) {
+    console.log("Username:", username);
+    console.log("Password:", password);
+
     try {
       const token = await getToken(username.trim(), password);
+      console.log("Token:", token); // Log the token
       if (token === "") {
+        console.log("Received an empty token from backend.");
         return "Received an empty token from backend.";
       }
 
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
       setToken(token);
-
       return "";
     } catch (error) {
       let message = "Unknown Error";
@@ -110,6 +121,10 @@ export const Login = (props) => {
     }
   }
 
+  // useEffect(() => {
+  //   const client = new Client(token);
+  //   setClient(client);
+  // }, []);
   return (
     <>
       <Navbar />
