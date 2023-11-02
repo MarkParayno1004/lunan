@@ -209,10 +209,10 @@ const MobileApp = () => {
             </p>
           </div>
           <div className="mt-5">
-            <a href="https://www.youtube.com/watch?v=l3Zo12m0tGM">
+            <a href="">
               <img src={gPlay} style={{ width: "25%" }} />
             </a>
-            <a href="https://www.youtube.com/watch?v=l3Zo12m0tGM">
+            <a href="">
               <img src={aStore} style={{ width: "20%" }} />
             </a>
           </div>
