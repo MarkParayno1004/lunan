@@ -10,6 +10,7 @@ import {
   where,
   doc,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 
 export const AllPatients = () => {
@@ -24,29 +25,6 @@ export const AllPatients = () => {
     null,
   ]);
   const [showPatientInfo, setShowPatientInfo] = useState(false);
-
-  useEffect(() => {
-    const fetchPatientsData = async () => {
-      try {
-        const querySnapshot = await getDocs(
-          query(
-            collection(firestore, "Users"),
-            where("counselorID", "!=", null)
-          )
-        );
-        const patients = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log("Patients Data:", patients);
-
-        setPatientsData(patients);
-        setFilteredPatientsData(patients);
-      } catch (error) {
-        console.error("Error fetching patients data:", error);
-      }
-    };
-
-    fetchPatientsData();
-  }, []);
 
   useEffect(() => {
     const fetchCounselorNames = async () => {
@@ -68,6 +46,22 @@ export const AllPatients = () => {
 
     fetchCounselorNames();
   }, [patientsData]);
+
+  useEffect(() => {
+    const patientQuery = query(
+      collection(firestore, "Users"),
+      where("counselorID", "!=", null)
+    );
+
+    const unsubscribe = onSnapshot(patientQuery, (snapshot) => {
+      const updatedPatientList = snapshot.docs.map((doc) => doc.data());
+      setPatientsData(updatedPatientList);
+      setFilteredPatientsData(updatedPatientList);
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   const fetchCounselorName = async (counselorID) => {
     try {

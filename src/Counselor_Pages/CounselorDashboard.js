@@ -31,8 +31,8 @@ export const CounselorDashboard = (props) => {
 
           if (!querySnapshot.empty) {
             const counselorData = querySnapshot.docs[0].data();
-            if (counselorData && counselorData.Name) {
-              setCounselorName(counselorData.Name);
+            if (counselorData && counselorData.firstName) {
+              setCounselorName(counselorData.firstName);
             }
           }
         }

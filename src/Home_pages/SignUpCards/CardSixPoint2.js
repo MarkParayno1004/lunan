@@ -31,6 +31,7 @@ export const CardSixPoint2 = ({ ButtonBack, ButtonNext, formData }) => {
         AlcoholIntSel: "",
         AlcoholInt: "",
         DrugUseSel: "",
+        DrugUse: "",
       }
     );
   }, [formData]);

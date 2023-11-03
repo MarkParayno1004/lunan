@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { Modal, Button, Form } from 'react-bootstrap';
+
+import React, { useState, useEffect } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Modal, Button, Form } from "react-bootstrap";
+
 import {
   collection,
   getFirestore,
@@ -11,12 +13,14 @@ import {
   deleteDoc,
   query,
   where,
-  getDoc
-} from 'firebase/firestore';
-import { firestore } from '../../firebase/firebase-config';
-import { getAuth } from 'firebase/auth';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+  getDoc,
+} from "firebase/firestore";
+import { firestore } from "../../firebase/firebase-config";
+import { getAuth } from "firebase/auth";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
 
 const localizer = momentLocalizer(moment);
 
@@ -27,10 +31,12 @@ const CounselorScheduler = () => {
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-  const [selectedPatient, setSelectedPatient] = useState('');
-  const [title, setTitle] = useState('');
-  const [startDateTime, setStartDateTime] = useState('');
-  const [endDateTime, setEndDateTime] = useState('');
+
+  const [selectedPatient, setSelectedPatient] = useState("");
+  const [title, setTitle] = useState("");
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
+
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [callMode, setCallMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -43,14 +49,21 @@ const CounselorScheduler = () => {
     const fetchPatientsData = async () => {
       try {
         const querySnapshot = await getDocs(
-          query(collection(firestore, 'Users'), where('counselorID', '!=', null))
+
+          query(
+            collection(firestore, "Users"),
+            where("counselorID", "!=", null)
+          )
+
         );
         const patients = querySnapshot.docs.map((doc) => doc.data());
 
         setPatientsData(patients);
         setFilteredPatientsData(patients);
       } catch (error) {
-        console.error('Error fetching patients data:', error);
+
+        console.error("Error fetching patients data:", error);
+
       }
     };
 
@@ -60,43 +73,50 @@ const CounselorScheduler = () => {
   useEffect(() => {
     const fetchEvents = () => {
       const db = getFirestore();
-      const appointmentsCollection = collection(db, 'Appointments');
-  
+
+      const appointmentsCollection = collection(db, "Appointments");
+
       getDocs(appointmentsCollection)
         .then((querySnapshot) => {
           const events = querySnapshot.docs.map((doc) => doc.data());
-          console.log('Appointments Data:', events);
+          console.log("Appointments Data:", events);
           setEvents(events);
         })
         .catch((error) => {
-          console.error('Error fetching appointments data:', error);
+          console.error("Error fetching appointments data:", error);
         });
     };
-  
+
+
     fetchEvents();
   }, []);
 
   const handleSelectAppointment = async (id) => {
     try {
       const db = getFirestore();
-      const appointmentsCollection = collection(db, 'Appointments');
+
+      const appointmentsCollection = collection(db, "Appointments");
+
       const appointmentDocRef = doc(appointmentsCollection, id);
       const appointmentDocSnap = await getDoc(appointmentDocRef);
 
       if (appointmentDocSnap.exists()) {
         const selectedAppointmentData = appointmentDocSnap.data();
-        console.log('Selected appointment data:', selectedAppointmentData);
+
+        console.log("Selected appointment data:", selectedAppointmentData);
+
         setSelectedAppointment(selectedAppointmentData);
         setSelectedAppointmentId(id);
         setShowModal(true);
       } else {
-        console.error('Appointment not found for ID:', id);
+
+        console.error("Appointment not found for ID:", id);
       }
     } catch (error) {
-      console.error('Error fetching appointment for ID:', id, error);
+      console.error("Error fetching appointment for ID:", id, error);
     }
   };
-  
+
 
   const handleCreateAppointment = (slotInfo) => {
     setSelectedDate(slotInfo.start);
@@ -106,8 +126,10 @@ const CounselorScheduler = () => {
   const handleEventSelected = (event) => {
     setSelectedPatient(event.patient);
     setTitle(event.title);
-    setStartDateTime(moment(event.start).format('HH:mm'));
-    setEndDateTime(moment(event.end).format('HH:mm'));
+
+    setStartDateTime(moment(event.start).format("HH:mm"));
+    setEndDateTime(moment(event.end).format("HH:mm"));
+
     setSelectedEvent(event);
     setEditMode(true);
     setShowModal(true);
@@ -120,10 +142,12 @@ const CounselorScheduler = () => {
   const handleCloseModal = () => {
     setSelectedDate(null);
     setShowModal(false);
-    setSelectedPatient('');
-    setTitle('');
-    setStartDateTime('');
-    setEndDateTime('');
+
+    setSelectedPatient("");
+    setTitle("");
+    setStartDateTime("");
+    setEndDateTime("");
+
     setSelectedEvent(null);
     setEditMode(false);
     setDeleteMode(false);
@@ -134,7 +158,15 @@ const CounselorScheduler = () => {
   };
 
   const saveAppointment = async () => {
-    if (title && startDateTime && endDateTime && selectedPatient && selectedPatient.UID) {
+
+    if (
+      title &&
+      startDateTime &&
+      endDateTime &&
+      selectedPatient &&
+      selectedPatient.UID
+    ) {
+
       const newAppointment = {
         start: moment(selectedDate)
           .set('hour', moment(startDateTime, 'HH:mm').hour())
@@ -164,33 +196,36 @@ const CounselorScheduler = () => {
         console.error('Error saving appointment: ', error);
       }
     } else {
-      console.error('Missing required data for appointment creation.');
+
+      console.error("Missing required data for appointment creation.");
+
     }
   };
 
   const updateAppointment = async () => {
     // Check if all required variables are defined
     if (!title || !startDateTime || !endDateTime || !selectedAppointmentId) {
-      console.error('Missing required data for updating appointment');
+
+      console.error("Missing required data for updating appointment");
       return;
     }
-  
-    console.log('startDateTime:', startDateTime);
-    console.log('endDateTime:', endDateTime);
-  
-    const startTime = moment(startDateTime, 'HH:mm', true);
-    const endTime = moment(endDateTime, 'HH:mm', true);
-  
+
+    console.log("startDateTime:", startDateTime);
+    console.log("endDateTime:", endDateTime);
+
+    const startTime = moment(startDateTime, "HH:mm", true);
+    const endTime = moment(endDateTime, "HH:mm", true);
+
     if (startTime.isValid() && endTime.isValid()) {
       const updatedStart = startTime
-        .set('hour', startTime.hour())
-        .set('minute', startTime.minute())
+        .set("hour", startTime.hour())
+        .set("minute", startTime.minute())
         .toDate();
       const updatedEnd = endTime
-        .set('hour', endTime.hour())
-        .set('minute', endTime.minute())
+        .set("hour", endTime.hour())
+        .set("minute", endTime.minute())
         .toDate();
-  
+
       const updatedEvent = {
         start: updatedStart,
         end: updatedEnd,
@@ -223,26 +258,63 @@ const CounselorScheduler = () => {
     }
   };  
 
-  const deleteAppointment = async () => {
-    if (window.confirm('Are you sure you want to delete this appointment?')) {
+      const db = getFirestore();
+      const appointmentsCollection = collection(db, "Appointments");
+
       try {
-        const db = getFirestore();
-        const appointmentsCollection = collection(db, 'Appointments');
-        await deleteDoc(doc(appointmentsCollection, selectedAppointmentId));
-        console.log('Appointment deleted successfully!');
-        const updatedEvents = events.filter((event) => event.id !== selectedAppointmentId);
+        const docRef = doc(appointmentsCollection, selectedAppointmentId);
+        await setDoc(docRef, updatedEvent, { merge: true });
+        console.log("Appointment updated successfully!");
+
+        const updatedEvents = events.map((event) =>
+          event.id === selectedAppointmentId
+            ? { ...event, ...updatedEvent }
+            : event
+        );
+
         setEvents(updatedEvents);
       } catch (error) {
-        console.error('Error deleting appointment: ', error);
+        console.error("Error updating appointment: ", error);
       }
+
+      setSelectedAppointment(null);
+      setSelectedAppointmentId(null);
+      setShowUpdateModal(false);
+      setShowModal(false);
     } else {
-      console.log('Appointment deletion canceled.');
+      console.error("Invalid time format for startDateTime or endDateTime");
+
     }
 
     setSelectedAppointment(null);
     setSelectedAppointmentId(null);
     setShowModal(false);
   };
+
+
+  const deleteAppointment = async () => {
+    if (window.confirm("Are you sure you want to delete this appointment?")) {
+      try {
+        const db = getFirestore();
+        const appointmentsCollection = collection(db, "Appointments");
+        await deleteDoc(doc(appointmentsCollection, selectedAppointmentId));
+        console.log("Appointment deleted successfully!");
+        const updatedEvents = events.filter(
+          (event) => event.id !== selectedAppointmentId
+        );
+        setEvents(updatedEvents);
+      } catch (error) {
+        console.error("Error deleting appointment: ", error);
+      }
+    } else {
+      console.log("Appointment deletion canceled.");
+    }
+
+    setSelectedAppointment(null);
+    setSelectedAppointmentId(null);
+    setShowModal(false);
+  };
+
 
   const handleCallAppointment = () => {
     setCallMode(true);
@@ -279,10 +351,14 @@ const CounselorScheduler = () => {
             <Form.Group>
               <Form.Label>Patient Name</Form.Label>
               <Form.Select
-                value={selectedPatient ? selectedPatient.UID : ''}
+
+                value={selectedPatient ? selectedPatient.UID : ""}
                 onChange={(e) => {
                   const selectedUID = e.target.value;
-                  const selectedPatient = filteredPatientsData.find((patient) => patient.UID === selectedUID);
+                  const selectedPatient = filteredPatientsData.find(
+                    (patient) => patient.UID === selectedUID
+                  );
+
                   setSelectedPatient(selectedPatient || null);
                 }}
                 disabled={editMode}
@@ -328,10 +404,9 @@ const CounselorScheduler = () => {
         <Modal.Footer>
           {editMode || deleteMode ? (
             <div>
-              <Button
-                variant="danger"
-                onClick={deleteAppointment}
-              >
+
+              <Button variant="danger" onClick={deleteAppointment}>
+
                 Delete
               </Button>{' '}
               <Button
@@ -344,8 +419,15 @@ const CounselorScheduler = () => {
               </Button>{' '}
               <Button
                 variant="success"
-                onClick={handleCallAppointment}
+
+                onClick={() => {
+                  setShowUpdateModal(true);
+                }}
               >
+                Edit
+              </Button>{" "}
+              <Button variant="success" onClick={handleCallAppointment}>
+
                 Call
               </Button>
             </div>
@@ -366,7 +448,9 @@ const CounselorScheduler = () => {
             <Form.Group>
               <Form.Label>Patient Name</Form.Label>
               <Form.Select
-                value={selectedPatient ? selectedPatient.UID : ''}
+
+                value={selectedPatient ? selectedPatient.UID : ""}
+
                 onChange={(e) => {
                   const selectedUID = e.target.value;
                   const selectedPatient = filteredPatientsData.find(

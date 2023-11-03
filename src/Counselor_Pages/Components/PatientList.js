@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  where,
+  query,
+  onSnapshot,
+} from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
 import { getAuth } from "firebase/auth";
@@ -18,22 +24,39 @@ export const PatientList = () => {
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [showPatientInfo, setShowPatientInfo] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchPatientsData = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(collection(firestore, "Users"));
+  //       const patients = querySnapshot.docs.map((doc) => doc.data());
+
+  //       console.log("Patients Data:", patients);
+
+  //       setPatientsData(patients);
+  //       setFilteredPatientsData(patients);
+  //     } catch (error) {
+  //       console.error("Error fetching patients data:", error);
+  //     }
+  //   };
+
+  //   fetchPatientsData();
+  // }, []);
+
   useEffect(() => {
-    const fetchPatientsData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(firestore, "Users"));
-        const patients = querySnapshot.docs.map((doc) => doc.data());
+    // Create a query to get Forms for the selected patient
+    const patientQuery = query(collection(firestore, "Users"));
 
-        console.log("Patients Data:", patients);
+    const unsubscribe = onSnapshot(patientQuery, (snapshot) => {
+      const updatedPatientList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPatientsData(updatedPatientList);
+      setFilteredPatientsData(updatedPatientList);
+    });
 
-        setPatientsData(patients);
-        setFilteredPatientsData(patients);
-      } catch (error) {
-        console.error("Error fetching patients data:", error);
-      }
-    };
-
-    fetchPatientsData();
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   const handleSearch = (event) => {
@@ -183,7 +206,6 @@ export const PatientList = () => {
                   <th>Picture</th>
                   <th>Name</th>
                   <th>Date Added</th>
-                  <th>Patients</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,7 +240,6 @@ export const PatientList = () => {
                       </td>
                       <td>{patient.firstName}</td>
                       <td>{patient.dateCreated}</td>
-                      <td>{patient.UID}</td>
                     </tr>
                   ))}
               </tbody>

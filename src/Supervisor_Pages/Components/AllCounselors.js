@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import "../../css/AllCounselors.css";
 import { Pagination } from "react-bootstrap";
-import { collection, doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  updateDoc,
+  getDoc,
+  query,
+  where,
+  onSnapshot,
+  getDocs,
+} from "firebase/firestore";
 import { firestore, storage } from "../../firebase/firebase-config";
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import {
@@ -27,11 +36,42 @@ export const AllCounselors = () => {
   const handleCounselorSelect = (counselorData) => {
     setSelectedCounselor(counselorData);
     setShowCounselor(true);
+    console.log(counselorData.UID);
   };
 
   useEffect(() => {
-    fetchCounselorData(setCounselorData, setFilteredCounselorData);
-  }, [newCounselorAdded]); // Fetch data on component mount
+    // Create a query to get counselors
+    const counselorQuery = query(
+      collection(firestore, "Users"),
+      where("Role", "==", "Counselor")
+    );
+
+    const unsubscribe = onSnapshot(counselorQuery, async (snapshot) => {
+      const updatedCounselorList = [];
+
+      for (const doc of snapshot.docs) {
+        const patientsQuery = query(
+          collection(firestore, "Users"),
+          where("counselorID", "==", doc.id)
+        );
+
+        const patientsQuerySnapshot = await getDocs(patientsQuery);
+        const patientsCount = patientsQuerySnapshot.size;
+
+        updatedCounselorList.push({
+          ...doc.data(),
+          UID: doc.id,
+          patientsCount: patientsCount,
+        });
+      }
+
+      setCounselorData(updatedCounselorList);
+      setFilteredCounselorData(updatedCounselorList);
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   const handleEditSuccess = async (updatedData) => {
     try {

@@ -21,7 +21,7 @@ app.post("/send-email", async (req, res) => {
     service: "Gmail", // Use the appropriate email service
     auth: {
       user: "lunanpseudocode@gmail.com", // Your email address
-      pass: "ahu kbe apm nbu euji", // Your email password or app-specific password
+      pass: "wepi jcvp diun jurb", // Your email password or app-specific password
     },
     debug: true,
   });
