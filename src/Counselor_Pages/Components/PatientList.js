@@ -206,7 +206,6 @@ export const PatientList = () => {
                   <th>Picture</th>
                   <th>Name</th>
                   <th>Date Added</th>
-                  <th>Patients</th>
                 </tr>
               </thead>
               <tbody>
@@ -241,7 +240,6 @@ export const PatientList = () => {
                       </td>
                       <td>{patient.firstName}</td>
                       <td>{patient.dateCreated}</td>
-                      <td>{patient.UID}</td>
                     </tr>
                   ))}
               </tbody>
