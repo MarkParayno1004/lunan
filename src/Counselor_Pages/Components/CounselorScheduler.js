@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { Modal, Button, Form } from "react-bootstrap";
@@ -13,14 +12,12 @@ import {
   deleteDoc,
   query,
   where,
-
   getDoc,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 import { getAuth } from "firebase/auth";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
 
 const localizer = momentLocalizer(moment);
 
@@ -49,21 +46,17 @@ const CounselorScheduler = () => {
     const fetchPatientsData = async () => {
       try {
         const querySnapshot = await getDocs(
-
           query(
             collection(firestore, "Users"),
             where("counselorID", "!=", null)
           )
-
         );
         const patients = querySnapshot.docs.map((doc) => doc.data());
 
         setPatientsData(patients);
         setFilteredPatientsData(patients);
       } catch (error) {
-
         console.error("Error fetching patients data:", error);
-
       }
     };
 
@@ -87,7 +80,6 @@ const CounselorScheduler = () => {
         });
     };
 
-
     fetchEvents();
   }, []);
 
@@ -109,14 +101,12 @@ const CounselorScheduler = () => {
         setSelectedAppointmentId(id);
         setShowModal(true);
       } else {
-
         console.error("Appointment not found for ID:", id);
       }
     } catch (error) {
       console.error("Error fetching appointment for ID:", id, error);
     }
   };
-
 
   const handleCreateAppointment = (slotInfo) => {
     setSelectedDate(slotInfo.start);
@@ -158,7 +148,6 @@ const CounselorScheduler = () => {
   };
 
   const saveAppointment = async () => {
-
     if (
       title &&
       startDateTime &&
@@ -166,15 +155,14 @@ const CounselorScheduler = () => {
       selectedPatient &&
       selectedPatient.UID
     ) {
-
       const newAppointment = {
         start: moment(selectedDate)
-          .set('hour', moment(startDateTime, 'HH:mm').hour())
-          .set('minute', moment(startDateTime, 'HH:mm').minute())
+          .set("hour", moment(startDateTime, "HH:mm").hour())
+          .set("minute", moment(startDateTime, "HH:mm").minute())
           .toDate(),
         end: moment(selectedDate)
-          .set('hour', moment(endDateTime, 'HH:mm').hour())
-          .set('minute', moment(endDateTime, 'HH:mm').minute())
+          .set("hour", moment(endDateTime, "HH:mm").hour())
+          .set("minute", moment(endDateTime, "HH:mm").minute())
           .toDate(),
         title: title,
         dateCreated: new Date().toISOString(),
@@ -184,7 +172,7 @@ const CounselorScheduler = () => {
       };
 
       const db = getFirestore();
-      const appointmentsCollection = collection(db, 'Appointments');
+      const appointmentsCollection = collection(db, "Appointments");
 
       try {
         const docRef = await addDoc(appointmentsCollection, newAppointment);
@@ -193,19 +181,16 @@ const CounselorScheduler = () => {
         setEvents(updatedEvents);
         handleCloseModal();
       } catch (error) {
-        console.error('Error saving appointment: ', error);
+        console.error("Error saving appointment: ", error);
       }
     } else {
-
       console.error("Missing required data for appointment creation.");
-
     }
   };
 
   const updateAppointment = async () => {
     // Check if all required variables are defined
     if (!title || !startDateTime || !endDateTime || !selectedAppointmentId) {
-
       console.error("Missing required data for updating appointment");
       return;
     }
@@ -231,32 +216,6 @@ const CounselorScheduler = () => {
         end: updatedEnd,
         title: title,
       };
-  
-      const db = getFirestore();
-      const appointmentsCollection = collection(db, 'Appointments');
-  
-      try {
-        const docRef = doc(appointmentsCollection, selectedAppointmentId);
-        await setDoc(docRef, updatedEvent, { merge: true });
-        console.log('Appointment updated successfully!');
-  
-        const updatedEvents = events.map((event) =>
-          event.id === selectedAppointmentId ? { ...event, ...updatedEvent } : event
-        );
-  
-        setEvents(updatedEvents);
-      } catch (error) {
-        console.error('Error updating appointment: ', error);
-      }
-  
-      setSelectedAppointment(null);
-      setSelectedAppointmentId(null);
-      setShowUpdateModal(false);
-      setShowModal(false);
-    } else {
-      console.error('Invalid time format for startDateTime or endDateTime');
-    }
-  };  
 
       const db = getFirestore();
       const appointmentsCollection = collection(db, "Appointments");
@@ -283,14 +242,8 @@ const CounselorScheduler = () => {
       setShowModal(false);
     } else {
       console.error("Invalid time format for startDateTime or endDateTime");
-
     }
-
-    setSelectedAppointment(null);
-    setSelectedAppointmentId(null);
-    setShowModal(false);
   };
-
 
   const deleteAppointment = async () => {
     if (window.confirm("Are you sure you want to delete this appointment?")) {
@@ -314,7 +267,6 @@ const CounselorScheduler = () => {
     setSelectedAppointmentId(null);
     setShowModal(false);
   };
-
 
   const handleCallAppointment = () => {
     setCallMode(true);
@@ -340,10 +292,10 @@ const CounselorScheduler = () => {
         <Modal.Header closeButton>
           <Modal.Title>
             {editMode
-              ? 'Edit Appointment'
+              ? "Edit Appointment"
               : deleteMode
-              ? 'Delete Appointment'
-              : 'Create Appointment'}
+              ? "Delete Appointment"
+              : "Create Appointment"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -351,7 +303,6 @@ const CounselorScheduler = () => {
             <Form.Group>
               <Form.Label>Patient Name</Form.Label>
               <Form.Select
-
                 value={selectedPatient ? selectedPatient.UID : ""}
                 onChange={(e) => {
                   const selectedUID = e.target.value;
@@ -404,11 +355,9 @@ const CounselorScheduler = () => {
         <Modal.Footer>
           {editMode || deleteMode ? (
             <div>
-
               <Button variant="danger" onClick={deleteAppointment}>
-
                 Delete
-              </Button>{' '}
+              </Button>{" "}
               <Button
                 variant="success"
                 onClick={() => {
@@ -416,10 +365,9 @@ const CounselorScheduler = () => {
                 }}
               >
                 Edit
-              </Button>{' '}
+              </Button>{" "}
               <Button
                 variant="success"
-
                 onClick={() => {
                   setShowUpdateModal(true);
                 }}
@@ -427,7 +375,6 @@ const CounselorScheduler = () => {
                 Edit
               </Button>{" "}
               <Button variant="success" onClick={handleCallAppointment}>
-
                 Call
               </Button>
             </div>
@@ -448,9 +395,7 @@ const CounselorScheduler = () => {
             <Form.Group>
               <Form.Label>Patient Name</Form.Label>
               <Form.Select
-
                 value={selectedPatient ? selectedPatient.UID : ""}
-
                 onChange={(e) => {
                   const selectedUID = e.target.value;
                   const selectedPatient = filteredPatientsData.find(
