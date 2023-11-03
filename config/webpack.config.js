@@ -566,16 +566,6 @@ module.exports = function (webpackEnv) {
     plugins: [
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
-        {
-          contentSecurityPolicy: {
-            directives: {
-              defaultSrc: "'self'",
-              styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
-              fontSrc: ["'self'", "fonts.gstatic.com"],
-              // Add other directives as needed
-            },
-          },
-        },
         Object.assign(
           {},
           {

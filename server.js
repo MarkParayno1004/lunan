@@ -1,4 +1,5 @@
 const express = require("express");
+const helmet = require('helmet');
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const cors = require("cors");
@@ -11,6 +12,51 @@ app.use(
     origin: "http://localhost:3000", // Change this to your frontend's origin
   })
 );
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+      fontSrc: ["'self'", "fonts.gstatic.com"],
+      'frame-ancestors': "'none'",
+    }
+  })
+);
+
+app.use((res, next) => {
+  res.header('X-Frame-Options', 'SAMEORIGIN');
+  next();
+});
+
+app.disable('x-powered-by');
+
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// Middleware to check if the user is authenticated
+function authenticate(req, res, next) {
+  if (req.session.user) {
+    // User is authenticated
+    next();
+  } else {
+    // Redirect or send an error response
+    res.status(401).send('Unauthorized');
+  }
+}
+
+// Define a route that requires authentication to access sensitive data
+app.get('/sensitive-data', authenticate, (req, res) => {
+  // Return sensitive data
+  res.json({ sensitiveData: 'This is sensitive information.' });
+});
+
+app.use(cors({
+  origin: 'https://bloomfields-lunan.com/',
+  methods: 'GET,POST',
+}));
 
 // Define a route for sending emails
 app.post("/send-email", async (req, res) => {
