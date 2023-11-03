@@ -13,6 +13,7 @@ import { SignUp } from "./Home_pages/SignUp";
 import { SupervisorDashboard } from "./Supervisor_Pages/SupervisorDashboard";
 import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
 import { FAQ } from "./Home_pages/FAQ";
+
 function App() {
   return (
     <div className="App">
