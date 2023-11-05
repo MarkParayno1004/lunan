@@ -46,3 +46,12 @@
   box-shadow: 10px 10px 10px 4px rgba(0, 0, 0, 0.25);
   border-radius: 22px;
 }
+
+/* Base styles for larger screens */
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .container-fluid {
+    height: auto;
+  }
+}

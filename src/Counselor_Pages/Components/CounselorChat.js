@@ -199,7 +199,7 @@ export const CounselorChat = () => {
                   </thead>
                   <tbody>
                     {filteredPatientsData.map((patient) => (
-                      <tr key={patient.UID}>
+                      <tr key={patient.UID} style={{ overflowY: "auto" }}>
                         <td>
                           <button
                             className="d-flex justify-content-start align-items-center"
@@ -255,13 +255,30 @@ export const CounselorChat = () => {
                     width: "1014px",
                   }}
                 >
-                  <div>
-                    <span className="fs-1 ms-3 " style={{ color: "#f5e9cf" }}>
+                  <div
+                    className="container"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <h1
+                      className="fs-1 ms-3"
+                      style={{ color: "#f5e9cf", flex: "1" }}
+                    >
                       {selectedPatientData
                         ? selectedPatientData.firstName
                         : "Selected User's First Name"}
-                    </span>
-                    <button style={{ marginLeft: "650px" }}>Call</button>
+                    </h1>
+
+                    <button
+                      className="btn fs-5"
+                      style={{
+                        color: "#f5e9cf",
+                        borderColor: "#f5e9cf",
+                        border: "solid 2px",
+                        flex: "0 0 auto", // This prevents the button from growing
+                      }}
+                    >
+                      Call
+                    </button>
                   </div>
                   {room && <ChatMessage room={room} />}
                 </div>
@@ -352,7 +369,7 @@ const ChatMessage = ({ room }) => {
     <div className="chat-app mt-2">
       <div
         className="messages"
-        style={{ color: "#f5e9cf", overflowY: "auto" }}
+        style={{ color: "white", overflowY: "auto" }}
         ref={messageContainerRef}
       >
         {messages.map((message) => (
@@ -362,7 +379,10 @@ const ChatMessage = ({ room }) => {
               message.user === auth.currentUser.email ? "sent" : "received"
             }`}
           >
-            <span className="user">{message.user}:</span> {message.text}
+            <span className="user" style={{ color: "#f5e9cf" }}>
+              {message.user}:
+            </span>{" "}
+            {message.text}
           </div>
         ))}
       </div>

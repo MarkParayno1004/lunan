@@ -1,5 +1,7 @@
 import "../css/Home.css";
 import "../css/Footer.css";
+import "../css/AboutUs.css";
+import "../css/MobileApp.css";
 import { Navbar } from "../Navbar";
 import { useNavigate } from "react-router-dom";
 import header from "../img/header.png";
@@ -14,9 +16,10 @@ import mobile_login from "../img/home-portrait.png";
 import gPlay from "../img/GoogleStore.png";
 import aStore from "../img/AppStore.png";
 import logo from "../img/Bloomfields_logo_only.png";
+import { useEffect, useState } from "react";
 export const Home = () => {
   return (
-    <div>
+    <div className="homepage">
       <Navbar />
       <Header />
       <BloomFields />
@@ -30,9 +33,23 @@ export const Home = () => {
 const Header = () => {
   const nav = useNavigate();
   const goSignup = () => nav("/Sign Up");
+
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div
-      className="container-fluid"
+      className="container-fluid "
       style={{
         backgroundColor: "#4D455D",
         paddingTop: "8%",
@@ -40,10 +57,10 @@ const Header = () => {
       }}
     >
       <div className="row ">
-        <div className="col" style={{ marginLeft: "200px" }}>
+        <div className="col" id="colParagraph" style={{ marginLeft: "200px" }}>
           <div>
             <p
-              className="fs-1"
+              id="pHeader"
               style={{
                 color: "#F2E3D2",
               }}
@@ -53,7 +70,7 @@ const Header = () => {
               </strong>
             </p>
             <p
-              className="fs-5"
+              id="pResponse"
               style={{
                 color: "#F2E3D2",
                 width: "80%",
@@ -63,23 +80,19 @@ const Header = () => {
               compassionate and effective therapy services.
             </p>
             <button
-              className="rounded-5 mt-3"
-              style={{
-                backgroundColor: "#F2E3D2",
-                borderStyle: "none",
-                color: "#4D455D",
-                fontSize: "20px",
-                padding: "8px",
-              }}
+              id="btnGetStarted"
+              className="btn rounded-5 mt-3"
               onClick={goSignup}
             >
               <strong>Get Started</strong>
             </button>
           </div>
         </div>
-        <div className="col">
-          <img src={header} style={{ width: "100%" }} />
-        </div>
+        {screenWidth <= 768 ? null : (
+          <div className="col">
+            <img id="imgHeader" src={header} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -87,12 +100,15 @@ const Header = () => {
 
 const BloomFields = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid Bloom-Fields">
       <div className="row">
-        <div className="col d-flex justify-content-start me-5 pe-5">
-          <img src={BF} style={{ width: "150%" }} />
+        <div className="col me-5 pe-5" style={{ margin: "auto" }}>
+          <img className="logoBF" src={BF} />
         </div>
-        <div className="col d-flex justify-content-center ms-5 mt-5 fs-1">
+        <div
+          className="col d-flex justify-content-center ms-5 mt-5 fs-1"
+          id="ListLogo"
+        >
           <ul
             className="mt-5 hover-list"
             style={{
@@ -101,26 +117,26 @@ const BloomFields = () => {
               color: "#4D455D",
             }}
           >
-            <li id="certified">
-              <img src={certified} style={{ width: "30%" }} />
+            <li className="liMargin" id="certified">
+              <img src={certified} className="BFlogos" />
               <span className={"ms-5 item-text"}>
                 <strong>It's Licensed</strong>
               </span>
             </li>
-            <li className="mt-5 pt-5" id="wallet">
-              <img src={wallet} style={{ width: "30%" }} />
+            <li className="liMargin" id="wallet">
+              <img src={wallet} className="BFlogos" />
               <span className="ms-5 pt-5 item-text">
                 <strong>It's Affordable</strong>
               </span>
             </li>
-            <li className="mt-5 pt-5" id="point">
-              <img src={point} style={{ width: "30%" }} />
+            <li className="liMargin" id="point">
+              <img src={point} className="BFlogos" />
               <span className="ms-5 pt-5 item-text">
                 <strong>It's Easy to Use</strong>
               </span>
             </li>
-            <li className="mt-5 pt-5" id="comms">
-              <img src={comms} style={{ width: "30%" }} />
+            <li className="liMargin" id="comms">
+              <img src={comms} className="BFlogos" />
               <span className="ms-5 item-text">
                 <strong>It's Effective</strong>
               </span>
@@ -133,6 +149,19 @@ const BloomFields = () => {
 };
 
 const AboutUs = () => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div
       className="container-fluid mb-5"
@@ -143,7 +172,7 @@ const AboutUs = () => {
       }}
     >
       <div className="row">
-        <div className="col">
+        <div className="col paragraph-container">
           <p className="fs-1 d-flex justify-content-center">
             <strong>About Us</strong>
           </p>
@@ -168,33 +197,45 @@ const AboutUs = () => {
             </p>
           </div>
         </div>
-        <div
-          className="col d-flex justify-content-end align-items-center"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            minHeight: "100%",
-          }}
-        >
-          <img src={aboutus} style={{ width: "100%" }} />
-        </div>
+        {screenWidth <= 768 ? null : (
+          <div className="col d-flex justify-content-end align-items-center aboutus-container">
+            <div className="aboutus-image">
+              <img src={aboutus} className="aboutus-image" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 const MobileApp = () => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div
-      className="container-fluid mt-5"
+      className="container-fluid mt-5 mobile-paragraph-container"
       style={{ fontFamily: "Roboto, sans-serif", color: "#4D455D" }}
     >
       <div className="row">
-        <div className="col d-flex justify-content-center">
-          <img src={mobile_login} style={{ width: "30%" }} />
+        {screenWidth <= 768 ? null : (
+          <div className="col d-flex justify-content-center">
+            <img src={mobile_login} style={{ width: "30%" }} />
 
-          <img src={mobile_home} style={{ width: "30%" }} className="ms-5" />
-        </div>
+            <img src={mobile_home} style={{ width: "30%" }} className="ms-5" />
+          </div>
+        )}
+
         <div className="col">
           <div>
             <p className="fs-1" style={{ width: "80%" }}>
