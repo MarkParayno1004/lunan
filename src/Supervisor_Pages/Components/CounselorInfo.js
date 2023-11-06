@@ -1,61 +1,84 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase/firebase-config";
-import { getDocs, query, where, collection } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  where,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 import { Modal } from "react-bootstrap";
 import { PatientInfo } from "./PatientInfo";
 
 export const CounselorInfo = (props) => {
   const { show, handleClose, counselor } = props;
-  const [patients, setPatients] = useState([]);
-  const [searchInput, setSearchInput] = useState(""); // State for search input
+  const [searchInput, setSearchInput] = useState("");
+  const [patients, setPatients] = useState([]); // Initialize patients state
+
+  // useEffect(() => {
+  //   const fetchPatients = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(firestore, "Users"),
+  //           where("counselorID", "==", counselor.UID) // Use counselor from props
+  //         )
+  //       );
+  //       const patientListData = querySnapshot.docs.map((doc) => doc.data());
+  //       setPatients(patientListData);
+  //     } catch (error) {
+  //       console.error("Error fetching patients:", error);
+  //     }
+  //   };
+
+  //   fetchPatients();
+  // }, [counselor, firestore]);
 
   useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const querySnapshot = await getDocs(
-          query(
-            collection(firestore, "Users"),
-            where("counselorID", "==", counselor.UID)
-          )
-        );
-        const patientListData = querySnapshot.docs.map((doc) => doc.data());
-        setPatients(patientListData);
-      } catch (error) {
-        console.error("Error fetching patients:", error);
-      }
-    };
+    // Create a query to get Forms for the selected patient
+    const patientQuery = query(
+      collection(firestore, "Users"),
+      where("counselorID", "==", counselor.UID)
+    );
 
-    fetchPatients();
-  }, [counselor, firestore]);
+    const unsubscribe = onSnapshot(patientQuery, (snapshot) => {
+      const updatedPatientList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPatients(updatedPatientList);
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   return (
-    <>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="xl"
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Body id="piModal">
-          <Modal.Header closeButton>
-            <Modal.Title id="example-custom-modal-styling-title">
-              Handle Counselors
-            </Modal.Title>
-          </Modal.Header>
-          <div className="container-fluid">
-            {counselor && (
-              <CounselorData
-                counselorData={counselor}
-                patients={patients}
-                setSearchInput={setSearchInput}
-                searchInput={searchInput} // Pass setSearchInput
-              />
-            )}
-          </div>
-        </Modal.Body>
-      </Modal>
-    </>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      size="xl"
+      backdrop="static"
+      keyboard={false}
+    >
+      <Modal.Body id="piModal">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Handle Counselors
+          </Modal.Title>
+        </Modal.Header>
+        <div className="container-fluid">
+          {counselor && (
+            <CounselorData
+              counselorData={counselor}
+              patients={patients} // Pass patients as a prop
+              setSearchInput={setSearchInput}
+              searchInput={searchInput}
+            />
+          )}
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 
@@ -73,13 +96,16 @@ const CounselorData = ({
     null,
   ]);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
-  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState(patients); // Initialize filteredPatients with patients
 
   const handleSelectPatient = (UID) => {
     setSelectedPatientUID(UID);
     setShowPatientInfo(true);
-    handleShow(UID); // Call handleShow to load patient data when a patient is selected.
+    handleShow(UID);
   };
+  useEffect(() => {
+    handleSearch({ target: { value: "" } });
+  }, [patients]);
 
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
@@ -91,10 +117,9 @@ const CounselorData = ({
       const lastNameMatch =
         patient.lastName && patient.lastName.toLowerCase().includes(query);
 
-      return firstNameMatch || lastNameMatch;
+      return query === "" || firstNameMatch || lastNameMatch; // Show all patients when query is empty
     });
 
-    // Use setFilteredPatients here, not setFilteredPatientsData
     setFilteredPatients(filteredPatientsList);
   };
 
@@ -102,7 +127,6 @@ const CounselorData = ({
     console.log("Selected Patient UIDssssss:", UID);
 
     try {
-      // Query the collection to find the document with the matching UID
       const querySnapshot = await getDocs(collection(firestore, "Users"));
       console.log("Query Snapshot:", querySnapshot.docs);
 
@@ -114,7 +138,6 @@ const CounselorData = ({
         const patientData = matchingDocument.data();
         console.log("Selected Patient Data:", patientData);
 
-        // Fetch additional data from the "IntakeForms" collection
         const intakeFormsQuerySnapshot = await getDocs(
           query(collection(firestore, "IntakeForms"), where("UID", "==", UID))
         );
@@ -124,7 +147,6 @@ const CounselorData = ({
 
         console.log("Intake Forms Data:", intakeFormsData);
 
-        // Set the patient data and intake forms data to state
         setSelectedPatientData(patientData);
         setSelectedIntakeFormsData(intakeFormsData);
 
@@ -197,7 +219,7 @@ const CounselorData = ({
                 type="text"
                 class="form-control"
                 aria-describedby="search"
-                placeholder="Patient Name..."
+                placeholder="Patient Name"
                 style={{ maxWidth: "50%" }}
                 value={searchQuery}
                 onChange={handleSearch}
@@ -215,30 +237,33 @@ const CounselorData = ({
           </tr>
         </thead>
         <tbody>
-          {filteredPatients.map((patient) => (
-            <tr key={patient.UID}>
-              <td>
-                <button
-                  style={{
-                    border: "none",
-                    background: "none",
-                    color: "white",
-                  }}
-                  onClick={() => {
-                    handleSelectPatient(patient.UID);
-                  }}
-                >
-                  {patient.firstName}
-                </button>
-              </td>
-            </tr>
-          ))}
+          {filteredPatients.map((patient) => {
+            console.log("Patient First Name:", patient.firstName); // Add this log
+            return (
+              <tr key={patient.UID}>
+                <td>
+                  <button
+                    style={{
+                      border: "none",
+                      background: "none",
+                      color: "white",
+                    }}
+                    onClick={() => {
+                      handleSelectPatient(patient.UID);
+                    }}
+                  >
+                    {patient.firstName}
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       {showPatientInfo && (
         <PatientInfo
           show={showModal}
-          handleClose={handleClose}
+          onHide={handleClose}
           patientData={selectedPatientData}
           intakeFormsData={selectedIntakeFormsData}
           selectedPatientUID={selectedPatientUID}

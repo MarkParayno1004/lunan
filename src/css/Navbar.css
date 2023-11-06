@@ -5,3 +5,45 @@
 #hoverNav:hover {
   color: #f2e3d2;
 }
+
+/* Default styles for larger screens */
+/* Add any additional styles you need */
+
+/* Media query for smaller screens */
+/* Media query for small screens */
+@media (max-width: 768px) {
+  .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
+  }
+
+  .navbar-toggler {
+    background-color: #f2e3d2; /* Set the background color to transparent */
+    margin-left: 70px;
+  }
+
+  .navbar-collapse {
+    margin-left: 70px;
+    position: absolute;
+    top: 100%; /* Position it just below the navbar */
+    width: 150px;
+    left: 0;
+    right: 0;
+    display: none;
+    background-color: #f2e3d2; /* Set the background color */
+    border-radius: 5%;
+    z-index: 1000;
+  }
+
+  .show.navbar-collapse {
+    display: block;
+  }
+
+  .logo {
+    display: none;
+  }
+}

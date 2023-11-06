@@ -1,22 +1,51 @@
 import { React, useState, useEffect } from "react";
 import { Modal, Pagination } from "react-bootstrap";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  updateDoc,
+  getDoc,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 
 //!Main App Render
 export const ViewWeeklyForm = (props) => {
+  //Submitted Weekly Forms Modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [showVerfied, setShowVerfied] = useState(false);
+  const handleCloseVerfied = () => setShowVerfied(false);
+  const handleShowVerfied = () => setShowVerfied(true);
+
   const [wForms, setwForms] = useState(props.wForms || []);
   const [activeTab, setActiveTab] = useState("submitted");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+
   useEffect(() => {
-    console.log("Entered Use Effect");
-    setwForms(props.wForms || []);
-  }, [props.wForms]);
+    // Create a query to get tasks for the selected patient
+    const wFormsQuery = query(
+      collection(firestore, "WeeklyForm"),
+      where("UID", "==", props.selectedPatientUID) // Replace "PatientUID" with the actual field name in your Firestore data
+    );
+
+    const unsubscribe = onSnapshot(wFormsQuery, (snapshot) => {
+      const updatedwForms = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setwForms(updatedwForms);
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, [props.selectedPatientUID]);
 
   const [selectedwForm, setSelectedwForm] = useState(null);
 
@@ -35,7 +64,6 @@ export const ViewWeeklyForm = (props) => {
         selectedFormData.id = selectedFormDocSnap.id;
         // Set the entire document data to selectedwForm
         setSelectedwForm(selectedFormData);
-        setShow(true);
         console.log("Fetched form for ID:", id);
         console.log("Selected form data:", selectedFormData);
       } else {
@@ -139,6 +167,12 @@ export const ViewWeeklyForm = (props) => {
                         >
                           View Form
                         </button>
+                        <ViewFormWeek
+                          show={show}
+                          handleClose={handleClose}
+                          selectedwForm={selectedwForm}
+                          weeklyForm={selectedwForm}
+                        />
                       </td>
                     </tr>
                   ))}
@@ -201,11 +235,17 @@ export const ViewWeeklyForm = (props) => {
                           }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
-                            handleShow(wForm.id);
+                            handleShowVerfied(wForm.id);
                           }} // Pass the form's ID
                         >
                           View Form
                         </button>
+                        <ViewVerifiedFormWeek
+                          show={showVerfied}
+                          handleClose={handleCloseVerfied}
+                          selectedwForm={selectedwForm}
+                          weeklyForm={selectedwForm}
+                        />
                       </td>
                     </tr>
                   ))}
@@ -234,12 +274,6 @@ export const ViewWeeklyForm = (props) => {
             </div>
           </>
         )}
-        <ViewFormWeek
-          show={show}
-          handleClose={handleClose}
-          selectedwForm={selectedwForm}
-          weeklyForm={selectedwForm}
-        />
       </Modal.Body>
     </Modal>
   );
@@ -312,6 +346,124 @@ const ViewFormWeek = (props) => {
         Status: "Verified",
       });
       console.log("Form status updated to Verified");
+      props.handleClose();
+    } catch (error) {
+      console.error("Error updating form status:", error);
+    }
+  };
+
+  return (
+    <Modal
+      className="mt-3"
+      show={props.show}
+      onHide={props.handleClose}
+      size="lg"
+    >
+      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Weekly Form:</Modal.Title>
+        </Modal.Header>
+        <div className="d-flex justify-content-end mt-3">
+          {" "}
+          Total Score: {totalScore}/25
+        </div>
+        <table class="table table-dark table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Question:</th>
+              <th scope="col">Answer:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questionsAndAnswers.map((qa, index) => (
+              <tr key={index}>
+                <td>{qa.question}</td>
+                <td>{qa.answer}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn"
+            style={{ backgroundColor: "#f5e9cf", color: "green" }}
+            onClick={() => updatewFormVerified(props.selectedwForm.id)}
+          >
+            Verify
+          </button>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+const ViewVerifiedFormWeek = (props) => {
+  console.log("Selected Weekly Form Data:", props.selectedwForm);
+
+  const mapAnswer = (value) => {
+    switch (value) {
+      case 0:
+        return "At no time - 0";
+      case 1:
+        return "Some of the time - 1";
+      case 2:
+        return "Less than half of the time - 2";
+      case 3:
+        return "More than half of the time - 3";
+      case 4:
+        return "Most of the time - 4";
+      case 5:
+        return "All the time - 5";
+      default:
+        return "";
+    }
+  };
+
+  const questionsAndAnswers = props.selectedwForm
+    ? [
+        {
+          question: "1. I have felt cheerful and in good spirits.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ1),
+          id: props.selectedwForm.id,
+        },
+        {
+          question: "2. I have felt calm and relaxed.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ2),
+        },
+        {
+          question: "3. I have felt active and vigorous.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ3),
+        },
+        {
+          question: "4. I woke up feeling fresh and rested.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ4),
+        },
+        {
+          question:
+            "5. My daily life has been filled with things that interest me.",
+          answer: mapAnswer(props.selectedwForm.WeeklyQ5),
+        },
+      ]
+    : [];
+
+  const selectedwForm = props.selectedwForm || {};
+  const q1 = selectedwForm.WeeklyQ1 || 0;
+  const q2 = selectedwForm.WeeklyQ2 || 0;
+  const q3 = selectedwForm.WeeklyQ3 || 0;
+  const q4 = selectedwForm.WeeklyQ4 || 0;
+  const q5 = selectedwForm.WeeklyQ5 || 0;
+
+  const totalScore = q1 + q2 + q3 + q4 + q5;
+
+  const updatewFormUnverify = async (wFormId) => {
+    const formRef = doc(firestore, "WeeklyForm", wFormId);
+    try {
+      // Update the 'Status' field to "Verified"
+      await updateDoc(formRef, {
+        Status: null,
+      });
+      props.handleClose();
+      console.log("Form status updated to Verified");
     } catch (error) {
       console.error("Error updating form status:", error);
     }
@@ -352,7 +504,7 @@ const ViewFormWeek = (props) => {
           <button
             className="btn"
             style={{ backgroundColor: "#f5e9cf", color: "red" }}
-            onClick={() => updatewFormVerified(props.selectedwForm.id)}
+            onClick={() => updatewFormUnverify(props.selectedwForm.id)}
           >
             Unverify
           </button>

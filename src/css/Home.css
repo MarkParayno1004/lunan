@@ -1,12 +1,12 @@
-/* In your CSS file or style block */
+/* Base styles for larger screens */
 .item-text {
-  display: inline; /* Change 'none' to 'inline' to make it visible by default */
+  display: inline;
   opacity: 0;
-  transition: opacity 0.5s; /* You can adjust the duration as needed */
+  transition: opacity 0.5s;
 }
 
 #certified:hover .item-text {
-  opacity: 1; /* Change 'display: inline' to 'opacity: 1' to control visibility with animation */
+  opacity: 1;
 }
 
 #wallet:hover .item-text {
@@ -21,4 +21,59 @@
   opacity: 1;
 }
 
-/* Add similar styles for other list items */
+#pResponse {
+  font-size: 2vh;
+}
+#pHeader {
+  font-size: 5vh;
+}
+#btnGetStarted {
+  background-color: #f2e3d2;
+  color: #4d455d;
+  font-size: 20px;
+  padding: 8px;
+}
+#imgHeader {
+  width: 100%;
+}
+.logoBF {
+  width: 150%;
+}
+.BFlogos {
+  width: 30%;
+}
+.liMargin {
+  margin-top: 75px;
+}
+.container {
+  display: flex;
+}
+/* Responsive */
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  #pHeader {
+    font-size: 3vh;
+  }
+  .item-text {
+    font-size: small;
+  }
+  .liMargin {
+    margin-top: 10px;
+  }
+  .logoBF {
+    height: 50%;
+    align-self: center;
+    margin: auto;
+  }
+  .BFlogos {
+    width: 20%;
+  }
+
+  #btnGetStarted {
+    display: none;
+  }
+  #colParagraph {
+    margin-top: 55px;
+  }
+}

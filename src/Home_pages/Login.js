@@ -125,14 +125,31 @@ export const Login = (props) => {
   //   const client = new Client(token);
   //   setClient(client);
   // }, []);
+
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <>
       <Navbar />
       <div className="container-fluid text-center " id="loginBG">
         <div className="row d-flex align-items-center" id="rowHeight">
-          <div className="col ">
-            <img src={BloomFieldsLogo} style={{ width: "40%" }} alt="Logo" />
-          </div>
+          {screenWidth <= 768 ? null : (
+            <div className="col ">
+              <img src={BloomFieldsLogo} style={{ width: "40%" }} alt="Logo" />
+            </div>
+          )}
+
           <div
             className="col d-flex align-items-center d-flex justify-content-center"
             id="loginInput"

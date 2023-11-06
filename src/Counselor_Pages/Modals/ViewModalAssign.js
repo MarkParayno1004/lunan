@@ -9,10 +9,12 @@ import {
   updateDoc,
   getFirestore,
   addDoc,
+  getDoc,
   query,
   where,
   onSnapshot,
 } from "firebase/firestore";
+import { getStorage, ref, getMetadata, getDownloadURL } from "firebase/storage";
 
 //!Main App Render
 export const ViewModalAssign = (props) => {
@@ -21,7 +23,7 @@ export const ViewModalAssign = (props) => {
     setActiveTab(tab);
   };
   const [tasks, setTasks] = useState(props.tasks || []);
-  const [show, setShow] = useState();
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShowCreate = (selectedPatientUID) => {
     console.log(
@@ -101,6 +103,36 @@ export const ViewModalAssign = (props) => {
     return [];
   };
 
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const handleSelectTask = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedTaskRef = doc(firestore, "Tasks", id); // Replace with your Firestore instance
+      const selectedTaskDocSnap = await getDoc(selectedTaskRef);
+
+      // Check if the document exists
+      if (selectedTaskDocSnap.exists()) {
+        // Get the data from the document
+        const selectedTaskData = selectedTaskDocSnap.data();
+
+        // Include the document ID in the data
+        selectedTaskData.id = selectedTaskDocSnap.id;
+        // Set the entire document data to selectedwForm
+        setSelectedTask(selectedTaskData);
+        // setShow(true);
+        console.log("Fetched Tasks for ID:", id);
+        console.log("Selected form data:", selectedTaskData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
+  };
+
   // Get the tasks to be displayed on the current page
   const currentTasks = filteredTasks().slice(indexOfFirstItem, indexOfLastItem);
 
@@ -171,21 +203,21 @@ export const ViewModalAssign = (props) => {
                             color: "white",
                             textDecoration: "underline",
                           }}
-                          onClick={handleShowAct}
+                          onClick={() => {
+                            handleSelectTask(task.id);
+                            handleShowAct(task.id);
+                          }} // Pass the form's ID
                         >
                           {task.Activity}
                         </button>
                         <ViewAssignedActivity
                           show={showAct}
                           handleClose={handleCloseAct}
-                          Activity={task.Activity}
-                          Description={task.Description}
-                          DueDate={task.Deadline}
-                          TurnedInDate={""}
+                          task={selectedTask}
                         />
                       </td>
                       <td>{task.Description}</td>
-                      <td>{/*Input Deadline */}</td>
+                      <td>{task.Deadline}</td>
                       <td>
                         <button
                           className="rounded-3"
@@ -263,13 +295,17 @@ export const ViewModalAssign = (props) => {
                             color: "white",
                             textDecoration: "underline",
                           }}
-                          onClick={handleShowVerified}
+                          onClick={() => {
+                            handleSelectTask(task.id);
+                            handleShowVerified(task.id);
+                          }} // Pass the form's ID
                         >
                           {task.Activity}
                         </button>
                         <ViewVerifiedActivity
                           show={showVerified}
                           handleClose={handleCloseVerified}
+                          task={selectedTask}
                         />
                       </td>
                       <td>{task.Description}</td>
@@ -327,18 +363,18 @@ export const ViewModalAssign = (props) => {
                             color: "white",
                             textDecoration: "underline",
                           }}
-                          onClick={handleShowTurnIn}
+                          onClick={() => {
+                            handleSelectTask(task.id);
+                            handleShowTurnIn(task.id);
+                          }} // Pass the form's ID
                         >
                           {task.Activity}
                         </button>
                         <ViewTurnedInActivity
                           show={showTurnIn}
                           handleClose={handleCloseTurnIn}
-                          Activity={task.Activity}
-                          Description={task.Description}
-                          DueDate={task.Deadline}
-                          TurnedInDate={""}
-                          task={task.id}
+                          task={selectedTask}
+                          selectedTask={selectedTask}
                         />
                       </td>
                       <td>{task.Description}</td>
@@ -415,16 +451,16 @@ const ViewAssignedActivity = (props) => {
         </Modal.Header>
         <div className="container-fluid mt-3" style={{ color: "white" }}>
           <span>
-            <strong>{props.Activity}</strong>
+            <strong>{props.task?.Activity}</strong>
           </span>
-          <p>{props.Description} </p>
+          <p>{props.task?.Description} </p>
           <span>
             <span> | </span>
-            <strong>Due Date:</strong> {props.DueDate}
+            <strong>Due Date:</strong> {props.task?.Deadline}
           </span>
           <span>
             <span> | </span>
-            <strong>Turned-in Date:</strong> {props.TurnedInDate}
+            <strong>Turned-in Date:</strong> {props.task?.TurnedInDate}
           </span>
         </div>
       </Modal.Body>
@@ -433,19 +469,70 @@ const ViewAssignedActivity = (props) => {
 };
 
 const ViewTurnedInActivity = (props) => {
+  const { show, handleClose } = props;
   const updateTaskStatus = async (taskId) => {
-    const taskRef = doc(firestore, "Tasks", taskId); // Replace with your Firestore instance
-
+    const taskRef = doc(firestore, "Tasks", taskId);
     try {
       // Update the Status field to "Verified"
       await updateDoc(taskRef, {
         Status: "Verified",
       });
       console.log("Task status updated to Verified");
+      props.handleClose();
     } catch (error) {
       console.error("Error updating task status:", error);
     }
   };
+
+  const fetchFileName = async (downloadURL) => {
+    const storage = getStorage(); // Initialize Firebase Storage
+    const fileRef = ref(storage, downloadURL); // Create a reference to the file
+
+    try {
+      const metadata = await getMetadata(fileRef); // Get the metadata of the file
+      return metadata.name; // Extract the file name
+    } catch (error) {
+      console.error("Error fetching file name:", error);
+      return "N/A"; // Return a default value in case of an error
+    }
+  };
+
+  const [fileName, setFileName] = useState(null);
+
+  useEffect(() => {
+    if (props.selectedTask?.DownloadURL) {
+      fetchFileName(props.selectedTask.DownloadURL)
+        .then((name) => {
+          setFileName(name);
+        })
+        .catch((error) => {
+          console.error("Error fetching file name:", error);
+        });
+    }
+  }, [props.selectedTask?.DownloadURL]);
+
+  useEffect(() => {
+    if (!show) {
+      handleClose(); // Use destructured handleClose
+    }
+  }, [show, handleClose]);
+  const handleFileClick = () => {
+    if (props.selectedTask?.DownloadURL) {
+      const storage = getStorage(); // Initialize Firebase Storage
+      const fileRef = ref(storage, props.selectedTask.DownloadURL); // Create a reference to the file
+
+      // Get the file download URL
+      getDownloadURL(fileRef)
+        .then((url) => {
+          // Open the file in a new browser window
+          window.open(url, "_blank");
+        })
+        .catch((error) => {
+          console.error("Error opening file in a new window:", error);
+        });
+    }
+  };
+
   return (
     <Modal
       show={props.show}
@@ -461,16 +548,28 @@ const ViewTurnedInActivity = (props) => {
         </Modal.Header>
         <div className="container-fluid mt-3" style={{ color: "white" }}>
           <span>
-            <strong>{props.Activity}</strong>
+            <strong>{props.selectedTask?.Activity}</strong>
           </span>
-          <p>{props.Description} </p>
+          <br></br>
+          {props.selectedTask?.Description}
+          <br></br>
           <span>
-            <span> | </span>
-            <strong>Due Date:</strong> {props.DueDate}
+            <strong>Due Date:</strong> {props.selectedTask?.Deadline}
           </span>
+          <br></br>
           <span>
-            <span> | </span>
-            <strong>Turned-in Date:</strong> {props.TurnedInDate}
+            <strong>Turned-in Date:</strong> {props.selectedTask?.TurnedInDate}
+          </span>
+          <br></br>
+          <strong>File : </strong>
+          <span
+            style={{
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+            onClick={handleFileClick}
+          >
+            {fileName || "N/A"}
           </span>
           <div className="d-flex justify-content-end">
             <button
@@ -479,7 +578,7 @@ const ViewTurnedInActivity = (props) => {
                 backgroundColor: "#f5e9cf",
                 color: "#4d455d",
               }}
-              onClick={() => updateTaskStatus(props.task)}
+              onClick={() => updateTaskStatus(props.selectedTask?.id)}
             >
               Verify
             </button>
@@ -491,6 +590,70 @@ const ViewTurnedInActivity = (props) => {
 };
 
 const ViewVerifiedActivity = (props) => {
+  const { show, handleClose } = props;
+  const updateTaskStatus = async (taskId) => {
+    const taskRef = doc(firestore, "Tasks", taskId);
+
+    try {
+      // Update the Status field to "Verified"
+      await updateDoc(taskRef, {
+        Status: "turnedIn",
+      });
+      console.log("Task status updated to Verified");
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
+  const fetchFileName = async (downloadURL) => {
+    const storage = getStorage(); // Initialize Firebase Storage
+    const fileRef = ref(storage, downloadURL); // Create a reference to the file
+
+    try {
+      const metadata = await getMetadata(fileRef); // Get the metadata of the file
+      return metadata.name; // Extract the file name
+    } catch (error) {
+      console.error("Error fetching file name:", error);
+      return "N/A"; // Return a default value in case of an error
+    }
+  };
+
+  const [fileName, setFileName] = useState(null);
+
+  useEffect(() => {
+    if (props.task?.DownloadURL) {
+      fetchFileName(props.task?.DownloadURL)
+        .then((name) => {
+          setFileName(name);
+        })
+        .catch((error) => {
+          console.error("Error fetching file name:", error);
+        });
+    }
+  }, [props.task?.DownloadURL]);
+
+  useEffect(() => {
+    if (!show) {
+      handleClose(); // Use destructured handleClose
+    }
+  }, [show, handleClose]);
+  const handleFileClick = () => {
+    if (props.task?.DownloadURL) {
+      const storage = getStorage(); // Initialize Firebase Storage
+      const fileRef = ref(storage, props.task.DownloadURL); // Create a reference to the file
+
+      // Get the file download URL
+      getDownloadURL(fileRef)
+        .then((url) => {
+          // Open the file in a new browser window
+          window.open(url, "_blank");
+        })
+        .catch((error) => {
+          console.error("Error opening file in a new window:", error);
+        });
+    }
+  };
+
   return (
     <Modal
       show={props.show}
@@ -501,21 +664,46 @@ const ViewVerifiedActivity = (props) => {
       <Modal.Body style={{ backgroundColor: "#4D455D" }}>
         <Modal.Header closeButton>
           <Modal.Title style={{ color: "#F2E3D2" }}>
-            View Verified Activity:
+            View Turned-In Activity:
           </Modal.Title>
         </Modal.Header>
         <div className="container-fluid mt-3" style={{ color: "white" }}>
-          <span>Activity Title:</span>
-          <p>Description: </p>
-          <div>File Attached:</div>
           <span>
-            <span> | </span>
-            <strong>Due Date:</strong>
+            <strong>{props.task?.Activity}</strong>
           </span>
+          <br></br>
+          {props.task?.Description}
+          <br></br>
           <span>
-            <span> | </span>
-            <strong>Turned-in Date:</strong>
+            <strong>Due Date:</strong> {props.task?.Deadline}
           </span>
+          <br></br>
+          <span>
+            <strong>Turned-in Date:</strong> {props.task?.TurnedInDate}
+          </span>
+          <br></br>
+          <strong>File : </strong>
+          <span
+            style={{
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+            onClick={handleFileClick}
+          >
+            {fileName || "N/A"}
+          </span>
+          <div className="d-flex justify-content-end">
+            <button
+              className="btn mt-3"
+              style={{
+                backgroundColor: "#f5e9cf",
+                color: "#4d455d",
+              }}
+              onClick={() => updateTaskStatus(props.task?.id)}
+            >
+              Unverify
+            </button>
+          </div>
         </div>
       </Modal.Body>
     </Modal>
@@ -553,6 +741,7 @@ const CreateAssignment = (props) => {
         counselorUID: currentUser.uid,
         PatientUID: props.selectedPatientUID,
         Status: null,
+        TurnedInDate: null,
       };
 
       console.log("PatientUID:", props.selectedPatientUID);
