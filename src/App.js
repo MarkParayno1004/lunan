@@ -13,6 +13,7 @@ import { SignUp } from "./Home_pages/SignUp";
 import { SupervisorDashboard } from "./Supervisor_Pages/SupervisorDashboard";
 import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
 import { FAQ } from "./Home_pages/FAQ";
+import { ReactApp } from "./video";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             element={<SupervisorDashboard />}
           />
           <Route path="/Counselor Dashboard" element={<CounselorDashboard />} />
+          <Route path="/VideoTest" element={<ReactApp />} />
         </Routes>
       </Router>
     </div>
