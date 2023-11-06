@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ReactDOM } from "react";
 import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
+import LoginPage from "../../video/components/LoginPage/LoginPage";
+import Video from "twilio-video";
+import { Link } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -14,6 +17,8 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
+import { ReactApp } from "../../video";
+import { VideoTest } from "./Video";
 
 export const Chat = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -158,6 +163,21 @@ export const Chat = () => {
     overflow: "hidden", // Add scrollbars when content overflows
   };
 
+  //!Twilio
+  const handleCallClick = () => {
+    // Open a new window
+    const newWindow = window.open("", "_blank");
+
+    if (newWindow) {
+      newWindow.document.write(
+        '<html><head><title>New Window</title></head><body><div id="app"></div></body></html>'
+      );
+      newWindow.document.close();
+
+      // Render your React component in the new window
+      ReactDOM.render(<ReactApp />, newWindow.document.getElementById("app"));
+    }
+  };
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
@@ -189,7 +209,7 @@ export const Chat = () => {
                 style={{ overflow: "hidden" }}
               >
                 <table
-                  className="table table-borderless table-hover table-dark rounded-3"
+                  className="table table-hover table-borderless table-dark rounded-start-3"
                   style={tableStyle}
                 >
                   <thead>
@@ -198,44 +218,49 @@ export const Chat = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredPatientsData.map((patient) => (
-                      <tr key={patient.UID} style={{ overflowY: "auto" }}>
-                        <td>
-                          <button
-                            className="d-flex justify-content-start align-items-center"
-                            onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
-                            style={{
-                              border: "none",
-                              background: "none",
-                              color: "white",
-                              width: "334px",
-                            }}
-                          >
-                            {patient.ProfPic ? (
-                              <img
-                                src={fetchImageUrl(patient.ProfPic)}
-                                alt={patient.firstName}
-                                width="100"
-                                height="100"
-                              />
-                            ) : (
-                              <img
-                                src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                                alt={patient.firstName}
-                                width="100"
-                                height="100"
-                              />
-                            )}
-                            <p
-                              className="ms-3 text-break text-wrap fs-5"
-                              style={{ width: "" }}
+                    <div className="custom-scroll-container-chat ">
+                      {filteredPatientsData.map((patient) => (
+                        <tr key={patient.UID}>
+                          <td>
+                            <button
+                              className="d-flex justify-content-start align-items-center"
+                              onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
+                              style={{
+                                border: "none",
+                                background: "none",
+                                color: "white",
+                                width: "334px",
+                                marginTop: "20px",
+                                marginBottom: "20px",
+                              }}
                             >
-                              {patient.firstName}
-                            </p>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                              {patient.ProfPic ? (
+                                <img
+                                  src={fetchImageUrl(patient.ProfPic)}
+                                  alt={patient.firstName}
+                                  width="100"
+                                  height="100"
+                                  className="rounded-circle"
+                                />
+                              ) : (
+                                <img
+                                  src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+                                  alt={patient.firstName}
+                                  width="100"
+                                  height="100"
+                                />
+                              )}
+                              <p
+                                className="ms-3 text-break text-wrap fs-5"
+                                style={{ width: "" }}
+                              >
+                                {patient.firstName}
+                              </p>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </div>
                   </tbody>
                 </table>
               </div>
@@ -277,7 +302,7 @@ export const Chat = () => {
                         flex: "0 0 auto", // This prevents the button from growing
                       }}
                     >
-                      Call
+                      <Link to="/VideoTest">Call</Link>
                     </button>
                   </div>
 
