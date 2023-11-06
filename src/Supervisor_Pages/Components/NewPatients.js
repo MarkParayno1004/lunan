@@ -69,6 +69,13 @@ export const NewPatients = () => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = (id) => setShowEdit(id);
 
+  //!Table style
+  const tableStyle = {
+    height: "650px", // Set the desired height
+    width: "342px",
+    overflow: "hidden", // Add scrollbars when content overflows
+  };
+
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -94,7 +101,7 @@ export const NewPatients = () => {
         </div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
-            <table className="table table-dark">
+            <table className="table table-dark" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Picture</th>

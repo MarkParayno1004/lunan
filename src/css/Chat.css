@@ -85,7 +85,7 @@
     207,
     205
   ); /* Set the color of the scrollbar thumb */
-  border-radius: 4px; /* Set the border radius of the thumb */
+  border-radius: 10px; /* Set the border radius of the thumb */
 }
 
 .custom-scroll-container-chat::-webkit-scrollbar-thumb:hover {
