@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ReactDOM } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
@@ -164,20 +164,6 @@ export const Chat = () => {
   };
 
   //!Twilio
-  const handleCallClick = () => {
-    // Open a new window
-    const newWindow = window.open("", "_blank");
-
-    if (newWindow) {
-      newWindow.document.write(
-        '<html><head><title>New Window</title></head><body><div id="app"></div></body></html>'
-      );
-      newWindow.document.close();
-
-      // Render your React component in the new window
-      ReactDOM.render(<ReactApp />, newWindow.document.getElementById("app"));
-    }
-  };
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
