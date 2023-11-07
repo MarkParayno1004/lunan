@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) =>
     },
   })
 );
+
 export function MobileGalleryView() {
   const classes = useStyles();
   const isMobileLandscape = useMediaQuery(
@@ -88,39 +89,35 @@ export function MobileGalleryView() {
     padding: "0.2em 0.1em",
     boxSizing: "border-box",
   };
-  return React.createElement(
-    "div",
-    {
-      className: clsx(classes.participantContainer, {
+  return (
+    <div
+      className={clsx(classes.participantContainer, {
         [classes.isPaginationActive]: remoteParticipantCount > 5,
-      }),
-    },
-    React.createElement(
-      Swiper,
-      { pagination: true, modules: [Pagination], className: "mySwiper" },
-      pages.map((page, i) =>
-        React.createElement(
-          SwiperSlide,
-          { key: i, className: classes.swiperSlide },
-          page.map((participant) =>
-            React.createElement(
-              "div",
-              {
-                "data-test-id": "participantContainer",
-                style: isMobileLandscape
-                  ? landscapeParticipantVideoStyles
-                  : portraitParticipantVideoStyles,
-                key: participant.sid,
-              },
-              React.createElement(Participant, {
-                participant: participant,
-                isLocalParticipant: room.localParticipant === participant,
-                isDominantSpeaker: dominantSpeaker === participant,
-              })
-            )
-          )
-        )
-      )
-    )
+      })}
+    >
+      <Swiper pagination={true} className="mySwiper">
+        {pages.map((page, i) => (
+          <SwiperSlide key={i} className={classes.swiperSlide}>
+            {page.map((participant) => (
+              <div
+                data-test-id="participantContainer"
+                style={
+                  isMobileLandscape
+                    ? landscapeParticipantVideoStyles
+                    : portraitParticipantVideoStyles
+                }
+                key={participant.sid}
+              >
+                <Participant
+                  participant={participant}
+                  isLocalParticipant={room.localParticipant === participant}
+                  isDominantSpeaker={dominantSpeaker === participant}
+                />
+              </div>
+            ))}
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 }
