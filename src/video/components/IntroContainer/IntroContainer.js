@@ -1,105 +1,110 @@
-import React from 'react';
-import { makeStyles, Typography } from '@material-ui/core';
-import Swoosh from './swoosh';
-import VideoLogo from './VideoLogo';
-import TwilioLogo from './TwilioLogo';
-import { useAppState } from '../../state';
-import UserMenu from './UserMenu/UserMenu';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { makeStyles, Typography } from "@material-ui/core";
+import { useAppState } from "../../state";
+import UserMenu from "./UserMenu/UserMenu";
+import { useLocation } from "react-router-dom";
+import BFLOGO from "../../../img/BLOOMFIELDS_LOGO-03.png";
+
 const useStyles = makeStyles((theme) => ({
-    background: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'rgb(40, 42, 43)',
-        height: '100%',
+  background: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#f2e3d2",
+    height: "100%",
+  },
+  container: {
+    position: "relative",
+    flex: "1",
+  },
+  innerContainer: {
+    display: "flex",
+    width: "888px",
+    height: "379px",
+    borderRadius: "8px",
+    boxShadow: "0px 2px 4px 0px rgba(40, 42, 43, 0.3)",
+    overflow: "hidden",
+    position: "relative",
+    margin: "auto",
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+      height: "auto",
+      width: "calc(100% - 40px)",
+      margin: "auto",
+      maxWidth: "400px",
     },
-    container: {
-        position: 'relative',
-        flex: '1',
+  },
+  swooshContainer: {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#4d455d",
+    backgroundSize: "cover",
+    width: "296px",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      height: "100px",
+      backgroundPositionY: "140px",
     },
-    innerContainer: {
-        display: 'flex',
-        width: '888px',
-        height: '379px',
-        borderRadius: '8px',
-        boxShadow: '0px 2px 4px 0px rgba(40, 42, 43, 0.3)',
-        overflow: 'hidden',
-        position: 'relative',
-        margin: 'auto',
-        [theme.breakpoints.down('sm')]: {
-            display: 'block',
-            height: 'auto',
-            width: 'calc(100% - 40px)',
-            margin: 'auto',
-            maxWidth: '400px',
-        },
+  },
+  logoContainer: {
+    position: "absolute",
+    width: "210px",
+    textAlign: "center",
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      alignItems: "center",
+      width: "90%",
+      textAlign: "initial",
+      "& svg": {
+        height: "64px",
+      },
     },
-    swooshContainer: {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundImage: Swoosh,
-        backgroundSize: 'cover',
-        width: '296px',
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-            height: '100px',
-            backgroundPositionY: '140px',
-        },
+  },
+  twilioLogo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    margin: "20px",
+  },
+  content: {
+    background: "white",
+    width: "100%",
+    padding: "3em 4em",
+    flex: 1,
+    [theme.breakpoints.down("sm")]: {
+      padding: "2em",
     },
-    logoContainer: {
-        position: 'absolute',
-        width: '210px',
-        textAlign: 'center',
-        [theme.breakpoints.down('sm')]: {
-            display: 'flex',
-            alignItems: 'center',
-            width: '90%',
-            textAlign: 'initial',
-            '& svg': {
-                height: '64px',
-            },
-        },
+  },
+  title: {
+    color: "white",
+    margin: "1em 0 0",
+    [theme.breakpoints.down("sm")]: {
+      margin: 0,
+      fontSize: "1.1rem",
     },
-    twilioLogo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        margin: '20px',
-    },
-    content: {
-        background: 'white',
-        width: '100%',
-        padding: '3em 4em',
-        flex: 1,
-        [theme.breakpoints.down('sm')]: {
-            padding: '2em',
-        },
-    },
-    title: {
-        color: 'white',
-        margin: '1em 0 0',
-        [theme.breakpoints.down('sm')]: {
-            margin: 0,
-            fontSize: '1.1rem',
-        },
-    },
+  },
 }));
+
 const IntroContainer = (props) => {
-    const classes = useStyles();
-    const { user } = useAppState();
-    const location = useLocation();
-    return (React.createElement("div", { className: classes.background },
-        React.createElement(TwilioLogo, { className: classes.twilioLogo }),
-        user && location.pathname !== '/login' && React.createElement(UserMenu, null),
-        React.createElement("div", { className: classes.container },
-            React.createElement("div", { className: classes.innerContainer },
-                React.createElement("div", { className: classes.swooshContainer },
-                    React.createElement("div", { className: classes.logoContainer },
-                        React.createElement(VideoLogo, null),
-                        React.createElement(Typography, { variant: "h6", className: classes.title }, "Twilio Programmable Video"))),
-                React.createElement("div", { className: classes.content }, props.children)))));
+  const classes = useStyles();
+  const { user } = useAppState();
+  const location = useLocation();
+
+  return (
+    <div className={classes.background}>
+      {user && location.pathname !== "/login" && <UserMenu />}
+      <div className={classes.container}>
+        <div className={classes.innerContainer}>
+          <div className={classes.swooshContainer}>
+            <img src={BFLOGO} style={{ height: "400px" }} />
+          </div>
+          <div className={classes.content}>{props.children}</div>
+        </div>
+      </div>
+    </div>
+  );
 };
+
 export default IntroContainer;
