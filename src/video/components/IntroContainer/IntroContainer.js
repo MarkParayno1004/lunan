@@ -52,21 +52,20 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: "210px",
     textAlign: "center",
+    marginRight: "200px",
     [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
-      width: "90%",
+      width: "50%",
       textAlign: "initial",
-      "& svg": {
-        height: "64px",
-      },
     },
   },
   twilioLogo: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    margin: "20px",
+    height: "400px",
+    [theme.breakpoints.down("sm")]: {
+      height: "150px",
+      margin: "65%",
+    },
   },
   content: {
     background: "white",
@@ -98,7 +97,9 @@ const IntroContainer = (props) => {
       <div className={classes.container}>
         <div className={classes.innerContainer}>
           <div className={classes.swooshContainer}>
-            <img src={BFLOGO} style={{ height: "400px" }} />
+            <div className={classes.logoContainer}>
+              <img src={BFLOGO} className={classes.twilioLogo} />
+            </div>
           </div>
           <div className={classes.content}>{props.children}</div>
         </div>

@@ -72,7 +72,6 @@ export const NewPatients = () => {
   //!Table style
   const tableStyle = {
     height: "650px", // Set the desired height
-    width: "342px",
     overflow: "hidden", // Add scrollbars when content overflows
   };
 

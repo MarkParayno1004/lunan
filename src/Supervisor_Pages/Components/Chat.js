@@ -148,10 +148,6 @@ export const Chat = () => {
     setShowChat(true);
   };
 
-  const handleClose = () => setShow(false);
-
-  const handleSetShowChat = () => setShowChat(true);
-
   //!Table style
   const tableStyle = {
     height: "650px", // Set the desired height
@@ -387,10 +383,10 @@ const ChatMessage = ({ room }) => {
               message.user === auth.currentUser.email ? "sent" : "received"
             }`}
           >
-            <span className="user" style={{ color: "#f5e9cf" }}>
-              {message.user}:
-            </span>{" "}
-            {message.text}
+            <div className="user">
+              <h6>{message.user}:</h6>
+              <span>{message.text}</span>
+            </div>
           </div>
         ))}
       </div>

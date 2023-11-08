@@ -6,9 +6,7 @@ import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { PatientList } from "./Components/PatientList";
 import CounselorScheduler from "./Components/CounselorScheduler";
 import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
-import { AvatarCounselor } from "../SupportEngine/AvatarCounselor";
 import { CounselorChat } from "./Components/CounselorChat";
-import { getToken } from "../../src/chat/api"; // Import the function to get the Twilio token
 import { Client } from "@twilio/conversations";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -149,44 +147,14 @@ export const CounselorDashboard = (props) => {
         {activeComponent === "default" ? (
           <>
             <DefaultCounselorPage />
-            <AvatarCounselor
-              style={{
-                position: "fixed",
-                bottom: "120px",
-                right: "24px",
-              }}
-            />
-            <AvatarCounselor
-              style={{ position: "fixed", bottom: "24px", right: "24px" }}
-            />
           </>
         ) : activeComponent === "ViewPatients" ? (
           <>
             <PatientList />
-            <AvatarCounselor
-              style={{
-                position: "fixed",
-                bottom: "120px",
-                right: "24px",
-              }}
-            />
-            <AvatarCounselor
-              style={{ position: "fixed", bottom: "24px", right: "24px" }}
-            />
           </>
         ) : activeComponent === "chat" ? (
           <>
             <CounselorChat client={client} />
-            <AvatarCounselor
-              style={{
-                position: "fixed",
-                bottom: "120px",
-                right: "24px",
-              }}
-            />
-            <AvatarCounselor
-              style={{ position: "fixed", bottom: "24px", right: "24px" }}
-            />
           </>
         ) : (
           activeComponent === "Schedule" && <CounselorScheduler />

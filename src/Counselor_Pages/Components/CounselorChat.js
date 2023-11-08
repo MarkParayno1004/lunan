@@ -383,24 +383,54 @@ const ChatMessage = ({ room }) => {
             className={`message ${
               message.user === auth.currentUser.email ? "sent" : "received"
             }`}
+            style={{
+              display: "flex",
+              justifyContent:
+                message.user === auth.currentUser.email
+                  ? "flex-end"
+                  : "flex-start",
+              marginBottom: "10px",
+            }}
           >
-            <span className="user" style={{ color: "#f5e9cf" }}>
-              {message.user}:
-            </span>{" "}
-            {message.text}
+            <div
+              style={{
+                backgroundColor:
+                  message.user === auth.currentUser.email
+                    ? "#007bff"
+                    : "#f0f0f0",
+                color:
+                  message.user === auth.currentUser.email ? "white" : "#333",
+                padding: "10px",
+                borderRadius: "5px",
+                maxWidth: "70%",
+              }}
+            >
+              <span className="user" style={{ color: "#f5e9cf" }}>
+                {message.user}:
+              </span>{" "}
+              {message.text}
+            </div>
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="new-message-form">
+      <form
+        onSubmit={handleSubmit}
+        className="new-message-form"
+        style={{ display: "flex" }}
+      >
         <input
           type="text"
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
-          style={{ color: "#f5e9cf" }}
+          style={{ color: "#f5e9cf", flex: 1 }}
           className="new-message-input"
           placeholder="Type your message here..."
         />
-        <button type="submit" className="send-button">
+        <button
+          type="submit"
+          className="send-button"
+          style={{ marginLeft: "10px" }}
+        >
           Send
         </button>
       </form>
