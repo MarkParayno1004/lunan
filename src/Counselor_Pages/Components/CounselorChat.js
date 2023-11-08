@@ -392,23 +392,11 @@ const ChatMessage = ({ room }) => {
               marginBottom: "10px",
             }}
           >
-            <div
-              style={{
-                backgroundColor:
-                  message.user === auth.currentUser.email
-                    ? "#007bff"
-                    : "#f0f0f0",
-                color:
-                  message.user === auth.currentUser.email ? "white" : "#333",
-                padding: "10px",
-                borderRadius: "5px",
-                maxWidth: "70%",
-              }}
-            >
-              <span className="user" style={{ color: "#f5e9cf" }}>
-                {message.user}:
-              </span>{" "}
-              {message.text}
+            <div className="user">
+              <h6>{message.user}:</h6>
+              <div>
+                <span>{message.text}</span>
+              </div>
             </div>
           </div>
         ))}

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
-import { Link } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -270,18 +269,6 @@ export const Chat = () => {
                         ? selectedPatientData.firstName
                         : "Selected User's First Name"}
                     </h1>
-
-                    <button
-                      className="btn fs-5"
-                      style={{
-                        color: "#f5e9cf",
-                        borderColor: "#f5e9cf",
-                        border: "solid 2px",
-                        flex: "0 0 auto", // This prevents the button from growing
-                      }}
-                    >
-                      <Link to="/VideoTest">Call</Link>
-                    </button>
                   </div>
 
                   {room && <ChatMessage room={room} />}
