@@ -250,11 +250,8 @@ const MobileApp = () => {
             </p>
           </div>
           <div className="mt-5">
-            <a href="">
+            <a href="https://drive.google.com/file/d/1Yo99eKL2IdXl4wSlxvDUljikHcAGBof9/view?usp=sharing">
               <img src={gPlay} style={{ width: "25%" }} />
-            </a>
-            <a href="">
-              <img src={aStore} style={{ width: "20%" }} />
             </a>
           </div>
         </div>
