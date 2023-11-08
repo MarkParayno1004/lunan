@@ -10,9 +10,6 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
     HomePhone: "",
     CellPhone: "",
     Email: "",
-    MessageHome: "",
-    MessageCall: "",
-    checkEmail: "",
   });
 
   useEffect(() => {
@@ -26,9 +23,6 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
         HomePhone: "",
         CellPhone: "",
         Email: "",
-        MessageHome: "",
-        MessageCall: "",
-        checkEmail: "",
       }
     );
   }, [formData]);
