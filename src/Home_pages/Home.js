@@ -14,7 +14,6 @@ import aboutus from "../img/aboutusnew.png";
 import mobile_home from "../img/login-portrait.png";
 import mobile_login from "../img/home-portrait.png";
 import gPlay from "../img/GoogleStore.png";
-import aStore from "../img/AppStore.png";
 import logo from "../img/Bloomfields_logo_only.png";
 import { useEffect, useState } from "react";
 export const Home = () => {
@@ -250,11 +249,8 @@ const MobileApp = () => {
             </p>
           </div>
           <div className="mt-5">
-            <a href="">
+            <a href="https://drive.google.com/file/d/1Yo99eKL2IdXl4wSlxvDUljikHcAGBof9/view?usp=sharing">
               <img src={gPlay} style={{ width: "25%" }} />
-            </a>
-            <a href="">
-              <img src={aStore} style={{ width: "20%" }} />
             </a>
           </div>
         </div>

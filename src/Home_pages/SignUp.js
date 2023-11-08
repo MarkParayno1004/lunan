@@ -59,7 +59,7 @@ const PrivacyModal = () => {
       onHide={handleClose}
       backdrop="static"
       keyboard={false}
-      style={{ overflow: "hidden" }}
+      style={{ overflowY: "scroll" }}
     >
       <Modal.Body>
         <div className="d-flex justify-content-center">

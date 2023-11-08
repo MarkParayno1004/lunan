@@ -75,6 +75,28 @@ export const NewPatients = () => {
     overflow: "hidden", // Add scrollbars when content overflows
   };
 
+  //!Pagination
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
+  };
+
+  // Calculate the start and end indices for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Filter and slice the patients based on the current page
+  const currentPatientsData = filteredPatients
+    .filter((patientObj) => patientObj.data.counselorID === null)
+    .slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(
+    filteredPatients.filter(
+      (patientObj) => patientObj.data.counselorID === null
+    ).length / itemsPerPage
+  );
   return (
     <div
       className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
@@ -110,7 +132,7 @@ export const NewPatients = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredPatients.map(
+                {currentPatientsData.map(
                   (patientObj) =>
                     patientObj.data.counselorID === null && (
                       <tr key={patientObj.id}>
@@ -153,6 +175,25 @@ export const NewPatients = () => {
                 )}
               </tbody>
             </table>
+            <Pagination>
+              <Pagination.Prev
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              />
+              {[...Array(totalPages)].map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={currentPage === index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              />
+            </Pagination>
           </div>
         </div>
       </div>

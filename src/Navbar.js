@@ -42,8 +42,6 @@ export const Navbar = () => {
                 id="navbarNav"
               >
                 <ul className="navbar-nav">
-                  {" "}
-                  {/* Remove ml-auto to float items to the left */}
                   <li className="nav-item">
                     <Link to="/" className="nav-link fs-4 me-2" id="hoverNav">
                       Home
