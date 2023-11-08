@@ -130,29 +130,6 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={handleInputChange}
                     required
                   />
-                  <div className="form-check-inline">
-                    <span>May I leave a message?:</span>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="MessageHome"
-                      value="Yes"
-                      checked={localFormData.MessageHome === "Yes"}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <label className="form-check-label ms-1">Yes</label>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="MessageHome"
-                      value="No"
-                      checked={localFormData.MessageHome === "No"}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <label className="form-check-label ms-1">No</label>
-                  </div>
                 </div>
 
                 {/* Cell Phone Number */}
@@ -166,29 +143,6 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={handleInputChange}
                     required
                   />
-                  <div className="form-check-inline mt-2">
-                    <span>May I leave a message?:</span>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="MessageCall"
-                      value="Yes"
-                      checked={localFormData.MessageCall === "Yes"}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <label className="form-check-label ms-1">Yes</label>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="MessageCall"
-                      value="No"
-                      checked={localFormData.MessageCall === "No"}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <label className="form-check-label ms-1">No</label>
-                  </div>
                 </div>
 
                 {/* Email */}
@@ -203,29 +157,6 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
                     onChange={handleInputChange}
                     required
                   />
-                  <div className="form-check-inline ms-5 align-items-start">
-                    <span>May I email you?:</span>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="checkEmail"
-                      value="Yes"
-                      checked={localFormData.checkEmail === "Yes"}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <label className="form-check-label ms-1">Yes</label>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="checkEmail"
-                      value="No"
-                      checked={localFormData.checkEmail === "No"}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <label className="form-check-label ms-1">No</label>
-                  </div>
                 </div>
               </li>
             </ul>
