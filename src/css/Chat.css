@@ -35,14 +35,15 @@
 }
 
 .user {
-  background-color: #f5e9cf; /* Background color for the user bubble */
-  color: black;
+  color: #4d455d;
   padding: 5px 10px; /* Padding inside the bubble */
   border-radius: 20px; /* Adjust the border radius to control the roundness of the bubble */
   display: inline-block;
+  background-color: #f5e9cf;
 }
 .user h6 {
   font-weight: bold;
+  color: #4d455d;
 }
 
 .new-message-form {
