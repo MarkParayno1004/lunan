@@ -186,6 +186,7 @@ const CounselorScheduler = () => {
         dateOfCall: moment(selectedDate).toISOString(),
         patient: selectedPatient.UID,
         counselorUID: currentUser.uid,
+        status: "Plotted",
       };
 
       const db = getFirestore();
