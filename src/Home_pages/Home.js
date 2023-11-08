@@ -14,7 +14,6 @@ import aboutus from "../img/aboutusnew.png";
 import mobile_home from "../img/login-portrait.png";
 import mobile_login from "../img/home-portrait.png";
 import gPlay from "../img/GoogleStore.png";
-import aStore from "../img/AppStore.png";
 import logo from "../img/Bloomfields_logo_only.png";
 import { useEffect, useState } from "react";
 export const Home = () => {
