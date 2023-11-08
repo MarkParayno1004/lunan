@@ -314,7 +314,7 @@ export const AllCounselors = () => {
       {editData && (
         <EditModal
           show={showEdit}
-          onHide={handleCloseEdit}
+          handleClose={handleCloseEdit}
           userId={editData.UID}
           firstName={editData.firstName}
           ProfPic={editData.ProfPic}
@@ -503,7 +503,7 @@ const EditModal = (props) => {
   const [updateName, setUpdateName] = useState(props.firstName || "");
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const handleFile = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
