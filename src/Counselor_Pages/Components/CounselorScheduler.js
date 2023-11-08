@@ -64,24 +64,41 @@ const CounselorScheduler = () => {
   }, []);
 
   useEffect(() => {
-    const fetchEvents = () => {
+    const fetchEvents = async () => {
       const db = getFirestore();
-
       const appointmentsCollection = collection(db, "Appointments");
 
-      getDocs(appointmentsCollection)
-        .then((querySnapshot) => {
-          const events = querySnapshot.docs.map((doc) => doc.data());
-          console.log("Appointments Data:", events);
-          setEvents(events);
-        })
-        .catch((error) => {
-          console.error("Error fetching appointments data:", error);
+      // Query appointments where counselorUID is equal to the current user's UID
+      const q = query(
+        appointmentsCollection,
+        where("counselorUID", "==", currentUser.uid)
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        const events = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          const start = data.start.toDate();
+          const end = data.end.toDate();
+
+          return {
+            ...data,
+            id: doc.id,
+            start: start,
+            end: end,
+            title: data.title,
+            patient: data.patient,
+          };
         });
+        console.log("Appointments Data:", events);
+        setEvents(events);
+      } catch (error) {
+        console.error("Error fetching appointments data:", error);
+      }
     };
 
     fetchEvents();
-  }, []);
+  }, [currentUser.uid]);
 
   const handleSelectAppointment = async (id) => {
     try {
