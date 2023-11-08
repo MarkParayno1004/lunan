@@ -9,7 +9,6 @@ import { Chat } from "./Components/Chat";
 import SideLogo from "../img/BLOOMFIELDS_LOGO-03.png";
 import { DefaultPageSupervisor } from "./Components/DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
-import { AvatarSupervisor } from "../SupportEngine/AvatarSupervisor";
 
 export const SupervisorDashboard = () => {
   const [adminName, setAdminName] = useState("");

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
@@ -189,7 +190,7 @@ export const CounselorChat = () => {
                 style={{ overflow: "hidden" }}
               >
                 <table
-                  className="table table-borderless table-hover table-dark rounded-3"
+                  className="table table-borderless table-hover table-dark rounded-start-3"
                   style={tableStyle}
                 >
                   <thead>
@@ -198,44 +199,48 @@ export const CounselorChat = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredPatientsData.map((patient) => (
-                      <tr key={patient.UID} style={{ overflowY: "auto" }}>
-                        <td>
-                          <button
-                            className="d-flex justify-content-start align-items-center"
-                            onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
-                            style={{
-                              border: "none",
-                              background: "none",
-                              color: "white",
-                              width: "334px",
-                            }}
-                          >
-                            {patient.ProfPic ? (
-                              <img
-                                src={fetchImageUrl(patient.ProfPic)}
-                                alt={patient.firstName}
-                                width="100"
-                                height="100"
-                              />
-                            ) : (
-                              <img
-                                src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                                alt={patient.firstName}
-                                width="100"
-                                height="100"
-                              />
-                            )}
-                            <p
-                              className="ms-3 text-break text-wrap fs-5"
-                              style={{ width: "" }}
+                    <div className="custom-scroll-container-chat">
+                      {filteredPatientsData.map((patient) => (
+                        <tr key={patient.UID} style={{ overflowY: "auto" }}>
+                          <td>
+                            <button
+                              className="d-flex justify-content-start align-items-center"
+                              onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
+                              style={{
+                                border: "none",
+                                background: "none",
+                                color: "white",
+                                width: "334px",
+                                marginTop: "20px",
+                                marginBottom: "20px",
+                              }}
                             >
-                              {patient.firstName}
-                            </p>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                              {patient.ProfPic ? (
+                                <img
+                                  src={fetchImageUrl(patient.ProfPic)}
+                                  alt={patient.firstName}
+                                  width="100"
+                                  height="100"
+                                />
+                              ) : (
+                                <img
+                                  src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+                                  alt={patient.firstName}
+                                  width="100"
+                                  height="100"
+                                />
+                              )}
+                              <p
+                                className="ms-3 text-break text-wrap fs-5"
+                                style={{ width: "" }}
+                              >
+                                {patient.firstName}
+                              </p>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </div>
                   </tbody>
                 </table>
               </div>
@@ -277,7 +282,7 @@ export const CounselorChat = () => {
                         flex: "0 0 auto", // This prevents the button from growing
                       }}
                     >
-                      Call
+                      <Link to="/VideoTest">Call</Link>
                     </button>
                   </div>
                   {room && <ChatMessage room={room} />}
@@ -378,24 +383,54 @@ const ChatMessage = ({ room }) => {
             className={`message ${
               message.user === auth.currentUser.email ? "sent" : "received"
             }`}
+            style={{
+              display: "flex",
+              justifyContent:
+                message.user === auth.currentUser.email
+                  ? "flex-end"
+                  : "flex-start",
+              marginBottom: "10px",
+            }}
           >
-            <span className="user" style={{ color: "#f5e9cf" }}>
-              {message.user}:
-            </span>{" "}
-            {message.text}
+            <div
+              style={{
+                backgroundColor:
+                  message.user === auth.currentUser.email
+                    ? "#007bff"
+                    : "#f0f0f0",
+                color:
+                  message.user === auth.currentUser.email ? "white" : "#333",
+                padding: "10px",
+                borderRadius: "5px",
+                maxWidth: "70%",
+              }}
+            >
+              <span className="user" style={{ color: "#f5e9cf" }}>
+                {message.user}:
+              </span>{" "}
+              {message.text}
+            </div>
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="new-message-form">
+      <form
+        onSubmit={handleSubmit}
+        className="new-message-form"
+        style={{ display: "flex" }}
+      >
         <input
           type="text"
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
-          style={{ color: "#f5e9cf" }}
+          style={{ color: "#f5e9cf", flex: 1 }}
           className="new-message-input"
           placeholder="Type your message here..."
         />
-        <button type="submit" className="send-button">
+        <button
+          type="submit"
+          className="send-button"
+          style={{ marginLeft: "10px" }}
+        >
           Send
         </button>
       </form>

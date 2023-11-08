@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
-import LoginPage from "../../video/components/LoginPage/LoginPage";
-import Video from "twilio-video";
 import { Link } from "react-router-dom";
 import {
   collection,
@@ -17,8 +15,6 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { ReactApp } from "../../video";
-import { VideoTest } from "./Video";
 
 export const Chat = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -151,10 +147,6 @@ export const Chat = () => {
     // Show the chat UI
     setShowChat(true);
   };
-
-  const handleClose = () => setShow(false);
-
-  const handleSetShowChat = () => setShowChat(true);
 
   //!Table style
   const tableStyle = {
@@ -391,10 +383,10 @@ const ChatMessage = ({ room }) => {
               message.user === auth.currentUser.email ? "sent" : "received"
             }`}
           >
-            <span className="user" style={{ color: "#f5e9cf" }}>
-              {message.user}:
-            </span>{" "}
-            {message.text}
+            <div className="user">
+              <h6>{message.user}:</h6>
+              <span>{message.text}</span>
+            </div>
           </div>
         ))}
       </div>
