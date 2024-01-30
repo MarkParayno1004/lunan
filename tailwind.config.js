@@ -13,9 +13,6 @@ module.exports = {
       height: {
         128: "34rem",
       },
-      backgroundImage: {
-        "FAQ-background": "url('src/assets/faqBG.png')",
-      },
     },
   },
   plugins: [],

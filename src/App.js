@@ -7,14 +7,15 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { Home } from "./Home_pages/Home";
-import { Login } from "./Home_pages/Login";
-import { AboutUs } from "./Home_pages/AboutUs";
-import { SignUp } from "./Home_pages/SignUp";
 import { SupervisorDashboard } from "./Supervisor_Pages/SupervisorDashboard";
 import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
-import { FAQ } from "./Home_pages/FAQ";
 import { ReactApp } from "./video";
+
+import { Home } from "./Home/Pages/Home";
+import { Login } from "./Home/Pages/Login";
+import { AboutUs } from "./Home/Pages/AboutUs";
+import { SignUp } from "./Home/Pages/SignUp";
+import { FAQ } from "./Home/Pages/FAQ";
 
 function App() {
   return (
