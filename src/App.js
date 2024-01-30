@@ -5,6 +5,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import "./index.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { SupervisorDashboard } from "./Supervisor_Pages/SupervisorDashboard";
 import { CounselorDashboard } from "./Counselor_Pages/CounselorDashboard";
