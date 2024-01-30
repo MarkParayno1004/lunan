@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux"; // Import Provider from react-redux
-import { store } from "./chat/store"; // Import your Redux store
-import AppStateProvider from "./video/state";
+import { Provider } from "react-redux";
+import { store } from "./chat/store";
 import App from "./App";
+import "./index.css";
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 );

@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import Pic from "../../img/ProfilePic.png";
+import Pic from "../../assets/img/ProfilePic.png";
 import { useState } from "react";
 import "../../css/PatientInfo.css";
 import Swal from "sweetalert2";

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react"; // Import useState
 import "./css/Navbar.css";
-import lunanHeader from "../src/img/Bloomfields_text_logo.png";
+import lunanHeader from "./assets/img/Bloomfields_text_logo.png";
 
 export const Navbar = () => {
   // Create a state variable to control the navbar collapse
