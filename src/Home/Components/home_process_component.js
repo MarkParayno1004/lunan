@@ -1,7 +1,9 @@
-import licensed from "../../assets/img/licensed.png";
-import affordable from "../../assets/img/affordable.png";
-import effective from "../../assets/img/effective.png";
-import easyToUse from "../../assets/img/easy_to_use.png";
+import {
+  LicensedImage,
+  AffordableImage,
+  EffectiveImage,
+  EasyToUseImage,
+} from "../../assets/images";
 function ProcessComponent() {
   return (
     <div className="bg-white">
@@ -10,7 +12,7 @@ function ProcessComponent() {
           <figure className="max-w-lg">
             <img
               className="h-40 max-w-full"
-              src={licensed}
+              src={LicensedImage}
               alt="image-licensed"
             />
             <figcaption
@@ -25,7 +27,7 @@ function ProcessComponent() {
           <figure className="max-w-lg">
             <img
               className="h-40 max-w-full"
-              src={affordable}
+              src={AffordableImage}
               alt="image-affordable"
             />
             <figcaption
@@ -40,7 +42,7 @@ function ProcessComponent() {
           <figure className="max-w-lg">
             <img
               className="h-40 max-w-full"
-              src={effective}
+              src={EffectiveImage}
               alt="image-effective"
             />
             <figcaption
@@ -55,7 +57,7 @@ function ProcessComponent() {
           <figure className="max-w-lg">
             <img
               className="h-40 max-w-full"
-              src={easyToUse}
+              src={EasyToUseImage}
               alt="image-easy-to-use"
             />
             <figcaption

@@ -13,7 +13,6 @@ import { ReactApp } from "./video";
 
 import { Home } from "./Home/Pages/Home";
 import { Login } from "./Home/Pages/Login";
-import { AboutUs } from "./Home/Pages/AboutUs";
 import { SignUp } from "./Home/Pages/SignUp";
 import { FAQ } from "./Home/Pages/FAQ";
 
@@ -27,7 +26,6 @@ function App() {
           */}
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/About Us" element={<AboutUs />} />
           <Route path="/Sign Up" element={<SignUp />} />
           <Route path="/FAQ" element={<FAQ />} />
 

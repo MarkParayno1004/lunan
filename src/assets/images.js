@@ -1,0 +1,10 @@
+export const GooglePlay = require("./img/google_play_image.png");
+export const LoginScreenApp = require("./img/login_screen_application.png");
+export const HomeScreenApp = require("./img/home_screen_application.png");
+export const AboutUsImage = require("./img/about_us_image.png");
+export const HeaderImage = require("./img/header_image.png");
+export const LicensedImage = require("./img/licensed_image.png");
+export const AffordableImage = require("./img/affordable_image.png");
+export const EffectiveImage = require("./img/effective_image.png");
+export const EasyToUseImage = require("./img/easy_to_use_image.png");
+export const NavBarLogo = require("./img/bloomfields_navbar_logo.png");

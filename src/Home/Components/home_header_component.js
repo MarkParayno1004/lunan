@@ -1,4 +1,4 @@
-import headerDisplay from "../../assets/img/header.png";
+import { HeaderImage } from "../../assets/images";
 function HeaderComponent() {
   return (
     <div className="bg-primaryGreen">
@@ -24,7 +24,7 @@ function HeaderComponent() {
         </div>
         <div>
           <img
-            src={headerDisplay}
+            src={HeaderImage}
             className="object-cover h-96 w-100"
             alt="header-display"
           />

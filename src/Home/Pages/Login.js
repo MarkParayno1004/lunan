@@ -7,13 +7,13 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { getToken } from "../../../src/chat/api";
-import BloomFieldsLogo from "../../assets/img/Bloomfields_logo_only.png";
 import { Navbar } from "../../Navbar";
 import { Form, Modal, Alert } from "react-bootstrap";
 import { fetchUserData } from "../Store/Components/LoginHelper";
 
 import "../../css/AllCounselors.css";
 import "../../css/Login.css";
+import { NavBarLogo } from "../../assets/images";
 
 export const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -127,7 +127,7 @@ export const Login = (props) => {
         <div className="row d-flex align-items-center" id="rowHeight">
           {screenWidth <= 768 ? null : (
             <div className="col ">
-              <img src={BloomFieldsLogo} style={{ width: "40%" }} alt="Logo" />
+              <img src={NavBarLogo} style={{ width: "40%" }} alt="Logo" />
             </div>
           )}
 
