@@ -10,7 +10,7 @@ import SideLogo from "../assets/img/BLOOMFIELDS_LOGO-03.png";
 import { DefaultPageSupervisor } from "./Components/DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
 
-export const SupervisorDashboard = () => {
+export default function SupervisorDashboard() {
   const [adminName, setAdminName] = useState("");
 
   useEffect(() => {
@@ -166,4 +166,4 @@ export const SupervisorDashboard = () => {
       </div>
     </div>
   );
-};
+}

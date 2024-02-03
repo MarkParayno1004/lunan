@@ -5,7 +5,7 @@ import MobileApp from "../Components/home_mobile_component";
 import Footer from "../Components/home_footer_component";
 import NavBar from "../Components/home_navbar_component";
 
-export const Home = () => {
+export default function Home() {
   return (
     <div className="homepage">
       <NavBar />
@@ -16,4 +16,4 @@ export const Home = () => {
       <Footer />
     </div>
   );
-};
+}

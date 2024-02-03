@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import PP from "../../assets/img/PrivacyPolicy.png";
 import "../../css/PrivacyPolicyScroll.css";
 import "../../css/SignUp.css";
-export const SignUp = () => {
+export default function SignUp() {
   return (
     <>
       <PrivacyModal />
@@ -25,7 +25,7 @@ export const SignUp = () => {
       </div>
     </>
   );
-};
+}
 
 const PrivacyModal = () => {
   const [show, setShow] = useState(false);

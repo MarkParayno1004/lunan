@@ -39,7 +39,7 @@ function NavBar() {
                 Login
               </a>
               <a
-                href="#"
+                href="/Sign Up"
                 className="text-white font-medium text-xl px-4 lg:px-5 py-2 lg:py-2.5 mr-2"
               >
                 Get started

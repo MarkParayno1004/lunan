@@ -13,8 +13,8 @@ function MobileApp() {
             Embark on a journey towards a happier,
             <br /> healthier you, one session at a time.
           </p>
-          <div className="mt-10">
-            <a href="#">
+          <div className="mt-10 grid justify-items-start">
+            <a href="https://drive.google.com/file/d/1Yo99eKL2IdXl4wSlxvDUljikHcAGBof9/view?usp=sharing">
               <img src={GooglePlay} className="object-contain h-20 w-100" />
             </a>
           </div>
