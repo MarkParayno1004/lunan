@@ -11,7 +11,7 @@ import { Client } from "@twilio/conversations";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-export const CounselorDashboard = (props) => {
+export default function CounselorDashboard(props) {
   const [counselorName, setCounselorName] = useState("");
   const [activeComponent, setActiveComponent] = useState("default");
   const [client, setClient] = useState(null);
@@ -162,4 +162,4 @@ export const CounselorDashboard = (props) => {
       </div>
     </div>
   );
-};
+}

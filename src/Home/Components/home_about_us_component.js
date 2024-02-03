@@ -1,4 +1,4 @@
-import aboutUsImg from "../../assets/img/about_us_logo.png";
+import { AboutUsImage } from "../../assets/images";
 function AboutUsComponent() {
   return (
     <div className="bg-primaryOrange">
@@ -26,7 +26,7 @@ function AboutUsComponent() {
           </article>
         </div>
         <div>
-          <img src={aboutUsImg} className="object-cover h-128 w-100" />
+          <img src={AboutUsImage} className="object-cover h-128 w-100" />
         </div>
       </div>
     </div>

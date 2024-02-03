@@ -1,6 +1,0 @@
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-  .mobile-paragraph-container {
-    margin: auto;
-  }
-}
