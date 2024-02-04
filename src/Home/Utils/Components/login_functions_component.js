@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { fetchUserData } from "../../Store/Components/LoginHelper";
 import { auth } from "../../../firebase/firebase-config";
 
 const LoginFunctions = () => {
@@ -28,15 +27,13 @@ const LoginFunctions = () => {
 
   function HandleModalShow() {
     setState({ showModal: true });
-    console.log("Modal is Open");
   }
 
   const HandleModalClose = () => {
     setState({ showModal: false });
-    console.log("Modal is Closed");
   };
 
-  const LoginHandleSubmit = async () => {
+  const HandleLoginSubmit = async () => {
     try {
       const { user } = await signInWithEmailAndPassword(
         auth,
@@ -59,26 +56,13 @@ const LoginFunctions = () => {
     }
   };
 
-  useEffect(() => {
-    if (state.loggedIn) {
-      const userUid = sessionStorage.getItem("userUid");
-      console.log("Retrieved user UID:", userUid);
-      if (userUid) {
-        setState({ loading: true });
-        fetchUserData(userUid, navigate, setState, state.setFirstName);
-      } else {
-        console.error("Invalid user UID:", userUid);
-      }
-    }
-  }, [state.loggedIn]);
-
   return {
     state,
     HandleEmailChange,
     HandlePasswordChange,
     HandleModalShow,
     HandleModalClose,
-    LoginHandleSubmit,
+    HandleLoginSubmit,
   };
 };
 
