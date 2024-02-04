@@ -6,7 +6,7 @@ import { auth } from "../../firebase/firebase-config";
 import { getToken } from "../../../src/chat/api";
 import { fetchUserData } from "../Store/Components/LoginHelper";
 import "../../css/AllCounselors.css";
-
+import LoginFunctions from "../Utils/Components/login_functions_component";
 import NavBar from "../Components/home_navbar_component";
 
 import ForgotModal from "../Components/login_forgot_modal_component";
@@ -18,6 +18,15 @@ export default function Login(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const {
+    state,
+    HandleEmailChange,
+    HandlePasswordChange,
+    HandleModalShow,
+    HandleModalClose,
+    HandleLoginSubmit,
+  } = LoginFunctions();
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -62,12 +71,6 @@ export default function Login(props) {
       }
     }
   }, [loggedIn]);
-
-  const [showForget, setShowForget] = useState(false);
-
-  const handleCloseForget = () => setShowForget(false);
-
-  const handleForget = () => setShowForget(true);
 
   //for twilio
   async function login(username, password, setToken) {
@@ -183,7 +186,7 @@ export default function Login(props) {
                 <div className="mb-3 mt-2 flex flex-wrap content-center">
                   <a
                     className="text-xs font-semibold text-primaryOrange"
-                    onClick={handleForget}
+                    onClick={HandleModalShow}
                     style={{ cursor: "pointer" }}
                   >
                     Forgot password?
@@ -194,7 +197,7 @@ export default function Login(props) {
           </div>
         </div>
       </div>
-      <ForgotModal show={showForget} onHide={handleCloseForget} />
+      <ForgotModal show={state.showModal} onHide={HandleModalClose} />
     </>
   );
 }
