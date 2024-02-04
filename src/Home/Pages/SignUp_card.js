@@ -1,9 +1,5 @@
 import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import {
-  generateRandomPassword,
-  upload,
-} from "../Store/Components/SignUpHelper";
+import { upload } from "../Store/Components/SignUpHelper";
 import { CardOne } from "../SignUpCards/CardOne";
 import { CardTwo } from "../SignUpCards/CardTwo";
 import { CardThree } from "../SignUpCards/CardThree";

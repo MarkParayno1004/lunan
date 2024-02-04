@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { getToken } from "../../../src/chat/api";
 import { fetchUserData } from "../Store/Components/LoginHelper";
-
 import "../../css/AllCounselors.css";
 
 import NavBar from "../Components/home_navbar_component";
@@ -97,20 +96,6 @@ export default function Login(props) {
       return message;
     }
   }
-
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
   return (
     <>
       <NavBar />
