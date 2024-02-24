@@ -2,13 +2,8 @@ import { useState, useEffect } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from 'dayjs';
-export const CardOne = ({
-  ButtonNext,
-  ButtonBack,
-  handleInputChange,
-  formData,
-}) => {
+import dayjs from "dayjs";
+export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
   const [localFormData, setLocalFormData] = useState({
     Fname: "",
     Age: "",
@@ -26,9 +21,9 @@ export const CardOne = ({
 
   const handleDateAccept = (date) => {
     console.log("BirthDate:", date); // Log the selected date
-    const formattedDate = dayjs(date).format('YYYY-MM-DD');
-    const today = new Date();
-    const age = Math.floor((today - date) / (365.25 * 24 * 60 * 60 * 1000));
+    const formattedDate = dayjs(date).format("YYYY-MM-DD");
+    const today = dayjs(); // Use dayjs for today as well
+    const age = Math.floor(today.diff(date, "year")); // Calculate age using dayjs
 
     setLocalFormData((prevFormData) => ({
       ...prevFormData,
@@ -67,7 +62,7 @@ export const CardOne = ({
   };
 
   return (
-    <>
+    <div>
       <form onSubmit={handleNext}>
         <div className="container-fluid d-flex justify-content-center">
           <div className="card" style={{ width: "60rem" }}>
@@ -199,7 +194,7 @@ export const CardOne = ({
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
@@ -218,7 +213,7 @@ const Specification = ({ setLocalFormData, localFormData }) => {
   };
 
   return (
-    <>
+    <di>
       <div className="input-group">
         <span className="me-2 d-flex align-items-center">Please specify:</span>
         <input
@@ -229,6 +224,6 @@ const Specification = ({ setLocalFormData, localFormData }) => {
           required
         />
       </div>
-    </>
+    </di>
   );
 };
