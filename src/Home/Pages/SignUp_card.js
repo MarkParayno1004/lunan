@@ -3,16 +3,6 @@ import { upload } from "../Store/Components/SignUpHelper";
 import { CardOne } from "../SignUpCards/CardOne";
 import { CardTwo } from "../SignUpCards/CardTwo";
 import { CardThree } from "../SignUpCards/CardThree";
-import { CardFour } from "../SignUpCards/CardFour";
-import { CardFive } from "../SignUpCards/CardFive";
-import { CardSix } from "../SignUpCards/CardSix";
-import { CardSixPoint2 } from "../SignUpCards/CardSixPoint2";
-import { CardSeven } from "../SignUpCards/CardSeven";
-import { CardEight } from "../SignUpCards/CardEight";
-import { CardNine } from "../SignUpCards/CardNine";
-import { CardTen } from "../SignUpCards/CardTen";
-import { CardEleven } from "../SignUpCards/CardEleven";
-import { CardTwelve } from "../SignUpCards/CardTwelve";
 import Swal from "sweetalert2";
 
 export const SIGNUPCARD = () => {
@@ -72,95 +62,6 @@ export const SIGNUPCARD = () => {
 
       {card === 3 && (
         <CardThree
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 4 && (
-        <CardFour
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-      {card === 5 && (
-        <CardFive
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 6 && (
-        <CardSix
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 7 && (
-        <CardSixPoint2
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 8 && (
-        <CardSeven
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 9 && (
-        <CardEight
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 10 && (
-        <CardNine
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 11 && (
-        <CardTen
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 12 && (
-        <CardEleven
-          handleInputChange={handleInputChange}
-          ButtonNext={handleNext}
-          ButtonBack={handlePrevious}
-          formData={formData}
-        />
-      )}
-
-      {card === 13 && (
-        <CardTwelve
           handleInputChange={handleInputChange}
           ButtonBack={handlePrevious}
           ButtonSubmit={handleSubmit}

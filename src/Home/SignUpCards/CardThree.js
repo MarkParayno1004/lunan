@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
+export const CardThree = ({ ButtonBack, ButtonSubmit, formData }) => {
   const [localFormData, setLocalFormData] = useState({
     CPFname: "",
     Rel: "",
@@ -32,14 +32,14 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
     }));
   };
 
-  const handleNext = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     console.log(localFormData); // Log form data
-    ButtonNext(localFormData); // Call the ButtonNext function with form data
+    ButtonSubmit(localFormData); // Call the ButtonNext function with form data
   };
   return (
     <div>
-      <form onSubmit={handleNext}>
+      <form onSubmit={handleSubmit}>
         <div className="container-fluid d-flex justify-content-center">
           <div className="card" style={{ width: 60 + "rem" }}>
             <div className="card-header">
@@ -167,7 +167,7 @@ export const CardThree = ({ ButtonBack, ButtonNext, formData }) => {
             Back
           </button>
           <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
-            Next
+            Submit
           </button>
         </div>
       </form>
