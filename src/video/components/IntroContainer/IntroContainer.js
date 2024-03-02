@@ -3,7 +3,7 @@ import { makeStyles, Typography } from "@material-ui/core";
 import { useAppState } from "../../state";
 import UserMenu from "./UserMenu/UserMenu";
 import { useLocation } from "react-router-dom";
-import BFLOGO from "../../../assets/img/BLOOMFIELDS_LOGO-03.png";
+import BFLOGO from "../../../assets/img/bloomfields_logo.png";
 
 const useStyles = makeStyles((theme) => ({
   background: {

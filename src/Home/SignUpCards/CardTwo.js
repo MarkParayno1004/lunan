@@ -42,136 +42,124 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center ">
-          <div className="card" style={{ width: "60rem" }}>
-            <div className="card-header">
-              Please fill up this intake form: (This form will be your Sign Up
-              form or Register Form)
-            </div>
-            <ul className="list-group list-group-flush">
-              {/* Input Patient's Local Address */}
-              <li className="list-group-item">
-                <p>Current Address:</p>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control rounded-4 me-1"
-                    name="StreetNum"
-                    placeholder="Street and Number:"
-                    pattern="^[a-zA-Z0-9 ]+$"
-                    value={localFormData.StreetNum}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    className="form-control rounded-4 me-1"
-                    name="Barangay"
-                    placeholder="Barangay:"
-                    pattern="^[a-zA-Z0-9 ]+$"
-                    value={localFormData.Barangay}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    className="form-control rounded-4"
-                    name="City"
-                    placeholder="City:"
-                    pattern="^[a-zA-Z0-9 ]+$"
-                    value={localFormData.City}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control rounded-4 mt-2 me-1"
-                    name="Region"
-                    placeholder="Region:"
-                    pattern="^[a-zA-Z0-9 ]+$"
-                    value={localFormData.Region}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="number"
-                    className="form-control rounded-4 mt-2"
-                    name="Zip"
-                    placeholder="Zip:"
-                    value={localFormData.Zip}
-                    onChange={handleInputChange}
-                    min="0"
-                    oninput="validity.valid||(value='');"
-                    required
-                  />
-                </div>
-              </li>
-
-              {/* Home Phone , Cell Phone, Email and Checkboxes*/}
-              {/* Home Phone*/}
-              <li className="list-group-item">
-                <div className="input-group">
-                  <input
-                    type="number"
-                    className="form-control  rounded-4 me-1"
-                    name="HomePhone"
-                    placeholder="Home Phone Number:"
-                    value={localFormData.HomePhone}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                {/* Cell Phone Number */}
-                <div className="input-group">
-                  <input
-                    type="number"
-                    className="form-control  rounded-4 me-1 mt-2"
-                    name="CellPhone"
-                    placeholder="Cell Phone Number:"
-                    value={localFormData.CellPhone}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="input-group mt-2">
-                  <input
-                    type="text"
-                    className="form-control  rounded-4 me-1"
-                    name="Email"
-                    placeholder="Email:"
-                    pattern="^[a-zA-Z0-9@. -_]+$"
-                    value={localFormData.Email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </li>
-            </ul>
+    <div className="grid justify-items-center text-white">
+      <form
+        onSubmit={handleNext}
+        className="w-full max-w-xl p-3 rounded-lg bg-primaryOrange"
+      >
+        <p className="font-bold">Current Address:</p>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">
+              Street and Number:
+            </label>
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="StreetNum"
+              placeholder="Street and Number:"
+              pattern="^[a-zA-Z0-9 ]+$"
+              value={localFormData.StreetNum}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">Barangay:</label>
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="Barangay"
+              placeholder="Barangay:"
+              pattern="^[a-zA-Z0-9 ]+$"
+              value={localFormData.Barangay}
+              onChange={handleInputChange}
+              required
+            />
           </div>
         </div>
-        <div
-          className="d-flex justify-content-end"
-          style={{
-            paddingRight: 25 + "px",
-            paddingTop: 10 + "px",
-            paddingBottom: 5 + "px",
-          }}
-        >
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">City:</label>
+
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="City"
+              placeholder="City:"
+              pattern="^[a-zA-Z0-9 ]+$"
+              value={localFormData.City}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">Region:</label>
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="Region"
+              placeholder="Region:"
+              pattern="^[a-zA-Z0-9 ]+$"
+              value={localFormData.Region}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">Zip:</label>
+            <input
+              type="number"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="Zip"
+              placeholder="Zip:"
+              value={localFormData.Zip}
+              onChange={handleInputChange}
+              inputMode="numeric"
+              required
+            />
+          </div>
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">
+              Phone Number:
+            </label>
+            <input
+              type="number"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="CellPhone"
+              placeholder="Phone Number:"
+              value={localFormData.CellPhone}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">Email:</label>
+
+            <input
+              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="Email"
+              placeholder="Email:"
+              pattern="^[a-zA-Z0-9@. -_]+$"
+              value={localFormData.Email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+        <div className="flex justify-end space-x-4">
           <button
-            className="btn nav-link fs-5 rounded-4 me-3"
-            id="buttonCard"
+            className="bg-primaryGreen p-2 rounded-lg font-medium text-base"
             onClick={ButtonBack}
           >
             Back
           </button>
-          <button className="btn nav-link fs-5  rounded-4" id="buttonCard">
+          <button className="bg-primaryGreen p-2 rounded-lg font-medium text-base">
             Next
           </button>
         </div>

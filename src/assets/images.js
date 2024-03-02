@@ -8,3 +8,4 @@ export const AffordableImage = require("./img/affordable_image.png");
 export const EffectiveImage = require("./img/effective_image.png");
 export const EasyToUseImage = require("./img/easy_to_use_image.png");
 export const NavBarLogo = require("./img/bloomfields_navbar_logo.png");
+export const SignUpPageBG = require("./img/bloomfields_logo.png");
