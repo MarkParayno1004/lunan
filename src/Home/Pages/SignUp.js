@@ -7,12 +7,16 @@ import { useNavigate } from "react-router-dom";
 import PP from "../../assets/img/PrivacyPolicy.png";
 import "../../css/PrivacyPolicyScroll.css";
 import "../../css/SignUp.css";
+import { SignUpPageBG } from "../../assets/images";
 export default function SignUp() {
   return (
     <>
       <PrivacyModal />
       <NavBar />
-      <div className="container grid justify-items-center items-center h-129">
+      <div
+        className="container grid justify-items-center items-center h-129 bg-cover bg-center"
+        style={{ backgroundImage: `url(${SignUpPageBG})` }}
+      >
         <SIGNUPCARD />
       </div>
     </>

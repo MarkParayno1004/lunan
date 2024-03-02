@@ -6,7 +6,7 @@ import { AllPatients } from "./Components/AllPatients";
 import { NewPatients } from "./Components/NewPatients";
 import { AllCounselors } from "./Components/AllCounselors";
 import { Chat } from "./Components/Chat";
-import SideLogo from "../assets/img/BLOOMFIELDS_LOGO-03.png";
+import SideLogo from "../assets/img/bloomfields_logo.png";
 import { DefaultPageSupervisor } from "./Components/DefaultPageSupervisor";
 import "../css/SupervisorDashboard.css";
 

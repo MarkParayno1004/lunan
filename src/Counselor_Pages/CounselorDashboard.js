@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore, auth } from "../firebase/firebase-config";
 import "../css/CounselorDashboard.css";
-import SideLogo from "../assets/img/BLOOMFIELDS_LOGO-03.png";
+import SideLogo from "../assets/img/bloomfields_logo.png";
 import { PatientList } from "./Components/PatientList";
 import CounselorScheduler from "./Components/CounselorScheduler";
 import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
