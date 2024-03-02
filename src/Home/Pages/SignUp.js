@@ -1,5 +1,5 @@
 import { SIGNUPCARD } from "./SignUp_card";
-import { Navbar } from "../../Navbar";
+import NavBar from "../Components/home_navbar_component";
 import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,17 +11,9 @@ export default function SignUp() {
   return (
     <>
       <PrivacyModal />
-      <Navbar />
-      <div
-        className="container-fluid d-flex justify-content-center align-items-center"
-        id="signupBG"
-      >
-        <div
-          className="container-fluid mt-3 mb-3 rounded-4 fw-semibold"
-          id="signupForm"
-        >
-          <SIGNUPCARD />
-        </div>
+      <NavBar />
+      <div className="container grid justify-items-center items-center h-129">
+        <SIGNUPCARD />
       </div>
     </>
   );
@@ -32,14 +24,10 @@ const PrivacyModal = () => {
 
   const handleClose = () => {
     setShow(false);
-    // Reset the body overflow style when the modal is closed
   };
 
   const handleShow = () => {
     setShow(true);
-    // Set the body overflow style to hidden when the modal is open
-    // // removes white space
-    // document.body.style.overflow = "hidden";
   };
 
   useEffect(() => {

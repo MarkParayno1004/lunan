@@ -1,54 +1,47 @@
-import { useState, useEffect } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import Datepicker from "react-tailwindcss-datepicker";
+
 export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
   const [localFormData, setLocalFormData] = useState({
     Fname: "",
     Age: "",
-    DateToday: new Date().toISOString().split("T")[0],
     BirthDate: "",
     Gender: "",
-    showSpecification: false,
   });
 
   useEffect(() => {
     setLocalFormData(formData);
   }, [formData]);
 
-  const [showSpecification, setSpecification] = useState(false);
+  const calculateAge = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-  const handleDateAccept = (date) => {
-    console.log("BirthDate:", date); // Log the selected date
-    const formattedDate = dayjs(date).format("YYYY-MM-DD");
-    const today = dayjs(); // Use dayjs for today as well
-    const age = Math.floor(today.diff(date, "year")); // Calculate age using dayjs
+    const age = end.getFullYear() - start.getFullYear();
+    const monthDiff = end.getMonth() - start.getMonth();
 
-    setLocalFormData((prevFormData) => ({
-      ...prevFormData,
-      Age: age.toString(), // Update the Age value
-      BirthDate: formattedDate,
-    }));
+    if (monthDiff < 0 || (monthDiff === 0 && end.getDate() < start.getDate())) {
+      return age - 1;
+    }
+
+    return age;
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "BirthDate") {
       console.log("BirthDate:", value);
-      const birthDate = new Date(value);
-      const today = new Date();
-      const age = Math.floor(
-        (today - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
-      );
+      const birthDate = dayjs(value);
+      const today = dayjs();
+      const age = calculateAge(birthDate, today);
 
       setLocalFormData((prevFormData) => ({
         ...prevFormData,
-        Age: age.toString(), // Update the Age value
+        Age: age.toString(),
         [name]: value,
       }));
     } else {
-      setSpecification(value === "Other");
       setLocalFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -61,126 +54,110 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
     ButtonNext(localFormData);
   };
 
+  const [value, setValue] = useState({
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleValueChange = (newValue) => {
+    // Set endDate to today's date
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getDate()).padStart(2, "0");
+
+    const endDate = `${year}/${month}/${day}`;
+
+    setValue({
+      startDate: newValue.startDate,
+      endDate: endDate,
+    });
+  };
+
+  useEffect(() => {
+    // Log values after the component re-renders
+    console.log("value.startDate:", value.startDate);
+    console.log("value.endDate:", value.endDate);
+    console.log("newValue:", value);
+  }, [value]); // Only re-run the effect if the 'value' state changes
+
+  const [calculatedAge, setCalculatedAge] = useState(null);
+
+  useEffect(() => {
+    if (value.startDate && value.endDate) {
+      const age = calculateAge(value.startDate, value.endDate);
+      setCalculatedAge(age);
+    }
+  }, [value]);
+
   return (
-    <div>
-      <form onSubmit={handleNext}>
-        <div className="container-fluid d-flex justify-content-center">
-          <div className="card" style={{ width: "60rem" }}>
-            <div className="card-header">
-              Please fill up this intake form: (This form will be your Sign Up
-              form or Register Form)
-            </div>
-            <ul className="list-group list-group-flush">
-              {/* Input Patient's Full Name */}
-              <li className="list-group-item">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    name="Fname"
-                    className="form-control rounded-4 me-1"
-                    placeholder="Full Name:"
-                    pattern="^[a-zA-Z0-9 ]+$"
-                    onChange={handleInputChange}
-                    value={localFormData.Fname}
-                    required
-                  />
-                  <input
-                    type="number"
-                    name="Age"
-                    className="form-control rounded-4"
-                    placeholder="Age:"
-                    pattern="^[a-zA-Z0-9 ]+$"
-                    value={localFormData.Age}
-                    readOnly
-                  />
-                </div>
-              </li>
-
-              {/* Input Date Today and Birth Date */}
-              <li className="list-group-item">
-                <div className="input-group d-flex align-items-center">
-                  <label className="me-3">Date today & your birth date:</label>
-                  <input
-                    type="hidden"
-                    name="DateToday"
-                    className="form-control rounded-4 me-1"
-                    value={localFormData.DateToday}
-                    readOnly
-                  />
-                  <div className="d-inline-flex">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        name="BirthDate"
-                        className="form-control rounded-4"
-                        onChange={handleDateAccept}
-                        value={localFormData.BirthDate || null}
-                      />
-                    </LocalizationProvider>
-                  </div>
-                </div>
-              </li>
-
-              {/* Radio Button for Gender */}
-              <li className="list-group-item">
-                <div className="form-check-inline d-flex align-items-center">
-                  <label className="">Gender:</label>
-                  <div className="d-inline-flex d-flex align-items-center">
-                    <input
-                      className="form-input ms-2 "
-                      type="radio"
-                      name="Gender"
-                      value="Male"
-                      onChange={handleChange}
-                      checked={localFormData.Gender === "Male"}
-                      required
-                    />
-
-                    <label
-                      className="form-check-label me-2"
-                      htmlFor="exampleRadios1"
-                    >
-                      Male
-                    </label>
-                    <input
-                      className="form-input"
-                      type="radio"
-                      name="Gender"
-                      value="Female"
-                      onChange={handleChange}
-                      checked={localFormData.Gender === "Female"}
-                      required
-                    />
-                    <label
-                      className="form-check-label ms-1"
-                      htmlFor="exampleRadios1"
-                    >
-                      Female
-                    </label>
-                    <input
-                      className="form-input ms-2"
-                      type="radio"
-                      name="Gender"
-                      value="Other"
-                      onChange={handleChange}
-                      checked={localFormData.Gender === "Other"}
-                    />
-                    <label
-                      className="form-check-label ms-1 me-2"
-                      htmlFor="exampleRadios1"
-                    >
-                      Other:
-                    </label>
-                    {showSpecification && (
-                      <div className="d-inline-flex">
-                        <input type="text" className="form-control" required />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </li>
-            </ul>
+    <div className="grid justify-items-center">
+      <form onSubmit={handleNext} className="w-full max-w-lg">
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium text-gray-900  ">
+              Full Name
+            </label>
+            <input
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              type="text"
+              name="Fname"
+              placeholder="Full Name:"
+              pattern="^[a-zA-Z0-9 ]+$"
+              onChange={handleInputChange}
+              value={localFormData.Fname}
+              required
+            />
+          </div>
+          <div className="w-full md:w-1/2 px-3">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 "
+              htmlFor="grid-last-name"
+            >
+              Age
+            </label>
+            <input
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              type="number"
+              name="Age"
+              placeholder="Age:"
+              pattern="^[a-zA-Z0-9 ]+$"
+              value={calculatedAge !== null ? calculatedAge : ""}
+              readOnly
+            />
           </div>
         </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
+              Gender
+            </label>
+            <select
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="Gender"
+              value={localFormData.Gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Not Specified">Do not Specify</option>
+            </select>
+          </div>
+          <div className="w-full md:w-1/2 px-3">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Birth Date:
+            </label>
+            <Datepicker
+              useRange={false}
+              asSingle={true}
+              value={value}
+              onChange={handleValueChange}
+            />
+          </div>
+        </div>
+
         <div
           className="d-flex justify-content-end"
           style={{
@@ -195,35 +172,5 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
         </div>
       </form>
     </div>
-  );
-};
-
-//! if patient chooses others, in the Gender category
-const Specification = ({ setLocalFormData, localFormData }) => {
-  // Store the answer
-  const [getOtherSpecification, setOtherSpecification] = useState("");
-
-  const handleOtherSpecification = (e) => {
-    const { name, value } = e.target;
-    setOtherSpecification(value);
-    setLocalFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  return (
-    <di>
-      <div className="input-group">
-        <span className="me-2 d-flex align-items-center">Please specify:</span>
-        <input
-          type="text"
-          value={localFormData}
-          onChange={handleOtherSpecification}
-          className="form-control rounded-4 me-1"
-          required
-        />
-      </div>
-    </di>
   );
 };
