@@ -136,11 +136,13 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
               value={localFormData.Gender}
               required
             >
+              <option defaultChecked disabled>
+                Choose Gender:
+              </option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Not Specified">Do not Specify</option>
             </select>
-            {localFormData.Gender}
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label className="block mb-2 text-sm font-medium">

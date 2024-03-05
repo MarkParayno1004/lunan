@@ -18,7 +18,7 @@ export function generateRandomPassword(length) {
   return password;
 }
 
-export async function upload(data, formData) {
+export async function uploadSignUpData(data) {
   try {
     // Generate a random password with length 8
     const password = generateRandomPassword(8);
