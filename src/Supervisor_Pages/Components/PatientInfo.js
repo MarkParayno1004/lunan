@@ -248,13 +248,6 @@ export const PatientInfo = (props) => {
                     {props.patientData ? props.patientData.CellPhone : "N/A"}
                   </span>
                 </div>
-
-                <div className="col">
-                  <strong>Home Phone Number: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.patientData ? props.patientData.HomePhone : "N/A"}
-                  </span>
-                </div>
                 <div className="col">
                   <strong>Email: </strong>
                   <span style={{ color: "red" }}>
