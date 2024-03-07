@@ -29,13 +29,11 @@ export default function ForgotModal(props) {
   };
 
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={props.show} onHide={props.onHide} className="text-white">
       <Modal.Body className="bg-primaryOrange ">
         <div className="p-4 sm:p-7">
           <div className="text-center">
-            <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
-              Forgot password?
-            </h1>
+            <h1 className="block text-2xl font-bold ">Forgot password?</h1>
           </div>
 
           <Form

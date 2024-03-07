@@ -61,7 +61,13 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
   };
 
   const hanldeGenderChange = (event) => {
-    setLocalFormData({ ...localFormData, Gender: event.target.value });
+    const { value } = event.target;
+    console.log("New Gender value:", value);
+
+    setLocalFormData({
+      ...localFormData,
+      Gender: value,
+    });
   };
 
   useEffect(() => {
@@ -79,6 +85,7 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
   }, [dateValue]); // Only re-run the effect if the 'value' state changes
 
   const handleNext = (event) => {
+    console.log("CardOne localFormData:", localFormData);
     event.preventDefault();
     ButtonNext(localFormData);
   };
@@ -136,12 +143,12 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
               value={localFormData.Gender}
               required
             >
-              <option defaultChecked disabled>
-                Choose Gender:
+              <option selected hidden>
+                Please select
               </option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Not Specified">Do not Specify</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Do not Specify</option>
             </select>
           </div>
           <div className="w-full md:w-1/2 px-3">
