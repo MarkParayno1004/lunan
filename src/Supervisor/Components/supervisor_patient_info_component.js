@@ -9,16 +9,10 @@ import { ViewModalAssign } from "../Modals/ViewModalAssign";
 import { ViewWeeklyForm } from "../Modals/ViewWeeklyForm";
 import { ViewWellnessForm } from "../Modals/ViewWellnessForm";
 import { ViewWellnessGuide } from "../Modals/ViewWellnessGuide";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  getFirestore,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 
-export const PatientInfo = (props) => {
+function SupervisorPatientInfoComponent(props) {
   const patientData = props.patientData;
   const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
@@ -246,13 +240,6 @@ export const PatientInfo = (props) => {
                   <strong>Cell Phone Number: </strong>
                   <span style={{ color: "red" }}>
                     {props.patientData ? props.patientData.CellPhone : "N/A"}
-                  </span>
-                </div>
-
-                <div className="col">
-                  <strong>Home Phone Number: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.patientData ? props.patientData.HomePhone : "N/A"}
                   </span>
                 </div>
                 <div className="col">
@@ -725,4 +712,6 @@ export const PatientInfo = (props) => {
       </Modal.Body>
     </Modal>
   );
-};
+}
+
+export default SupervisorPatientInfoComponent;
