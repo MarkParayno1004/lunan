@@ -1,7 +1,7 @@
 import { firestore, auth } from "../../firebase/firebase-config";
 import { collection, getDocs, where } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { OnlineIcon, UserIcon } from "../../assets/images";
+import { UserIcon } from "../../assets/images";
 
 function SupervisorDashboardComponent() {
   const [adminName, setAdminName] = useState("");

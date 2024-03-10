@@ -7,14 +7,14 @@ import Login from "./Home/Pages/Login";
 import SignUp from "./Home/Pages/SignUp";
 import FAQ from "./Home/Pages/FAQ";
 import CounselorDashboard from "./Counselor_Pages/CounselorDashboard";
-import SupervisorDashboardComponent from "./Supervisor/Components/supervisor_dashboard_component";
+import SupervisorDashboardPage from "./Supervisor/Pages/supervisor_dashboard_page";
 
 const router = createBrowserRouter([
   { path: "/", Component: Home },
   { path: "/Login", Component: Login },
   { path: "/Sign Up", Component: SignUp },
   { path: "/FAQ", Component: FAQ },
-  { path: "/Supervisor Dashboard", Component: SupervisorDashboardComponent },
+  { path: "/Supervisor Dashboard", Component: SupervisorDashboardPage },
   { path: "/Counselor Dashboard", Component: CounselorDashboard },
   { path: "/VideoTest", Component: ReactApp },
 ]);
