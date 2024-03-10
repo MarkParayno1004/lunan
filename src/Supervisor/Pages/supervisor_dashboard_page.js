@@ -7,7 +7,7 @@ import SupervisorAllCounselorComponent from "../Components/supervisor_all_counse
 import SupervisorChatComponent from "../Components/supervisor_chat_component";
 import SupervisorDashboardComponent from "../Components/supervisor_dashboard_component";
 
-export default function SupervisorDashboardPage() {
+function SupervisorDashboardPage() {
   const [activeComponent, setActiveComponent] = useState("DashboardComponent");
 
   return (
@@ -142,3 +142,5 @@ export default function SupervisorDashboardPage() {
     </div>
   );
 }
+
+export default SupervisorDashboardPage;
