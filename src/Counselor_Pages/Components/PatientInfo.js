@@ -349,6 +349,13 @@ export const PatientInfo = (props) => {
                     {props.patientData.CellPhone}
                   </span>
                 </div>
+
+                <div className="col">
+                  <strong>Home Phone Number: </strong>
+                  <span style={{ color: "red" }}>
+                    {props.patientData.HomePhone}
+                  </span>
+                </div>
                 <div className="col">
                   <strong>Email: </strong>
                   <span style={{ color: "red" }}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase/firebase-config";
+import { PatientInfo } from "./PatientInfo";
 import { Pagination } from "react-bootstrap";
 import "../../css/AllPatients.css";
 import {
@@ -11,9 +12,8 @@ import {
   getDoc,
   onSnapshot,
 } from "firebase/firestore";
-import SupervisorPatientInfoComponent from "./supervisor_patient_info_component";
 
-function SupervisorAllPatientsComponent() {
+export const AllPatients = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
@@ -227,7 +227,7 @@ function SupervisorAllPatientsComponent() {
                           />
                         )}
                       </button>
-                      <SupervisorPatientInfoComponent
+                      <PatientInfo
                         show={show}
                         onHide={handleClose}
                         patientData={selectedPatientData}
@@ -266,6 +266,4 @@ function SupervisorAllPatientsComponent() {
       </div>
     </div>
   );
-}
-
-export default SupervisorAllPatientsComponent;
+};
