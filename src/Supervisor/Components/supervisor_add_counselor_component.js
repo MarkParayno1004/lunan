@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../css/AddCounselor.css";
 
-export const AddCounselor = () => {
+function SupervisorAddCounselorComponent() {
   const [name, setName] = useState("");
   const [picture, setPicture] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -86,4 +86,6 @@ export const AddCounselor = () => {
       </div>
     </div>
   );
-};
+}
+
+export default SupervisorAddCounselorComponent;

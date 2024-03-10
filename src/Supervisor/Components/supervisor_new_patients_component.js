@@ -15,7 +15,7 @@ import { firestore } from "../../firebase/firebase-config";
 import { Modal } from "react-bootstrap";
 import fetch from "node-fetch";
 
-export const NewPatients = () => {
+function SupervisorNewPatientsComponent() {
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -199,7 +199,7 @@ export const NewPatients = () => {
       </div>
     </div>
   );
-};
+}
 
 const AssignPatient = (props) => {
   const [selectedCounselor, setSelectedCounselor] = useState("");
@@ -348,3 +348,5 @@ const AssignPatient = (props) => {
     </Modal>
   );
 };
+
+export default SupervisorNewPatientsComponent;

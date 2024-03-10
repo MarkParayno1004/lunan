@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal, Pagination } from "react-bootstrap";
 import "../../css/AllCounselors.css";
-import { Pagination } from "react-bootstrap";
 import {
   collection,
   doc,
@@ -20,9 +19,10 @@ import {
   handleSubmitAdd,
   handleAddSuccess,
   addCounselorToData,
-} from "../Backend/AllCounselorsHelper";
-import { CounselorInfo } from "./CounselorInfo";
-export const AllCounselors = () => {
+} from "../Data/supervisor_all_counselors_helper";
+import SupervisorCounselorInfoComponent from "./supervisor_counselor_info_component";
+
+function SupervisorAllCounselorComponent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [counselorData, setCounselorData] = useState([]);
   const [filteredCounselorData, setFilteredCounselorData] = useState([]);
@@ -30,7 +30,6 @@ export const AllCounselors = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
-  const [newCounselorAdded, setNewCounselorAdded] = useState(false);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
 
   const handleCounselorSelect = (counselorData) => {
@@ -40,7 +39,6 @@ export const AllCounselors = () => {
   };
 
   useEffect(() => {
-    // Create a query to get counselors
     const counselorQuery = query(
       collection(firestore, "Users"),
       where("Role", "==", "Counselor")
@@ -222,7 +220,7 @@ export const AllCounselors = () => {
                           )}
                         </button>
                         {showCouncelor && (
-                          <CounselorInfo
+                          <SupervisorCounselorInfoComponent
                             show={showCouncelor}
                             handleClose={handleCloseCounselor}
                             counselor={selectedCounselor}
@@ -323,7 +321,7 @@ export const AllCounselors = () => {
       )}
     </div>
   );
-};
+}
 
 const AddModal = (props) => {
   const [localFormData, setLocalFormData] = useState({
@@ -622,4 +620,4 @@ const EditModal = (props) => {
   );
 };
 
-export default AllCounselors;
+export default SupervisorAllCounselorComponent;

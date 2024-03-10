@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { AllPatients } from "./Components/AllPatients";
-import { NewPatients } from "./Components/NewPatients";
-import { AllCounselors } from "./Components/AllCounselors";
-import { Chat } from "./Components/Chat";
-import DefaultPageSupervisor from "./Components/DefaultPageSupervisor";
-import { DashboardLogo } from "../assets/images";
-import "../css/SupervisorDashboard.css";
+import { DashboardLogo } from "../../assets/images";
+import "../../css/SupervisorDashboard.css";
+import SupervisorAllPatientsComponent from "../Components/supervisor_all_patients_component";
+import SupervisorNewPatientsComponent from "../Components/supervisor_new_patients_component";
+import SupervisorAllCounselorComponent from "../Components/supervisor_all_counselor_component";
+import SupervisorChatComponent from "../Components/supervisor_chat_component";
+import SupervisorDashboardComponent from "../Components/supervisor_dashboard_component";
 
-export default function SupervisorDashboard() {
+export default function SupervisorDashboardPage() {
   const [activeComponent, setActiveComponent] = useState("DashboardComponent");
 
   return (
@@ -126,15 +126,15 @@ export default function SupervisorDashboard() {
         <div>
           {(() => {
             if (activeComponent === "DashboardComponent") {
-              return <DefaultPageSupervisor />;
+              return <SupervisorDashboardComponent />;
             } else if (activeComponent === "ChatComponent") {
-              return <Chat />;
+              return <SupervisorChatComponent />;
             } else if (activeComponent === "AllPatientsComponent") {
-              return <AllPatients />;
+              return <SupervisorAllPatientsComponent />;
             } else if (activeComponent === "AllCounselorsComponent") {
-              return <AllCounselors />;
+              return <SupervisorAllCounselorComponent />;
             } else if (activeComponent === "NewPatientsComponent") {
-              return <NewPatients />;
+              return <SupervisorNewPatientsComponent />;
             }
           })()}
         </div>
