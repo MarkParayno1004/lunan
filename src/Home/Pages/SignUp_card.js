@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { uploadSignUpData } from "../Store/Components/SignUpHelper";
+import { upload } from "../Store/Components/SignUpHelper";
 import { CardOne } from "../SignUpCards/CardOne";
 import { CardTwo } from "../SignUpCards/CardTwo";
 import { CardThree } from "../SignUpCards/CardThree";
@@ -30,8 +30,8 @@ export const SIGNUPCARD = () => {
     setCard(card - 1);
   };
 
-  const signUpHandleSubmit = (data) => {
-    uploadSignUpData(formData, data); // Call the upload function with form data
+  const handleSubmit = (data) => {
+    upload(formData, data); // Call the upload function with form data
     Swal.fire({
       position: "center",
       background: "#7db9b6",
@@ -64,7 +64,7 @@ export const SIGNUPCARD = () => {
         <CardThree
           handleInputChange={handleInputChange}
           ButtonBack={handlePrevious}
-          ButtonSubmit={signUpHandleSubmit}
+          ButtonSubmit={handleSubmit}
           formData={formData}
         />
       )}
