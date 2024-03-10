@@ -51,18 +51,18 @@ export async function upload(data, formData) {
 
     const newIntake = {
       UID: user.uid,
-      StreetNum: data.StreetNum || "N/A",
-      Barangay: data.Barangay || "N/A",
-      City: data.City || "N/A",
-      Region: data.Region || "N/A",
-      Zip: data.Zip || "N/A",
-      CPFname: data.CPFname || "N/A",
-      Rel: data.Rel || "N/A",
-      CPNum: data.CPNum || "N/A",
-      DocFname: data.DocFname || "N/A",
-      DocNum: data.DocNum || "N/A",
-      CommLearn: data.CommLearn || "N/A",
-      CommAssess: data.CommAssess || "N/A",
+      StreetNum: formData.StreetNum || "N/A",
+      Barangay: formData.Barangay || "N/A",
+      City: formData.City || "N/A",
+      Region: formData.Region || "N/A",
+      Zip: formData.Zip || "N/A",
+      CPFname: formData.CPFname || "N/A",
+      Rel: formData.Rel || "N/A",
+      CPNum: formData.CPNum || "N/A",
+      DocFname: formData.DocFname || "N/A",
+      DocNum: formData.DocNum || "N/A",
+      CommLearn: formData.CommLearn || "N/A",
+      CommAssess: formData.CommAssess || "N/A",
     };
     console.log("New Intake Form:", newIntake);
     await addDoc(intakeRef, newIntake);
