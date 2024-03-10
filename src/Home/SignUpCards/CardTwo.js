@@ -7,6 +7,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
     City: "",
     Region: "",
     Zip: "",
+    HomePhone: "",
     CellPhone: "",
     Email: "",
   });
@@ -19,6 +20,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
         City: "",
         Region: "",
         Zip: "",
+        HomePhone: "",
         CellPhone: "",
         Email: "",
       }

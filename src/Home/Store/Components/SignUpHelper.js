@@ -37,6 +37,7 @@ export async function uploadSignUpData(data) {
       Gender: data.Gender,
       Age: data.Age,
       Email: data.Email,
+      HomePhone: data.HomePhone,
       CellPhone: data.CellPhone,
       UID: user.uid,
       Role: "Patient",

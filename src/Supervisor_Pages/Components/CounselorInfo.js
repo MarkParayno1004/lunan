@@ -8,12 +8,32 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { Modal } from "react-bootstrap";
-import SupervisorPatientInfoComponent from "./supervisor_patient_info_component";
+import { PatientInfo } from "./PatientInfo";
 
-function SupervisorCounselorInfoComponent(props) {
+export const CounselorInfo = (props) => {
   const { show, handleClose, counselor } = props;
   const [searchInput, setSearchInput] = useState("");
   const [patients, setPatients] = useState([]); // Initialize patients state
+
+  // useEffect(() => {
+  //   const fetchPatients = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(
+  //         query(
+  //           collection(firestore, "Users"),
+  //           where("counselorID", "==", counselor.UID) // Use counselor from props
+  //         )
+  //       );
+  //       const patientListData = querySnapshot.docs.map((doc) => doc.data());
+  //       setPatients(patientListData);
+  //     } catch (error) {
+  //       console.error("Error fetching patients:", error);
+  //     }
+  //   };
+
+  //   fetchPatients();
+  // }, [counselor, firestore]);
+
   useEffect(() => {
     // Create a query to get Forms for the selected patient
     const patientQuery = query(
@@ -60,7 +80,7 @@ function SupervisorCounselorInfoComponent(props) {
       </Modal.Body>
     </Modal>
   );
-}
+};
 
 const CounselorData = ({
   counselorData,
@@ -241,7 +261,7 @@ const CounselorData = ({
         </tbody>
       </table>
       {showPatientInfo && (
-        <SupervisorPatientInfoComponent
+        <PatientInfo
           show={showModal}
           onHide={handleClose}
           patientData={selectedPatientData}
@@ -252,5 +272,3 @@ const CounselorData = ({
     </div>
   );
 };
-
-export default SupervisorCounselorInfoComponent;
