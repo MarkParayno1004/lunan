@@ -35,9 +35,9 @@ export const CardThree = ({ ButtonBack, ButtonSubmit, formData }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("CardThree localFormData:", localFormData);
-    console.log(localFormData); // Log form data
-    ButtonSubmit(localFormData); // Call the ButtonNext function with form data
+    ButtonSubmit(localFormData);
   };
+
   return (
     <div className="grid justify-items-center text-white">
       <form
