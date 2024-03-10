@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
-import { db, auth } from "../../firebase/firebase-config";
+import { db, auth, firestore } from "../../firebase/firebase-config";
 import {
   collection,
   getDocs,
@@ -15,13 +14,13 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-export const Chat = () => {
+function SupervisorChatComponent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [counselorNames, setCounselorNames] = useState({});
   const [show, setShow] = useState();
-  const [room, setRoom] = useState(); // Manage the room state in the Chat component
+  const [room, setRoom] = useState();
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
   const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
@@ -156,131 +155,133 @@ export const Chat = () => {
 
   //!Twilio
   return (
-    <div
-      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
-      id="ChatForm"
-    >
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
-            <h1 className="mt-2 ms-5 ps-5">Chat</h1>
-          </div>
-          <div className="col-3 col-sm-3 mb-3">
-            <div className="input-group mt-4">
-              <input
-                type="text"
-                placeholder="Search Patients Name:"
-                value={searchQuery}
-                onChange={handleSearch}
-                aria-describedby="search"
-                className="w-25 form-control"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="d-flex flex-column">
-          <div className="flex-grow-1">
-            <div className="row">
-              <div
-                className="col-3 table-responsive"
-                style={{ overflow: "hidden" }}
-              >
-                <table
-                  className="table table-hover table-borderless table-dark rounded-start-3"
-                  style={tableStyle}
-                >
-                  <thead>
-                    <tr>
-                      <th scope="col">Inbox</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <div className="custom-scroll-container-chat">
-                      {filteredPatientsData.map((patient) => (
-                        <tr key={patient.UID}>
-                          <td>
-                            <button
-                              className="d-flex justify-content-start align-items-center"
-                              onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
-                              style={{
-                                border: "none",
-                                background: "none",
-                                color: "white",
-                                width: "334px",
-                                marginTop: "20px",
-                                marginBottom: "20px",
-                              }}
-                            >
-                              {patient.ProfPic ? (
-                                <img
-                                  src={fetchImageUrl(patient.ProfPic)}
-                                  alt={patient.firstName}
-                                  width="100"
-                                  height="100"
-                                  className="rounded-circle"
-                                />
-                              ) : (
-                                <img
-                                  src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                                  alt={patient.firstName}
-                                  width="100"
-                                  height="100"
-                                />
-                              )}
-                              <p
-                                className="ms-3 text-break text-wrap fs-5"
-                                style={{ width: "" }}
-                              >
-                                {patient.firstName}
-                              </p>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </div>
-                  </tbody>
-                </table>
-              </div>
-              <div
-                className="col rounded-end-3"
-                style={{
-                  backgroundColor: "#212529",
-                  height: "650px",
-                  color: "black",
-                }}
-              >
-                <div
-                  className="container-fluid mt-4 me-4 mb-4 rounded-3"
-                  style={{
-                    backgroundColor: "#4d455d",
-                    height: "600px",
-                    width: "1014px",
-                  }}
-                >
-                  <div
-                    className="container"
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <h1
-                      className="fs-1 ms-3"
-                      style={{ color: "#f5e9cf", flex: "1" }}
-                    >
-                      {selectedPatientData
-                        ? selectedPatientData.firstName
-                        : "Selected User's First Name"}
-                    </h1>
-                  </div>
+    // <div
+    //   className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
+    //   id="ChatForm"
+    // >
+    //   <div className="container-fluid">
+    //     <div className="row">
+    //       <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
+    //         <h1 className="mt-2 ms-5 ps-5">Chat</h1>
+    //       </div>
+    //       <div className="col-3 col-sm-3 mb-3">
+    //         <div className="input-group mt-4">
+    //           <input
+    //             type="text"
+    //             placeholder="Search Patients Name:"
+    //             value={searchQuery}
+    //             onChange={handleSearch}
+    //             aria-describedby="search"
+    //             className="w-25 form-control"
+    //           />
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <div className="d-flex flex-column">
+    //       <div className="flex-grow-1">
+    //         <div className="row">
+    //           <div
+    //             className="col-3 table-responsive"
+    //             style={{ overflow: "hidden" }}
+    //           >
+    //             <table
+    //               className="table table-hover table-borderless table-dark rounded-start-3"
+    //               style={tableStyle}
+    //             >
+    //               <thead>
+    //                 <tr>
+    //                   <th scope="col">Inbox</th>
+    //                 </tr>
+    //               </thead>
+    //               <tbody>
+    //                 <div className="custom-scroll-container-chat">
+    //                   {filteredPatientsData.map((patient) => (
+    //                     <tr key={patient.UID}>
+    //                       <td>
+    //                         <button
+    //                           className="d-flex justify-content-start align-items-center"
+    //                           onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
+    //                           style={{
+    //                             border: "none",
+    //                             background: "none",
+    //                             color: "white",
+    //                             width: "334px",
+    //                             marginTop: "20px",
+    //                             marginBottom: "20px",
+    //                           }}
+    //                         >
+    //                           {patient.ProfPic ? (
+    //                             <img
+    //                               src={fetchImageUrl(patient.ProfPic)}
+    //                               alt={patient.firstName}
+    //                               width="100"
+    //                               height="100"
+    //                               className="rounded-circle"
+    //                             />
+    //                           ) : (
+    //                             <img
+    //                               src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+    //                               alt={patient.firstName}
+    //                               width="100"
+    //                               height="100"
+    //                             />
+    //                           )}
+    //                           <p
+    //                             className="ms-3 text-break text-wrap fs-5"
+    //                             style={{ width: "" }}
+    //                           >
+    //                             {patient.firstName}
+    //                           </p>
+    //                         </button>
+    //                       </td>
+    //                     </tr>
+    //                   ))}
+    //                 </div>
+    //               </tbody>
+    //             </table>
+    //           </div>
+    //           <div
+    //             className="col rounded-end-3"
+    //             style={{
+    //               backgroundColor: "#212529",
+    //               height: "650px",
+    //               color: "black",
+    //             }}
+    //           >
+    //             <div
+    //               className="container-fluid mt-4 me-4 mb-4 rounded-3"
+    //               style={{
+    //                 backgroundColor: "#4d455d",
+    //                 height: "600px",
+    //                 width: "1014px",
+    //               }}
+    //             >
+    //               <div
+    //                 className="container"
+    //                 style={{ display: "flex", alignItems: "center" }}
+    //               >
+    //                 <h1
+    //                   className="fs-1 ms-3"
+    //                   style={{ color: "#f5e9cf", flex: "1" }}
+    //                 >
+    //                   {selectedPatientData
+    //                     ? selectedPatientData.firstName
+    //                     : "Selected User's First Name"}
+    //                 </h1>
+    //               </div>
 
-                  {room && <ChatMessage room={room} />}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    //               {room && <ChatMessage room={room} />}
+    //             </div>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+    // <!-- component -->
+    <></>
   );
-};
+}
 
 //! CHAT
 const ChatMessage = ({ room }) => {
@@ -393,3 +394,4 @@ const ChatMessage = ({ room }) => {
     </div>
   );
 };
+export default SupervisorChatComponent;
