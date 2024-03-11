@@ -1,10 +1,20 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  increment,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import { auth, firestore } from "../../../firebase/firebase-config";
 
 const userAccRef = collection(firestore, "Users");
 const intakeRef = collection(firestore, "IntakeForms");
-// Function to generate a random password
+
 export function generateRandomPassword(length) {
   const charset =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -18,11 +28,87 @@ export function generateRandomPassword(length) {
   return password;
 }
 
+async function findCounselorWithMinPatients() {
+  const counselorsQuery = query(
+    collection(firestore, "Users"),
+    where("Role", "==", "Counselor")
+  );
+
+  const counselorsSnapshot = await getDocs(counselorsQuery);
+
+  let selectedCounselor;
+  let minPatientCount = Infinity;
+
+  counselorsSnapshot.forEach((counselorDoc) => {
+    const counselorData = counselorDoc.data();
+    const counselorPatientCount = counselorData.patientCount || 0;
+
+    if (counselorPatientCount < minPatientCount) {
+      minPatientCount = counselorPatientCount;
+      selectedCounselor = counselorDoc;
+    }
+  });
+
+  return selectedCounselor;
+}
+
+async function updateCounselorAndAssignPatient(
+  counselorDoc,
+  patientUID,
+  password,
+  data,
+  formData
+) {
+  const counselorRef = doc(firestore, "Users", counselorDoc.id);
+  await updateDoc(counselorRef, {
+    patientCount: increment(1),
+  });
+
+  const patientRef = doc(firestore, "Users", patientUID);
+  await setDoc(
+    patientRef,
+    {
+      counselorID: counselorDoc.data().UID,
+    },
+    { merge: true }
+  );
+
+  const newUser = {
+    ...data,
+    UID: patientUID,
+    Role: "Patient",
+    counselorID: counselorDoc.data().UID,
+    password: password,
+    ProfPic: null,
+    dateCreated: new Date().toISOString().split("T")[0],
+  };
+
+  console.log("New User formData:", newUser);
+  await addDoc(userAccRef, newUser);
+
+  const newIntake = {
+    UID: patientUID,
+    StreetNum: formData.StreetNum || "N/A",
+    Barangay: formData.Barangay || "N/A",
+    City: formData.City || "N/A",
+    Region: formData.Region || "N/A",
+    Zip: formData.Zip || "N/A",
+    CPFname: formData.CPFname || "N/A",
+    Rel: formData.Rel || "N/A",
+    CPNum: formData.CPNum || "N/A",
+    DocFname: formData.DocFname || "N/A",
+    DocNum: formData.DocNum || "N/A",
+    CommLearn: formData.CommLearn || "N/A",
+    CommAssess: formData.CommAssess || "N/A",
+  };
+
+  console.log("New Intake Form:", newIntake);
+  await addDoc(intakeRef, newIntake);
+}
+
 export async function upload(data, formData) {
   try {
-    // Generate a random password with length 8
     const password = generateRandomPassword(8);
-    // Create a user account with the provided email and generated password
     const { user } = await createUserWithEmailAndPassword(
       auth,
       data.Email,
@@ -30,42 +116,19 @@ export async function upload(data, formData) {
     );
     console.log("Generated Password:", password);
 
-    // Add user formData to the "Users" collection
-    const newUser = {
-      firstName: data.Fname,
-      dateCreated: new Date().toISOString().split("T")[0],
-      Gender: data.Gender,
-      Age: data.Age,
-      Email: data.Email,
-      CellPhone: data.CellPhone,
-      UID: user.uid, // Now you can use user.uid safely
-      Role: "Patient",
-      counselorID: null,
-      password: password,
-      ProfPic: null,
-      Birthday: data.BirthDate,
-    };
-    console.log("New User formData:", newUser);
-    // Add the document to Firestore
-    await addDoc(userAccRef, newUser);
+    const counselorDoc = await findCounselorWithMinPatients();
 
-    const newIntake = {
-      UID: user.uid,
-      StreetNum: formData.StreetNum || "N/A",
-      Barangay: formData.Barangay || "N/A",
-      City: formData.City || "N/A",
-      Region: formData.Region || "N/A",
-      Zip: formData.Zip || "N/A",
-      CPFname: formData.CPFname || "N/A",
-      Rel: formData.Rel || "N/A",
-      CPNum: formData.CPNum || "N/A",
-      DocFname: formData.DocFname || "N/A",
-      DocNum: formData.DocNum || "N/A",
-      CommLearn: formData.CommLearn || "N/A",
-      CommAssess: formData.CommAssess || "N/A",
-    };
-    console.log("New Intake Form:", newIntake);
-    await addDoc(intakeRef, newIntake);
+    if (counselorDoc) {
+      await updateCounselorAndAssignPatient(
+        counselorDoc,
+        user.uid,
+        password,
+        data,
+        formData
+      );
+    } else {
+      console.log("No counselors available");
+    }
   } catch (error) {
     console.error("Error uploading formData:", error);
   }
