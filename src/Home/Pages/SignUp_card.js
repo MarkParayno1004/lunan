@@ -28,10 +28,16 @@ export const SIGNUPCARD = () => {
   const handlePrevious = (event) => {
     event.preventDefault();
     setCard(card - 1);
+    // You may want to clear or update the formData when going back
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      // Update or clear fields as needed
+    }));
   };
 
   const handleSubmit = (data) => {
     upload(formData, data); // Call the upload function with form data
+    console.log("All Form Data: ", formData);
     Swal.fire({
       position: "center",
       background: "#7db9b6",
