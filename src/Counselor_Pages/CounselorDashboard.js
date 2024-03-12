@@ -1,22 +1,10 @@
-import React, { useState, useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore, auth } from "../firebase/firebase-config";
-import "../css/CounselorDashboard.css";
-import SideLogo from "../assets/img/bloomfields_logo.png";
-import { PatientList } from "./Components/PatientList";
-import CounselorScheduler from "./Components/CounselorScheduler";
-import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
-import { CounselorChat } from "./Components/CounselorChat";
-import { Client } from "@twilio/conversations";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { UserIcon } from "../assets/images";
 
-export default function CounselorDashboard(props) {
+function CounselorDashboard(props) {
   const [counselorName, setCounselorName] = useState("");
-  const [activeComponent, setActiveComponent] = useState("default");
-  const [client, setClient] = useState(null);
-  const token = useSelector((state) => state.token); // Get the Twilio token from your state
-
   useEffect(() => {
     const fetchCounselorName = async () => {
       try {
@@ -42,124 +30,171 @@ export default function CounselorDashboard(props) {
     fetchCounselorName();
   }, []);
 
-  // Initialize Twilio client with the token
-  useEffect(() => {
-    const initTwilioClient = async () => {
-      try {
-        if (token) {
-          const client = new Client(token);
-          setClient(client);
-          console.log("Twilio Client:", client);
-        }
-      } catch (error) {
-        console.error("Error initializing Twilio client:", error);
-      }
-    };
-
-    initTwilioClient();
-  }, [token]); // Make sure to include token in the dependency array
-
   return (
-    <div className=" d-flex align-items-start" id="sdBG">
-      <div class="d-flex flex-column flex-shrink-0 p-3 " id="sideBarPatient">
-        <div className="d-flex justify-content-center">
-          <img src={SideLogo} style={{ width: "13rem" }} alt="Side Logo" />
-        </div>
-        <h5>Welcome {counselorName} </h5>
-        <hr />
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li
-            className={`d-flex justify-content-start ${
-              activeComponent === "default" ? "active" : ""
-            }`}
-          >
-            <button
-              id="hoverPatientList"
-              onClick={() => {
-                setActiveComponent("default");
-              }}
-            >
-              Dashboard
-            </button>
-          </li>
-          <div className="ms-2 mt-1">
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "chat" ? "active" : ""
-              }`}
-            >
-              <button
-                id="hoverPatientList"
-                onClick={() => {
-                  setActiveComponent("chat");
-                }}
-              >
-                Chat
-              </button>
-            </li>
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "ViewPatients" ? "active" : ""
-              }`}
-            >
-              <button
-                id="hoverPatientList"
-                onClick={() => {
-                  setActiveComponent("ViewPatients");
-                }}
-              >
-                View Patients
-              </button>
-            </li>
-
-            <li
-              className={`d-flex justify-content-start ${
-                activeComponent === "Schedule" ? "active" : ""
-              }`}
-            >
-              <button
-                id="hoverPatientList"
-                onClick={() => {
-                  setActiveComponent("Schedule");
-                }}
-              >
-                Schedule
-              </button>
-            </li>
-            <div className="d-flex justify-content-start mt-5">
-              <Link to="/Login" style={{ textDecoration: "none" }}>
-                <button
-                  className="btn rounded-5"
-                  style={{
-                    backgroundColor: "#f5e9cf",
-                    color: "#4d455d",
-                    height: "35px",
-                  }}
-                >
-                  Logout
-                </button>
-              </Link>
-            </div>
-          </div>
-        </ul>
+    <div className="container text-primaryOrange">
+      <div className="pt-3">
+        <p className="font-sans antialiased font-bold text-4xl">
+          Welcome {counselorName}
+        </p>
       </div>
-      <div className="container-fluid">
-        {activeComponent === "default" ? (
-          <>
-            <DefaultCounselorPage />
-          </>
-        ) : activeComponent === "ViewPatients" ? (
-          <>
-            <PatientList />
-          </>
-        ) : activeComponent === "chat" ? (
-          <>
-            <CounselorChat client={client} />
-          </>
-        ) : (
-          activeComponent === "Schedule" && <CounselorScheduler />
-        )}
+      <div className="grid grid-cols-3 grid-flow-col gap-28 pt-4">
+        <div className="grid shadow-md rounded-lg h-40 content-between">
+          <div className="ps-4 pt-2">
+            <UserIcon />
+          </div>
+          <div className="flex-end ps-4 pb-2">
+            <span className="font-bold text-2xl">2802</span>
+            <p className="text-orange-300 font-medium">Number of Patients</p>
+          </div>
+        </div>
+        <div className="grid shadow-md rounded-lg h-40 content-between">
+          <div className="ps-4 pt-2">
+            <UserIcon />
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 grid-flow-col gap-40">
+        <div>
+          <section className="py-1 bg-blueGray-50">
+            <div className="w-full mt-24">
+              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
+                <div className="rounded-t mb-0 px-4 py-3 border-0">
+                  <div className="flex flex-wrap items-center">
+                    <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                      <h3 className="font-bold font-sans text-base text-blueGray-700">
+                        List of Patients
+                      </h3>
+                    </div>
+                    <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                      <button
+                        className="bg-primaryGreen text-white active:bg-primaryOrange text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                      >
+                        See all
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full">
+                  <table className="items-center bg-transparent w-full border-collapse ">
+                    <thead>
+                      <tr>
+                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold font-sans text-left">
+                          Patients Name
+                        </th>
+                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold font-sans text-left">
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                          Patient 1
+                        </th>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                          <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span className="w-2 h-2 me-1 bg-green-600 rounded-full"></span>
+                            <span className="text-primaryOrange text-xs font-bold">
+                              Available
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
+                          Patient 2
+                        </th>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                          <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                            <span className="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
+                            <span className="text-primaryOrange text-xs font-bold">
+                              Unavailable
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div>
+          <section className="py-1 bg-blueGray-50">
+            <div className="w-full mt-24">
+              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
+                <div className="rounded-t mb-0 px-4 py-3 border-0">
+                  <div className="flex flex-wrap items-center">
+                    <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                      <h3 className="font-bold font-sans text-base text-blueGray-700">
+                        Agenda for Today
+                      </h3>
+                    </div>
+                    <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                      <button
+                        className="bg-primaryGreen text-white active:bg-primaryOrange text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                      >
+                        See all
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="block w-full overflow-x-auto">
+                  <table className="items-center bg-transparent w-full border-collapse ">
+                    <thead>
+                      <tr>
+                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold font-sans text-left">
+                          Schedule Name
+                        </th>
+                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold font-sans text-left">
+                          Time
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                          Meeting 1
+                        </th>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                          <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span className="w-2 h-2 me-1 bg-green-600 rounded-full"></span>
+                            <span className="text-primaryOrange text-xs font-bold">
+                              Available
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
+                          Meeting 2
+                        </th>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                          <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                            <span className="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
+                            <span className="text-primaryOrange text-xs font-bold">
+                              Unavailable
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );
 }
+
+export default CounselorDashboard;
