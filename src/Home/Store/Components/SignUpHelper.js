@@ -68,7 +68,8 @@ async function updateCounselorAndAssignPatient(
   await setDoc(
     patientRef,
     {
-      counselorID: counselorDoc.data().UID,
+      counselorUID: counselorDoc.data().UID,
+      counselorID: counselorDoc.id,
     },
     { merge: true }
   );
@@ -77,7 +78,8 @@ async function updateCounselorAndAssignPatient(
     ...data,
     UID: patientUID,
     Role: "Patient",
-    counselorID: counselorDoc.data().UID,
+    counselorID: counselorDoc.id,
+    counselorUID: counselorDoc.data().UID,
     password: password,
     ProfPic: null,
     dateCreated: new Date().toISOString().split("T")[0],
