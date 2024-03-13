@@ -105,7 +105,59 @@ async function updateCounselorAndAssignPatient(
   };
 
   console.log("New Intake Form:", newIntake);
+
   await addDoc(intakeRef, newIntake);
+  // Add the appointment
+  const appointmentsRef = collection(firestore, "Appointments");
+
+  // Find available time for the counselor with less than 5 Appointments
+  const counselorAppointmentsQuery = query(
+    appointmentsRef,
+    where("counselorUID", "==", counselorDoc.data().UID),
+    where("start", ">=", new Date())
+  );
+
+  const counselorAppointmentsSnapshot = await getDocs(
+    counselorAppointmentsQuery
+  );
+  let availableTime = new Date();
+  let appointmentCount = counselorAppointmentsSnapshot.size;
+
+  counselorAppointmentsSnapshot.forEach(() => {
+    if (appointmentCount < 5) {
+      availableTime.setHours(availableTime.getHours() + 1); // Move to the next hour
+      appointmentCount++;
+    }
+  });
+
+  // Ensure that the start time is at least the day after
+  const oneDayInMillis = 24 * 60 * 60 * 1000;
+  const tomorrow = new Date(availableTime.getTime() + oneDayInMillis);
+  availableTime = new Date(
+    Math.max(availableTime.getTime(), tomorrow.getTime())
+  );
+
+  // Set the start time to the next available day at 10 am
+  availableTime.setHours(10, 0, 0, 0);
+
+  // Ensure the end time is no later than 9 pm
+  const maxEndTime = new Date(availableTime);
+  maxEndTime.setHours(21, 0, 0, 0);
+
+  const startTimestamp = availableTime.getTime();
+  const endTimestamp = Math.min(startTimestamp + 3600000, maxEndTime.getTime()); // 1 hour later or 9 pm, whichever is earlier
+
+  const newAppointment = {
+    counselorUID: counselorDoc.data().UID,
+    patient: patientUID,
+    status: "Plotted",
+    title: "First Session",
+    start: new Date(startTimestamp),
+    end: new Date(endTimestamp),
+  };
+
+  console.log("New Appointment:", newAppointment);
+  await addDoc(appointmentsRef, newAppointment);
 }
 
 export async function upload(data, formData) {
