@@ -1,19 +1,21 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   collection,
   getDocs,
-  where,
   query,
+  where,
+  doc,
+  getDoc,
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 import { PatientInfo } from "./PatientInfo";
 import { getAuth } from "firebase/auth";
 import { Pagination } from "react-bootstrap";
-import "../../css/PatientList.css";
+import "../../css/AllPatients.css";
 
 //!Main App Render
-export const PatientList = () => {
+function PatientList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
@@ -135,10 +137,8 @@ export const PatientList = () => {
   //!Pagination
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const patientsPerPage = 10; // Change this to your preferred number of patients per page
-
-  // Calculate the index of the first and last patient for the current page
-  const indexOfLastPatient = currentPage * patientsPerPage;
+  const patientsPerPage = 5;
+  const indexOfLastPatient = (currentPage - 1) * patientsPerPage;
   const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
   const currentPatients = filteredPatientsData.slice(
     indexOfFirstPatient,
@@ -169,26 +169,19 @@ export const PatientList = () => {
   };
   return (
     <div
-      className="container-lg mt-5 pb-3 rounded-4 fw-normal d-flex justify-content-center"
-      id="cardAllPatientBG"
+      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
+      id="AllPatientForm"
     >
       <div className="container-fluid">
         <div className="row">
-          {/*Dont remove this col */}
-          <div className="col"></div>
-          <div className="col-6">
-            <h2
-              className="text-center mt-4 mb-4"
-              style={{ fontSize: 30 + "px" }}
-            >
-              All Patient List
-            </h2>
+          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
+            <h1 className="mt-2 ms-5 ps-5">All Patient List</h1>
           </div>
-          <div className="col">
+          <div className="col-3 col-sm-3 mb-3">
             <div className="input-group mt-4">
               <input
                 type="text"
-                placeholder="Search Patient Name:"
+                placeholder="Search Patients Name:"
                 value={searchQuery}
                 onChange={handleSearch}
                 aria-describedby="search"
@@ -197,7 +190,6 @@ export const PatientList = () => {
             </div>
           </div>
         </div>
-        <div className="col"></div>
         <div className="d-flex flex-column">
           <div className="flex-grow-1">
             <table className="table table-dark table-hover" style={tableStyle}>
@@ -237,6 +229,13 @@ export const PatientList = () => {
                             />
                           )}
                         </button>
+                        <PatientInfo
+                          show={show}
+                          onHide={handleClose}
+                          patientData={selectedPatientData}
+                          intakeFormsData={selectedIntakeFormsData}
+                          selectedPatientUID={selectedPatientUID}
+                        />
                       </td>
                       <td>{patient.firstName}</td>
                       <td>{patient.dateCreated}</td>
@@ -248,33 +247,26 @@ export const PatientList = () => {
         </div>
         <Pagination>
           <Pagination.Prev
-            onClick={handlePreviousClick}
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           />
           {Array.from({ length: totalPages }).map((_, index) => (
             <Pagination.Item
-              key={index + 1}
-              active={index + 1 === currentPage}
-              onClick={() => paginate(index + 1)}
+              key={index}
+              active={currentPage === index + 1}
+              onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}
             </Pagination.Item>
           ))}
           <Pagination.Next
-            onClick={handleNextClick}
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           />
         </Pagination>
-        {show && (
-          <PatientInfo
-            show={show}
-            onHide={handleClose}
-            patientData={selectedPatientData}
-            intakeFormsData={selectedIntakeFormsData}
-            selectedPatientUID={selectedPatientUID}
-          />
-        )}
       </div>
     </div>
   );
 };
+
+export default PatientList;
