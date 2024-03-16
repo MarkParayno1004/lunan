@@ -15,10 +15,15 @@ module.exports = {
       spacing: {
         128: "62rem",
       },
+      width: {
+        128: "90rem",
+      },
       height: {
         128: "34rem",
         129: "80vh",
         130: "32rem",
+        chatHeight: "94vh",
+        131: "80vh",
       },
     },
   },
