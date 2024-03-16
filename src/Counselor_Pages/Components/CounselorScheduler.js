@@ -335,7 +335,7 @@ const CounselorScheduler = () => {
                 <option value="">Select a patient</option>
                 {filteredPatientsData.map((patient) => (
                   <option key={patient.UID} value={patient.UID}>
-                    {patient.firstName}
+                    {patient.Fname}
                   </option>
                 ))}
               </Form.Select>
