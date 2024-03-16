@@ -224,9 +224,9 @@ function SupervisorChatComponent() {
         <div className="flex flex-row h-full w-full overflow-x-hidden">
           <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-primaryGreen rounded-s-lg flex-shrink-0">
             <div className="flex flex-row items-center justify-start h-12 w-full">
-              <div className="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10">
+              <div className="flex items-center justify-center rounded-2xl text-primaryGreen bg-orange-400 h-10 w-10">
                 <svg
-                  className="w-6 h-6"
+                  className="w-6 h-6" // Change the color to blue-500
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -246,7 +246,7 @@ function SupervisorChatComponent() {
             <div className="flex flex-col mt-8">
               <div className="flex flex-row items-center justify-between text-xs">
                 <span className="font-bold">Active Conversations</span>
-                <span className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full font-mono">
+                <span className="flex items-center justify-center bg-orange-200 h-4 w-4 rounded-full font-mono ">
                   {totalNumberPatient}
                 </span>
               </div>
@@ -293,12 +293,14 @@ function SupervisorChatComponent() {
                       <div
                         key={message.id}
                         className={`col-start-1 col-end-8 p-3 rounded-lg flex ${
-                          message.user === "Admin" ? "flex-row-reverse" : ""
+                          message.user === "Admin's Name"
+                            ? "flex-row-reverse"
+                            : ""
                         }`}
                       >
                         <div className="flex flex-col">
                           <div className="flex items-start">
-                            {message.user !== "Admin" && (
+                            {message.user !== "Admin's Name" && (
                               // icon for non-admin users floating to the left
                               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0 mr-3">
                                 <div className="font-mono font-semibold text-sm">
@@ -309,7 +311,7 @@ function SupervisorChatComponent() {
                             <div className="relative text-sm bg-white py-2 px-4 shadow rounded-xl ">
                               <div className="">{message.text}</div>
                             </div>
-                            {message.user === "Admin" && (
+                            {message.user === "Admin's Name" && (
                               // icon for admin users floating to the right
                               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0 ml-3">
                                 <div className="font-mono font-semibold text-sm">
@@ -340,7 +342,7 @@ function SupervisorChatComponent() {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <button className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                  <button className="flex items-center justify-center bg-primaryOrange hover:bg-orange-300 rounded-xl text-white px-4 py-1 flex-shrink-0">
                     <span>Send</span>
                     <span className="ml-2">
                       <svg
