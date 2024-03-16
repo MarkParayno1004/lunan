@@ -99,11 +99,6 @@ function SupervisorAllPatientsComponent() {
 
     setFilteredPatientsData(filteredPatients);
   };
-
-  const fetchImageUrl = (imageUrl) => {
-    return imageUrl;
-  };
-
   const handleSelectPatient = (UID) => {
     setSelectedPatientUID(UID);
     setShowPatientInfo(true);
@@ -161,108 +156,87 @@ function SupervisorAllPatientsComponent() {
     setCurrentPage(newPage);
   };
 
-  //!Table style
-  const tableStyle = {
-    height: "650px", // Set the desired height
-    overflow: "auto", // Add scrollbars when content overflows
-  };
   return (
-    <div
-      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
-      id="AllPatientForm"
-    >
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
-            <h1 className="mt-2 ms-5 ps-5">All Patient List</h1>
-          </div>
-          <div className="col-3 col-sm-3 mb-3">
-            <div className="input-group mt-4">
-              <input
-                type="text"
-                placeholder="Search Patients Name:"
-                value={searchQuery}
-                onChange={handleSearch}
-                aria-describedby="search"
-                className="w-25 form-control"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="d-flex flex-column">
-          <div className="flex-grow-1">
-            <table className="table table-dark" style={tableStyle}>
-              <thead>
-                <tr>
-                  <th scope="col">Picture</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Date Added</th>
-                  <th scope="col">Counselor</th>
+    <div className="container flex justify-center items-center h-chatHeight w-128 bg-primaryGreen">
+      <div className="w-full bg-white">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Patients Name:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Registered Date:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Counselor:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  View Profile:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentPatientsData.map((patient) => (
+                <tr
+                  key={patient.UID}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {patient.firstName}
+                  </th>
+                  <td className="px-6 py-4">{patient.dateCreated}</td>
+                  <td className="px-6 py-4">
+                    {counselorNames[patient.counselorID] || "N/A"}
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={() => {
+                        handleSelectPatient(patient.UID);
+                        handleShow(patient.UID);
+                      }}
+                    >
+                      See Profile
+                    </button>
+                    <SupervisorPatientInfoComponent
+                      show={show}
+                      onHide={handleClose}
+                      patientData={selectedPatientData}
+                      intakeFormsData={selectedIntakeFormsData}
+                      selectedPatientUID={selectedPatientUID}
+                    />
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {currentPatientsData.map((patient) => (
-                  <tr key={patient.UID}>
-                    <td>
-                      <button
-                        style={{ border: "none", background: "none" }}
-                        onClick={() => {
-                          handleSelectPatient(patient.UID);
-                          handleShow(patient.UID);
-                        }} // Pass the patient's UID
-                      >
-                        {patient.ProfPic ? (
-                          <img
-                            src={fetchImageUrl(patient.ProfPic)}
-                            alt={patient.firstName}
-                            width="100"
-                            height="100"
-                          />
-                        ) : (
-                          <img
-                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                            alt={patient.firstName}
-                            width="100"
-                            height="100"
-                          />
-                        )}
-                      </button>
-                      <SupervisorPatientInfoComponent
-                        show={show}
-                        onHide={handleClose}
-                        patientData={selectedPatientData}
-                        intakeFormsData={selectedIntakeFormsData}
-                        selectedPatientUID={selectedPatientUID}
-                      />
-                    </td>
-                    <td>{patient.firstName}</td>
-                    <td>{patient.dateCreated}</td>
-                    <td>{counselorNames[patient.counselorID] || "N/A"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+              <div>
+                <Pagination>
+                  <Pagination.Prev
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  />
+                  {[...Array(totalPages)].map((_, index) => (
+                    <Pagination.Item
+                      key={index}
+                      active={currentPage === index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                    >
+                      {index + 1}
+                    </Pagination.Item>
+                  ))}
+                  <Pagination.Next
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  />
+                </Pagination>
+              </div>
+            </tbody>
+          </table>
         </div>
-        <Pagination>
-          <Pagination.Prev
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
-          {[...Array(totalPages)].map((_, index) => (
-            <Pagination.Item
-              key={index}
-              active={currentPage === index + 1}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
       </div>
     </div>
   );
