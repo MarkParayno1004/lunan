@@ -65,14 +65,14 @@ async function updateCounselorAndAssignPatient(
   });
 
   const patientRef = doc(firestore, "Users", patientUID);
-  await setDoc(
-    patientRef,
-    {
-      counselorUID: counselorDoc.data().UID,
-      counselorID: counselorDoc.id,
-    },
-    { merge: true }
-  );
+  // await setDoc(
+  //   patientRef,
+  //   {
+  //     counselorUID: counselorDoc.data().UID,
+  //     counselorID: counselorDoc.id,
+  //   },
+  //   { merge: true }
+  // );
 
   const newUser = {
     ...data,
