@@ -4,7 +4,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 
 export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
   const [localFormData, setLocalFormData] = useState({
-    Fname: "",
+    firstName: "",
     Age: "",
     BirthDate: "",
     Gender: "",
@@ -107,11 +107,11 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
             <input
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               type="text"
-              name="Fname"
+              name="firstName"
               placeholder="Full Name:"
               pattern="^[a-zA-Z0-9 ]+$"
               onChange={handleInputChange}
-              value={localFormData.Fname}
+              value={localFormData.firstName}
               required
             />
           </div>
