@@ -13,7 +13,7 @@ import { ViewWellnessGuide } from "../Modals/ViewWellnessGuide";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 
-export const PatientInfo = (props) => {
+function PatientInfo(props) {
   const patientData = props.patientData;
   const intakeFormsData = props.intakeFormsData;
   //!View Assignment Modal Behaviour
@@ -858,3 +858,5 @@ export const PatientInfo = (props) => {
     </Modal>
   );
 };
+
+export default PatientInfo;
