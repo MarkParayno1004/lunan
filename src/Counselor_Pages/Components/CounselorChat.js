@@ -338,12 +338,14 @@ const ChatMessage = ({ room }) => {
 
     // Retrieve the user's first name from the 'Users' collection based on their UID
     const userFirstName = await getUserFirstName(auth.currentUser.uid);
+    const userRole = await getRoles(auth.currentUser.uid);
 
     await addDoc(messagesRef, {
       text: newMessage,
       createdAt: serverTimestamp(),
       user: userFirstName,
       room,
+      role: userRole,
     });
 
     setNewMessage("");
@@ -360,7 +362,27 @@ const ChatMessage = ({ room }) => {
 
       if (!userQuerySnapshot.empty) {
         const userData = userQuerySnapshot.docs[0].data();
-        return userData.firstName;
+        return userData.role;
+      } else {
+        return "Unknown User";
+      }
+    } catch (error) {
+      console.error("Error fetching user's first name:", error);
+      return "Error Fetching Name";
+    }
+  };
+
+  const getRoles = async (uid) => {
+    try {
+      const userQuery = query(
+        collection(firestore, "Users"),
+        where("UID", "==", uid)
+      );
+      const userQuerySnapshot = await getDocs(userQuery);
+
+      if (!userQuerySnapshot.empty) {
+        const userData = userQuerySnapshot.docs[0].data();
+        return userData.Role;
       } else {
         return "Unknown User";
       }
