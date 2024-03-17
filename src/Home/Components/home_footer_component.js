@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <>
+    <div>
       <footer>
         <nav className="bg-primaryGreen r px-4 lg:px-6 py-2.5 pt-12 ">
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -59,7 +59,7 @@ function Footer() {
           </div>
         </nav>
       </footer>
-    </>
+    </div>
   );
 }
 
