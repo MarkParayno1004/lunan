@@ -246,7 +246,7 @@ function SupervisorChatComponent() {
         <div className="flex flex-row h-full w-full overflow-x-hidden">
           <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-primaryGreen rounded-s-lg flex-shrink-0">
             <div className="flex flex-row items-center justify-start h-12 w-full">
-              <div className="flex items-center justify-center rounded-2xl text-primaryGreen bg-orange-400 h-10 w-10">
+              <div className="flex items-center justify-center rounded-2xl text-primaryOrange bg-white h-10 w-10">
                 <svg
                   className="w-6 h-6" // Change the color to blue-500
                   fill="none"

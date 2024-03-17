@@ -159,7 +159,7 @@ function SupervisorAllPatientsComponent() {
     <div className="flex justify-center items-center h-chatHeight">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen py-10 h-131 w-128">
         <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
-          <div className="flex items-center justify-center rounded-2xl text-primaryGreen bg-orange-400 h-10 w-10">
+          <div className="flex items-center justify-center rounded-2xl text-primaryOrange bg-white h-10 w-10">
             <ListIcon />
           </div>
           <span className="ms-1 text-3xl font-bold mb-1 text-black">
@@ -167,7 +167,7 @@ function SupervisorAllPatientsComponent() {
           </span>
         </div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 h-full">
-          <thead className="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-sm text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3 rounded-ss-lg">
                 Patients Name:
@@ -201,7 +201,7 @@ function SupervisorAllPatientsComponent() {
                 </td>
                 <td className="px-6 py-4">
                   <button
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    className="font-medium text-primaryOrange hover:underline"
                     onClick={() => {
                       handleSelectPatient(patient.UID);
                       handleShow(patient.UID);
