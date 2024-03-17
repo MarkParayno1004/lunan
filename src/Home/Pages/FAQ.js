@@ -8,13 +8,13 @@ export default function FAQ() {
         <div className="container mt-20 mb-20">
           <section className="bg-primaryGreen rounded-3xl">
             <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
-              <h2 className="mb-8 text-4xl tracking-tight font-extrabold text-white">
+              <h2 className="mb-8 text-4xl tracking-tight font-extrabold">
                 Frequently asked questions
               </h2>
               <div className="grid pt-8 text-left border-t md:gap-16 md:grid-cols-2">
                 <div>
                   <div className="mb-10">
-                    <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                    <h3 className="flex items-center mb-4 text-lg font-medium">
                       <svg
                         className="flex-shrink-0 mr-2 w-5 h-5 "
                         fill="currentColor"
@@ -27,13 +27,39 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      What do you mean by `Figma assets`?
+                      Who will be helping me?
                     </h3>
-                    <p className="text-white">
-                      You will have access to download the full Figma project
-                      including all of the pages, the components, responsive
-                      pages, and also the icons, illustrations, and images
-                      included in the screens.
+                    <p className="font-medium">
+                      You will first be onboarded by virtual admin assistants
+                      who will answer your queries (if there are any) about the
+                      services. When the process of sign-up is finished, you
+                      will be matched with a therapist who are drawn from the
+                      pool of consultants while considering your preference.
+                    </p>
+                  </div>
+                  <div className="mb-10">
+                    <h3 className="flex items-center mb-4 text-lg font-medium ">
+                      <svg
+                        className="flex-shrink-0 mr-2 w-5 h-5 "
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                      Who are the therapists?
+                    </h3>
+                    <p className="font-medium">
+                      The pool of therapists is trained in dealing with various
+                      psychosocial issues including grief, trauma, depression,
+                      anxiety and others using Integrative Psychotherapy
+                      Framework. The therapists are also trained in the
+                      bio-psycho-social model to make sure that interventions
+                      are holistic and evidence-based.
                     </p>
                   </div>
                   <div className="mb-10">
@@ -50,12 +76,11 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      What does lifetime access exactly mean?
+                      Is Lunan right for me?
                     </h3>
-                    <p className="text-white">
-                      Once you have purchased either the design, code, or both
-                      packages, you will have access to all of the future
-                      updates based on the roadmap, free of charge.
+                    <p className="font-medium">
+                      Yes. It aims to become a user-friendly app and website for
+                      seeking mental health services.
                     </p>
                   </div>
                   <div className="mb-10">
@@ -72,48 +97,13 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      How does support work?
+                      Can Lunan substitute for traditional face-to-face therapy?
                     </h3>
-                    <p className="text-white">
-                      Were aware of the importance of well qualified support,
-                      that is why we decided that support will only be provided
-                      by the authors that actually worked on this project.
-                    </p>
-                    <p className="text-white">
-                      Feel free to{" "}
-                      <a
-                        href="#"
-                        className="font-medium underline text-primary-600 dark:text-primary-500 hover:no-underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        contact us
-                      </a>
-                      and well help you out as soon as we can.
-                    </p>
-                  </div>
-                  <div className="mb-10">
-                    <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
-                      <svg
-                        className="flex-shrink-0 mr-2 w-5 h-5 "
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                      I want to build more than one project. Is that allowed?
-                    </h3>
-                    <p className="text-white">
-                      You can use Windster for an unlimited amount of projects,
-                      whether its a personal website, a SaaS app, or a website
-                      for a client. As long as you dont build a product that
-                      will directly compete with Windster either as a UI kit,
-                      theme, or template, its fine.
+                    <p className="font-medium">
+                      Studies have shown that teleconsultation is as effective
+                      as traditional face-to-face for many clients attending
+                      primary care and mental health services. Clients’
+                      preference will be considered in matching with therapists.
                     </p>
                   </div>
                 </div>
@@ -132,19 +122,13 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      What does free updates include?
+                      How will I communicate with my therapist?
                     </h3>
-                    <p className="text-white">
-                      The free updates that will be provided is based on the{" "}
-                      <a
-                        href="#"
-                        className="font-medium underline text-primary-600 dark:text-primary-500 hover:no-underline"
-                      >
-                        roadmap
-                      </a>
-                      that we have laid out for this project. It is also
-                      possible that we will provide extra updates outside of the
-                      roadmap as well.
+                    <p className="font-medium">
+                      You will onboarded by the admin assistant with your
+                      therapist through email or Viber. Lunan will also have a
+                      chat function where you can directly message your
+                      therapist.
                     </p>
                   </div>
                   <div className="mb-10">
@@ -161,23 +145,12 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      What does the free version include?
+                      I signed up. How long until I'm matched with a therapist?
                     </h3>
-                    <p className="text-white">
-                      The
-                      <a
-                        href="#"
-                        className="font-medium underline text-primary-600 dark:text-primary-500 hover:no-underline"
-                      >
-                        free version
-                      </a>
-                      of Windster includes a minimal style guidelines, component
-                      variants, and a dashboard page with the mobile version
-                      alongside it.
-                    </p>
-                    <p className="text-white">
-                      You can use this version for any purposes, because it is
-                      open-source under the MIT license.
+                    <p className="font-medium">
+                      It usually takes 3 days to 7 days before you get matched
+                      to a therapist. Depends on the bulk of clients, sometimes
+                      the matching takes 2 weeks or more.
                     </p>
                   </div>
                   <div className="mb-10">
@@ -194,18 +167,11 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      What is the difference between Windster and Tailwind UI?
+                      Is lunan accessible for disabled users?
                     </h3>
-                    <p className="text-white">
-                      Although both Windster and Tailwind UI are built for
-                      integration with Tailwind CSS, the main difference is in
-                      the design, the pages, the extra components and UI
-                      elements that Windster includes.
-                    </p>
-                    <p className="text-white">
-                      Additionally, Windster is a project that is still in
-                      development, and later it will include both the
-                      application, marketing, and e-commerce UI interfaces.
+                    <p className="font-medium">
+                      Definitely. Lunan is designed to accommodate
+                      differentially abled clients.
                     </p>
                   </div>
                   <div className="mb-10">
@@ -222,27 +188,35 @@ export default function FAQ() {
                           clipRule="evenodd"
                         ></path>
                       </svg>
-                      Can I use Windster in open-source projects?
+                      What is the role of Lunan?
                     </h3>
-                    <p className="text-white">
-                      Generally, it is accepted to use Windster in open-source
-                      projects, as long as it is not a UI library, a theme, a
-                      template, a page-builder that would be considered as an
-                      alternative to Windster itself.
+                    <p className="font-medium">
+                      Lunan becomes a platform for sign-up, data storage,
+                      scheduling of appointments, resource links, monitoring of
+                      the efficacy of intervention and areas for improvement.
                     </p>
-                    <p className="text-white">
-                      With that being said, feel free to use this design kit for
-                      your open-source projects.
-                    </p>
-                    <p className="text-white">
-                      Find out more information by{" "}
-                      <a
-                        href="#"
-                        className="font-medium underline text-primary-600 dark:text-primary-500 hover:no-underline"
+                  </div>
+                  <div className="mb-10">
+                    <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg
+                        className="flex-shrink-0 mr-2 w-5 h-5 "
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        reading the license
-                      </a>
-                      .
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                      How can I be sure that this is an effective form of
+                      therapy?
+                    </h3>
+                    <p className="font-medium">
+                      Pilot evaluation of Lunan was conducted among former
+                      clients and pipeline partners to make sure that it is
+                      user-friendly and clinically sound.
                     </p>
                   </div>
                 </div>
