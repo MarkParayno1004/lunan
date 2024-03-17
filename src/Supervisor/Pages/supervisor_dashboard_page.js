@@ -2,7 +2,6 @@ import { useState } from "react";
 import { DashboardLogo } from "../../assets/images";
 import "../../css/SupervisorDashboard.css";
 import SupervisorAllPatientsComponent from "../Components/supervisor_all_patients_component";
-import SupervisorNewPatientsComponent from "../Components/supervisor_new_patients_component";
 import SupervisorAllCounselorComponent from "../Components/supervisor_all_counselor_component";
 import SupervisorChatComponent from "../Components/supervisor_chat_component";
 import SupervisorDashboardComponent from "../Components/supervisor_dashboard_component";
@@ -100,25 +99,6 @@ function SupervisorDashboardPage() {
                 </span>
               </button>
             </li>
-            <li className="rounded-lg hover:bg-gray-100 group">
-              <button
-                className="flex items-center p-2"
-                onClick={() => setActiveComponent("NewPatientsComponent")}
-              >
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-green-200 transition duration-500 group-hover:text-primaryOrange"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 18"
-                >
-                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span className="flex-1 ms-3 text-slate-50 transition duration-500 group-hover:text-primaryOrange">
-                  New Patients
-                </span>
-              </button>
-            </li>
           </ul>
         </div>
       </aside>
@@ -133,8 +113,6 @@ function SupervisorDashboardPage() {
               return <SupervisorAllPatientsComponent />;
             } else if (activeComponent === "AllCounselorsComponent") {
               return <SupervisorAllCounselorComponent />;
-            } else if (activeComponent === "NewPatientsComponent") {
-              return <SupervisorNewPatientsComponent />;
             }
           })()}
         </div>
