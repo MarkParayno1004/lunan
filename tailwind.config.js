@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const withMT = require("@material-tailwind/html/utils/withMT");
+module.exports = withMT({
   darkMode: ["class"],
 
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
+    "/index.html",
   ],
   theme: {
     extend: {
@@ -28,4 +30,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+});

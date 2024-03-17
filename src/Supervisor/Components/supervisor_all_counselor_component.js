@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Modal, Pagination } from "react-bootstrap";
-import "../../css/AllCounselors.css";
+import { AddIcon, ListIcon } from "../../assets/images";
 import {
   collection,
-  doc,
-  updateDoc,
-  getDoc,
   query,
   where,
   onSnapshot,
   getDocs,
 } from "firebase/firestore";
-import { firestore, storage } from "../../firebase/firebase-config";
-import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { firestore } from "../../firebase/firebase-config";
 import {
   fetchCounselorData,
   handleRemove,
-  handleSubmitAdd,
   handleAddSuccess,
   addCounselorToData,
 } from "../Data/supervisor_all_counselors_helper";
 import SupervisorCounselorInfoComponent from "./supervisor_counselor_info_component";
+import SupervisorAddCounselorModalComponent from "./supervisor_add_counselor_modal_component";
+import SupervisorEditCounselorModalComponent from "./supervisor_edit_counselor_modal_component";
 
 function SupervisorAllCounselorComponent() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -31,7 +27,20 @@ function SupervisorAllCounselorComponent() {
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
+  const [reloadTable, setReloadTable] = useState(false); // Add reloadTable state
 
+  useEffect(() => {
+    const counselorQuery = query(
+      collection(firestore, "Users"),
+      where("Role", "==", "Counselor")
+    );
+
+    const unsubscribe = onSnapshot(counselorQuery, async (snapshot) => {
+      // Your existing code for updating counselorData and filteredCounselorData...
+    });
+
+    return () => unsubscribe();
+  }, [reloadTable]); // Add reloadTable as a dependency
   const handleCounselorSelect = (counselorData) => {
     setSelectedCounselor(counselorData);
     setShowCounselor(true);
@@ -86,6 +95,9 @@ function SupervisorAllCounselorComponent() {
       setEditSuccess(true);
       setShowEdit(false);
 
+      // Trigger table reload by updating reloadTable key
+      setReloadTable(!reloadTable);
+
       // Fetch updated data from Firestore
       await fetchCounselorData();
     } catch (error) {
@@ -130,178 +142,225 @@ function SupervisorAllCounselorComponent() {
   const handleShowCounselor = () => setShowCounselor(true);
   const handleCloseCounselor = () => setShowCounselor(false);
 
-  //!Pagination
-  // Step 1: Define the number of items to display per page
-  const itemsPerPage = 5; // You can change this value as needed
-
-  // Step 2: Create a state variable for the current page number
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Step 3: Calculate the start and end index for the current page
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  // Step 4: Update the component to display data for the current page
-  const currentCounselorData = filteredCounselorData.slice(
-    startIndex,
-    endIndex
-  );
-
-  // Step 5: Create pagination buttons to navigate between pages
-  const totalPages = Math.ceil(filteredCounselorData.length / itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
   //!Table style
   const tableStyle = {
     height: "650px", // Set the desired height
     overflow: "auto", // Add scrollbars when content overflows
   };
-  return (
-    <div
-      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 mb-3 pb-3"
-      id="counselorForm"
-    >
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
-            <h1 className="mt-2 ms-5 ps-5">Counselor List</h1>
-          </div>
-          <div className="col-3 col-sm-3 mb-3">
-            <div className="input-group mt-4">
-              <input
-                type="text"
-                placeholder="Search Counselors Name:"
-                value={searchQuery}
-                onChange={handleSearch}
-                aria-describedby="search"
-                className="w-25 form-control"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="d-flex flex-column">
-          <div className="flex-grow-1">
-            <div className="table-responsive">
-              <table className="table table-dark" style={tableStyle}>
-                <thead>
-                  <tr>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Date Added</th>
-                    <th>Patients</th>
-                    <th>Edit</th>
-                    <th>Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentCounselorData.map((counselor) => (
-                    <tr key={counselor.UID}>
-                      <td>
-                        <button
-                          onClick={() => handleCounselorSelect(counselor)}
-                          style={{ border: "none", background: "none" }}
-                        >
-                          {counselor.ProfPic ? (
-                            <img
-                              src={fetchImageUrl(counselor.ProfPic)}
-                              alt={counselor.firstName}
-                              width="100"
-                              height="100"
-                            />
-                          ) : (
-                            <img
-                              src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                              alt={counselor.firstName}
-                              width="100"
-                              height="100"
-                            />
-                          )}
-                        </button>
-                        {showCouncelor && (
-                          <SupervisorCounselorInfoComponent
-                            show={showCouncelor}
-                            handleClose={handleCloseCounselor}
-                            counselor={selectedCounselor}
-                          />
-                        )}
-                      </td>
-                      <td>{counselor.firstName}</td>
-                      <td>{counselor.dateCreated}</td>
-                      <td>
-                        {counselor.patientsCount !== undefined
-                          ? counselor.patientsCount
-                          : 0}
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleShowEdit(counselor.UID)}
-                          className="rounded-5 fw-medium"
-                          id="editCounselor"
-                        >
-                          Edit
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          id="removeCounselor"
-                          className="rounded-5 fw-medium"
-                          onClick={() => {
-                            handleRemove(
-                              counselor.UID,
-                              setCounselorData,
-                              setFilteredCounselorData
-                            );
-                          }}
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
 
-        {/* Step 5: Create pagination buttons */}
-        <div className="row">
-          <div className="col">
-            <Pagination>
-              <Pagination.Prev
+  //!Pagination
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCounselorData = filteredCounselorData.slice(
+    startIndex,
+    endIndex
+  );
+  const totalPages = Math.ceil(filteredCounselorData.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+  return (
+    <div>
+      <div className="flex justify-center items-center h-chatHeight">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen py-10 h-131 w-128">
+          <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
+            <div className="flex items-center justify-center rounded-2xl text-primaryGreen bg-orange-400 h-10 w-10">
+              <ListIcon />
+            </div>
+            <span className="ms-1 text-3xl font-bold mb-1 text-black">
+              Counselor List
+            </span>
+          </div>
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 h-full">
+            <thead className="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3 rounded-ss-lg">
+                  Patients Name:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Registered Date:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Number of Patients Enrolled:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  View Profile:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Edit Profile:
+                </th>
+                <th scope="col" className="px-6 py-3 rounded-se-lg">
+                  Remove Counselor:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentCounselorData.map((counselor) => (
+                <tr
+                  key={counselor.UID}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
+                  <td className="px-6 py-4">{counselor.firstName}</td>
+                  <td className="px-6 py-4">{counselor.dateCreated}</td>
+                  <td className="px-6 py-4">
+                    {counselor.patientsCount !== undefined
+                      ? counselor.patientsCount
+                      : 0}
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={() => handleCounselorSelect(counselor)}
+                    >
+                      See Profile
+                    </button>
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      className="rounded-xl bg-primaryOrange px-3 py-2 text-white font-medium"
+                      onClick={() => handleShowEdit(counselor.UID)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      className="rounded-xl bg-primaryOrange px-3 py-2 text-white font-medium"
+                      onClick={() => {
+                        handleRemove(
+                          counselor.UID,
+                          setCounselorData,
+                          setFilteredCounselorData
+                        );
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* Pagination */}
+          <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-b-lg">
+            <div className="flex flex-1 justify-between sm:hidden">
+              <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-              />
-              {[...Array(totalPages)].map((_, index) => (
-                <Pagination.Item
-                  key={index}
-                  active={currentPage === index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
+                className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Previous
+              </button>
+              <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-              />
-            </Pagination>
-          </div>
-          <div className="col d-flex justify-content-end">
-            <Button
-              className="btn nav-link fs-5 mt-2 me-3 mb-2 rounded-4 fw-medium"
-              id="buttonCard"
-              onClick={handleShowAdd}
-            >
-              Add
-            </Button>
+                className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Next
+              </button>
+            </div>
+            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-around">
+              <div>
+                <p className="text-sm text-gray-700 ">
+                  <span>Showing</span>
+                  <span className="font-medium ms-1 me-1">
+                    {startIndex + 1}
+                  </span>
+                  <span>to</span>
+                  <span className="font-medium ms-1 me-1">
+                    {Math.min(endIndex, filteredCounselorData.length)}
+                  </span>
+                  <span>of</span>
+                  <span className="font-medium ms-1 me-1">
+                    {filteredCounselorData.length}
+                  </span>
+                  <span>results</span>
+                </p>
+              </div>
+
+              <div>
+                <nav
+                  className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                  aria-label="Pagination"
+                >
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  >
+                    <span className="sr-only">Previous</span>
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                        index + 1 === currentPage
+                          ? "bg-primaryOrange text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  >
+                    <span className="sr-only">Next</span>
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </nav>
+              </div>
+              <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
+                <div className="flex items-center justify-center rounded-2xl text-primaryGreen h-10 w-10 cursor-pointer">
+                  <button onClick={() => handleShowAdd()}>
+                    <AddIcon />
+                  </button>
+                </div>
+                <span className="ms-1 text-base font-bold mb-1 text-black">
+                  Add Counselor
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <AddModal
+      {showCouncelor && (
+        <SupervisorCounselorInfoComponent
+          show={showCouncelor}
+          handleClose={handleCloseCounselor}
+          counselor={selectedCounselor}
+        />
+      )}
+      <SupervisorAddCounselorModalComponent
         show={showAdd}
         onHide={handleCloseAdd}
         addCounselorToData={addCounselorToData}
@@ -310,7 +369,7 @@ function SupervisorAllCounselorComponent() {
         setFilteredCounselorData={setFilteredCounselorData}
       />
       {editData && (
-        <EditModal
+        <SupervisorEditCounselorModalComponent
           show={showEdit}
           handleClose={handleCloseEdit}
           userId={editData.UID}
@@ -322,302 +381,5 @@ function SupervisorAllCounselorComponent() {
     </div>
   );
 }
-
-const AddModal = (props) => {
-  const [localFormData, setLocalFormData] = useState({
-    firstName: "",
-    ConNum: "",
-    Email: "",
-    ProfPic: null,
-  });
-  const [fileError, setFileError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-
-    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
-      setLocalFormData({
-        ...localFormData,
-        ProfPic: selectedFile,
-      });
-      setFileError("");
-    } else {
-      setLocalFormData({
-        ...localFormData,
-        ProfPic: null,
-      });
-      setFileError("Please select a valid image file (JPEG, PNG, GIF).");
-    }
-  };
-
-  const generateRandomPassword = (length) => {
-    const charset =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let password = "";
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      password += charset.charAt(randomIndex);
-    }
-
-    return password;
-  };
-
-  const uploadImage = async (file) => {
-    try {
-      const storageRef = ref(storage, `user_photos/${file.name}`);
-
-      const metadata = {
-        contentType: file.type,
-      };
-
-      const snapshot = await uploadBytes(storageRef, file, metadata);
-
-      const downloadURL = await getDownloadURL(snapshot.ref);
-
-      return downloadURL;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      throw error;
-    }
-  };
-
-  return (
-    <Modal
-      className="container-fluid"
-      show={props.show}
-      onHide={props.onHide}
-      style={{ border: "none", color: "white" }}
-    >
-      <Modal.Body id="BGmodal">
-        <Modal.Header className="mb-3" closeButton>
-          <Modal.Title>Add Counselor</Modal.Title>
-        </Modal.Header>
-        <Form
-          onSubmit={(event) =>
-            handleSubmitAdd(
-              event,
-              setLoading,
-              localFormData,
-              handleAddSuccess,
-              props.onHide, // Pass props.onHide to close the modal
-              props.setCounselorData, // Pass props.setCounselorData
-              props.setFilteredCounselorData, // Pass props.setFilteredCounselorData
-              props.addCounselorToData
-            )
-          }
-        >
-          {/* Name */}
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="firstName"
-              value={localFormData.firstName}
-              onChange={(event) =>
-                setLocalFormData({
-                  ...localFormData,
-                  firstName: event.target.value,
-                })
-              }
-              required
-            />
-          </Form.Group>
-
-          {/* Picture */}
-          <Form.Group className="mt-3">
-            <Form.Control
-              type="file"
-              accept="image/*"
-              name="ProfPic"
-              onChange={handleFileChange}
-            />
-            <Form.Text className="text-danger">{fileError}</Form.Text>
-          </Form.Group>
-
-          {/* Contact Number */}
-          <Form.Group>
-            <Form.Label className="mt-2">Contact Number</Form.Label>
-            <Form.Control
-              type="text"
-              name="ConNum"
-              value={localFormData.ConNum}
-              onChange={(event) =>
-                setLocalFormData({
-                  ...localFormData,
-                  ConNum: event.target.value,
-                })
-              }
-              required
-            />
-          </Form.Group>
-
-          {/* Email */}
-          <Form.Group>
-            <Form.Label className="mt-2">Email</Form.Label>
-            <Form.Control
-              type="text"
-              name="Email"
-              value={localFormData.Email}
-              onChange={(event) =>
-                setLocalFormData({
-                  ...localFormData,
-                  Email: event.target.value,
-                })
-              }
-              required
-            />
-          </Form.Group>
-
-          <Modal.Footer className="mt-3">
-            {loading ? (
-              <Button
-                variant="primary"
-                className="rounded-5 fw-medium"
-                disabled
-              >
-                Adding...
-              </Button>
-            ) : (
-              <Button
-                variant="primary"
-                type="submit"
-                className="rounded-5 fw-medium"
-                id="BtnSubmitAC"
-              >
-                Submit
-              </Button>
-            )}
-          </Modal.Footer>
-        </Form>
-      </Modal.Body>
-    </Modal>
-  );
-};
-
-const EditModal = (props) => {
-  const [updateName, setUpdateName] = useState(props.firstName || "");
-  const [file, setFile] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const handleFile = (event) => {
-    const selectedFile = event.target.files[0];
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-
-    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
-      setFile(selectedFile);
-      setError("");
-    } else {
-      setFile(null);
-      setError("Please select a valid image file (JPEG, PNG, GIF).");
-    }
-  };
-
-  const handleUpdateName = (event) => {
-    setUpdateName(event.target.value);
-  };
-
-  const handleSubmitEdit = async (event) => {
-    event.preventDefault();
-    const userAccRef = collection(firestore, "Users");
-
-    try {
-      if (props.userId) {
-        const userDocRef = doc(userAccRef, props.userId);
-        const docSnapshot = await getDoc(userDocRef);
-
-        if (docSnapshot.exists()) {
-          const existingData = docSnapshot.data();
-
-          const updateData = {
-            ...existingData,
-            firstName: updateName,
-          };
-
-          if (file) {
-            const imageUrl = await uploadProfilePicture(props.userId, file);
-            updateData.ProfPic = imageUrl;
-          }
-
-          await updateDoc(userDocRef, updateData);
-
-          console.log("User data updated successfully.");
-          props.onEditSuccess(updateData); // Call the parent component's callback
-        } else {
-          console.log("Document does not exist.");
-        }
-      } else {
-        console.log("Invalid userId.");
-      }
-    } catch (error) {
-      console.error("Firebase Error Code:", error.code);
-      console.error("Error updating user data:", error);
-      setError("Error updating user data.");
-    }
-  };
-
-  const uploadProfilePicture = async (userId, file) => {
-    try {
-      const storageRef = ref(storage, `user_profile_pictures/${userId}`);
-      const snapshot = await uploadBytes(storageRef, file);
-      const imageUrl = await getDownloadURL(snapshot.ref);
-      return imageUrl;
-    } catch (error) {
-      console.error("Error uploading profile picture:", error);
-      throw error;
-    }
-  };
-
-  return (
-    <Modal
-      className="container-fluid"
-      show={props.show}
-      onHide={props.handleClose}
-      style={{ border: "none", color: "white" }}
-    >
-      <Modal.Body id="BGmodal">
-        <Modal.Header className="mb-3" closeButton>
-          <Modal.Title>Edit Counselor</Modal.Title>
-        </Modal.Header>
-        <Form onSubmit={handleSubmitEdit}>
-          {/* Name */}
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="firstName"
-              value={updateName}
-              onChange={handleUpdateName}
-            />
-          </Form.Group>
-
-          {/* Picture */}
-          <Form.Group className="mt-3">
-            <Form.Control
-              type="file"
-              accept="image/*"
-              name="ProfPic"
-              onChange={handleFile}
-            />
-            <Form.Text className="text-danger">{error}</Form.Text>
-          </Form.Group>
-
-          <Modal.Footer className="mt-3">
-            <Button
-              variant="primary"
-              type="submit"
-              className=" rounded-5 fw-medium"
-              id="BtnSubmitAC"
-            >
-              Submit
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal.Body>
-    </Modal>
-  );
-};
 
 export default SupervisorAllCounselorComponent;
