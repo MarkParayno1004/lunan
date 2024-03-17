@@ -110,16 +110,16 @@ export const handleRemove = async (
     const counselorDocRef = doc(userAccRef, UID);
 
     const confirmationResult = await Swal.fire({
-      position: "top",
+      position: "center",
       title: "Are you sure?",
-      background: "#7db9b6",
-      color: "#FFFFFF",
+      color: "#000000",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#037d50",
+      cancelButtonColor: "#F1A34F",
       confirmButtonText: "Yes, delete it!",
+      iconColor: "#FF7F7F",
     });
 
     if (confirmationResult.isConfirmed) {

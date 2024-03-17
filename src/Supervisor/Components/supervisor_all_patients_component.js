@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase/firebase-config";
-import { Pagination } from "react-bootstrap";
 import "../../css/AllPatients.css";
 import {
   collection,
@@ -12,6 +11,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import SupervisorPatientInfoComponent from "./supervisor_patient_info_component";
+import { ListIcon } from "../../assets/images";
 
 function SupervisorAllPatientsComponent() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -157,160 +157,161 @@ function SupervisorAllPatientsComponent() {
   };
   return (
     <div className="flex justify-center items-center h-chatHeight">
-      <div className="w-128">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen px-10 py-10">
-          <p className="text-2xl font-sans font-semibold text-white">
-            Patients List:
-          </p>
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Patients Name:
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen py-10 h-131 w-128">
+        <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
+          <div className="flex items-center justify-center rounded-2xl text-primaryGreen bg-orange-400 h-10 w-10">
+            <ListIcon />
+          </div>
+          <span className="ms-1 text-3xl font-bold mb-1 text-black">
+            Patients List
+          </span>
+        </div>
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 h-full">
+          <thead className="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3 rounded-ss-lg">
+                Patients Name:
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Registered Date:
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Counselor:
+              </th>
+              <th scope="col" className="px-6 py-3 rounded-se-lg">
+                View Profile:
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentPatientsData.map((patient) => (
+              <tr
+                key={patient.UID}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {patient.firstName}
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Registered Date:
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Counselor:
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  View Profile:
-                </th>
+                <td className="px-6 py-4">{patient.dateCreated}</td>
+                <td className="px-6 py-4">
+                  {counselorNames[patient.counselorID] || "N/A"}
+                </td>
+                <td className="px-6 py-4">
+                  <button
+                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    onClick={() => {
+                      handleSelectPatient(patient.UID);
+                      handleShow(patient.UID);
+                    }}
+                  >
+                    See Profile
+                  </button>
+                  <SupervisorPatientInfoComponent
+                    show={show}
+                    onHide={handleClose}
+                    patientData={selectedPatientData}
+                    intakeFormsData={selectedIntakeFormsData}
+                    selectedPatientUID={selectedPatientUID}
+                  />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {currentPatientsData.map((patient) => (
-                <tr
-                  key={patient.UID}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    {patient.firstName}
-                  </th>
-                  <td className="px-6 py-4">{patient.dateCreated}</td>
-                  <td className="px-6 py-4">
-                    {counselorNames[patient.counselorID] || "N/A"}
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      onClick={() => {
-                        handleSelectPatient(patient.UID);
-                        handleShow(patient.UID);
-                      }}
-                    >
-                      See Profile
-                    </button>
-                    <SupervisorPatientInfoComponent
-                      show={show}
-                      onHide={handleClose}
-                      patientData={selectedPatientData}
-                      intakeFormsData={selectedIntakeFormsData}
-                      selectedPatientUID={selectedPatientUID}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* Pagination */}
-          <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-            <div className="flex flex-1 justify-between sm:hidden">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Previous
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Next
-              </button>
+            ))}
+          </tbody>
+        </table>
+        {/* Pagination */}
+        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-b-lg">
+          <div className="flex flex-1 justify-between sm:hidden">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-gray-700 ">
+                <span>Showing</span>
+                <span className="font-medium ms-1 me-1">{startIndex + 1}</span>
+                <span>to</span>
+                <span className="font-medium ms-1 me-1">
+                  {Math.min(endIndex, filteredPatientsData.length)}
+                </span>
+                <span>of</span>
+                <span className="font-medium ms-1 me-1">
+                  {filteredPatientsData.length}
+                </span>
+                <span>results</span>
+              </p>
             </div>
-            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm text-gray-700 ">
-                  <span>Showing</span>
-                  <span className="font-medium ms-1 me-1">
-                    {startIndex + 1}
-                  </span>
-                  <span>to</span>
-                  <span className="font-medium ms-1 me-1">
-                    {Math.min(endIndex, filteredPatientsData.length)}
-                  </span>
-                  <span>of</span>
-                  <span className="font-medium ms-1 me-1">
-                    {filteredPatientsData.length}
-                  </span>
-                  <span>results</span>
-                </p>
-              </div>
-              <div>
-                <nav
-                  className="isolate inline-flex -space-x-px rounded-md shadow-sm"
-                  aria-label="Pagination"
+            <div>
+              <nav
+                className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                aria-label="Pagination"
+              >
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                 >
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
                   >
-                    <span className="sr-only">Previous</span>
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handlePageChange(index + 1)}
-                      className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                        index + 1 === currentPage
-                          ? "bg-primaryOrange text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                          : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
+                    <path
+                      fillRule="evenodd"
+                      d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                {[...Array(totalPages)].map((_, index) => (
                   <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                    key={index}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                      index + 1 === currentPage
+                        ? "bg-primaryOrange text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
+                    }`}
                   >
-                    <span className="sr-only">Next</span>
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    {index + 1}
                   </button>
-                </nav>
-              </div>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                >
+                  <span className="sr-only">Next</span>
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </nav>
             </div>
           </div>
         </div>
