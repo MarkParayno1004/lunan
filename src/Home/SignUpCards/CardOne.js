@@ -8,6 +8,10 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
     Age: "",
     BirthDate: "",
     Gender: "",
+    dateValue: {
+      startDate: null,
+      endDate: null,
+    },
   });
 
   useEffect(() => {
@@ -52,6 +56,10 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
 
     setLocalFormData((prevFormData) => ({
       ...prevFormData,
+      dateValue: {
+        startDate: newValue.startDate,
+        endDate: endDate,
+      },
       Age: calculateAge(
         dayjs(newValue.startDate),
         dayjs(newValue.endDate)
@@ -59,6 +67,19 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
       BirthDate: `${formattedStartDate}`,
     }));
   };
+  useEffect(() => {
+    if (localFormData.dateValue.startDate && localFormData.dateValue.endDate) {
+      const age = calculateAge(
+        localFormData.dateValue.startDate,
+        localFormData.dateValue.endDate
+      );
+
+      setLocalFormData((prevFormData) => ({
+        ...prevFormData,
+        Age: age.toString(), // Update Age
+      }));
+    }
+  }, [localFormData.dateValue]);
 
   const hanldeGenderChange = (event) => {
     const { value } = event.target;
@@ -79,15 +100,16 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
 
   useEffect(() => {
     // Log values after the component re-renders
-    console.log("value.startDate:", dateValue.startDate);
-    console.log("value.endDate:", dateValue.endDate);
-    console.log("newValue:", dateValue);
+    // console.log("value.startDate:", dateValue.startDate);
+    // console.log("value.endDate:", dateValue.endDate);
+    // console.log("newValue:", dateValue);
   }, [dateValue]); // Only re-run the effect if the 'value' state changes
 
   const handleNext = (event) => {
     console.log("CardOne localFormData:", localFormData);
+    const { dateValue, ...formDataWithoutDateValue } = localFormData;
     event.preventDefault();
-    ButtonNext(localFormData);
+    ButtonNext(formDataWithoutDateValue);
   };
   console.log(`BirthDate : ${localFormData.BirthDate}`);
 
@@ -159,7 +181,7 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
               primaryColor={"orange"}
               useRange={false}
               asSingle={true}
-              value={dateValue}
+              value={localFormData.dateValue}
               onChange={handleValueChange}
             />
           </div>
