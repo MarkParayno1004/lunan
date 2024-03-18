@@ -6,8 +6,8 @@ import Home from "./Home/Pages/Home";
 import Login from "./Home/Pages/Login";
 import SignUp from "./Home/Pages/SignUp";
 import FAQ from "./Home/Pages/FAQ";
-import CounselorDashboard from "./Counselor_Pages/CounselorDashboard";
 import SupervisorDashboardPage from "./Supervisor/Pages/supervisor_dashboard_page";
+import CounselorDashboardPage from "./Counselor_Pages/Pages/counselor_dashboard_page";
 
 const router = createBrowserRouter([
   { path: "/", Component: Home },
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
   { path: "/Sign Up", Component: SignUp },
   { path: "/FAQ", Component: FAQ },
   { path: "/Supervisor Dashboard", Component: SupervisorDashboardPage },
-  { path: "/Counselor Dashboard", Component: CounselorDashboard },
+  { path: "/Counselor Dashboard", Component: CounselorDashboardPage },
   { path: "/VideoTest", Component: ReactApp },
 ]);
 
