@@ -111,7 +111,7 @@ export const ViewWellnessForm = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Daily Form</Modal.Title>
         </Modal.Header>
@@ -132,7 +132,7 @@ export const ViewWellnessForm = (props) => {
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -155,8 +155,8 @@ export const ViewWellnessForm = (props) => {
                         <button
                           className="btn"
                           style={{
-                            backgroundColor: "#f5e9cf",
-                            color: "#4d455d",
+                            backgroundColor: "#F1A34F",
+                            color: "#ffffff",
                           }}
                           onClick={() => {
                             handleSelectwellForm(wellForm.id);
@@ -202,7 +202,7 @@ export const ViewWellnessForm = (props) => {
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -225,8 +225,8 @@ export const ViewWellnessForm = (props) => {
                         <button
                           className="btn"
                           style={{
-                            backgroundColor: "#f5e9cf",
-                            color: "#4d455d",
+                            backgroundColor: "#F1A34F",
+                            color: "#ffffff",
                           }}
                           onClick={() => {
                             handleSelectwellForm(wellForm.id);
@@ -329,7 +329,7 @@ const ViewFormWell = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>
             <div>View Daily Form:</div>
@@ -358,7 +358,7 @@ const ViewFormWell = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "green" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={() => updatewellFormVerified(props.selectedwellForm.id)}
           >
             Verify
@@ -423,7 +423,7 @@ const ViewFormWellVerified = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>
             <div>View Daily Form:</div>
@@ -452,7 +452,7 @@ const ViewFormWellVerified = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "red" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={() => updatewellFormVerified(props.selectedwellForm.id)}
           >
             Unverify
@@ -537,7 +537,7 @@ const ViewVerifiedFormWell = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>
             <div>View Daily Form:</div>
@@ -566,7 +566,7 @@ const ViewVerifiedFormWell = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "red" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={() => updatewellFormVerified(props.selectedwellForm.id)}
           >
             Unverify

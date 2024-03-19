@@ -34,8 +34,8 @@ export const ViewModalAssign = (props) => {
 
   const handleSubmit = () => {
     Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
+      background: "#1DC07C",
+      color: "#ffffff",
       position: "center",
       icon: "success",
       title: "Assignment successfully created!",
@@ -154,7 +154,7 @@ export const ViewModalAssign = (props) => {
       size="lg"
       className="mt-3"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Assignment</Modal.Title>
         </Modal.Header>
@@ -180,7 +180,7 @@ export const ViewModalAssign = (props) => {
         </div>
         {activeTab === "assigned" && (
           <>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -222,8 +222,8 @@ export const ViewModalAssign = (props) => {
                         <button
                           className="rounded-3"
                           style={{
-                            backgroundColor: "#F2E3D2",
-                            color: "#4D455D",
+                            backgroundColor: "#F1A34F",
+                            color: "#ffffff",
                             borderStyle: "none",
                           }}
                         >
@@ -234,8 +234,8 @@ export const ViewModalAssign = (props) => {
                         <button
                           className="rounded-3"
                           style={{
-                            backgroundColor: "#F2E3D2",
-                            color: "#4D455D",
+                            backgroundColor: "#F1A34F",
+                            color: "#ffffff",
                             borderStyle: "none",
                           }}
                         >
@@ -271,7 +271,7 @@ export const ViewModalAssign = (props) => {
         )}
         {activeTab === "verified" && (
           <>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -340,7 +340,7 @@ export const ViewModalAssign = (props) => {
         )}
         {activeTab === "turnedIn" && (
           <>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -411,7 +411,7 @@ export const ViewModalAssign = (props) => {
         <Modal.Footer>
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={() => handleShowCreate(props.selectedPatientUID)}
           >
             Create Assignment
@@ -424,7 +424,7 @@ export const ViewModalAssign = (props) => {
           />
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             variant="secondary"
             onClick={props.handleClose}
           >
@@ -445,9 +445,9 @@ const ViewAssignedActivity = (props) => {
       className="mt-5"
       style={{ borderStyle: "none" }}
     >
-      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C" }}>
         <Modal.Header closeButton>
-          <Modal.Title style={{ color: "#F2E3D2" }}>View Activity:</Modal.Title>
+          <Modal.Title style={{ color: "#ffffff" }}>View Activity:</Modal.Title>
         </Modal.Header>
         <div className="container-fluid mt-3" style={{ color: "white" }}>
           <span>
@@ -540,9 +540,9 @@ const ViewTurnedInActivity = (props) => {
       className="mt-5"
       style={{ borderStyle: "none" }}
     >
-      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C" }}>
         <Modal.Header closeButton>
-          <Modal.Title style={{ color: "#F2E3D2" }}>
+          <Modal.Title style={{ color: "#ffffff" }}>
             View Turned-In Activity:
           </Modal.Title>
         </Modal.Header>
@@ -575,8 +575,8 @@ const ViewTurnedInActivity = (props) => {
             <button
               className="btn mt-3"
               style={{
-                backgroundColor: "#f5e9cf",
-                color: "#4d455d",
+                backgroundColor: "#F1A34F",
+                color: "#ffffff",
               }}
               onClick={() => updateTaskStatus(props.selectedTask?.id)}
             >
@@ -661,9 +661,9 @@ const ViewVerifiedActivity = (props) => {
       className="mt-5"
       style={{ borderStyle: "none" }}
     >
-      <Modal.Body style={{ backgroundColor: "#4D455D" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C" }}>
         <Modal.Header closeButton>
-          <Modal.Title style={{ color: "#F2E3D2" }}>
+          <Modal.Title style={{ color: "#ffffff" }}>
             View Turned-In Activity:
           </Modal.Title>
         </Modal.Header>
@@ -696,8 +696,8 @@ const ViewVerifiedActivity = (props) => {
             <button
               className="btn mt-3"
               style={{
-                backgroundColor: "#f5e9cf",
-                color: "#4d455d",
+                backgroundColor: "#F1A34F",
+                color: "#ffffff",
               }}
               onClick={() => updateTaskStatus(props.task?.id)}
             >
@@ -763,7 +763,7 @@ const CreateAssignment = (props) => {
 
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Create Assignment:</Modal.Title>
         </Modal.Header>
@@ -803,7 +803,7 @@ const CreateAssignment = (props) => {
         <Modal.Footer>
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={handleSubmitCreate}
           >
             Submit

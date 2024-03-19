@@ -110,7 +110,7 @@ export const ViewWeeklyForm = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Weekly Form</Modal.Title>
         </Modal.Header>
@@ -132,7 +132,7 @@ export const ViewWeeklyForm = (props) => {
           <>
             <h5>Submitted:</h5>
             <table
-              className="table table-dark table-hover mt-3"
+              className="table table-light table-hover mt-3"
               style={tableStyle}
             >
               <thead>
@@ -157,8 +157,8 @@ export const ViewWeeklyForm = (props) => {
                         <button
                           className="btn"
                           style={{
-                            backgroundColor: "#f5e9cf",
-                            color: "#4d455d",
+                            backgroundColor: "#F1A34F",
+                            color: "#ffffff",
                           }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
@@ -205,7 +205,7 @@ export const ViewWeeklyForm = (props) => {
           <>
             <h5>Verified:</h5>
             <table
-              className="table table-dark table-hover mt-3"
+              className="table table-light table-hover mt-3"
               style={tableStyle}
             >
               <thead>
@@ -230,8 +230,8 @@ export const ViewWeeklyForm = (props) => {
                         <button
                           className="btn"
                           style={{
-                            backgroundColor: "#f5e9cf",
-                            color: "#4d455d",
+                            backgroundColor: "#F1A34F",
+                            color: "#ffffff",
                           }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
@@ -359,7 +359,7 @@ const ViewFormWeek = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
@@ -386,7 +386,7 @@ const ViewFormWeek = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "green" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={() => updatewFormVerified(props.selectedwForm.id)}
           >
             Verify
@@ -476,7 +476,7 @@ const ViewVerifiedFormWeek = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
@@ -484,7 +484,7 @@ const ViewVerifiedFormWeek = (props) => {
           {" "}
           Total Score: {totalScore}/25
         </div>
-        <table class="table table-dark table-hover mt-3">
+        <table class="table table-light table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Question:</th>
@@ -503,7 +503,7 @@ const ViewVerifiedFormWeek = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "red" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             onClick={() => updatewFormUnverify(props.selectedwForm.id)}
           >
             Unverify

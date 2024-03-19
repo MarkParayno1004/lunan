@@ -75,11 +75,11 @@ export const ViewCaseNotes = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Case Notes</Modal.Title>
         </Modal.Header>
-        <table class="table table-dark table-hover mt-3" style={tableStyle}>
+        <table class="table table-light table-hover mt-3" style={tableStyle}>
           <thead>
             <tr>
               <th scope="col">Name:</th>
@@ -101,8 +101,8 @@ export const ViewCaseNotes = (props) => {
                     <button
                       className="btn"
                       style={{
-                        backgroundColor: "#f5e9cf",
-                        color: "#4d455d",
+                        backgroundColor: "#F1A34F",
+                        color: "#ffffff",
                         width: "auto",
                       }}
                       onClick={() => {
@@ -160,11 +160,11 @@ const PublishCaseNotes = (props) => {
 
   return (
     <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Publish Case Notes:</Modal.Title>
         </Modal.Header>
-        <table className="table table-dark table-hover mt-3">
+        <table className="table table-light table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Case Notes:</th>

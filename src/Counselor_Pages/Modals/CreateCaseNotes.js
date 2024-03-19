@@ -33,9 +33,9 @@ export const CreateCaseNotes = (props) => {
 
   return (
     <div>
-      <div style={{ backgroundColor: "#f5e9cf" }} className="rounded-5">
+      <div style={{ backgroundColor: "#1DC07C" }} className="rounded-5">
         {/* Add your page content here */}
-        <h2 className="pt-3 ps-3" style={{ color: "#4d455d" }}>
+        <h2 className="pt-3 ps-3" style={{ color: "#ffffff" }}>
           Input Case Note:
         </h2>
         <div style={{ color: "black" }} className="pe-3 ps-3">
@@ -55,8 +55,8 @@ export const CreateCaseNotes = (props) => {
             className="close-button mb-3 me-3"
             onClick={props.onClose}
             style={{
-              backgroundColor: "#4d455d",
-              color: "#f5e9cf",
+              backgroundColor: "#F1A34F",
+              color: "#ffffff",
               borderRadius: "30px",
               width: "8%",
               height: "40px",
@@ -69,8 +69,8 @@ export const CreateCaseNotes = (props) => {
             className="close-button mb-3"
             onClick={handleSubmitCase}
             style={{
-              backgroundColor: "#4d455d",
-              color: "#f5e9cf",
+              backgroundColor: "#F1A34F",
+              color: "#ffffff",
               borderRadius: "30px",
               width: "8%",
               height: "40px",
