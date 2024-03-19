@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { Modal, Button, Form } from "react-bootstrap";
-
 import {
   collection,
   getFirestore,
@@ -21,7 +20,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
-const CounselorScheduler = () => {
+function CounselorScheduler() {
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);

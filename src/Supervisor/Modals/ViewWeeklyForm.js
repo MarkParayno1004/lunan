@@ -102,7 +102,7 @@ export const ViewWeeklyForm = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Weekly Form</Modal.Title>
         </Modal.Header>
@@ -124,7 +124,7 @@ export const ViewWeeklyForm = (props) => {
           <>
             <h5>Submitted:</h5>
             <table
-              className="table table-dark table-hover mt-3"
+              className="table table-light table-hover mt-3"
               style={tableStyle}
             >
               <thead>
@@ -187,7 +187,7 @@ export const ViewWeeklyForm = (props) => {
           <>
             <h5>Verified:</h5>
             <table
-              className="table table-dark table-hover mt-3"
+              className="table table-light table-hover mt-3"
               style={tableStyle}
             >
               <thead>
@@ -323,7 +323,7 @@ const ViewFormWeek = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Weekly Form:</Modal.Title>
         </Modal.Header>
@@ -331,7 +331,7 @@ const ViewFormWeek = (props) => {
           {" "}
           Total Score: {totalScore}/25
         </div>
-        <table class="table table-dark table-hover mt-3">
+        <table class="table table-light table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Question:</th>

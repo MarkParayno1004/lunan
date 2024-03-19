@@ -18,8 +18,8 @@ export const ViewWellnessGuide = (props) => {
   const handleShowAddGuide = () => setShow(true);
   const handleSubmit = () => {
     Swal.fire({
-      background: "#4d455d",
-      color: "#f5e9cf",
+      background: "#1DC07C",
+      color: "#ffffff",
       position: "center",
       icon: "success",
       title: "Guide Added Successfully!",
@@ -101,7 +101,7 @@ export const ViewWellnessGuide = (props) => {
       onHide={props.handleClose}
       style={{ overflowY: "hidden" }}
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Wellness Guide:</Modal.Title>
         </Modal.Header>
@@ -160,7 +160,7 @@ export const ViewWellnessGuide = (props) => {
           {showAddGuideButton && (
             <button
               className="btn"
-              style={{ backgroundColor: "#f5e9cf" }}
+              style={{ backgroundColor: "#F1A34F" }}
               onClick={() => handleShowAddGuide(props.selectedPatientUID)}
             >
               Add Guide
@@ -235,7 +235,7 @@ const AddGuide = (props) => {
 
   return (
     <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Publish A Guide</Modal.Title>
         </Modal.Header>
@@ -266,7 +266,7 @@ const AddGuide = (props) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf" }}
+            style={{ backgroundColor: "#F1A34F" }}
             onClick={handleAddGuide}
           >
             Submit

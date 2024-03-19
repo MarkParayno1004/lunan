@@ -16,13 +16,13 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-export const CounselorChat = () => {
+function CounselorChat() {
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
   const [counselorNames, setCounselorNames] = useState({});
   const [show, setShow] = useState();
-  const [room, setRoom] = useState(); // Manage the room state in the Chat component
+  const [room, setRoom] = useState();
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
   const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
@@ -30,6 +30,15 @@ export const CounselorChat = () => {
   ]);
   const [showPatientInfo, setShowPatientInfo] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    // Check if messages is not empty before scrolling to the end
+    if (messages.length > 0 && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   useEffect(() => {
     const fetchPatientsData = async () => {
@@ -148,188 +157,9 @@ export const CounselorChat = () => {
     setShowChat(true);
   };
 
-  const handleClose = () => setShow(false);
-
-  const handleSetShowChat = () => setShowChat(true);
-
-  //!Table style
-  const tableStyle = {
-    height: "650px", // Set the desired height
-    width: "342px",
-    overflow: "hidden", // Add scrollbars when content overflows
-  };
-
-  return (
-    <div
-      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
-      id="ChatForm"
-    >
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
-            <h1 className="mt-2 ms-5 ps-5">Chat</h1>
-          </div>
-          <div className="col-3 col-sm-3 mb-3">
-            <div className="input-group mt-4">
-              <input
-                type="text"
-                placeholder="Search Patients Name:"
-                value={searchQuery}
-                onChange={handleSearch}
-                aria-describedby="search"
-                className="w-25 form-control"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="d-flex flex-column">
-          <div className="flex-grow-1">
-            <div className="row">
-              <div
-                className="col-3 table-responsive"
-                style={{ overflow: "hidden" }}
-              >
-                <table
-                  className="table table-borderless table-hover table-dark rounded-start-3"
-                  style={tableStyle}
-                >
-                  <thead>
-                    <tr>
-                      <th scope="col">Inbox</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <div className="custom-scroll-container-chat">
-                      {filteredPatientsData.map((patient) => (
-                        <tr key={patient.UID} style={{ overflowY: "auto" }}>
-                          <td>
-                            <button
-                              className="d-flex justify-content-start align-items-center"
-                              onClick={() => handleSelectPatient(patient.UID)} // Use handleSelectPatient with the UID
-                              style={{
-                                border: "none",
-                                background: "none",
-                                color: "white",
-                                width: "334px",
-                                marginTop: "20px",
-                                marginBottom: "20px",
-                              }}
-                            >
-                              {patient.ProfPic ? (
-                                <img
-                                  src={fetchImageUrl(patient.ProfPic)}
-                                  alt={patient.firstName}
-                                  width="100"
-                                  height="100"
-                                />
-                              ) : (
-                                <img
-                                  src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                                  alt={patient.firstName}
-                                  width="100"
-                                  height="100"
-                                />
-                              )}
-                              <p
-                                className="ms-3 text-break text-wrap fs-5"
-                                style={{ width: "" }}
-                              >
-                                {patient.firstName}
-                              </p>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </div>
-                  </tbody>
-                </table>
-              </div>
-              <div
-                className="col rounded-end-3"
-                style={{
-                  backgroundColor: "#212529",
-                  height: "650px",
-                  color: "black",
-                }}
-              >
-                <div
-                  className="container-fluid mt-4 me-4 mb-4 rounded-3"
-                  style={{
-                    backgroundColor: "#4d455d",
-                    height: "600px",
-                    width: "1014px",
-                  }}
-                >
-                  <div
-                    className="container"
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <h1
-                      className="fs-1 ms-3"
-                      style={{ color: "#f5e9cf", flex: "1" }}
-                    >
-                      {selectedPatientData
-                        ? selectedPatientData.firstName
-                        : "Selected User's First Name"}
-                    </h1>
-
-                    <button
-                      className="btn fs-5"
-                      style={{
-                        color: "#f5e9cf",
-                        borderColor: "#f5e9cf",
-                        border: "solid 2px",
-                        flex: "0 0 auto", // This prevents the button from growing
-                      }}
-                    >
-                      <Link to="/VideoTest">Call</Link>
-                    </button>
-                  </div>
-                  {room && <ChatMessage room={room} />}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-//! CHAT
-const ChatMessage = ({ room }) => {
-  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesRef = collection(db, "messages");
-  const messageContainerRef = useRef(null);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    const queryMessages = query(
-      messagesRef,
-      where("room", "==", room),
-      orderBy("createdAt")
-    );
-    const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-      let messages = [];
-      snapshot.forEach((doc) => {
-        messages.push({ ...doc.data(), id: doc.id });
-      });
-      setMessages(messages);
-    });
-
-    return () => unsubscribe();
-  }, [room]);
-
-  const scrollToBottom = () => {
-    if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop =
-        messageContainerRef.current.scrollHeight;
-    }
-  };
+  const totalNumberPatient = filteredPatientsData.length;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -351,7 +181,6 @@ const ChatMessage = ({ room }) => {
     setNewMessage("");
   };
 
-  // Function to get user's first name based on UID from the 'Users' collection
   const getUserFirstName = async (uid) => {
     try {
       const userQuery = query(
@@ -362,7 +191,7 @@ const ChatMessage = ({ room }) => {
 
       if (!userQuerySnapshot.empty) {
         const userData = userQuerySnapshot.docs[0].data();
-        return userData.role;
+        return userData.firstName;
       } else {
         return "Unknown User";
       }
@@ -392,58 +221,177 @@ const ChatMessage = ({ room }) => {
     }
   };
 
+  useEffect(() => {
+    if (room) {
+      const queryMessages = query(
+        messagesRef,
+        where("room", "==", room),
+        orderBy("createdAt")
+      );
+
+      const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
+        let messages = [];
+        snapshot.forEach((doc) => {
+          messages.push({ ...doc.data(), id: doc.id });
+        });
+        setMessages(messages);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [room]);
+
   return (
-    <div className="chat-app mt-2">
-      <div
-        className="messages"
-        style={{ color: "white", overflowY: "auto" }}
-        ref={messageContainerRef}
-      >
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`message ${
-              message.user === auth.currentUser.email ? "sent" : "received"
-            }`}
-            style={{
-              display: "flex",
-              justifyContent:
-                message.user === auth.currentUser.email
-                  ? "flex-end"
-                  : "flex-start",
-              marginBottom: "10px",
-            }}
-          >
-            <div className="user">
-              <h6>{message.user}:</h6>
-              <div>
-                <span>{message.text}</span>
+    <div className="flex justify-center items-center h-chatHeight">
+      <div className="flex h-131 w-128 antialiased text-gray-800">
+        <div className="flex flex-row h-full w-full overflow-x-hidden">
+          <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-primaryGreen rounded-s-lg flex-shrink-0">
+            <div className="flex flex-row items-center justify-start h-12 w-full">
+              <div className="flex items-center justify-center rounded-2xl text-primaryOrange bg-white h-10 w-10">
+                <svg
+                  className="w-6 h-6" // Change the color to blue-500
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                  ></path>
+                </svg>
+              </div>
+              <div className="ml-2 font-bold text-2xl">QuickChat</div>
+            </div>
+
+            <div className="flex flex-col mt-8">
+              <div className="flex flex-row items-center justify-between text-xs">
+                <span className="font-bold">Active Conversations</span>
+                <span className="flex items-center justify-center bg-orange-200 h-4 w-4 rounded-full font-mono ">
+                  {totalNumberPatient}
+                </span>
+              </div>
+              <div className="flex flex-col space-y-1 mt-4 -mx-2 h-128 overflow-y-auto">
+                {filteredPatientsData.map((patient) => (
+                  <button
+                    className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                    key={patient.UID}
+                    onClick={() => handleSelectPatient(patient.UID)}
+                  >
+                    <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                      {patient.ProfPic ? (
+                        <img
+                          src={fetchImageUrl(patient.ProfPic)}
+                          alt={patient.firstName}
+                          width="100"
+                          height="100"
+                          className="rounded-circle"
+                        />
+                      ) : (
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+                          alt={patient.firstName}
+                          width="100"
+                          height="100"
+                        />
+                      )}
+                    </div>
+                    <div className="ml-2 text-sm font-semibold">
+                      {patient.firstName}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
-        ))}
+          <div className="flex flex-col flex-auto h-full p-6 bg-primaryGreen rounded-e-lg">
+            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
+              <div className="flex flex-col h-full overflow-x-auto mb-4">
+                <div className="flex flex-col h-full">
+                  <div className="grid grid-cols-7 gap-y-2">
+                    {/* message right side */}
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`col-start-1 col-end-8 p-3 rounded-lg flex ${
+                          message.user === "Admin's Name"
+                            ? "flex-row-reverse"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <div className="flex items-start">
+                            {message.user !== "Admin's Name" && (
+                              // icon for non-admin users floating to the left
+                              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0 mr-3">
+                                <div className="font-mono font-semibold text-sm">
+                                  {message.user.charAt(0)}
+                                </div>
+                              </div>
+                            )}
+                            <div className="relative text-sm bg-white py-2 px-4 shadow rounded-xl ">
+                              <div className="">{message.text}</div>
+                            </div>
+                            {message.user === "Admin's Name" && (
+                              // icon for admin users floating to the right
+                              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0 ml-3">
+                                <div className="font-mono font-semibold text-sm">
+                                  {message.user.charAt(0)}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef}></div>
+                  </div>
+                </div>
+              </div>
+              <form
+                className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
+                onSubmit={handleSubmit}
+              >
+                <div className="flex-grow ml-4">
+                  <div className="relative w-full">
+                    <input
+                      value={newMessage}
+                      onChange={(event) => setNewMessage(event.target.value)}
+                      type="text"
+                      className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                    />
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <button className="flex items-center justify-center bg-primaryOrange hover:bg-orange-300 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                    <span>Send</span>
+                    <span className="ml-2">
+                      <svg
+                        className="w-4 h-4 transform rotate-45 -mt-px"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                        ></path>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-      <form
-        onSubmit={handleSubmit}
-        className="new-message-form"
-        style={{ display: "flex" }}
-      >
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(event) => setNewMessage(event.target.value)}
-          style={{ color: "#f5e9cf", flex: 1 }}
-          className="new-message-input"
-          placeholder="Type your message here..."
-        />
-        <button
-          type="submit"
-          className="send-button"
-          style={{ marginLeft: "10px" }}
-        >
-          Send
-        </button>
-      </form>
     </div>
   );
 };
+
+export default CounselorChat;

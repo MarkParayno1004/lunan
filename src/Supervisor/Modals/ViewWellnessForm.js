@@ -105,7 +105,7 @@ export const ViewWellnessForm = (props) => {
       onHide={props.handleClose}
       size="lg"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>Patients Daily Form</Modal.Title>
         </Modal.Header>
@@ -126,7 +126,7 @@ export const ViewWellnessForm = (props) => {
         {activeTab === "submitted" && (
           <>
             <h5>Submitted:</h5>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -186,7 +186,7 @@ export const ViewWellnessForm = (props) => {
         {activeTab === "verified" && (
           <>
             <h5>Verified:</h5>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Name:</th>
@@ -305,7 +305,7 @@ const ViewFormWell = (props) => {
           {" "}
           Total Score: {totalScore}/25
         </div>
-        <table className="table table-dark table-hover mt-3">
+        <table className="table table-light table-hover mt-3">
           <thead>
             <tr>
               <th scope="col">Question:</th>

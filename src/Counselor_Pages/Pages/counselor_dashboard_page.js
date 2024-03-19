@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLogo } from "../../assets/images";
 import "../../css/SupervisorDashboard.css";
-import { PatientList } from "./Components/PatientList";
-import CounselorScheduler from "./Components/CounselorScheduler";
-import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
-import { CounselorChat } from "./Components/CounselorChat";
+import PatientList  from "../Components/PatientList";
+import CounselorScheduler from "../Components/CounselorScheduler";
+import CounselorDashboard from "../CounselorDashboard";
+import CounselorChat from "../Components/CounselorChat";
 import { Client } from "@twilio/conversations";
 import { useSelector } from "react-redux";
 
 function CounselorDashboardPage() {
-    const [activeComponent, setActiveComponent] = useState("default");
+    const [activeComponent, setActiveComponent] = useState("DashboardComponent");
     const [client, setClient] = useState(null);
     const token = useSelector((state) => state.token); // Get the Twilio token from your state
 
@@ -102,7 +102,7 @@ function CounselorDashboardPage() {
                         <li className="rounded-lg hover:bg-gray-100 group">
                         <button
                             className="flex items-center p-2"
-                            onClick={() => setActiveComponent("AllCounselorsComponent")}
+                            onClick={() => setActiveComponent("ScheduleComponent")}
                         >
                             <svg
                             className="flex-shrink-0 w-5 h-5 text-green-200 transition duration-500 group-hover:text-primaryOrange"
@@ -125,7 +125,7 @@ function CounselorDashboardPage() {
                 <div>
                     {(() =>{
                         if (activeComponent === "DashboardComponent") {
-                            return <DefaultCounselorPage />;
+                            return <CounselorDashboard />;
                         } else if (activeComponent === "ChatComponent") {
                             return <CounselorChat />;
                         } else if (activeComponent === "AllPatientsComponent") {
@@ -139,3 +139,5 @@ function CounselorDashboardPage() {
         </div>
     )
 }
+
+export default CounselorDashboardPage;

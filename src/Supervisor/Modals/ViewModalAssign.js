@@ -135,7 +135,7 @@ export const ViewModalAssign = (props) => {
       size="lg"
       className="mt-3"
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Assignment</Modal.Title>
         </Modal.Header>
@@ -161,7 +161,7 @@ export const ViewModalAssign = (props) => {
         </div>
         {activeTab === "assigned" && (
           <>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -228,7 +228,7 @@ export const ViewModalAssign = (props) => {
         )}
         {activeTab === "verified" && (
           <>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -297,7 +297,7 @@ export const ViewModalAssign = (props) => {
         )}
         {activeTab === "turnedIn" && (
           <>
-            <table class="table table-dark table-hover mt-3" style={tableStyle}>
+            <table class="table table-light table-hover mt-3" style={tableStyle}>
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -368,7 +368,7 @@ export const ViewModalAssign = (props) => {
         <Modal.Footer>
           <button
             className="btn"
-            style={{ backgroundColor: "#f5e9cf", color: "#4d455d" }}
+            style={{ backgroundColor: "#F1A34F", color: "#ffffff" }}
             variant="secondary"
             onClick={props.handleClose}
           >

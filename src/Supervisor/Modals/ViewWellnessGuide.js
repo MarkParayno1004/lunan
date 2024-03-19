@@ -87,12 +87,12 @@ export const ViewWellnessGuide = (props) => {
       onHide={props.handleClose}
       style={{ overflowY: "hidden" }}
     >
-      <Modal.Body style={{ backgroundColor: "#4d455d", color: "#f5e9cf" }}>
+      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
         <Modal.Header closeButton>
           <Modal.Title>View Wellness Guide:</Modal.Title>
         </Modal.Header>
         <div className="d-flex justify-content-center mt-2 custom-scroll-wellness">
-          <table className="table table-dark table-hover" style={tableStyle}>
+          <table className="table table-light table-hover" style={tableStyle}>
             <thead>
               <tr>
                 <th scope="col">Wellness Video:</th>

@@ -3,7 +3,7 @@ import { firestore, auth } from "../firebase/firebase-config";
 import { useState, useEffect } from "react";
 import { UserIcon } from "../assets/images";
 
-function CounselorDashboard(props) {
+function CounselorDashboard() {
   const [counselorName, setCounselorName] = useState("");
   useEffect(() => {
     const fetchCounselorName = async () => {
