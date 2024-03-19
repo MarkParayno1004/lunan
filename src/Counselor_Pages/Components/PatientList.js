@@ -9,9 +9,10 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
-import { PatientInfo } from "./PatientInfo";
+import PatientInfo from "./PatientInfo";
 import { getAuth } from "firebase/auth";
 import { Pagination } from "react-bootstrap";
+import { ListIcon } from "../../assets/images";
 import "../../css/AllPatients.css";
 
 //!Main App Render
@@ -145,7 +146,7 @@ function PatientList() {
     indexOfLastPatient
   );
 
-  const paginate = (pageNumber) => {
+  const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
@@ -168,102 +169,162 @@ function PatientList() {
     overflow: "auto", // Add scrollbars when content overflows
   };
   return (
-    <div
-      className="container-lg d-flex justify-content-center rounded-5 mt-5 ms-5 pb-3"
-      id="AllPatientForm"
-    >
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col d-flex align-items-center d-flex justify-content-center ms-5 ps-5">
-            <h1 className="mt-2 ms-5 ps-5">All Patient List</h1>
+    <div className="flex justify-center items-center h-chatHeight">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen py-10 h-131 w-128">
+        <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
+          <div className="flex items-center justify-center rounded-2xl text-primaryOrange bg-white h-10 w-10">
+            <ListIcon />
           </div>
-          <div className="col-3 col-sm-3 mb-3">
-            <div className="input-group mt-4">
-              <input
-                type="text"
-                placeholder="Search Patients Name:"
-                value={searchQuery}
-                onChange={handleSearch}
-                aria-describedby="search"
-                className="w-25 form-control"
-              />
+          <span className="ms-1 text-3xl font-bold mb-1 text-black">
+            Patients List
+          </span>
+        </div>
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 h-full">
+          <thead className="text-sm text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3 rounded-ss-lg">
+                Patients Name:
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Registered Date:
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Counselor:
+              </th>
+              <th scope="col" className="px-6 py-3 rounded-se-lg">
+                View Profile:
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentPatients.map((patient) => (
+              <tr
+                key={patient.UID}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {patient.firstName}
+                </th>
+                <td className="px-6 py-4">{patient.dateCreated}</td>
+                <td className="px-6 py-4">
+                  <button
+                    className="font-medium text-primaryOrange hover:underline"
+                    onClick={() => {
+                      handleSelectPatient(patient.UID);
+                      handleShow(patient.UID);
+                    }}
+                  >
+                    See Profile
+                  </button>
+                  <PatientInfo
+                    show={show}
+                    onHide={handleClose}
+                    patientData={selectedPatientData}
+                    intakeFormsData={selectedIntakeFormsData}
+                    selectedPatientUID={selectedPatientUID}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {/* Pagination */}
+        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-b-lg">
+          <div className="flex flex-1 justify-between sm:hidden">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-gray-700 ">
+                <span>Showing</span>
+                <span className="font-medium ms-1 me-1">{indexOfFirstPatient + 1}</span>
+                <span>to</span>
+                <span className="font-medium ms-1 me-1">
+                  {Math.min(indexOfLastPatient, filteredPatientsData.length)}
+                </span>
+                <span>of</span>
+                <span className="font-medium ms-1 me-1">
+                  {filteredPatientsData.length}
+                </span>
+                <span>results</span>
+              </p>
+            </div>
+            <div>
+              <nav
+                className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                aria-label="Pagination"
+              >
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                      index + 1 === currentPage
+                        ? "bg-primaryOrange text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                >
+                  <span className="sr-only">Next</span>
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </nav>
             </div>
           </div>
         </div>
-        <div className="d-flex flex-column">
-          <div className="flex-grow-1">
-            <table className="table table-dark table-hover" style={tableStyle}>
-              <thead>
-                <tr>
-                  <th>Picture</th>
-                  <th>Name</th>
-                  <th>Date Added</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentPatients
-                  .filter((patient) => patient.counselorUID === loggedInUserUID)
-                  .map((patient) => (
-                    <tr key={patient.UID}>
-                      <td>
-                        <button
-                          style={{ border: "none", background: "none" }}
-                          onClick={() => {
-                            handleSelectPatient(patient.UID);
-                            handleShow(patient.UID);
-                          }} // Pass the patient's UID
-                        >
-                          {patient.ProfPic ? (
-                            <img
-                              src={fetchImageUrl(patient.ProfPic)}
-                              alt={patient.firstName}
-                              width="100"
-                              height="100"
-                            />
-                          ) : (
-                            <img
-                              src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
-                              alt={patient.firstName}
-                              width="100"
-                              height="100"
-                            />
-                          )}
-                        </button>
-                        <PatientInfo
-                          show={show}
-                          onHide={handleClose}
-                          patientData={selectedPatientData}
-                          intakeFormsData={selectedIntakeFormsData}
-                          selectedPatientUID={selectedPatientUID}
-                        />
-                      </td>
-                      <td>{patient.firstName}</td>
-                      <td>{patient.dateCreated}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <Pagination>
-          <Pagination.Prev
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <Pagination.Item
-              key={index}
-              active={currentPage === index + 1}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
       </div>
     </div>
   );
