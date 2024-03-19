@@ -9,7 +9,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
-import  PatientInfo  from "./PatientInfo";
+import { PatientInfo } from "./PatientInfo";
 import { getAuth } from "firebase/auth";
 import { Pagination } from "react-bootstrap";
 import "../../css/AllPatients.css";
@@ -145,7 +145,7 @@ function PatientList() {
     indexOfLastPatient
   );
 
-  const handlePageChange = (pageNumber) => {
+  const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 

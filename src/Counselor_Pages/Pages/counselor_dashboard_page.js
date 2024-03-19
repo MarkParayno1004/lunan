@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DashboardLogo } from "../../assets/images";
 import "../../css/SupervisorDashboard.css";
-import PatientList  from "../Components/PatientList";
-import CounselorScheduler from "../Components/CounselorScheduler";
-import { DefaultCounselorPage } from "../Components/DefaultCounselorPage";
-import { CounselorChat } from "../Components/CounselorChat";
+import { PatientList } from "./Components/PatientList";
+import CounselorScheduler from "./Components/CounselorScheduler";
+import { DefaultCounselorPage } from "./Components/DefaultCounselorPage";
+import { CounselorChat } from "./Components/CounselorChat";
 import { Client } from "@twilio/conversations";
 import { useSelector } from "react-redux";
-import CounselorDashboard from "../CounselorDashboard";
 
 function CounselorDashboardPage() {
     const [activeComponent, setActiveComponent] = useState("default");
@@ -126,7 +125,7 @@ function CounselorDashboardPage() {
                 <div>
                     {(() =>{
                         if (activeComponent === "DashboardComponent") {
-                            return <CounselorDashboard />;
+                            return <DefaultCounselorPage />;
                         } else if (activeComponent === "ChatComponent") {
                             return <CounselorChat />;
                         } else if (activeComponent === "AllPatientsComponent") {
@@ -140,5 +139,3 @@ function CounselorDashboardPage() {
         </div>
     )
 }
-
-export default CounselorDashboardPage;
