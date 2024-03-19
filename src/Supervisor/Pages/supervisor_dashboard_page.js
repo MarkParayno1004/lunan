@@ -16,7 +16,7 @@ function SupervisorDashboardPage() {
         className="fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-primaryGreen">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-primaryGreen text-white">
           <ul className="space-y-2 font-medium ">
             <div className="p-1 pb-4 w-52 ">
               <img alt="Dasboard Logo" src={DashboardLogo} />
