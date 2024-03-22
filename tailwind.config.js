@@ -16,6 +16,7 @@ module.exports = withMT({
       },
       spacing: {
         128: "62rem",
+        tableHeight: "35rem",
       },
       width: {
         128: "90rem",
@@ -26,6 +27,7 @@ module.exports = withMT({
         130: "32rem",
         chatHeight: "94vh",
         131: "80vh",
+        132: "25rem",
       },
     },
   },
