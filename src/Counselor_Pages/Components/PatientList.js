@@ -26,24 +26,8 @@ function PatientList() {
   ]);
   const [selectedPatientUID, setSelectedPatientUID] = useState(null);
   const [showPatientInfo, setShowPatientInfo] = useState(false);
-
-  // useEffect(() => {
-  //   const fetchPatientsData = async () => {
-  //     try {
-  //       const querySnapshot = await getDocs(collection(firestore, "Users"));
-  //       const patients = querySnapshot.docs.map((doc) => doc.data());
-
-  //       console.log("Patients Data:", patients);
-
-  //       setPatientsData(patients);
-  //       setFilteredPatientsData(patients);
-  //     } catch (error) {
-  //       console.error("Error fetching patients data:", error);
-  //     }
-  //   };
-
-  //   fetchPatientsData();
-  // }, []);
+  const [totalPatientsForLoggedInUser, setTotalPatientsForLoggedInUser] =
+    useState(0);
 
   useEffect(() => {
     // Create a query to get Forms for the selected patient
@@ -54,6 +38,15 @@ function PatientList() {
         id: doc.id,
         ...doc.data(),
       }));
+
+      // Filter patients based on the loggedInUserUID
+      const filteredPatientsForUser = updatedPatientList.filter(
+        (patient) => patient.counselorUID === loggedInUserUID
+      );
+
+      // Update totalPatientsForLoggedInUser
+      setTotalPatientsForLoggedInUser(filteredPatientsForUser.length);
+
       setPatientsData(updatedPatientList);
       setFilteredPatientsData(updatedPatientList);
     });
@@ -136,42 +129,39 @@ function PatientList() {
   };
 
   //!Pagination
-  // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const patientsPerPage = 5;
-  const indexOfLastPatient = (currentPage - 1) * patientsPerPage;
+
+  // Filter patients based on counselorUID
+  const filteredPatientsForUser = filteredPatientsData.filter(
+    (patient) => patient.counselorUID === loggedInUserUID
+  );
+  const indexOfLastPatient = currentPage * patientsPerPage;
   const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
-  const currentPatients = filteredPatientsData.slice(
+
+  const currentPatients = filteredPatientsForUser.slice(
     indexOfFirstPatient,
     indexOfLastPatient
+  );
+
+  const totalPages = Math.ceil(
+    filteredPatientsForUser.length / patientsPerPage
   );
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const totalPages = Math.ceil(filteredPatientsData.length / patientsPerPage);
+  // Inside the return statement, before the pagination JSX
+  console.log("totalPages:", totalPages);
+  console.log("indexOfFirstPatient:", indexOfFirstPatient);
+  console.log("indexOfLastPatient:", indexOfLastPatient);
+  console.log("totalPatientsForLoggedInUser:", totalPatientsForLoggedInUser);
 
-  const handlePreviousClick = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextClick = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const tableStyle = {
-    height: "650px", // Set the desired height
-    overflow: "auto", // Add scrollbars when content overflows
-  };
   return (
     <div className="flex justify-center items-center h-chatHeight">
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen py-10 h-131 w-128">
-        <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
+      <div className="relative shadow-md sm:rounded-lg mx-10 px-10 bg-primaryGreen py-10 h-131 w-128">
+        <div className="text-2xl font-sans font-semibold flex items-center mb-3">
           <div className="flex items-center justify-center rounded-2xl text-primaryOrange bg-white h-10 w-10">
             <ListIcon />
           </div>
@@ -179,58 +169,76 @@ function PatientList() {
             Patients List
           </span>
         </div>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 h-full">
-          <thead className="text-sm text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3 rounded-ss-lg">
-                Patients Name:
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Registered Date:
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Counselor:
-              </th>
-              <th scope="col" className="px-6 py-3 rounded-se-lg">
-                View Profile:
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentPatients.map((patient) => (
-              <tr
-                key={patient.UID}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {patient.firstName}
+        <div className="text-black text-center max-h-tableHeight overflow-y-auto">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white rounded-tl-lg overflow-hidden">
+            <thead className="text-sm text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="text-center sticky top-0 bg-gray-50 dark:bg-gray-700 z-50 ">
+                <th scope="col" className="px-6 py-3 ">
+                  Profile Picture:
                 </th>
-                <td className="px-6 py-4">{patient.dateCreated}</td>
-                <td className="px-6 py-4">
-                  <button
-                    className="font-medium text-primaryOrange hover:underline"
-                    onClick={() => {
-                      handleSelectPatient(patient.UID);
-                      handleShow(patient.UID);
-                    }}
-                  >
-                    See Profile
-                  </button>
-                  <PatientInfo
-                    show={show}
-                    onHide={handleClose}
-                    patientData={selectedPatientData}
-                    intakeFormsData={selectedIntakeFormsData}
-                    selectedPatientUID={selectedPatientUID}
-                  />
-                </td>
+                <th scope="col" className="px-6 py-3">
+                  Patients Name:
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Registered Date:
+                </th>
+                <th scope="col" className="px-6 py-3 ">
+                  View Profile:
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-black text-center">
+              {currentPatients
+                .filter((patient) => patient.counselorUID === loggedInUserUID)
+                .map((patient) => (
+                  <tr key={patient.UID}>
+                    <td className="px-6 py-4">
+                      {patient.ProfPic ? (
+                        <img
+                          src={fetchImageUrl(patient.ProfPic)}
+                          alt={patient.firstName}
+                          className="mx-auto"
+                          width="100"
+                          height="100"
+                        />
+                      ) : (
+                        <img
+                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FProfilePic.png?alt=media&token=25b442b3-110c-4dc5-af56-4fd799b77dcc"
+                          alt={patient.firstName}
+                          className="mx-auto"
+                          width="100"
+                          height="100"
+                        />
+                      )}
+                    </td>
+                    <td>{patient.firstName}</td>
+                    <td>
+                      {new Date(patient.dateCreated).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        }
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          handleSelectPatient(patient.UID);
+                          handleShow(patient.UID);
+                        }}
+                        className="text-indigo-400 font-semibold"
+                      >
+                        See Profile
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+
         {/* Pagination */}
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-b-lg">
           <div className="flex flex-1 justify-between sm:hidden">
@@ -253,14 +261,19 @@ function PatientList() {
             <div>
               <p className="text-sm text-gray-700 ">
                 <span>Showing</span>
-                <span className="font-medium ms-1 me-1">{indexOfFirstPatient + 1}</span>
+                <span className="font-medium ms-1 me-1">
+                  {Math.min(
+                    indexOfFirstPatient + 1,
+                    totalPatientsForLoggedInUser
+                  )}
+                </span>
                 <span>to</span>
                 <span className="font-medium ms-1 me-1">
-                  {Math.min(indexOfLastPatient, filteredPatientsData.length)}
+                  {Math.min(indexOfLastPatient, totalPatientsForLoggedInUser)}
                 </span>
                 <span>of</span>
                 <span className="font-medium ms-1 me-1">
-                  {filteredPatientsData.length}
+                  {totalPatientsForLoggedInUser}
                 </span>
                 <span>results</span>
               </p>
@@ -326,8 +339,17 @@ function PatientList() {
           </div>
         </div>
       </div>
+      {show && (
+        <PatientInfo
+          show={show}
+          onHide={handleClose}
+          patientData={selectedPatientData}
+          intakeFormsData={selectedIntakeFormsData}
+          selectedPatientUID={selectedPatientUID}
+        />
+      )}
     </div>
   );
-};
+}
 
 export default PatientList;
