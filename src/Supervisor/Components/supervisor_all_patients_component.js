@@ -239,22 +239,7 @@ function SupervisorAllPatientsComponent() {
               Next
             </button>
           </div>
-          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700 ">
-                <span>Showing</span>
-                <span className="font-medium ms-1 me-1">{startIndex + 1}</span>
-                <span>to</span>
-                <span className="font-medium ms-1 me-1">
-                  {Math.min(endIndex, filteredPatientsData.length)}
-                </span>
-                <span>of</span>
-                <span className="font-medium ms-1 me-1">
-                  {filteredPatientsData.length}
-                </span>
-                <span>results</span>
-              </p>
-            </div>
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-end">
             <div>
               <nav
                 className="isolate inline-flex -space-x-px rounded-md shadow-sm"
