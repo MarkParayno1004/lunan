@@ -3,11 +3,13 @@ import { upload } from "../Store/Components/SignUpHelper";
 import { CardOne } from "../SignUpCards/CardOne";
 import { CardTwo } from "../SignUpCards/CardTwo";
 import { CardThree } from "../SignUpCards/CardThree";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const SIGNUPCARD = () => {
   const [card, setCard] = useState(1);
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -46,6 +48,8 @@ export const SIGNUPCARD = () => {
       showConfirmButton: false,
       timer: 1500,
     });
+
+    navigate("/Login");
   };
   return (
     <div className="container-fluid">
