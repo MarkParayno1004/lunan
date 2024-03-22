@@ -262,25 +262,17 @@ function SupervisorAllCounselorComponent() {
                 Next
               </button>
             </div>
-            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-around">
-              <div>
-                <p className="text-sm text-gray-700 ">
-                  <span>Showing</span>
-                  <span className="font-medium ms-1 me-1">
-                    {startIndex + 1}
-                  </span>
-                  <span>to</span>
-                  <span className="font-medium ms-1 me-1">
-                    {Math.min(endIndex, filteredCounselorData.length)}
-                  </span>
-                  <span>of</span>
-                  <span className="font-medium ms-1 me-1">
-                    {filteredCounselorData.length}
-                  </span>
-                  <span>results</span>
-                </p>
+            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+              <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
+                <div className="flex items-center justify-center rounded-2xl text-primaryGreen h-10 w-10 cursor-pointer">
+                  <button onClick={() => handleShowAdd()}>
+                    <AddIcon />
+                  </button>
+                </div>
+                <span className="ms-1 text-base font-bold mb-1 text-black">
+                  Add Counselor
+                </span>
               </div>
-
               <div>
                 <nav
                   className="isolate inline-flex -space-x-px rounded-md shadow-sm"
@@ -338,16 +330,6 @@ function SupervisorAllCounselorComponent() {
                     </svg>
                   </button>
                 </nav>
-              </div>
-              <div className="text-2xl font-sans font-semibold  flex items-center mb-2">
-                <div className="flex items-center justify-center rounded-2xl text-primaryGreen h-10 w-10 cursor-pointer">
-                  <button onClick={() => handleShowAdd()}>
-                    <AddIcon />
-                  </button>
-                </div>
-                <span className="ms-1 text-base font-bold mb-1 text-black">
-                  Add Counselor
-                </span>
               </div>
             </div>
           </div>
