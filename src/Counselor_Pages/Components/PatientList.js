@@ -331,6 +331,5 @@ function PatientList() {
     </div>
   );
 }
-}
 
 export default PatientList;
