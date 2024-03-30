@@ -289,20 +289,16 @@ function PatientInfo(props) {
                     <div className="col">
                       <strong>Name: </strong>
                       <span style={{ color: "red" }}>
-                        {props.patientData.firstName}
+                        {patientData.firstName}
                       </span>
                     </div>
                     <div className="col">
                       <strong>Age: </strong>
-                      <span style={{ color: "red" }}>
-                        {props.patientData.Age}
-                      </span>
+                      <span style={{ color: "red" }}>{patientData.Age}</span>
                     </div>
                     <div className="col">
                       <strong>Gender: </strong>
-                      <span style={{ color: "red" }}>
-                        {props.patientData.Gender}
-                      </span>
+                      <span style={{ color: "red" }}>{patientData.Gender}</span>
                     </div>
                   </div>
 
@@ -310,7 +306,9 @@ function PatientInfo(props) {
                   <div className="row mt-3">
                     <div className="col">
                       <strong>Birthday: </strong>
-                      <span style={{ color: "red" }}>{props.birthday}</span>
+                      <span style={{ color: "red" }}>
+                        {patientData.BirthDate}
+                      </span>
                     </div>
 
                     <div className="col">
@@ -345,15 +343,11 @@ function PatientInfo(props) {
               <div className="row ms-2 mt-2 rounded-5 mb-3" id="bottomBorder">
                 <div className="col ">
                   <strong>Cell Phone Number: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.patientData.CellPhone}
-                  </span>
+                  <span style={{ color: "red" }}>{patientData.CellPhone}</span>
                 </div>
                 <div className="col">
                   <strong>Email: </strong>
-                  <span style={{ color: "red" }}>
-                    {props.patientData.Email}
-                  </span>
+                  <span style={{ color: "red" }}>{patientData.Email}</span>
                 </div>
               </div>
 
@@ -857,6 +851,6 @@ function PatientInfo(props) {
       </Modal.Body>
     </Modal>
   );
-};
+}
 
 export default PatientInfo;

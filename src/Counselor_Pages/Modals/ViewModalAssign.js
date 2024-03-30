@@ -120,7 +120,6 @@ export const ViewModalAssign = (props) => {
         selectedTaskData.id = selectedTaskDocSnap.id;
         // Set the entire document data to selectedwForm
         setSelectedTask(selectedTaskData);
-        // setShow(true);
         console.log("Fetched Tasks for ID:", id);
         console.log("Selected form data:", selectedTaskData);
       } else {
@@ -180,7 +179,10 @@ export const ViewModalAssign = (props) => {
         </div>
         {activeTab === "assigned" && (
           <>
-            <table class="table table-light table-hover mt-3" style={tableStyle}>
+            <table
+              class="table table-light table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -205,7 +207,7 @@ export const ViewModalAssign = (props) => {
                           }}
                           onClick={() => {
                             handleSelectTask(task.id);
-                            handleShowAct(task.id);
+                            handleShowAct();
                           }} // Pass the form's ID
                         >
                           {task.Activity}
@@ -271,7 +273,10 @@ export const ViewModalAssign = (props) => {
         )}
         {activeTab === "verified" && (
           <>
-            <table class="table table-light table-hover mt-3" style={tableStyle}>
+            <table
+              class="table table-light table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -287,7 +292,6 @@ export const ViewModalAssign = (props) => {
                   .map((task, index) => (
                     <tr key={index}>
                       <td>
-                        {" "}
                         <button
                           style={{
                             background: "none",
@@ -297,7 +301,7 @@ export const ViewModalAssign = (props) => {
                           }}
                           onClick={() => {
                             handleSelectTask(task.id);
-                            handleShowVerified(task.id);
+                            handleShowVerified();
                           }} // Pass the form's ID
                         >
                           {task.Activity}
@@ -340,7 +344,10 @@ export const ViewModalAssign = (props) => {
         )}
         {activeTab === "turnedIn" && (
           <>
-            <table class="table table-light table-hover mt-3" style={tableStyle}>
+            <table
+              class="table table-light table-hover mt-3"
+              style={tableStyle}
+            >
               <thead>
                 <tr>
                   <th scope="col">Activity:</th>
@@ -378,7 +385,7 @@ export const ViewModalAssign = (props) => {
                         />
                       </td>
                       <td>{task.Description}</td>
-                      <td>{task.id}</td>{" "}
+                      <td>{task.id}</td>
                       {/* Display Firestore document ID here */}
                     </tr>
                   ))}

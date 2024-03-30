@@ -4,19 +4,18 @@ import {
   getDocs,
   query,
   where,
-  doc,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
 import PatientInfo from "./PatientInfo";
 import { getAuth } from "firebase/auth";
-import { Pagination } from "react-bootstrap";
 import { ListIcon } from "../../assets/images";
 import "../../css/AllPatients.css";
+import CounselorPatientInfo from "./counselor_patient_info_component";
 
 //!Main App Render
 function PatientList() {
+  const [showPatientModal, setShowPatientModal] = React.useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = useState([]);
@@ -120,6 +119,45 @@ function PatientList() {
         setSelectedIntakeFormsData(intakeFormsData);
 
         setShow(true);
+      } else {
+        console.log("Patient document does not exist");
+      }
+    } catch (error) {
+      console.error("Error fetching patient data:", error);
+    }
+  };
+
+  const handleShowCounselorPatientInfo = async (UID) => {
+    console.log("Selected Patient UID:", UID);
+
+    try {
+      // Query the collection to find the document with the matching UID
+      const querySnapshot = await getDocs(collection(firestore, "Users"));
+      console.log("Query Snapshot:", querySnapshot.docs);
+
+      const matchingDocument = querySnapshot.docs.find(
+        (doc) => doc.data().UID === UID
+      );
+
+      if (matchingDocument) {
+        const patientData = matchingDocument.data();
+        console.log("Selected Patient Data:", patientData);
+
+        // Fetch additional data from the "IntakeForms" collection
+        const intakeFormsQuerySnapshot = await getDocs(
+          query(collection(firestore, "IntakeForms"), where("UID", "==", UID))
+        );
+        const intakeFormsData = intakeFormsQuerySnapshot.docs.map((doc) =>
+          doc.data()
+        );
+
+        console.log("Intake Forms Data:", intakeFormsData);
+
+        // Set the patient data and intake forms data to state
+        setSelectedPatientData(patientData);
+        setSelectedIntakeFormsData(intakeFormsData);
+
+        setShowPatientModal(true);
       } else {
         console.log("Patient document does not exist");
       }
@@ -232,6 +270,14 @@ function PatientList() {
                       >
                         See Profile
                       </button>
+                      <button
+                        onClick={() => {
+                          handleSelectPatient(patient.UID);
+                          handleShowCounselorPatientInfo(patient.UID);
+                        }}
+                      >
+                        New Design
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -328,9 +374,17 @@ function PatientList() {
           selectedPatientUID={selectedPatientUID}
         />
       )}
+      {showPatientModal && (
+        <CounselorPatientInfo
+          show={showPatientModal}
+          handleClose={() => setShowPatientModal(false)}
+          patientData={selectedPatientData}
+          intakeFormsData={selectedIntakeFormsData}
+          selectedPatientUID={selectedPatientUID}
+        />
+      )}
     </div>
   );
-}
 }
 
 export default PatientList;
