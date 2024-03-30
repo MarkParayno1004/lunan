@@ -28,6 +28,7 @@ module.exports = withMT({
         chatHeight: "94vh",
         131: "80vh",
         132: "25rem",
+        cModalHeight: "100%",
       },
     },
   },
