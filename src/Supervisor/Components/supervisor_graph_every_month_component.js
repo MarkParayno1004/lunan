@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -5,19 +6,16 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
-import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
-
-// If you're using Next.js please use the dynamic import for react-apexcharts and remove the import from the top for the react-apexcharts
-// import dynamic from "next/dynamic";
-// const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase-config";
 
 const chartConfig = {
   type: "line",
   height: 240,
   series: [
     {
-      name: "Sales",
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500, 200, 300, 100],
+      name: "Patients",
+      data: [],
     },
   ],
   options: {
@@ -55,20 +53,6 @@ const chartConfig = {
           fontWeight: 400,
         },
       },
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
     },
     yaxis: {
       labels: {
@@ -102,7 +86,58 @@ const chartConfig = {
     },
   },
 };
+
 function SupervisorGraphEveryMonth() {
+  const [patientData, setPatientData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usersRef = collection(firestore, "Users");
+        const q = query(usersRef, where("Role", "==", "Patient"));
+        const querySnapshot = await getDocs(q);
+
+        // Initialize an array to store the monthly counts
+        const monthlyCounts = Array(12).fill(0);
+
+        // Loop through the fetched data to count patients per month
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          const createdAt = userData.dateCreated;
+          const monthIndex = parseInt(createdAt.split("-")[1]) - 1;
+          monthlyCounts[monthIndex]++;
+        });
+
+        // Update the state with the monthly counts
+        setPatientData(monthlyCounts);
+        console.log("Data: ", monthlyCounts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Update chart data when patientData changes
+  useEffect(() => {
+    chartConfig.options.xaxis.categories = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    chartConfig.series[0].data = patientData;
+  }, [patientData]);
+
   return (
     <Card>
       <CardHeader
