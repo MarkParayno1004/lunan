@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import CounselorViewModalAssign from "../Modals/components/counselor_view_modal_assign_component";
 import { useSpring, animated } from "@react-spring/web";
 import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_notes_component";
+import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_components";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -148,7 +149,10 @@ export default function CounselorPatientInfo(props) {
                         </button>
                       </div>
                       <div>
-                        <button className="bg-primaryGreen rounded-xl">
+                        <button
+                          className="bg-primaryGreen rounded-xl"
+                          onClick={() => setShowPage("ViewWeekly")}
+                        >
                           View Weekly Form
                         </button>
                       </div>
@@ -176,12 +180,12 @@ export default function CounselorPatientInfo(props) {
                       <CounselorViewModalAssign
                         selectedPatientUID={props.selectedPatientUID}
                       />
+                    ) : showPage === "ViewCase" ? (
+                      <CounselorViewCaseNotes
+                        selectedPatientUID={props.selectedPatientUID}
+                      />
                     ) : (
-                      showPage === "ViewCase" && (
-                        <CounselorViewCaseNotes
-                          selectedPatientUID={props.selectedPatientUID}
-                        />
-                      )
+                      showPage === "ViewWeekly" && <CounselorViewWeeklyForm />
                     )}
                   </div>
                 </div>
