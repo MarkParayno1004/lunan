@@ -1,20 +1,72 @@
 import * as React from "react";
-import { Modal, Pagination } from "react-bootstrap";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDocs,
+  query,
+  collection,
+  where,
+  getDoc,
+} from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase-config";
+import { Box, Typography, Modal } from "@mui/material";
 
 export default function CounselorViewCaseNotes(props) {
   const [show, setShow] = React.useState(false);
-  const handleClose = () => React.setShow(false);
-  const handleShow = () => React.setShow(true);
-  const [cNotes, setcNotes] = React.useState(props.cNotes || []);
+  const [selectedcNotes, setSelectedcNotes] = React.useState(null);
+  const [notesForSelectedPatient, setNotesForSelectedPatient] = React.useState(
+    []
+  );
+  const [cNotes, setcNotes] = React.useState(notesForSelectedPatient || []);
 
   React.useEffect(() => {
     console.log("Entered Use Effect");
-    setcNotes(props.cNotes || []);
-  }, [props.cNotes]);
+    setcNotes(notesForSelectedPatient || []);
+  }, [notesForSelectedPatient]);
 
-  const [selectedcNotes, setSelectedcNotes] = React.useState(null);
+  React.useEffect(() => {
+    console.log("handleShowAss called with UID:", props.selectedPatientUID);
+
+    const fetchData = async () => {
+      try {
+        // Fetch notes for the selected patient and set them in state
+        const notes = await fetchNotesForPatient(props.selectedPatientUID);
+        setNotesForSelectedPatient(notes);
+
+        console.log("Tasks fetched", notes);
+      } catch (error) {
+        console.error("Error in handleShowAss:", error);
+      }
+    };
+
+    if (props.selectedPatientUID) {
+      fetchData();
+    }
+
+    // Cleanup function (if needed)
+    return () => {
+      // Cleanup code (if needed)
+    };
+  }, [props.selectedPatientUID]);
+
+  const fetchNotesForPatient = async (selectedPatientUID) => {
+    console.log("Fetching notes for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "CaseNotes"),
+        where("patientUID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const notes = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Fetched notes for", selectedPatientUID, notes);
+      return notes;
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      return [];
+    }
+  };
 
   const handleSelectcNotes = async (id) => {
     try {
@@ -31,7 +83,7 @@ export default function CounselorViewCaseNotes(props) {
         selectedcNoteData.id = selectedcNotesDocSnap.id;
         // Set the entire document data to selectedwForm
         setSelectedcNotes(selectedcNoteData);
-        setShow(true);
+        setShow(!show);
         console.log("Fetched form for ID:", id);
         console.log("Selected form data:", selectedcNoteData);
       } else {
@@ -43,80 +95,58 @@ export default function CounselorViewCaseNotes(props) {
       // Handle the error as needed (e.g., display an error message)
     }
   };
-
   return (
     <div>
-      {/* <table>
-          <thead>
+      <div>
+        <h4 className="pb-2">View Case Notes</h4>
+        <table className="w-full text-sm text-center h-full table-auto border border-slate-500">
+          <thead className="bg-primaryGreen">
             <tr>
-              <th scope="col">Name:</th>
-              <th scope="col">Date Created:</th>
-              <th scope="col">View Case:</th>
+              <th scope="col" className="px-6 py-3 rounded-ss-lg">
+                Date Created
+              </th>
+              <th scope="col" className="px-6 py-3">
+                View Case
+              </th>
             </tr>
           </thead>
           <tbody>
             {cNotes.map((cNote, index) => (
               <tr key={index}>
-                <td>{cNote.id}</td>
-                <td>{cNote.dateAdded}</td>
-                <td>
+                <td className="p-2 border border-slate-600">
+                  {new Date(cNote.dateAdded).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </td>
+                <td className="p-2 border border-slate-600">
                   <button
-                    className="btn"
-                    style={{
-                      backgroundColor: "#F1A34F",
-                      color: "#ffffff",
-                      width: "auto",
-                    }}
+                    className="bg-orange-200 p-2 rounded-lg font-semibold"
                     onClick={() => {
                       handleSelectcNotes(cNote.id);
-                      handleShow(cNote.id);
+                      setShow(!show);
                     }} // Pass the form's ID
                   >
                     View Note
                   </button>
                 </td>
-                <PublishCaseNotes
-                  show={show}
-                  handleClose={handleClose}
-                  selectedcNotes={selectedcNotes}
-                  caseNotes={selectedcNotes}
-                />
               </tr>
             ))}
           </tbody>
-        </table> */}
-      <table className="w-full text-sm text-center h-full table-auto border border-slate-500">
-        <thead className="bg-primaryGreen">
-          <tr>
-            <th scope="col" className="px-6 py-3 rounded-ss-lg">
-              Activity
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Description
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Deadline
-            </th>
-            <th scope="col" className="px-6 py-3">
-              View Activity
-            </th>
-            <th scope="col" className="px-6 py-3 ">
-              Edit
-            </th>
-            <th scope="col" className="px-6 py-3 rounded-se-lg">
-              Delete
-            </th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+        </table>
+      </div>
+      <PublishCaseNotes
+        show={show}
+        handleClose={() => setShow(!show)}
+        selectedcNotes={selectedcNotes}
+        caseNotes={selectedcNotes}
+      />
     </div>
   );
 }
 
 const PublishCaseNotes = (props) => {
-  const { selectedcNotes } = props;
-
   // Create a function to decode HTML entities
   const decodeHTML = (html) => {
     const txt = document.createElement("textarea");
@@ -124,32 +154,39 @@ const PublishCaseNotes = (props) => {
     return txt.value;
   };
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
-    <Modal className="mt-3" show={props.show} onHide={props.handleClose}>
-      <Modal.Body style={{ backgroundColor: "#1DC07C", color: "#ffffff" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Publish Case Notes:</Modal.Title>
-        </Modal.Header>
-        <table className="table table-light table-hover mt-3">
-          <thead>
-            <tr>
-              <th scope="col">Case Notes:</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                {/* Use dangerouslySetInnerHTML to display the HTML-parsed content */}
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: decodeHTML(selectedcNotes?.content || ""),
-                  }}
-                ></div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </Modal.Body>
-    </Modal>
+    <div>
+      <Modal
+        open={props.show}
+        onClose={props.handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Case Note
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: decodeHTML(props.selectedcNotes?.content || ""),
+              }}
+            ></div>
+          </Typography>
+        </Box>
+      </Modal>
+    </div>
   );
 };
