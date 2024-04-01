@@ -8,7 +8,6 @@ import {
   updateDoc,
   increment,
   doc,
-  setDoc,
 } from "firebase/firestore";
 import { auth, firestore } from "../../../firebase/firebase-config";
 
@@ -63,16 +62,6 @@ async function updateCounselorAndAssignPatient(
   await updateDoc(counselorRef, {
     patientCount: increment(1),
   });
-
-  const patientRef = doc(firestore, "Users", patientUID);
-  // await setDoc(
-  //   patientRef,
-  //   {
-  //     counselorUID: counselorDoc.data().UID,
-  //     counselorID: counselorDoc.id,
-  //   },
-  //   { merge: true }
-  // );
 
   const newUser = {
     ...data,
