@@ -13,6 +13,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Swal from "sweetalert2";
 import CounselorCreateAssignment from "./counselor_create_assignment_modal_component";
 import CounselorConfirmDeleteDialog from "../../Components/Dialogs/components/counselor_confirm_delete_dialog_component";
+import { doc, updateDoc } from "firebase/firestore";
+import { firestore } from "../../../firebase/firebase-config";
+import dayjs from "dayjs";
 
 export default function CounselorAssignedTableModal({
   tasks,
@@ -119,6 +122,11 @@ export default function CounselorAssignedTableModal({
                       />
                     </svg>
                   </button>
+                  <EditAssignedActivity
+                    show={showEditDialog}
+                    handleClose={() => setShowEditDialog(!showEditDialog)}
+                    task={task}
+                  />
                 </td>
                 <td
                   className="p-2 text-primaryOrange border border-slate-600"
@@ -178,10 +186,6 @@ export default function CounselorAssignedTableModal({
           handleSubmit={handleSubmit}
           selectedPatientUID={selectedPatientUID}
         />
-        <EditAssignedActivity
-          show={showEditDialog}
-          handleClose={() => setShowEditDialog(!showEditDialog)}
-        />
       </div>
     </div>
   );
@@ -233,6 +237,53 @@ const ViewAssignedActivity = (props) => {
 };
 
 const EditAssignedActivity = (props) => {
+  const [formData, setFormData] = React.useState({
+    Activity: props.task.Activity,
+    Description: props.task.Description,
+    Deadline: dayjs(props.task.Deadline), // Initialize with dayjs
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleDateChange = (date) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      Deadline: date,
+    }));
+  };
+  const updateTask = async (taskId, updatedData) => {
+    try {
+      // Get a reference to the Firestore database
+      const taskRef = doc(firestore, "Tasks", taskId);
+
+      // Use the updateDoc method to update the document with the new data
+      await updateDoc(taskRef, updatedData);
+
+      console.log("Task successfully updated!");
+    } catch (error) {
+      console.error("Error updating task: ", error);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const updatedTask = {
+      ...props.task,
+      Activity: formData.Activity,
+      Description: formData.Description,
+      Deadline: dayjs(formData.Deadline).format("YYYY-MM-DD"), // Convert Deadline back to Date object
+    };
+    updateTask(props.task.id, updatedTask); // Call the updateTask function
+    props.handleClose(); // Close the dialog after update
+    console.log("Newly Updated Tasks: ", updatedTask);
+  };
+
   return (
     <div>
       <Dialog
@@ -240,14 +291,7 @@ const EditAssignedActivity = (props) => {
         onClose={props.handleClose}
         PaperProps={{
           component: "form",
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            props.handleClose();
-          },
+          onSubmit: handleSubmit,
         }}
       >
         <DialogTitle>Update Assignment</DialogTitle>
@@ -265,6 +309,8 @@ const EditAssignedActivity = (props) => {
             type="text"
             fullWidth
             variant="standard"
+            value={formData.Activity}
+            onChange={handleInputChange}
           />
           <Box mt={2} fullWidth>
             <TextField
@@ -277,12 +323,19 @@ const EditAssignedActivity = (props) => {
               type="text"
               fullWidth
               variant="standard"
+              value={formData.Description}
+              onChange={handleInputChange}
             />
           </Box>
 
           <Box mt={2}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="New Deadline" />
+              <DatePicker
+                label="New Deadline"
+                value={formData.Deadline}
+                onChange={(date) => handleDateChange(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
             </LocalizationProvider>
           </Box>
         </DialogContent>

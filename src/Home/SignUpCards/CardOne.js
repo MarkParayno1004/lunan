@@ -8,6 +8,7 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
     Age: "",
     BirthDate: "",
     Gender: "",
+    PreferredGender: "",
   });
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
     }));
   };
 
-  const hanldeGenderChange = (event) => {
+  const handleGenderChange = (event) => {
     const { value } = event.target;
     console.log("New Gender value:", value);
 
@@ -70,6 +71,15 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
     });
   };
 
+  const handlePrefferedGender = (event) => {
+    const { value } = event.target;
+    console.log("New Gender value:", value);
+
+    setLocalFormData({
+      ...localFormData,
+      PreferredGender: value,
+    });
+  };
   useEffect(() => {
     if (dateValue.startDate && dateValue.endDate) {
       const age = calculateAge(dateValue.startDate, dateValue.endDate);
@@ -139,7 +149,7 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
             <select
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               name="Gender"
-              onChange={hanldeGenderChange}
+              onChange={handleGenderChange}
               value={localFormData.Gender}
               required
             >
@@ -153,7 +163,7 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label className="block mb-2 text-sm font-medium">
-              Birth Date:
+              Date of Birth:
             </label>
             <Datepicker
               primaryColor={"orange"}
@@ -164,6 +174,28 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
             />
           </div>
         </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block mb-2 text-sm font-medium">
+              Preference of Counselor's Gender:
+            </label>
+            <select
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              name="Gender"
+              onChange={handlePrefferedGender}
+              value={localFormData.PreferredGender}
+              required
+            >
+              <option selected hidden>
+                Please select
+              </option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Any</option>
+            </select>
+          </div>
+        </div>
+
         <div className="flex justify-end">
           <button className="bg-primaryGreen p-2 rounded-lg font-medium text-base">
             Next
