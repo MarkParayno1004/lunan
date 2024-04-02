@@ -261,7 +261,7 @@ function PatientList() {
                       )}
                     </td>
                     <td>
-                      <button
+                      {/* <button
                         onClick={() => {
                           handleSelectPatient(patient.UID);
                           handleShow(patient.UID);
@@ -269,14 +269,15 @@ function PatientList() {
                         className="text-indigo-400 font-semibold"
                       >
                         See Profile
-                      </button>
+                      </button> */}
                       <button
+                        className="text-indigo-400 font-semibold hover:underline"
                         onClick={() => {
                           handleSelectPatient(patient.UID);
                           handleShowCounselorPatientInfo(patient.UID);
                         }}
                       >
-                        New Design
+                        See Profile
                       </button>
                     </td>
                   </tr>
