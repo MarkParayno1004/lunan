@@ -27,7 +27,7 @@ export function generateRandomPassword(length) {
   return password;
 }
 
-async function findCounselorWithMinPatients() {
+async function findCounselorWithMinPatients(formData) {
   const counselorsQuery = query(
     collection(firestore, "Users"),
     where("Role", "==", "Counselor")
@@ -41,8 +41,14 @@ async function findCounselorWithMinPatients() {
   counselorsSnapshot.forEach((counselorDoc) => {
     const counselorData = counselorDoc.data();
     const counselorPatientCount = counselorData.patientCount || 0;
+    const counselorGender = counselorData.gender;
+    const PreferredGender = formData && formData.PreferredGender;
 
-    if (counselorPatientCount < minPatientCount) {
+    // Check if counselor's gender matches preferred gender or if preferred gender is not specified
+    if (
+      (PreferredGender === counselorGender || PreferredGender) &&
+      counselorPatientCount < minPatientCount
+    ) {
       minPatientCount = counselorPatientCount;
       selectedCounselor = counselorDoc;
     }
@@ -70,8 +76,10 @@ async function updateCounselorAndAssignPatient(
     counselorID: counselorDoc.id,
     counselorUID: counselorDoc.data().UID,
     password: password,
-    ProfPic: null,
+    ProfPic:
+      "https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2FotIaGJ8kcQeU7SxX6xM0?alt=media&token=123db672-a9e7-4ec5-9192-1fd52950a6b5",
     dateCreated: new Date().toISOString().split("T")[0],
+    Preference: formData.PreferredGender,
   };
 
   console.log("New User formData:", newUser);
