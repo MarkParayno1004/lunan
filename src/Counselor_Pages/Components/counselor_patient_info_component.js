@@ -185,7 +185,11 @@ export default function CounselorPatientInfo(props) {
                         selectedPatientUID={props.selectedPatientUID}
                       />
                     ) : (
-                      showPage === "ViewWeekly" && <CounselorViewWeeklyForm />
+                      showPage === "ViewWeekly" && (
+                        <CounselorViewWeeklyForm
+                          selectedPatientUID={props.selectedPatientUID}
+                        />
+                      )
                     )}
                   </div>
                 </div>

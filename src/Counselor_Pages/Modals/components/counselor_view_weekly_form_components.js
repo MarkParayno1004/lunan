@@ -1,12 +1,113 @@
 import * as React from "react";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  where,
+  collection,
+  query,
+} from "firebase/firestore";
+import { firestore } from "../../../firebase/firebase-config";
+import CounselorSubmittedWeeklyForm from "./counselor_submitted_weekly_form_comonent";
+import CounselorVerifiedWeeklyForms from "./counselor_verified_weekly_forms_component";
 
-export default function CounselorViewWeeklyForm() {
+export default function CounselorViewWeeklyForm(props) {
   const [activeTab, setActiveTab] = React.useState("Submitted");
+  const [selectedwForm, setSelectedwForm] = React.useState(null);
+  const [wFormsForSelectedPatient, setwFormsForSelectedPatient] =
+    React.useState([]);
+
+  React.useEffect(() => {
+    const handleShowWeek = async (selectedPatientUID) => {
+      console.log("handleShowWeek called with UID:", selectedPatientUID);
+      try {
+        const wForm = await fetchWeeklyForPatient(selectedPatientUID);
+        setwFormsForSelectedPatient(wForm);
+        console.log("Weekly Forms fetched", wForm);
+      } catch (error) {
+        console.error("Error in handleShowAss:", error);
+      }
+    };
+
+    if (props.selectedPatientUID) {
+      handleShowWeek(props.selectedPatientUID);
+    }
+  }, [props.selectedPatientUID]);
+
+  const fetchWeeklyForPatient = async (selectedPatientUID) => {
+    console.log("Fetching weekly forms for ", selectedPatientUID);
+    try {
+      const q = query(
+        collection(firestore, "WeeklyForm"),
+        where("UID", "==", selectedPatientUID)
+      );
+      const querySnapshot = await getDocs(q);
+      const wForms = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+
+        // Convert specific number fields to strings
+        data.WeeklyQ1 = String(data.WeeklyQ1);
+        data.WeeklyQ2 = String(data.WeeklyQ2);
+        data.WeeklyQ3 = String(data.WeeklyQ3);
+        data.WeeklyQ4 = String(data.WeeklyQ4);
+        data.WeeklyQ5 = String(data.WeeklyQ5);
+
+        return { id: doc.id, ...data };
+      });
+      console.log("Fetched Weekly Forms for", selectedPatientUID, wForms);
+      return wForms;
+    } catch (error) {
+      console.error("Error fetching wForms:", error);
+      return [];
+    }
+  };
+
+  const handleSelectwForm = async (id) => {
+    try {
+      // Fetch the entire document by its ID
+      const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
+      const selectedFormDocSnap = await getDoc(selectedFormDocRef);
+
+      // Check if the document exists
+      if (selectedFormDocSnap.exists()) {
+        // Get the data from the document
+        const selectedFormData = selectedFormDocSnap.data();
+
+        // Include the document ID in the data
+        selectedFormData.id = selectedFormDocSnap.id;
+        // Set the entire document data to selectedwForm
+        setSelectedwForm(selectedFormData);
+        console.log("Fetched form for ID:", id);
+        console.log("Selected form data:", selectedFormData);
+      } else {
+        console.error("Document not found for ID:", id);
+        // Handle the case where the document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error fetching form for ID:", id, error);
+      // Handle the error as needed (e.g., display an error message)
+    }
+  };
+
   function getTabContent(activeTab) {
     if (activeTab === "Submitted") {
-      return <>Submitted</>;
+      return (
+        <CounselorSubmittedWeeklyForm
+          selectedPatientUID={props.selectedPatientUID}
+          weeklyForms={wFormsForSelectedPatient}
+          handleSelectwForm={handleSelectwForm}
+          selectedwForm={selectedwForm}
+        />
+      );
     } else if (activeTab === "Verified") {
-      return <>verified</>;
+      return (
+        <CounselorVerifiedWeeklyForms
+          selectedPatientUID={props.selectedPatientUID}
+          weeklyForms={wFormsForSelectedPatient}
+          handleSelectwForm={handleSelectwForm}
+          selectedwForm={selectedwForm}
+        />
+      );
     }
   }
 
