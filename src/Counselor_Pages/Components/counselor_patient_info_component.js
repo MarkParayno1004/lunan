@@ -5,8 +5,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CounselorViewModalAssign from "../Modals/components/counselor_view_modal_assign_component";
 import { useSpring, animated } from "@react-spring/web";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { firestore } from "../../firebase/firebase-config";
+import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_notes_component";
+import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_components";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -64,17 +64,7 @@ const style = {
 };
 
 export default function CounselorPatientInfo(props) {
-  const [showPage, setShowPage] = React.useState({
-    Assign: true,
-    ViewCase: false,
-    WeeklyForm: false,
-    DailyForm: false,
-    WellnessGuide: false,
-    CreateCase: false,
-  });
-  const [tasksForSelectedPatient, setTasksForSelectedPatient] = React.useState(
-    []
-  );
+  const [showPage, setShowPage] = React.useState("Assign");
 
   const patientData = props.patientData;
   const intakeFormsData = props.intakeFormsData;
@@ -145,23 +135,24 @@ export default function CounselorPatientInfo(props) {
                       <div>
                         <button
                           className="bg-primaryGreen rounded-xl"
-                          onClick={() =>
-                            setShowPage((prevState) => ({
-                              ...prevState,
-                              Assign: !prevState.Assign,
-                            }))
-                          }
+                          onClick={() => setShowPage("Assign")}
                         >
                           View Assignments
                         </button>
                       </div>
                       <div>
-                        <button className="bg-primaryGreen rounded-xl">
+                        <button
+                          className="bg-primaryGreen rounded-xl"
+                          onClick={() => setShowPage("ViewCase")}
+                        >
                           View Case Notes
                         </button>
                       </div>
                       <div>
-                        <button className="bg-primaryGreen rounded-xl">
+                        <button
+                          className="bg-primaryGreen rounded-xl"
+                          onClick={() => setShowPage("ViewWeekly")}
+                        >
                           View Weekly Form
                         </button>
                       </div>
@@ -185,10 +176,20 @@ export default function CounselorPatientInfo(props) {
                 </div>
                 <div className="col-span-4 sm:col-span-9 h-cModalHeight overflow-y-auto">
                   <div className="bg-white shadow rounded-lg p-6">
-                    {showPage.Assign && (
+                    {showPage === "Assign" ? (
                       <CounselorViewModalAssign
                         selectedPatientUID={props.selectedPatientUID}
                       />
+                    ) : showPage === "ViewCase" ? (
+                      <CounselorViewCaseNotes
+                        selectedPatientUID={props.selectedPatientUID}
+                      />
+                    ) : (
+                      showPage === "ViewWeekly" && (
+                        <CounselorViewWeeklyForm
+                          selectedPatientUID={props.selectedPatientUID}
+                        />
+                      )
                     )}
                   </div>
                 </div>

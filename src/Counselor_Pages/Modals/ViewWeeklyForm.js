@@ -162,7 +162,7 @@ export const ViewWeeklyForm = (props) => {
                           }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
-                            handleShow(wForm.id);
+                            handleShow();
                           }} // Pass the form's ID
                         >
                           View Form
@@ -235,7 +235,7 @@ export const ViewWeeklyForm = (props) => {
                           }}
                           onClick={() => {
                             handleSelectwForm(wForm.id);
-                            handleShowVerfied(wForm.id);
+                            handleShowVerfied();
                           }} // Pass the form's ID
                         >
                           View Form
