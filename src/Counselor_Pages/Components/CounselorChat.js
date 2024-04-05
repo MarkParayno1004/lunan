@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { firestore } from "../../firebase/firebase-config";
 import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
@@ -17,30 +17,24 @@ import {
 } from "firebase/firestore";
 
 function CounselorChat() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [patientsData, setPatientsData] = useState([]);
-  const [filteredPatientsData, setFilteredPatientsData] = useState([]);
-  const [counselorNames, setCounselorNames] = useState({});
-  const [show, setShow] = useState();
-  const [room, setRoom] = useState();
-  const [selectedPatientUID, setSelectedPatientUID] = useState(null);
-  const [selectedPatientData, setSelectedPatientData] = useState(null);
-  const [selectedIntakeFormsData, setSelectedIntakeFormsData] = useState([
-    null,
-  ]);
-  const [showPatientInfo, setShowPatientInfo] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const messagesEndRef = useRef(null);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [patientsData, setPatientsData] = React.useState([]);
+  const [filteredPatientsData, setFilteredPatientsData] = React.useState([]);
+  const [room, setRoom] = React.useState();
+  const [selectedPatientUID, setSelectedPatientUID] = React.useState(null);
+  const [selectedPatientData, setSelectedPatientData] = React.useState(null);
+  const [messages, setMessages] = React.useState([]);
+  const messagesEndRef = React.useRef(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Check if messages is not empty before scrolling to the end
     if (messages.length > 0 && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchPatientsData = async () => {
       try {
         const querySnapshot = await getDocs(
@@ -60,7 +54,7 @@ function CounselorChat() {
     fetchPatientsData();
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchCounselorNames = async () => {
       const names = {};
 
@@ -75,7 +69,6 @@ function CounselorChat() {
       );
 
       console.log("Fetched Counselor Names:", names);
-      setCounselorNames(names);
     };
 
     fetchCounselorNames();
@@ -124,7 +117,6 @@ function CounselorChat() {
 
   const handleSelectPatient = async (UID) => {
     setSelectedPatientUID(UID);
-    setShowPatientInfo(true);
 
     // Create a chat room based on the selected patient's UID
     const roomName =
@@ -152,12 +144,9 @@ function CounselorChat() {
     } catch (error) {
       console.error("Error fetching patient data:", error);
     }
-
-    // Show the chat UI
-    setShowChat(true);
   };
 
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = React.useState("");
   const messagesRef = collection(db, "messages");
   const totalNumberPatient = filteredPatientsData.length;
 
@@ -221,7 +210,7 @@ function CounselorChat() {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (room) {
       const queryMessages = query(
         messagesRef,
@@ -308,6 +297,79 @@ function CounselorChat() {
           </div>
           <div className="flex flex-col flex-auto h-full p-6 bg-primaryGreen rounded-e-lg">
             <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
+              <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-start border-b border-gray-400 mb-3">
+                <div className="flex items-center">
+                  <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                    {selectedPatientData && selectedPatientData.ProfPic ? (
+                      <img
+                        src={fetchImageUrl(selectedPatientData.ProfPic)}
+                        alt={selectedPatientData.firstName}
+                        width="100"
+                        height="100"
+                        className="rounded-circle"
+                      />
+                    ) : (
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+                        alt={selectedPatientData?.firstName || "Unknown User"}
+                        width="100"
+                        height="100"
+                      />
+                    )}
+                  </div>
+                  <div className="ml-4">
+                    <div className="text-grey-darkest">
+                      {selectedPatientData
+                        ? selectedPatientData.firstName
+                        : "Selected User's First Name"}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div>
+                    {selectedPatientData && selectedPatientData.ProfPic ? (
+                      <button
+                        className="text-primaryOrange"
+                        onClick={() => {
+                          navigate("/VideoTest");
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    ) : (
+                      <button
+                        className="text-primaryOrange cursor-not-allowed"
+                        disabled
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               <div className="flex flex-col h-full overflow-x-auto mb-4">
                 <div className="flex flex-col h-full">
                   <div className="grid grid-cols-7 gap-y-2">
@@ -392,6 +454,6 @@ function CounselorChat() {
       </div>
     </div>
   );
-};
+}
 
 export default CounselorChat;
