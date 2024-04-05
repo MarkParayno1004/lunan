@@ -7,6 +7,7 @@ import CounselorViewModalAssign from "../Modals/components/counselor_view_modal_
 import { useSpring, animated } from "@react-spring/web";
 import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_notes_component";
 import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_components";
+import CounselorViewDailyForm from "../Modals/components/counselor_view_daily_form_components";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -70,6 +71,27 @@ export default function CounselorPatientInfo(props) {
   const intakeFormsData = props.intakeFormsData;
   const patientFirstName = patientData ? patientData.firstName : "no name";
 
+  const renderContent = () => {
+    if (showPage === "Assign") {
+      return (
+        <CounselorViewModalAssign
+          selectedPatientUID={props.selectedPatientUID}
+        />
+      );
+    } else if (showPage === "ViewCase") {
+      return (
+        <CounselorViewCaseNotes selectedPatientUID={props.selectedPatientUID} />
+      );
+    } else if (showPage === "ViewWeekly") {
+      return (
+        <CounselorViewWeeklyForm
+          selectedPatientUID={props.selectedPatientUID}
+        />
+      );
+    } else if (showPage === "ViewDaily") {
+      return <CounselorViewDailyForm />;
+    }
+  };
   return (
     <div>
       <Modal
@@ -157,7 +179,10 @@ export default function CounselorPatientInfo(props) {
                         </button>
                       </div>
                       <div>
-                        <button className="bg-primaryGreen rounded-xl">
+                        <button
+                          className="bg-primaryGreen rounded-xl"
+                          onClick={() => setShowPage("ViewDaily")}
+                        >
                           View Daily Form
                         </button>
                       </div>
@@ -176,21 +201,7 @@ export default function CounselorPatientInfo(props) {
                 </div>
                 <div className="col-span-4 sm:col-span-9 h-cModalHeight overflow-y-auto">
                   <div className="bg-white shadow rounded-lg p-6">
-                    {showPage === "Assign" ? (
-                      <CounselorViewModalAssign
-                        selectedPatientUID={props.selectedPatientUID}
-                      />
-                    ) : showPage === "ViewCase" ? (
-                      <CounselorViewCaseNotes
-                        selectedPatientUID={props.selectedPatientUID}
-                      />
-                    ) : (
-                      showPage === "ViewWeekly" && (
-                        <CounselorViewWeeklyForm
-                          selectedPatientUID={props.selectedPatientUID}
-                        />
-                      )
-                    )}
+                    {renderContent()}
                   </div>
                 </div>
               </div>

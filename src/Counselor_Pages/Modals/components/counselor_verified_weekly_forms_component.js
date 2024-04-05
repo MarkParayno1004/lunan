@@ -26,7 +26,6 @@ export default function CounselorVerifiedWeeklyForms(props) {
   }, [props.selectedPatientUID]);
   return (
     <div>
-      <h1>Verified</h1>
       <table className="w-full text-sm text-center h-full">
         <thead className="bg-primaryGreen">
           <tr>

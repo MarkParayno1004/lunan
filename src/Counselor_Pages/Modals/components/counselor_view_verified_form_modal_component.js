@@ -131,7 +131,7 @@ export default function CounselorViewVerifiedFormModal(props) {
                   className="bg-orange-200 p-2 rounded-lg mt-2"
                   onClick={() => updatewFormUnverify(props.selectedwForm.id)}
                 >
-                  UnVerify
+                  Unverify
                 </button>
               </div>
             </div>
