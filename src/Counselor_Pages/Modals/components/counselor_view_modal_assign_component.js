@@ -98,7 +98,6 @@ export default function CounselorViewModalAssign(props) {
 
   return (
     <div>
-      <h4 className="pb-2">View Assignments</h4>
       <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul
           className="flex flex-wrap -mb-px text-sm font-medium text-center"

@@ -116,7 +116,6 @@ export default function CounselorViewWeeklyForm(props) {
   };
   return (
     <div>
-      <h4 className="pb-2">View Weekly Forms</h4>
       <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul
           className="flex flex-wrap -mb-px text-sm font-medium text-center"

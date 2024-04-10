@@ -53,7 +53,7 @@ export default function CounselorSubmittedWeeklyForm(props) {
                 </td>
                 <td className="p-2 border border-slate-600">
                   <button
-                    className="p-2 bg-orange-200 rounded-lg"
+                    className="p-2 bg-orange-200 rounded-lg font-semibold"
                     onClick={() => {
                       props.handleSelectwForm(wForm.id);
                       setShowViewWeekly(!showViewWeekly);

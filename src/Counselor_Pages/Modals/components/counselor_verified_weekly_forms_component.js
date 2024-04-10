@@ -52,7 +52,7 @@ export default function CounselorVerifiedWeeklyForms(props) {
                 </td>
                 <td className="p-2 border border-slate-600">
                   <button
-                    className="bg-orange-200 p-2 rounded-lg"
+                    className="bg-orange-200 p-2 rounded-lg font-semibold"
                     onClick={() => {
                       props.handleSelectwForm(wForm.id);
                       setShowWeeklYVerified(!showWeeklyVerified);

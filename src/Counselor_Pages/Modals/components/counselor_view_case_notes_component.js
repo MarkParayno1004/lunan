@@ -98,7 +98,6 @@ export default function CounselorViewCaseNotes(props) {
   return (
     <div>
       <div>
-        <h4 className="pb-2">View Case Notes</h4>
         <table className="w-full text-sm text-center h-full table-auto border border-slate-500">
           <thead className="bg-primaryGreen">
             <tr>

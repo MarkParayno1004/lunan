@@ -89,7 +89,9 @@ export default function CounselorPatientInfo(props) {
         />
       );
     } else if (showPage === "ViewDaily") {
-      return <CounselorViewDailyForm />;
+      return (
+        <CounselorViewDailyForm selectedPatientUID={props.selectedPatientUID} />
+      );
     }
   };
   return (
