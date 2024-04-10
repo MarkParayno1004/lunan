@@ -8,6 +8,7 @@ import { useSpring, animated } from "@react-spring/web";
 import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_notes_component";
 import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_components";
 import CounselorViewDailyForm from "../Modals/components/counselor_view_daily_form_components";
+import CounselorViewWellnessGuide from "../Modals/components/counselor_view_wellness_guide_component";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -91,6 +92,12 @@ export default function CounselorPatientInfo(props) {
     } else if (showPage === "ViewDaily") {
       return (
         <CounselorViewDailyForm selectedPatientUID={props.selectedPatientUID} />
+      );
+    } else if (showPage === "ViewGuide") {
+      return (
+        <CounselorViewWellnessGuide
+          selectedPatientUID={props.selectedPatientUID}
+        />
       );
     }
   };
@@ -189,7 +196,10 @@ export default function CounselorPatientInfo(props) {
                         </button>
                       </div>
                       <div>
-                        <button className="bg-primaryGreen rounded-xl">
+                        <button
+                          className="bg-primaryGreen rounded-xl"
+                          onClick={() => setShowPage("ViewGuide")}
+                        >
                           View Wellness Guide
                         </button>
                       </div>

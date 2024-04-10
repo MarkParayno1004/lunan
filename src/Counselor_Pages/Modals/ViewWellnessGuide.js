@@ -182,6 +182,8 @@ export const ViewWellnessGuide = (props) => {
 //!Excess Modal
 
 const AddGuide = (props) => {
+  const [guide, setGuide] = useState("");
+  const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
   const [vidLink, setVidLink] = useState("");
 
