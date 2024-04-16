@@ -43,9 +43,10 @@ export default function CounselorCreateCaseNote(props) {
   return (
     <div>
       <div>
-        {/* Add your page content here */}
-        <h2>Create Case Note:</h2>
         <div>
+          <div className="bg-primaryGreen rounded-t-lg p-2 text-md font-semibold">
+            <span>Create Case Note</span>
+          </div>
           <CKEditor
             editor={Editor}
             config={{
