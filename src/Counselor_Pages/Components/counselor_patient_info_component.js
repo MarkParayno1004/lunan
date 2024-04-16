@@ -9,6 +9,7 @@ import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_not
 import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_components";
 import CounselorViewDailyForm from "../Modals/components/counselor_view_daily_form_components";
 import CounselorViewWellnessGuide from "../Modals/components/counselor_view_wellness_guide_component";
+import CounselorCreateCaseNote from "../Modals/components/counselor_create_case_note_component";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -96,6 +97,12 @@ export default function CounselorPatientInfo(props) {
     } else if (showPage === "ViewGuide") {
       return (
         <CounselorViewWellnessGuide
+          selectedPatientUID={props.selectedPatientUID}
+        />
+      );
+    } else if (showPage === "CreateNote") {
+      return (
+        <CounselorCreateCaseNote
           selectedPatientUID={props.selectedPatientUID}
         />
       );
@@ -204,7 +211,10 @@ export default function CounselorPatientInfo(props) {
                         </button>
                       </div>
                       <div>
-                        <button className="bg-primaryGreen rounded-xl">
+                        <button
+                          className="bg-primaryGreen rounded-xl"
+                          onClick={() => setShowPage("CreateNote")}
+                        >
                           Create Case Notes
                         </button>
                       </div>
