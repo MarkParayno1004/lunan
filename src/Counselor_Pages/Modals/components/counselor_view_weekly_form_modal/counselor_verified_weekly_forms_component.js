@@ -1,7 +1,7 @@
 import * as React from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../../../firebase/firebase-config";
-import CounselorViewVerifiedFormModal from "../counselor_view_verified_form_modal_component";
+import CounselorViewVerifiedFormModal from "./counselor_weekly_view_verified_form_modal_component";
 
 export default function CounselorVerifiedWeeklyForms(props) {
   const [wForms, setwForms] = React.useState(props.weeklyForms || []);
