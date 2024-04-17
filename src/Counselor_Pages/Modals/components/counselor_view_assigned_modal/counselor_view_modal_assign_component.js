@@ -7,10 +7,10 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
+import { firestore } from "../../../../firebase/firebase-config";
 import CounselorAssignedTableModal from "./counselor_assigned_table_modal_component";
-import CounselorTurnedInTableModal from "./counselor_turned_in_table_modal_component";
-import CounselorVerifiedTable from "./counselor_verified_table_component";
+import CounselorTurnedInTableModal from "./counselor_assign_turned_in_table_modal_component";
+import CounselorVerifiedTable from "./counselor_assigned_verified_table_component";
 
 export default function CounselorViewModalAssign(props) {
   const [activeTab, setActiveTab] = React.useState("Assigned");
@@ -98,7 +98,6 @@ export default function CounselorViewModalAssign(props) {
 
   return (
     <div>
-      <h4 className="pb-2">View Assignments</h4>
       <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul
           className="flex flex-wrap -mb-px text-sm font-medium text-center"

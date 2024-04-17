@@ -1,7 +1,7 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
+import { firestore } from "../../../../firebase/firebase-config";
 import { Box, Typography, Modal } from "@mui/material";
-export default function CounselorViewVerifiedFormModal(props) {
+export default function CounselorViewFormWeeklyModal(props) {
   console.log("Selected Weekly Form Data:", props.selectedwForm);
 
   const mapAnswer = (value) => {
@@ -59,15 +59,15 @@ export default function CounselorViewVerifiedFormModal(props) {
 
   const totalScore = q1 + q2 + q3 + q4 + q5;
 
-  const updatewFormUnverify = async (wFormId) => {
+  const updatewFormVerified = async (wFormId) => {
     const formRef = doc(firestore, "WeeklyForm", wFormId);
     try {
       // Update the 'Status' field to "Verified"
       await updateDoc(formRef, {
-        Status: null,
+        Status: "Verified",
       });
-      props.handleClose();
       console.log("Form status updated to Verified");
+      props.handleClose();
     } catch (error) {
       console.error("Error updating form status:", error);
     }
@@ -129,9 +129,9 @@ export default function CounselorViewVerifiedFormModal(props) {
               <div className="justify-self-end">
                 <button
                   className="bg-orange-200 p-2 rounded-lg mt-2"
-                  onClick={() => updatewFormUnverify(props.selectedwForm.id)}
+                  onClick={() => updatewFormVerified(props.selectedwForm.id)}
                 >
-                  Unverify
+                  Verify
                 </button>
               </div>
             </div>

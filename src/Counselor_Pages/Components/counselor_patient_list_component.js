@@ -7,14 +7,13 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
-import PatientInfo from "./PatientInfo";
 import { getAuth } from "firebase/auth";
 import { ListIcon } from "../../assets/images";
 import "../../css/AllPatients.css";
 import CounselorPatientInfo from "./counselor_patient_info_component";
 
 //!Main App Render
-function PatientList() {
+export default function CounselorPatientList() {
   const [showPatientModal, setShowPatientModal] = React.useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);
@@ -262,15 +261,6 @@ function PatientList() {
                     </td>
                     <td>
                       <button
-                        onClick={() => {
-                          handleSelectPatient(patient.UID);
-                          handleShow(patient.UID);
-                        }}
-                        className="text-indigo-400 font-semibold"
-                      >
-                        Old Design
-                      </button>
-                      <button
                         className="text-indigo-400 font-semibold hover:underline"
                         onClick={() => {
                           handleSelectPatient(patient.UID);
@@ -366,15 +356,6 @@ function PatientList() {
           </div>
         </div>
       </div>
-      {show && (
-        <PatientInfo
-          show={show}
-          onHide={handleClose}
-          patientData={selectedPatientData}
-          intakeFormsData={selectedIntakeFormsData}
-          selectedPatientUID={selectedPatientUID}
-        />
-      )}
       {showPatientModal && (
         <CounselorPatientInfo
           show={showPatientModal}
@@ -387,5 +368,3 @@ function PatientList() {
     </div>
   );
 }
-
-export default PatientList;

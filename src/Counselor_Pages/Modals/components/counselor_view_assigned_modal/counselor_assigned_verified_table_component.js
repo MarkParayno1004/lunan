@@ -1,18 +1,18 @@
 import * as React from "react";
+import { firestore } from "../../../../firebase/firebase-config";
 import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
 import { Box, Modal, Typography } from "@mui/material";
 import { getStorage, ref, getMetadata, getDownloadURL } from "firebase/storage";
-
-export default function CounselorTurnedInTableModal({
+export default function CounselorVerifiedTable({
   tasks,
   selectedTask,
   handleSelectTask,
 }) {
-  const [showViewTurnedIn, setShowViewTurnedIn] = React.useState(false);
+  const [showVerified, setShowVerified] = React.useState(false);
+  const [selectedTaskId, setSelectedTaskId] = React.useState(null);
 
   return (
-    <table className="w-full text-sm h-full border border-slate-500 text-center">
+    <table className="w-full text-sm text-center h-full table-auto border border-slate-500">
       <thead className="bg-primaryGreen">
         <tr className="rounded-lg">
           <th scope="col" className="px-6 py-3 rounded-ss-lg">
@@ -25,67 +25,75 @@ export default function CounselorTurnedInTableModal({
             Turned In Date
           </th>
           <th scope="col" className="px-6 py-3 rounded-se-lg">
-            Submitted Assignment
+            Verified Assignment
           </th>
         </tr>
       </thead>
       <tbody>
         {tasks
-          .filter((task) => task.Status === "turnedIn")
+          .filter((task) => task.Status === "Verified")
           .map((task, index) => (
             <tr key={index}>
               <td className="p-2 border border-slate-600">{task.Activity}</td>
-              <td className="p-2 border border-slate-500">
+              <td className="p-2 border border-slate-600">
                 {task.Description}
               </td>
-              <td className="p-2 border border-slate-500">
+              <td className="p-2 border border-slate-600">
                 {new Date(task.TurnedInDate).toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
                 })}
               </td>
-              <td className="p-2 border border-slate-500 font-medium text-primaryOrange">
+              <td className="p-2 border border-slate-600 text-primaryOrange font-medium">
                 <button
                   className="hover:underline"
                   onClick={() => {
                     handleSelectTask(task.id);
-                    setShowViewTurnedIn(!showViewTurnedIn);
+                    setSelectedTaskId(task.id); // Set the selected task ID
+                    setShowVerified(true); // Show the modal
                   }}
                 >
                   View Assignment
                 </button>
-                <ViewTurnedInActivity
-                  show={showViewTurnedIn}
-                  handleClose={() => setShowViewTurnedIn(!showViewTurnedIn)}
-                  task={selectedTask}
-                  selectedTask={selectedTask}
-                />
               </td>
             </tr>
           ))}
       </tbody>
+      {showVerified && (
+        <ViewVerifiedActivity
+          show={showVerified}
+          handleClose={() => {
+            setShowVerified(false);
+            setSelectedTaskId(null);
+          }}
+          task={selectedTask}
+        />
+      )}
     </table>
   );
 }
 
-const ViewTurnedInActivity = (props) => {
+const ViewVerifiedActivity = (props) => {
   const [fileName, setFileName] = React.useState(null);
 
+  // Function to update task status
   const updateTaskStatus = async (taskId) => {
     const taskRef = doc(firestore, "Tasks", taskId);
+
     try {
-      // Update the Status field to "Verified"
+      // Update the Status field to "turnedIn"
       await updateDoc(taskRef, {
-        Status: "Verified",
+        Status: "turnedIn",
       });
-      console.log("Task status updated to Verified");
-      props.handleClose();
+      console.log("Task status updated to turnedIn");
     } catch (error) {
       console.error("Error updating task status:", error);
     }
+    props.handleClose();
   };
 
+  // Function to fetch file name
   const fetchFileName = async (downloadURL) => {
     const storage = getStorage(); // Initialize Firebase Storage
     const fileRef = ref(storage, downloadURL); // Create a reference to the file
@@ -99,9 +107,10 @@ const ViewTurnedInActivity = (props) => {
     }
   };
 
+  // Effect to fetch file name when the download URL changes
   React.useEffect(() => {
-    if (props.selectedTask?.DownloadURL) {
-      fetchFileName(props.selectedTask.DownloadURL)
+    if (props.task?.DownloadURL) {
+      fetchFileName(props.task?.DownloadURL)
         .then((name) => {
           setFileName(name);
         })
@@ -109,12 +118,13 @@ const ViewTurnedInActivity = (props) => {
           console.error("Error fetching file name:", error);
         });
     }
-  }, [props.selectedTask?.DownloadURL]);
+  }, [props.task?.DownloadURL]);
 
+  // Function to handle file click
   const handleFileClick = () => {
-    if (props.selectedTask?.DownloadURL) {
+    if (props.task?.DownloadURL) {
       const storage = getStorage(); // Initialize Firebase Storage
-      const fileRef = ref(storage, props.selectedTask.DownloadURL); // Create a reference to the file
+      const fileRef = ref(storage, props.task.DownloadURL); // Create a reference to the file
 
       // Get the file download URL
       getDownloadURL(fileRef)
@@ -150,27 +160,19 @@ const ViewTurnedInActivity = (props) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Turned in Activity
+            View Turned In Activity
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <div className="container-fluid mt-3">
-              <span>
-                <strong>{props.selectedTask?.Activity}</strong>
-              </span>
-              <br></br>
-              {props.selectedTask?.Description}
-              <br></br>
-              <span>
-                <strong>Due Date:</strong> {props.selectedTask?.Deadline}
-              </span>
-              <br></br>
-              <span>
-                <strong>Turned-in Date:</strong>
-                {props.selectedTask?.TurnedInDate}
-              </span>
-              <br></br>
-              <strong>File : </strong>
-              <span
+            <div>
+              <p>
+                Activity: {props.task?.Activity}
+                <br /> Description: {props.task?.Description} <br /> Due Date:{" "}
+                {props.task?.Deadline} <br /> Turned-in Date:{" "}
+                {props.task?.TurnedInDate} <br />
+                File:
+              </p>
+              File:
+              <button
                 style={{
                   cursor: "pointer",
                   textDecoration: "underline",
@@ -178,13 +180,13 @@ const ViewTurnedInActivity = (props) => {
                 onClick={handleFileClick}
               >
                 {fileName || "N/A"}
-              </span>
+              </button>
               <div className="d-flex justify-content-end">
                 <button
                   className="btn mt-3"
-                  onClick={() => updateTaskStatus(props.selectedTask?.id)}
+                  onClick={() => updateTaskStatus(props.task?.id)}
                 >
-                  Verify
+                  Unverify
                 </button>
               </div>
             </div>

@@ -3,12 +3,13 @@ import { DashboardLogo } from "../../assets/images";
 import { useNavigate } from "react-router-dom"; // Import useHistory hook
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth"; // Import Firebase authentication methods
 import "../../css/SupervisorDashboard.css";
-import PatientList from "../Components/PatientList";
-import CounselorScheduler from "../Components/CounselorScheduler";
-import CounselorDashboard from "../CounselorDashboard";
-import CounselorChat from "../Components/CounselorChat";
+
+import CounselorChat from "../Components/counselor_chat_component";
 import { Client } from "@twilio/conversations";
 import { useSelector } from "react-redux";
+import CounselorPatientList from "../Components/counselor_patient_list_component";
+import CounselorDashboard from "../Modals/components/counselor_dashboard_modal/counselor_dashboard_component";
+import CounselorScheduler from "../Components/counselor_scheduler_component";
 
 function CounselorDashboardPage() {
   const [activeComponent, setActiveComponent] = useState("DashboardComponent");
@@ -176,7 +177,7 @@ function CounselorDashboardPage() {
             } else if (activeComponent === "ChatComponent") {
               return <CounselorChat />;
             } else if (activeComponent === "AllPatientsComponent") {
-              return <PatientList />;
+              return <CounselorPatientList />;
             } else if (activeComponent === "ScheduleComponent") {
               return <CounselorScheduler />;
             }
