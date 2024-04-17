@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import CounselorViewModalAssign from "../Modals/components/counselor_view_modal_assign_component";
 import { useSpring, animated } from "@react-spring/web";
-import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_notes_component";
-import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_components";
-import CounselorViewDailyForm from "../Modals/components/counselor_view_daily_form_components";
-import CounselorViewWellnessGuide from "../Modals/components/counselor_view_wellness_guide_component";
-import CounselorCreateCaseNote from "../Modals/components/counselor_create_case_note_component";
+import CounselorViewCaseNotes from "../Modals/components/counselor_view_case_notes_modal/counselor_view_case_notes_component";
+import CounselorViewWeeklyForm from "../Modals/components/counselor_view_weekly_form_modal/counselor_view_weekly_form_components";
+import CounselorViewWellnessGuide from "../Modals/components/counselor_view_wellness_guide_modal/counselor_view_wellness_guide_component";
+import CounselorCreateCaseNote from "../Modals/components/counselor_create_case_notes_modal/counselor_create_case_note_component";
+import CounselorViewModalAssign from "../Modals/components/counselor_view_assigned_modal/counselor_view_modal_assign_component";
+import CounselorViewDailyForm from "../Modals/components/counselor_view_daily_form_modal/counselor_view_daily_form_components";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {

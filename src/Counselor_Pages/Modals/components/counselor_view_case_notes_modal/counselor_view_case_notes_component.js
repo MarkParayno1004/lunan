@@ -7,7 +7,7 @@ import {
   where,
   getDoc,
 } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
+import { firestore } from "../../../../firebase/firebase-config";
 import { Box, Typography, Modal } from "@mui/material";
 
 export default function CounselorViewCaseNotes(props) {

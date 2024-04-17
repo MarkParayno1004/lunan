@@ -7,7 +7,7 @@ import {
   collection,
   query,
 } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
+import { firestore } from "../../../../firebase/firebase-config";
 import CounselorSubmittedWeeklyForm from "./counselor_submitted_weekly_form_comonent";
 import CounselorVerifiedWeeklyForms from "./counselor_verified_weekly_forms_component";
 

@@ -1,4 +1,75 @@
-export default function CounselorViewTurnedInActivityModal() {
+import * as React from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { firestore } from "../../../../firebase/firebase-config";
+import { Box, Modal, Typography } from "@mui/material";
+import { getStorage, ref, getMetadata, getDownloadURL } from "firebase/storage";
+
+export default function CounselorTurnedInTableModal({
+  tasks,
+  selectedTask,
+  handleSelectTask,
+}) {
+  const [showViewTurnedIn, setShowViewTurnedIn] = React.useState(false);
+
+  return (
+    <table className="w-full text-sm h-full border border-slate-500 text-center">
+      <thead className="bg-primaryGreen">
+        <tr className="rounded-lg">
+          <th scope="col" className="px-6 py-3 rounded-ss-lg">
+            Activity
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Description
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Turned In Date
+          </th>
+          <th scope="col" className="px-6 py-3 rounded-se-lg">
+            Submitted Assignment
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {tasks
+          .filter((task) => task.Status === "turnedIn")
+          .map((task, index) => (
+            <tr key={index}>
+              <td className="p-2 border border-slate-600">{task.Activity}</td>
+              <td className="p-2 border border-slate-500">
+                {task.Description}
+              </td>
+              <td className="p-2 border border-slate-500">
+                {new Date(task.TurnedInDate).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </td>
+              <td className="p-2 border border-slate-500 font-medium text-primaryOrange">
+                <button
+                  className="hover:underline"
+                  onClick={() => {
+                    handleSelectTask(task.id);
+                    setShowViewTurnedIn(!showViewTurnedIn);
+                  }}
+                >
+                  View Assignment
+                </button>
+                <ViewTurnedInActivity
+                  show={showViewTurnedIn}
+                  handleClose={() => setShowViewTurnedIn(!showViewTurnedIn)}
+                  task={selectedTask}
+                  selectedTask={selectedTask}
+                />
+              </td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  );
+}
+
+const ViewTurnedInActivity = (props) => {
   const [fileName, setFileName] = React.useState(null);
 
   const updateTaskStatus = async (taskId) => {
@@ -122,4 +193,4 @@ export default function CounselorViewTurnedInActivityModal() {
       </Modal>
     </div>
   );
-}
+};

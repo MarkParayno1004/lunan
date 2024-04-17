@@ -1,9 +1,9 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { firestore, auth } from "../firebase/firebase-config";
+import { firestore, auth } from "../../../../firebase/firebase-config";
 import { useState, useEffect } from "react";
-import { UserIcon } from "../assets/images";
+import { UserIcon } from "../../../../assets/images";
 
-function CounselorDashboard() {
+export default function CounselorDashboard() {
   const [counselorName, setCounselorName] = useState("");
   useEffect(() => {
     const fetchCounselorName = async () => {
@@ -196,5 +196,3 @@ function CounselorDashboard() {
     </div>
   );
 }
-
-export default CounselorDashboard;

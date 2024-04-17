@@ -13,7 +13,7 @@ import "../../css/AllPatients.css";
 import CounselorPatientInfo from "./counselor_patient_info_component";
 
 //!Main App Render
-export default function CounselorPatientListComponent() {
+export default function CounselorPatientList() {
   const [showPatientModal, setShowPatientModal] = React.useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [patientsData, setPatientsData] = useState([]);

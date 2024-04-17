@@ -1,11 +1,12 @@
 import * as React from "react";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
-import CounselorViewVerifiedFormModal from "./counselor_view_verified_form_modal_component";
+import { firestore } from "../../../../firebase/firebase-config";
+import { collection, where, query, onSnapshot } from "firebase/firestore";
+import CounselorViewFormWeeklyModal from "./counselor_view_form_weekly_modal_component";
 
-export default function CounselorVerifiedWeeklyForms(props) {
+export default function CounselorSubmittedWeeklyForm(props) {
   const [wForms, setwForms] = React.useState(props.weeklyForms || []);
-  const [showWeeklyVerified, setShowWeeklYVerified] = React.useState(false);
+  const [showViewWeekly, setShowViewWeekly] = React.useState(false);
+
   React.useEffect(() => {
     // Create a query to get tasks for the selected patient
     const wFormsQuery = query(
@@ -24,15 +25,15 @@ export default function CounselorVerifiedWeeklyForms(props) {
     // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, [props.selectedPatientUID]);
+
   return (
     <div>
-      <table className="w-full text-sm text-center h-full">
+      <table className="w-full text-sm text-center h-full table-auto border border-slate-500">
         <thead className="bg-primaryGreen">
           <tr>
             <th scope="col" className="px-6 py-3 rounded-ss-lg">
               Date Submitted
             </th>
-
             <th scope="col" className="px-6 py-3 rounded-se-lg">
               View Form
             </th>
@@ -40,7 +41,7 @@ export default function CounselorVerifiedWeeklyForms(props) {
         </thead>
         <tbody className="">
           {wForms
-            .filter((wForm) => wForm.Status === "Verified")
+            .filter((wForm) => wForm.Status === null)
             .map((wForm, index) => (
               <tr key={index}>
                 <td className="p-2 border border-slate-600">
@@ -52,19 +53,17 @@ export default function CounselorVerifiedWeeklyForms(props) {
                 </td>
                 <td className="p-2 border border-slate-600">
                   <button
-                    className="bg-orange-200 p-2 rounded-lg font-semibold"
+                    className="p-2 bg-orange-200 rounded-lg font-semibold"
                     onClick={() => {
                       props.handleSelectwForm(wForm.id);
-                      setShowWeeklYVerified(!showWeeklyVerified);
+                      setShowViewWeekly(!showViewWeekly);
                     }} // Pass the form's ID
                   >
                     View Form
                   </button>
-                  <CounselorViewVerifiedFormModal
-                    show={showWeeklyVerified}
-                    handleClose={() =>
-                      setShowWeeklYVerified(!showWeeklyVerified)
-                    }
+                  <CounselorViewFormWeeklyModal
+                    show={showViewWeekly}
+                    handleClose={() => setShowViewWeekly(!showViewWeekly)}
                     selectedwForm={props.selectedwForm}
                     weeklyForm={props.selectedwForm}
                   />

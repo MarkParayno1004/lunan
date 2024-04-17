@@ -7,8 +7,8 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase-config";
-import CounselorSubmittedDailyForms from "./counselor_submitted_daily_forms_component";
-import CounselorVerifiedDailyForms from "./counselor_verified_daily_forms_component";
+import CounselorSubmittedDailyForms from "./counselor_view_daily_form_modal/counselor_submitted_daily_forms_component";
+import CounselorVerifiedDailyForms from "./counselor_view_daily_form_modal/counselor_verified_daily_forms_component";
 export default function CounselorViewDailyForm(props) {
   const [activeTab, setActiveTab] = React.useState("Submitted");
   const [wellFormsForSelectedPatient, setWellFormsForSelectedPatient] =

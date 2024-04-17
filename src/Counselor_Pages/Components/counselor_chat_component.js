@@ -16,7 +16,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-function CounselorChat() {
+export default function CounselorChat() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [patientsData, setPatientsData] = React.useState([]);
   const [filteredPatientsData, setFilteredPatientsData] = React.useState([]);
@@ -455,5 +455,3 @@ function CounselorChat() {
     </div>
   );
 }
-
-export default CounselorChat;

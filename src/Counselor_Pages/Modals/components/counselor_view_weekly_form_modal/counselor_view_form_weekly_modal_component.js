@@ -1,5 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
+import { firestore } from "../../../../firebase/firebase-config";
 import { Box, Typography, Modal } from "@mui/material";
 export default function CounselorViewFormWeeklyModal(props) {
   console.log("Selected Weekly Form Data:", props.selectedwForm);

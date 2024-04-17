@@ -12,9 +12,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Swal from "sweetalert2";
 import CounselorCreateAssignment from "./counselor_create_assignment_modal_component";
-import CounselorConfirmDeleteDialog from "../../Components/Dialogs/components/counselor_confirm_delete_dialog_component";
+import CounselorConfirmDeleteDialog from "../../../Components/Dialogs/components/counselor_confirm_delete_dialog_component";
 import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
+import { firestore } from "../../../../firebase/firebase-config";
 import dayjs from "dayjs";
 
 export default function CounselorAssignedTableModal({

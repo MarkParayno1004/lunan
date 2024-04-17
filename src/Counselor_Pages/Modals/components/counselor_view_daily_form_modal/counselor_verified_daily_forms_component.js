@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Box, Typography, Modal } from "@mui/material";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { firestore } from "../../../firebase/firebase-config";
-export default function CounselorSubmittedDailyForms(props) {
-  const [selectedwellForm, setSelectedwellForm] = React.useState(null);
-  const [show, setShow] = React.useState(false);
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { firestore } from "../../../../firebase/firebase-config";
 
+export default function CounselorVerifiedDailyForms(props) {
+  const [showVerified, setShowVerified] = React.useState(false);
+  const [selectedwellForm, setSelectedwellForm] = React.useState(null);
   const handleSelectwellForm = async (id) => {
     try {
       // Fetch the entire document by its ID
@@ -47,7 +47,7 @@ export default function CounselorSubmittedDailyForms(props) {
         </thead>
         <tbody>
           {props.wellForms
-            .filter((wellForm) => wellForm.Status === null)
+            .filter((wellForm) => wellForm.Status === "Verified")
             .map((wellForm, index) => (
               <tr key={index}>
                 <td className="p-2 border border-slate-600">
@@ -65,14 +65,14 @@ export default function CounselorSubmittedDailyForms(props) {
                     className="p-2 bg-orange-200 rounded-lg font-semibold"
                     onClick={() => {
                       handleSelectwellForm(wellForm.id);
-                      setShow(!show);
+                      setShowVerified(!showVerified);
                     }} // Pass the form's ID
                   >
                     View Form
                   </button>
-                  <ViewFormWell
-                    show={show}
-                    handleClose={() => setShow(!show)}
+                  <ViewFormWellVerified
+                    show={showVerified}
+                    handleClose={() => setShowVerified(!showVerified)}
                     selectedwellForm={selectedwellForm}
                     wellForm={selectedwellForm}
                   />
@@ -85,7 +85,7 @@ export default function CounselorSubmittedDailyForms(props) {
   );
 }
 
-const ViewFormWell = (props) => {
+const ViewFormWellVerified = (props) => {
   const questionsAndAnswers = props.selectedwellForm
     ? [
         {
@@ -123,7 +123,7 @@ const ViewFormWell = (props) => {
     try {
       // Update the 'Status' field to "Verified"
       await updateDoc(formRef, {
-        Status: "Verified",
+        Status: null,
       });
       props.handleClose();
       console.log("Form status updated to Verified");
@@ -145,61 +145,59 @@ const ViewFormWell = (props) => {
   };
 
   return (
-    <div>
-      <Modal
-        open={props.show}
-        onClose={props.handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            View Daily Form
-          </Typography>
-          <Box id="modal-modal-description" sx={{ mt: 2 }}>
-            <table className="w-full text-sm text-center h-full">
-              <thead className="bg-primaryGreen">
-                <tr>
-                  <th scope="col" className="px-6 py-3 rounded-ss-lg">
-                    Question:
-                  </th>
-                  <th scope="col" className="px-6 py-3 rounded-se-lg">
-                    Answer:
-                  </th>
+    <Modal
+      open={props.show}
+      onClose={props.handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          View Daily Form
+        </Typography>
+        <Box id="modal-modal-description" sx={{ mt: 2 }}>
+          <table className="w-full text-sm text-center h-full">
+            <thead className="bg-primaryGreen">
+              <tr>
+                <th scope="col" className="px-6 py-3 rounded-ss-lg">
+                  Question:
+                </th>
+                <th scope="col" className="px-6 py-3 rounded-se-lg">
+                  Answer:
+                </th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {questionsAndAnswers.map((qa, index) => (
+                <tr key={index}>
+                  <td className="p-2 border border-slate-600 font-semibold text-md text-start">
+                    {qa.question}
+                  </td>
+                  <td className="p-2 border border-slate-600 text-md text-start">
+                    {qa.answer}
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="">
-                {questionsAndAnswers.map((qa, index) => (
-                  <tr key={index}>
-                    <td className="p-2 border border-slate-600 font-semibold text-md text-start">
-                      {qa.question}
-                    </td>
-                    <td className="p-2 border border-slate-600 text-md text-start">
-                      {qa.answer}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="grid grid-cols-2 ">
-              <div className="col-span-1 text-sm font-semibold self-center">
-                Total Score: {totalScore}/25
-              </div>
-              <div className="justify-self-end">
-                <button
-                  className="p-2 bg-orange-200 rounded-lg mt-2"
-                  onClick={() =>
-                    updatewellFormVerified(props.selectedwellForm.id)
-                  }
-                >
-                  Verify
-                </button>
-              </div>
+              ))}
+            </tbody>
+          </table>
+          <div className="grid grid-cols-2 ">
+            <div className="col-span-1 text-sm font-semibold self-center">
+              Total Score: {totalScore}/25
             </div>
-          </Box>
+            <div className="justify-self-end">
+              <button
+                className="p-2 bg-orange-200 rounded-lg mt-2"
+                onClick={() =>
+                  updatewellFormVerified(props.selectedwellForm.id)
+                }
+              >
+                Unverify
+              </button>
+            </div>
+          </div>
         </Box>
-      </Modal>
-    </div>
+      </Box>
+    </Modal>
   );
 };
 
