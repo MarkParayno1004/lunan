@@ -7,7 +7,6 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase-config";
-import PatientInfo from "./PatientInfo";
 import { getAuth } from "firebase/auth";
 import { ListIcon } from "../../assets/images";
 import "../../css/AllPatients.css";
@@ -262,15 +261,6 @@ export default function CounselorPatientListComponent() {
                     </td>
                     <td>
                       <button
-                        onClick={() => {
-                          handleSelectPatient(patient.UID);
-                          handleShow(patient.UID);
-                        }}
-                        className="text-indigo-400 font-semibold"
-                      >
-                        Old Design
-                      </button>
-                      <button
                         className="text-indigo-400 font-semibold hover:underline"
                         onClick={() => {
                           handleSelectPatient(patient.UID);
@@ -366,15 +356,6 @@ export default function CounselorPatientListComponent() {
           </div>
         </div>
       </div>
-      {show && (
-        <PatientInfo
-          show={show}
-          onHide={handleClose}
-          patientData={selectedPatientData}
-          intakeFormsData={selectedIntakeFormsData}
-          selectedPatientUID={selectedPatientUID}
-        />
-      )}
       {showPatientModal && (
         <CounselorPatientInfo
           show={showPatientModal}
