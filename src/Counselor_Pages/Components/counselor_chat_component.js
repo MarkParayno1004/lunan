@@ -27,6 +27,8 @@ export default function CounselorChat() {
   const messagesEndRef = React.useRef(null);
   const navigate = useNavigate();
 
+  const currentCounselor = auth.currentUser.uid;
+
   React.useEffect(() => {
     // Check if messages is not empty before scrolling to the end
     if (messages.length > 0 && messagesEndRef.current) {
@@ -67,8 +69,6 @@ export default function CounselorChat() {
           }
         })
       );
-
-      console.log("Fetched Counselor Names:", names);
     };
 
     fetchCounselorNames();
@@ -148,7 +148,9 @@ export default function CounselorChat() {
 
   const [newMessage, setNewMessage] = React.useState("");
   const messagesRef = collection(db, "messages");
-  const totalNumberPatient = filteredPatientsData.length;
+  const totalNumberPatient = patientsData.filter(
+    (user) => user.counselorUID === currentCounselor
+  ).length;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -263,35 +265,37 @@ export default function CounselorChat() {
                 </span>
               </div>
               <div className="flex flex-col space-y-1 mt-4 -mx-2 h-128 overflow-y-auto">
-                {filteredPatientsData.map((patient) => (
-                  <button
-                    className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                    key={patient.UID}
-                    onClick={() => handleSelectPatient(patient.UID)}
-                  >
-                    <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                      {patient.ProfPic ? (
-                        <img
-                          src={fetchImageUrl(patient.ProfPic)}
-                          alt={patient.firstName}
-                          width="100"
-                          height="100"
-                          className="rounded-circle"
-                        />
-                      ) : (
-                        <img
-                          src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
-                          alt={patient.firstName}
-                          width="100"
-                          height="100"
-                        />
-                      )}
-                    </div>
-                    <div className="ml-2 text-sm font-semibold">
-                      {patient.firstName}
-                    </div>
-                  </button>
-                ))}
+                {patientsData
+                  .filter((user) => user.counselorUID === currentCounselor)
+                  .map((user) => (
+                    <button
+                      className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                      key={user.UID}
+                      onClick={() => handleSelectPatient(user.UID)}
+                    >
+                      <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                        {user.ProfPic ? (
+                          <img
+                            src={fetchImageUrl(user.ProfPic)}
+                            alt={user.firstName}
+                            width="100"
+                            height="100"
+                            className="rounded-circle"
+                          />
+                        ) : (
+                          <img
+                            src="https://firebasestorage.googleapis.com/v0/b/lunan-75e15.appspot.com/o/user_profile_pictures%2F4WWRyPzPJH2ipbcK1npZ?alt=media&token=72e0fdf1-18e1-4065-bc70-2ebc18166aa1"
+                            alt={user.firstName}
+                            width="100"
+                            height="100"
+                          />
+                        )}
+                      </div>
+                      <div className="ml-2 text-sm font-semibold">
+                        {user.firstName}
+                      </div>
+                    </button>
+                  ))}
               </div>
             </div>
           </div>
@@ -319,38 +323,26 @@ export default function CounselorChat() {
                   </div>
                   <div className="ml-4">
                     <div className="text-grey-darkest">
-                      {selectedPatientData
-                        ? selectedPatientData.firstName
-                        : "Selected User's First Name"}
+                      {selectedPatientData ? (
+                        <span className="text-md font-semibold">
+                          {selectedPatientData.firstName}
+                        </span>
+                      ) : (
+                        <span className="text-md font-semibold">
+                          Chat with your Patients
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="flex">
                   <div>
-                    {selectedPatientData && selectedPatientData.ProfPic ? (
+                    {selectedPatientData && selectedPatientData.ProfPic && (
                       <button
                         className="text-primaryOrange"
                         onClick={() => {
                           navigate("/VideoTest");
                         }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    ) : (
-                      <button
-                        className="text-primaryOrange cursor-not-allowed"
-                        disabled
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -378,29 +370,27 @@ export default function CounselorChat() {
                       <div
                         key={message.id}
                         className={`col-start-1 col-end-8 p-3 rounded-lg flex ${
-                          message.user === "Admin's Name"
-                            ? "flex-row-reverse"
-                            : ""
+                          message.role === "Counselor" ? "flex-row-reverse" : ""
                         }`}
                       >
                         <div className="flex flex-col">
                           <div className="flex items-start">
-                            {message.user !== "Admin's Name" && (
+                            {message.role !== "Counselor" && (
                               // icon for non-admin users floating to the left
-                              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0 mr-3">
+                              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primaryOrange flex-shrink-0 mr-3">
                                 <div className="font-mono font-semibold text-sm">
-                                  {message.user.charAt(0)}
+                                  {message.role.charAt(0)}
                                 </div>
                               </div>
                             )}
-                            <div className="relative text-sm bg-white py-2 px-4 shadow rounded-xl ">
+                            <div className="relative text-sm bg-white py-2 px-4 shadow rounded-xl">
                               <div className="">{message.text}</div>
                             </div>
-                            {message.user === "Admin's Name" && (
+                            {message.role === "Counselor" && (
                               // icon for admin users floating to the right
-                              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0 ml-3">
+                              <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primaryGreen flex-shrink-0 ml-3">
                                 <div className="font-mono font-semibold text-sm">
-                                  {message.user.charAt(0)}
+                                  {message.role.charAt(0)}
                                 </div>
                               </div>
                             )}
@@ -418,12 +408,14 @@ export default function CounselorChat() {
               >
                 <div className="flex-grow ml-4">
                   <div className="relative w-full">
-                    <input
-                      value={newMessage}
-                      onChange={(event) => setNewMessage(event.target.value)}
-                      type="text"
-                      className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-                    />
+                    {selectedPatientData && (
+                      <input
+                        value={newMessage}
+                        onChange={(event) => setNewMessage(event.target.value)}
+                        type="text"
+                        className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="ml-4">
