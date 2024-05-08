@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { getToken } from "../../../src/chat/api";
 import { fetchUserData } from "../Store/Components/LoginHelper";
-import "../../css/AllCounselors.css";
 import LoginFunctions from "../Utils/Components/login_functions_component";
 import NavBar from "../Components/home_navbar_component";
 

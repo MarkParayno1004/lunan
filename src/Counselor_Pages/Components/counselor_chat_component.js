@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { firestore } from "../../firebase/firebase-config";
-import "../../css/Chat.css";
 import { db, auth } from "../../firebase/firebase-config";
 import {
   collection,

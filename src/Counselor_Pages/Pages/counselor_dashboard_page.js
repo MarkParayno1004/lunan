@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { DashboardLogo } from "../../assets/images";
 import { useNavigate } from "react-router-dom"; // Import useHistory hook
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth"; // Import Firebase authentication methods
-import "../../css/SupervisorDashboard.css";
 
 import CounselorChat from "../Components/counselor_chat_component";
 import { Client } from "@twilio/conversations";

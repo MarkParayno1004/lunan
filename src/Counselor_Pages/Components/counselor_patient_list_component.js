@@ -9,7 +9,6 @@ import {
 import { firestore } from "../../firebase/firebase-config";
 import { getAuth } from "firebase/auth";
 import { ListIcon } from "../../assets/images";
-import "../../css/AllPatients.css";
 import CounselorPatientInfo from "./counselor_patient_info_component";
 
 //!Main App Render
