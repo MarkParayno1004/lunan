@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase/firebase-config";
-import "../../css/AllPatients.css";
 import {
   collection,
   getDocs,

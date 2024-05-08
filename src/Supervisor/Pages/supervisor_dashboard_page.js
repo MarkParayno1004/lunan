@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { DashboardLogo } from "../../assets/images";
 import { useNavigate } from "react-router-dom"; // Import useHistory hook
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth"; // Import Firebase authentication methods
-import "../../css/SupervisorDashboard.css";
 import SupervisorAllPatientsComponent from "../Components/supervisor_all_patients_component";
 import SupervisorAllCounselorComponent from "../Components/supervisor_all_counselor_component";
 import SupervisorChatComponent from "../Components/supervisor_chat_component";

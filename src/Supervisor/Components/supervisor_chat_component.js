@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../css/Chat.css";
 import { db, auth, firestore } from "../../firebase/firebase-config";
 import {
   collection,

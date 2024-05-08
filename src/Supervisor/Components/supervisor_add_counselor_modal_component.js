@@ -5,7 +5,6 @@ import {
   handleSubmitAdd,
   handleAddSuccess,
 } from "../Data/supervisor_all_counselors_helper";
-import "../../css/AddCounselor.css";
 
 function SupervisorAddCounselorModalComponent(props) {
   const [localFormData, setLocalFormData] = useState({

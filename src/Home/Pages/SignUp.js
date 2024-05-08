@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PP from "../../assets/img/PrivacyPolicy.png";
-import "../../css/PrivacyPolicyScroll.css";
-import "../../css/SignUp.css";
 import { SignUpPageBG } from "../../assets/images";
 import HomePrivacyPolicyComponent from "../Components/home_privacy_policy_component";
 export default function SignUp() {
