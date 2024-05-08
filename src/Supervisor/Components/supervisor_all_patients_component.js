@@ -166,7 +166,7 @@ function SupervisorAllPatientsComponent() {
             Patients List
           </span>
         </div>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 h-full">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-sm text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3 rounded-ss-lg">
@@ -211,7 +211,7 @@ function SupervisorAllPatientsComponent() {
                   </button>
                   <SupervisorPatientInfoComponent
                     show={show}
-                    onHide={handleClose}
+                    close={handleClose}
                     patientData={selectedPatientData}
                     intakeFormsData={selectedIntakeFormsData}
                     selectedPatientUID={selectedPatientUID}

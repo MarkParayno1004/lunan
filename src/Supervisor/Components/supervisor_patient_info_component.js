@@ -32,7 +32,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
       if (!open && onExited) {
         onExited(null, true);
       }
-    }
+    },
   });
 
   return (
@@ -49,7 +49,7 @@ Fade.propTypes = {
   onEnter: PropTypes.func,
   onExited: PropTypes.func,
   ownerState: PropTypes.any,
-  onClose: PropTypes.func, 
+  onClose: PropTypes.func,
 };
 
 const style = {
@@ -104,7 +104,7 @@ export default function SupervisorPatientInfo(props) {
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
         open={props.show}
-        onClose={props.handleClose}
+        onClose={props.close}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -118,7 +118,7 @@ export default function SupervisorPatientInfo(props) {
             <div className="container mx-auto">
               <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                 <div className="col-span-4 sm:col-span-3">
-                  <div className="bg0white shadow rounded-lg p-6 h-cModalHeight">
+                  <div className="bg-white shadow rounded-lg p-6 h-cModalHeight">
                     <div className="flex flex-col items-center">
                       <img
                         src={patientData && patientData.ProfPic}
@@ -144,19 +144,24 @@ export default function SupervisorPatientInfo(props) {
                             <span>No Address</span>
                           )}
                         </li>
-                        <li className="mb-2">{patientData && patientData.CellPhone}</li>
-                        <li className="mb-2">{patientData && patientData.Email}</li>
                         <li className="mb-2">
-                          {new Date(patientData && patientData.BirthDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            }
-                          )}
+                          {patientData && patientData.CellPhone}
                         </li>
-                        <li className="mb-2">{patientData && patientData.Gender}</li>
+                        <li className="mb-2">
+                          {patientData && patientData.Email}
+                        </li>
+                        <li className="mb-2">
+                          {new Date(
+                            patientData && patientData.BirthDate
+                          ).toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </li>
+                        <li className="mb-2">
+                          {patientData && patientData.Gender}
+                        </li>
                       </ul>
                     </div>
                     <div className="grid grid-cols-2 gap-3 text-gray-200 text-md font-semibold">

@@ -183,7 +183,7 @@ function SupervisorCounselorDataComponent({
       {showPatientInfo && (
         <SupervisorPatientInfoComponent
           show={showModal}
-          onHide={handleClose}
+          close={handleClose}
           patientData={selectedPatientData}
           intakeFormsData={selectedIntakeFormsData}
           selectedPatientUID={selectedPatientUID}
