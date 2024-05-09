@@ -6,7 +6,7 @@ import Home from "./Home/Pages/Home";
 import Login from "./Home/Pages/Login";
 import SignUp from "./Home/Pages/SignUp";
 import FAQ from "./Home/Pages/FAQ";
-import CounselorDashboardPage from "./Counselor_Pages/Pages/counselor_dashboard_page";
+import CounselorDashboardPage from "./Counselor/Pages/counselor_dashboard_page";
 import SupervisorDashboardPage from "./Supervisor/Pages/supervisor_dashboard_page";
 
 const router = createBrowserRouter([
