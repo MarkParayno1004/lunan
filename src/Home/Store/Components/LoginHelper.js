@@ -11,12 +11,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
-export const fetchUserData = async (
-  uid,
-  navigate,
-  setLoading,
-  setFirstName
-) => {
+export const fetchUserData = async (uid, navigate) => {
   try {
     const db = getFirestore();
     const usersCollection = collection(db, "Users");
@@ -29,7 +24,6 @@ export const fetchUserData = async (
       const firstName = userData.firstName;
       console.log("User data:", userData);
       console.log("First name:", firstName);
-      setFirstName(firstName);
 
       if (userData.Role === "Patient") {
         navigate("/Patient Dashboard");
@@ -49,7 +43,7 @@ export const fetchUserData = async (
   } catch (error) {
     console.error("Error fetching user data:", error);
   } finally {
-    setLoading(false);
+    console.info("Loading");
   }
 };
 
