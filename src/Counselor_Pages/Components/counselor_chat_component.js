@@ -340,7 +340,7 @@ export default function CounselorChat() {
                       <button
                         className="text-primaryOrange"
                         onClick={() => {
-                          navigate("/VideoTest");
+                          navigate("/VideoApp");
                         }}
                       >
                         <svg

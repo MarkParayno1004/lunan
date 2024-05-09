@@ -27,7 +27,7 @@ const VideoApp = () => {
   );
 };
 
-export default function ReactApp() {
+export default function VideoReactApp() {
   return (
     <div>
       <MuiThemeProvider theme={theme}>
