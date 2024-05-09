@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import ReactApp from "./video";
+import VideoReactApp from "./video";
 import Home from "./Home/Pages/Home";
 import Login from "./Home/Pages/Login";
 import SignUp from "./Home/Pages/SignUp";
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   { path: "/FAQ", Component: FAQ },
   { path: "/Supervisor Dashboard", Component: SupervisorDashboardPage },
   { path: "/Counselor Dashboard", Component: CounselorDashboardPage },
-  { path: "/VideoTest", Component: ReactApp },
+  { path: "/VideoApp", Component: VideoReactApp },
 ]);
 
 export default function App() {
