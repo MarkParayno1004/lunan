@@ -3,11 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import { getToken } from "../../../src/chat/api";
 import { fetchUserData } from "../Store/Components/LoginHelper";
 import LoginFunctions from "../Utils/Components/login_functions_component";
 import NavBar from "../Components/home_navbar_component";
-
 import ForgotModal from "../Components/login_forgot_modal_component";
 import { NavBarLogo } from "../../assets/images";
 
@@ -60,22 +58,13 @@ export default function Login(props) {
     }
   }, [loggedIn]);
 
-  async function login(username, password, setToken) {
+  async function login(username, password) {
     console.log("Username:", username);
     console.log("Password:", password);
 
     try {
-      const token = await getToken(username.trim(), password);
-      console.log("Token:", token); // Log the token
-      if (token === "") {
-        console.log("Received an empty token from backend.");
-        return "Received an empty token from backend.";
-      }
-
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
-      setToken(token);
-      return "";
     } catch (error) {
       let message = "Unknown Error";
       if (error instanceof Error) {
@@ -162,7 +151,7 @@ export default function Login(props) {
                 <button
                   className="inline-block flex-none mt-2 px-5 py-2 border-2 rounded-lg font-medium border-primaryOrange bg-primaryOrange text-white"
                   onClick={async () => {
-                    const error = await login(email, password, props.setToken);
+                    const error = await login(email, password);
                     if (error) {
                       console.error(error);
                     }

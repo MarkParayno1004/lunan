@@ -4,33 +4,13 @@ import { useNavigate } from "react-router-dom"; // Import useHistory hook
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth"; // Import Firebase authentication methods
 
 import CounselorChat from "../Components/counselor_chat_component";
-import { Client } from "@twilio/conversations";
-import { useSelector } from "react-redux";
 import CounselorPatientList from "../Components/counselor_patient_list_component";
 import CounselorDashboard from "../Modals/components/counselor_dashboard_modal/counselor_dashboard_component";
 import CounselorScheduler from "../Components/counselor_scheduler_component";
 
 function CounselorDashboardPage() {
   const [activeComponent, setActiveComponent] = useState("DashboardComponent");
-  const [client, setClient] = useState(null);
-  const token = useSelector((state) => state.token); // Get the Twilio token from your state
-  const navigate = useNavigate(); // Initialize useHistory hook
-
-  useEffect(() => {
-    const initTwilioClient = async () => {
-      try {
-        if (token) {
-          const client = new Client(token);
-          setClient(client);
-          console.log("Twilio Client:", client);
-        }
-      } catch (error) {
-        console.error("Error initializing Twilio client:", error);
-      }
-    };
-
-    initTwilioClient();
-  }, [token]); // Make sure to include token in the dependency array
+  const navigate = useNavigate();
 
   useEffect(() => {
     const auth = getAuth();
