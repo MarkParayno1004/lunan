@@ -15,17 +15,8 @@ export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const {
-    state,
-    HandleEmailChange,
-    HandlePasswordChange,
-    HandleModalShow,
-    HandleModalClose,
-    HandleLoginSubmit,
-  } = LoginFunctions();
+  const { state, HandleModalShow, HandleModalClose } = LoginFunctions();
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -62,16 +53,13 @@ export default function Login(props) {
       const userUid = sessionStorage.getItem("userUid");
       console.log("Retrieved user UID:", userUid);
       if (userUid) {
-        setLoading(true);
-        // Pass setLoading as a parameter to fetchUserData
-        fetchUserData(userUid, navigate, setLoading, setFirstName);
+        fetchUserData(userUid, navigate);
       } else {
         console.error("Invalid user UID:", userUid);
       }
     }
   }, [loggedIn]);
 
-  //for twilio
   async function login(username, password, setToken) {
     console.log("Username:", username);
     console.log("Password:", password);

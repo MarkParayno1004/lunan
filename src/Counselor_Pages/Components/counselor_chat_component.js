@@ -364,7 +364,6 @@ export default function CounselorChat() {
               <div className="flex flex-col h-full overflow-x-auto mb-4">
                 <div className="flex flex-col h-full">
                   <div className="grid grid-cols-7 gap-y-2">
-                    {/* message right side */}
                     {messages.map((message) => (
                       <div
                         key={message.id}
@@ -375,10 +374,9 @@ export default function CounselorChat() {
                         <div className="flex flex-col">
                           <div className="flex items-start">
                             {message.role !== "Counselor" && (
-                              // icon for non-admin users floating to the left
                               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primaryOrange flex-shrink-0 mr-3">
                                 <div className="font-mono font-semibold text-sm">
-                                  {message.role.charAt(0)}
+                                  {message.role ? message.role.charAt(0) : "d"}
                                 </div>
                               </div>
                             )}
@@ -386,10 +384,9 @@ export default function CounselorChat() {
                               <div className="">{message.text}</div>
                             </div>
                             {message.role === "Counselor" && (
-                              // icon for admin users floating to the right
                               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primaryGreen flex-shrink-0 ml-3">
                                 <div className="font-mono font-semibold text-sm">
-                                  {message.role.charAt(0)}
+                                  {message.role ? message.role.charAt(0) : "c"}
                                 </div>
                               </div>
                             )}
