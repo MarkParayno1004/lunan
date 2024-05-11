@@ -43,8 +43,6 @@ async function findCounselorWithMinPatients(formData) {
     const counselorPatientCount = counselorData.patientCount || 0;
     const counselorGender = counselorData.gender;
     const PreferredGender = formData && formData.PreferredGender;
-
-    // Check if counselor's gender matches preferred gender or if preferred gender is not specified
     if (
       (PreferredGender === counselorGender || PreferredGender) &&
       counselorPatientCount < minPatientCount
@@ -81,10 +79,7 @@ async function updateCounselorAndAssignPatient(
     dateCreated: new Date().toISOString().split("T")[0],
     Preference: formData.PreferredGender,
   };
-
-  console.log("New User formData:", newUser);
   await addDoc(userAccRef, newUser);
-
   const newIntake = {
     UID: patientUID,
     StreetNum: formData.StreetNum || "N/A",
@@ -100,14 +95,8 @@ async function updateCounselorAndAssignPatient(
     CommLearn: formData.CommLearn || "N/A",
     CommAssess: formData.CommAssess || "N/A",
   };
-
-  console.log("New Intake Form:", newIntake);
-
   await addDoc(intakeRef, newIntake);
-  // Add the appointment
   const appointmentsRef = collection(firestore, "Appointments");
-
-  // Find available time for the counselor with less than 5 Appointments
   const counselorAppointmentsQuery = query(
     appointmentsRef,
     where("counselorUID", "==", counselorDoc.data().UID),
@@ -122,28 +111,20 @@ async function updateCounselorAndAssignPatient(
 
   counselorAppointmentsSnapshot.forEach(() => {
     if (appointmentCount < 5) {
-      availableTime.setHours(availableTime.getHours() + 1); // Move to the next hour
+      availableTime.setHours(availableTime.getHours() + 1);
       appointmentCount++;
     }
   });
-
-  // Ensure that the start time is at least the day after
   const oneDayInMillis = 24 * 60 * 60 * 1000;
   const tomorrow = new Date(availableTime.getTime() + oneDayInMillis);
   availableTime = new Date(
     Math.max(availableTime.getTime(), tomorrow.getTime())
   );
-
-  // Set the start time to the next available day at 10 am
   availableTime.setHours(10, 0, 0, 0);
-
-  // Ensure the end time is no later than 9 pm
   const maxEndTime = new Date(availableTime);
   maxEndTime.setHours(21, 0, 0, 0);
-
   const startTimestamp = availableTime.getTime();
-  const endTimestamp = Math.min(startTimestamp + 3600000, maxEndTime.getTime()); // 1 hour later or 9 pm, whichever is earlier
-
+  const endTimestamp = Math.min(startTimestamp + 3600000, maxEndTime.getTime());
   const newAppointment = {
     counselorUID: counselorDoc.data().UID,
     patient: patientUID,
@@ -152,8 +133,6 @@ async function updateCounselorAndAssignPatient(
     start: new Date(startTimestamp),
     end: new Date(endTimestamp),
   };
-
-  console.log("New Appointment:", newAppointment);
   await addDoc(appointmentsRef, newAppointment);
 }
 
@@ -165,10 +144,7 @@ export async function upload(data, formData) {
       data.Email,
       password
     );
-    console.log("Generated Password:", password);
-
     const counselorDoc = await findCounselorWithMinPatients();
-
     if (counselorDoc) {
       await updateCounselorAndAssignPatient(
         counselorDoc,
@@ -178,9 +154,9 @@ export async function upload(data, formData) {
         formData
       );
     } else {
-      console.log("No counselors available");
+      return "No Counselors Available";
     }
   } catch (error) {
-    console.error("Error uploading formData:", error);
+    return error;
   }
 }

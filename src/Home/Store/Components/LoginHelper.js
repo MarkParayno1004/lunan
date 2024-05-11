@@ -21,29 +21,20 @@ export const fetchUserData = async (uid, navigate) => {
     if (!querySnapshot.empty) {
       const docSnapshot = querySnapshot.docs[0];
       const userData = docSnapshot.data();
-      const firstName = userData.firstName;
-      console.log("User data:", userData);
-      console.log("First name:", firstName);
-
       if (userData.Role === "Patient") {
         navigate("/Patient Dashboard");
-        console.log("User role:", userData.Role);
       } else if (userData.Role === "Counselor") {
         navigate("/Counselor Dashboard");
-        console.log("User role:", userData.Role);
       } else if (userData.Role === "Admin") {
         navigate("/Supervisor Dashboard");
-        console.log("User role:", userData.Role);
       } else {
-        console.log("Non-existing user role");
+        return "User Profile does not exist";
       }
     } else {
-      console.error("User data not found for email:", uid);
+      return "User data not found for email";
     }
   } catch (error) {
-    console.error("Error fetching user data:", error);
-  } finally {
-    console.info("Loading");
+    return error;
   }
 };
 
@@ -57,14 +48,13 @@ export const loginWithEmailAndPassword = async (
 ) => {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
-    console.log("User logged in");
     setEmail("");
     setPassword("");
     setLoggedIn(true);
     const userUid = user.uid;
     sessionStorage.setItem("userUid", userUid);
   } catch (error) {
-    console.error("Error logging in:", error.message);
+    return error;
   }
 };
 
@@ -76,7 +66,6 @@ export const sendResetPasswordEmail = async (email, setResetStatus) => {
       success: true,
     });
   } catch (error) {
-    console.error("Password reset error:", error);
     setResetStatus({
       message: "Email is not existing in the system.",
       success: false,

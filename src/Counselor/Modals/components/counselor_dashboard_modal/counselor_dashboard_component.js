@@ -23,7 +23,7 @@ export default function CounselorDashboard() {
           }
         }
       } catch (error) {
-        console.error("Error fetching counselor name:", error);
+        return error;
       }
     };
 

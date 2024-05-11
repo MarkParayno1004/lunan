@@ -7,14 +7,12 @@ import SupervisorCounselorDataComponent from "./supervisor_counselor_data_compon
 function SupervisorCounselorInfoComponent(props) {
   const { show, handleClose, counselor } = props;
   const [searchInput, setSearchInput] = useState("");
-  const [patients, setPatients] = useState([]); // Initialize patients state
+  const [patients, setPatients] = useState([]);
   useEffect(() => {
-    // Create a query to get Forms for the selected patient
     const patientQuery = query(
       collection(firestore, "Users"),
       where("counselorID", "==", counselor.UID)
     );
-
     const unsubscribe = onSnapshot(patientQuery, (snapshot) => {
       const updatedPatientList = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -22,8 +20,6 @@ function SupervisorCounselorInfoComponent(props) {
       }));
       setPatients(updatedPatientList);
     });
-
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -45,7 +41,7 @@ function SupervisorCounselorInfoComponent(props) {
           {counselor && (
             <SupervisorCounselorDataComponent
               counselorData={counselor}
-              patients={patients} // Pass patients as a prop
+              patients={patients}
               setSearchInput={setSearchInput}
               searchInput={searchInput}
             />

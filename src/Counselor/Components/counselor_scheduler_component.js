@@ -55,7 +55,7 @@ function CounselorScheduler() {
         setPatientsData(patients);
         setFilteredPatientsData(patients);
       } catch (error) {
-        console.error("Error fetching patients data:", error);
+        return error;
       }
     };
 
@@ -66,8 +66,6 @@ function CounselorScheduler() {
     const fetchEvents = async () => {
       const db = getFirestore();
       const appointmentsCollection = collection(db, "Appointments");
-
-      // Query appointments where counselorUID is equal to the current user's UID
       const q = query(
         appointmentsCollection,
         where("counselorUID", "==", currentUser.uid)
@@ -89,10 +87,9 @@ function CounselorScheduler() {
             patient: data.patient,
           };
         });
-        console.log("Appointments Data:", events);
         setEvents(events);
       } catch (error) {
-        console.error("Error fetching appointments data:", error);
+        return error;
       }
     };
 
@@ -102,25 +99,19 @@ function CounselorScheduler() {
   const handleSelectAppointment = async (id) => {
     try {
       const db = getFirestore();
-
       const appointmentsCollection = collection(db, "Appointments");
-
       const appointmentDocRef = doc(appointmentsCollection, id);
       const appointmentDocSnap = await getDoc(appointmentDocRef);
-
       if (appointmentDocSnap.exists()) {
         const selectedAppointmentData = appointmentDocSnap.data();
-
-        console.log("Selected appointment data:", selectedAppointmentData);
-
         setSelectedAppointment(selectedAppointmentData);
         setSelectedAppointmentId(id);
         setShowModal(true);
       } else {
-        console.error("Appointment not found for ID:", id);
+        return "Appointment not found for ID";
       }
     } catch (error) {
-      console.error("Error fetching appointment for ID:", id, error);
+      return error;
     }
   };
 
@@ -193,31 +184,24 @@ function CounselorScheduler() {
 
       try {
         const docRef = await addDoc(appointmentsCollection, newAppointment);
-        newAppointment.id = docRef.id; // Set the appointment's ID
+        newAppointment.id = docRef.id;
         const updatedEvents = [...events, newAppointment];
         setEvents(updatedEvents);
         handleCloseModal();
       } catch (error) {
-        console.error("Error saving appointment: ", error);
+        return error;
       }
     } else {
-      console.error("Missing required data for appointment creation.");
+      return "Missing required data for appointment creation.";
     }
   };
 
   const updateAppointment = async () => {
-    // Check if all required variables are defined
     if (!title || !startDateTime || !endDateTime || !selectedAppointmentId) {
-      console.error("Missing required data for updating appointment");
       return;
     }
-
-    console.log("startDateTime:", startDateTime);
-    console.log("endDateTime:", endDateTime);
-
     const startTime = moment(startDateTime, "HH:mm", true);
     const endTime = moment(endDateTime, "HH:mm", true);
-
     if (startTime.isValid() && endTime.isValid()) {
       const updatedStart = startTime
         .set("hour", startTime.hour())
@@ -240,17 +224,14 @@ function CounselorScheduler() {
       try {
         const docRef = doc(appointmentsCollection, selectedAppointmentId);
         await setDoc(docRef, updatedEvent, { merge: true });
-        console.log("Appointment updated successfully!");
-
         const updatedEvents = events.map((event) =>
           event.id === selectedAppointmentId
             ? { ...event, ...updatedEvent }
             : event
         );
-
         setEvents(updatedEvents);
       } catch (error) {
-        console.error("Error updating appointment: ", error);
+        return error;
       }
 
       setSelectedAppointment(null);
@@ -258,7 +239,7 @@ function CounselorScheduler() {
       setShowUpdateModal(false);
       setShowModal(false);
     } else {
-      console.error("Invalid time format for startDateTime or endDateTime");
+      return "Invalid time format for startDateTime or endDateTime";
     }
   };
 
@@ -268,16 +249,15 @@ function CounselorScheduler() {
         const db = getFirestore();
         const appointmentsCollection = collection(db, "Appointments");
         await deleteDoc(doc(appointmentsCollection, selectedAppointmentId));
-        console.log("Appointment deleted successfully!");
         const updatedEvents = events.filter(
           (event) => event.id !== selectedAppointmentId
         );
         setEvents(updatedEvents);
       } catch (error) {
-        console.error("Error deleting appointment: ", error);
+        return error;
       }
     } else {
-      console.log("Appointment deletion canceled.");
+      return "Appointment deletion canceled.";
     }
 
     setSelectedAppointment(null);
@@ -300,8 +280,8 @@ function CounselorScheduler() {
         selectable={true}
         onSelectSlot={handleCreateAppointment}
         onSelectEvent={(event) => {
-          handleEventSelected(event); // Call handleEventSelected with the event
-          handleSelectAppointment(event.id); // Call handleSelectAppointment with the event's ID
+          handleEventSelected(event);
+          handleSelectAppointment(event.id);
         }}
       />
 
@@ -464,6 +444,6 @@ function CounselorScheduler() {
       </Modal>
     </div>
   );
-};
+}
 
 export default CounselorScheduler;

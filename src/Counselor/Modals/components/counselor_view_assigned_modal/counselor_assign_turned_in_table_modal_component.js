@@ -75,27 +75,23 @@ const ViewTurnedInActivity = (props) => {
   const updateTaskStatus = async (taskId) => {
     const taskRef = doc(firestore, "Tasks", taskId);
     try {
-      // Update the Status field to "Verified"
       await updateDoc(taskRef, {
         Status: "Verified",
       });
-      console.log("Task status updated to Verified");
       props.handleClose();
     } catch (error) {
-      console.error("Error updating task status:", error);
+      return error;
     }
   };
 
   const fetchFileName = async (downloadURL) => {
-    const storage = getStorage(); // Initialize Firebase Storage
-    const fileRef = ref(storage, downloadURL); // Create a reference to the file
-
+    const storage = getStorage();
+    const fileRef = ref(storage, downloadURL);
     try {
-      const metadata = await getMetadata(fileRef); // Get the metadata of the file
-      return metadata.name; // Extract the file name
+      const metadata = await getMetadata(fileRef);
+      return metadata.name;
     } catch (error) {
-      console.error("Error fetching file name:", error);
-      return "N/A"; // Return a default value in case of an error
+      return error;
     }
   };
 
@@ -106,24 +102,21 @@ const ViewTurnedInActivity = (props) => {
           setFileName(name);
         })
         .catch((error) => {
-          console.error("Error fetching file name:", error);
+          return error;
         });
     }
   }, [props.selectedTask?.DownloadURL]);
 
   const handleFileClick = () => {
     if (props.selectedTask?.DownloadURL) {
-      const storage = getStorage(); // Initialize Firebase Storage
-      const fileRef = ref(storage, props.selectedTask.DownloadURL); // Create a reference to the file
-
-      // Get the file download URL
+      const storage = getStorage();
+      const fileRef = ref(storage, props.selectedTask.DownloadURL);
       getDownloadURL(fileRef)
         .then((url) => {
-          // Open the file in a new browser window
           window.open(url, "_blank");
         })
         .catch((error) => {
-          console.error("Error opening file in a new window:", error);
+          return error;
         });
     }
   };

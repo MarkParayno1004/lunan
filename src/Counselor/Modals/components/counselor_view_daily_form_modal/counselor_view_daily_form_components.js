@@ -19,7 +19,6 @@ export default function CounselorViewDailyForm(props) {
   );
 
   const fetchWellnessForPatient = async (selectedPatientUID) => {
-    console.log("Fetching wellness forms for ", selectedPatientUID);
     try {
       const q = query(
         collection(firestore, "WellnessForm"),
@@ -28,8 +27,6 @@ export default function CounselorViewDailyForm(props) {
       const querySnapshot = await getDocs(q);
       const wellForms = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-
-        // Convert specific number fields to strings
         data.WellnessQ1 = String(data.WellnessQ1);
         data.WellnessQ2 = String(data.WellnessQ2);
         data.WellnessQ3 = String(data.WellnessQ3);
@@ -37,28 +34,21 @@ export default function CounselorViewDailyForm(props) {
 
         return { id: doc.id, ...data };
       });
-      console.log("Fetched Weekly Forms for", selectedPatientUID, wellForms);
       return wellForms;
     } catch (error) {
-      console.error("Error fetching wForms:", error);
-      return [];
+      return error;
     }
   };
 
   React.useEffect(() => {
     const fetchWellnessData = async () => {
-      console.log(
-        "handleShowWellness called with UID:",
-        props.selectedPatientUID
-      );
       try {
         const wellForm = await fetchWellnessForPatient(
           props.selectedPatientUID
         );
         setWellFormsForSelectedPatient(wellForm);
-        console.log("Wellness Forms fetched", wellForm);
       } catch (error) {
-        console.error("Error in handleShowWellness:", error);
+        return error;
       }
     };
 
@@ -68,10 +58,9 @@ export default function CounselorViewDailyForm(props) {
   }, [props.selectedPatientUID]);
 
   React.useEffect(() => {
-    // Create a query to get Forms for the selected patient
     const wellFormsQuery = query(
       collection(firestore, "WellnessForm"),
-      where("UID", "==", props.selectedPatientUID) // Replace "PatientUID" with the actual field name in your Firestore data
+      where("UID", "==", props.selectedPatientUID)
     );
 
     const unsubscribe = onSnapshot(wellFormsQuery, (snapshot) => {
@@ -81,8 +70,6 @@ export default function CounselorViewDailyForm(props) {
       }));
       setwellForms(updatedwellForms);
     });
-
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, [props.selectedPatientUID]);
 

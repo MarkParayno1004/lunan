@@ -28,14 +28,12 @@ export default function Login(props) {
   const handleSubmit = async () => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log("User logged in");
       setEmail("");
       setPassword("");
       setLoggedIn(true);
       const userUid = user.uid;
       sessionStorage.setItem("userUid", userUid);
     } catch (error) {
-      console.error("Error logging in:", error.message);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -49,30 +47,20 @@ export default function Login(props) {
   useEffect(() => {
     if (loggedIn) {
       const userUid = sessionStorage.getItem("userUid");
-      console.log("Retrieved user UID:", userUid);
       if (userUid) {
         fetchUserData(userUid, navigate);
       } else {
-        console.error("Invalid user UID:", userUid);
+        return "Invalid USERID";
       }
     }
   }, [loggedIn]);
 
   async function login(username, password) {
-    console.log("Username:", username);
-    console.log("Password:", password);
-
     try {
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
     } catch (error) {
-      let message = "Unknown Error";
-      if (error instanceof Error) {
-        message = error.message;
-      } else {
-        message = String(error);
-      }
-      return message;
+      return error;
     }
   }
   return (
@@ -86,6 +74,7 @@ export default function Login(props) {
           >
             <div className="flex items-center justify-start space-x-3 ms-6">
               <img
+                alt="navbar logo"
                 src={NavBarLogo}
                 className=" rounded-full w-full h-12 mb-4"
               />
@@ -151,10 +140,7 @@ export default function Login(props) {
                 <button
                   className="inline-block flex-none mt-2 px-5 py-2 border-2 rounded-lg font-medium border-primaryOrange bg-primaryOrange text-white"
                   onClick={async () => {
-                    const error = await login(email, password);
-                    if (error) {
-                      console.error(error);
-                    }
+                    await login(email, password);
                   }}
                 >
                   Login

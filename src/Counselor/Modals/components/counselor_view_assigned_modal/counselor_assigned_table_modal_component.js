@@ -29,9 +29,6 @@ export default function CounselorAssignedTableModal({
   const [showEditDialog, setShowEditDialog] = React.useState(false);
 
   const handleCreateAssignment = (selectedPatientUID) => {
-    console.log(
-      `Creating assignments for patient with UID: ${selectedPatientUID}`
-    );
     setCreateAssignemnt(true);
   };
 
@@ -259,15 +256,10 @@ const EditAssignedActivity = (props) => {
   };
   const updateTask = async (taskId, updatedData) => {
     try {
-      // Get a reference to the Firestore database
       const taskRef = doc(firestore, "Tasks", taskId);
-
-      // Use the updateDoc method to update the document with the new data
       await updateDoc(taskRef, updatedData);
-
-      console.log("Task successfully updated!");
     } catch (error) {
-      console.error("Error updating task: ", error);
+      return error;
     }
   };
 
@@ -277,11 +269,10 @@ const EditAssignedActivity = (props) => {
       ...props.task,
       Activity: formData.Activity,
       Description: formData.Description,
-      Deadline: dayjs(formData.Deadline).format("YYYY-MM-DD"), // Convert Deadline back to Date object
+      Deadline: dayjs(formData.Deadline).format("YYYY-MM-DD"),
     };
-    updateTask(props.task.id, updatedTask); // Call the updateTask function
-    props.handleClose(); // Close the dialog after update
-    console.log("Newly Updated Tasks: ", updatedTask);
+    updateTask(props.task.id, updatedTask);
+    props.handleClose();
   };
 
   return (

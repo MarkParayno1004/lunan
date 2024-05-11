@@ -50,8 +50,8 @@ export default function CounselorVerifiedTable({
                   className="hover:underline"
                   onClick={() => {
                     handleSelectTask(task.id);
-                    setSelectedTaskId(task.id); // Set the selected task ID
-                    setShowVerified(true); // Show the modal
+                    setSelectedTaskId(task.id);
+                    setShowVerified(true);
                   }}
                 >
                   View Assignment
@@ -76,38 +76,28 @@ export default function CounselorVerifiedTable({
 
 const ViewVerifiedActivity = (props) => {
   const [fileName, setFileName] = React.useState(null);
-
-  // Function to update task status
   const updateTaskStatus = async (taskId) => {
     const taskRef = doc(firestore, "Tasks", taskId);
-
     try {
-      // Update the Status field to "turnedIn"
       await updateDoc(taskRef, {
         Status: "turnedIn",
       });
-      console.log("Task status updated to turnedIn");
     } catch (error) {
-      console.error("Error updating task status:", error);
+      return error;
     }
     props.handleClose();
   };
-
-  // Function to fetch file name
   const fetchFileName = async (downloadURL) => {
-    const storage = getStorage(); // Initialize Firebase Storage
-    const fileRef = ref(storage, downloadURL); // Create a reference to the file
+    const storage = getStorage();
+    const fileRef = ref(storage, downloadURL);
 
     try {
-      const metadata = await getMetadata(fileRef); // Get the metadata of the file
-      return metadata.name; // Extract the file name
+      const metadata = await getMetadata(fileRef);
+      return metadata.name;
     } catch (error) {
-      console.error("Error fetching file name:", error);
-      return "N/A"; // Return a default value in case of an error
+      return error;
     }
   };
-
-  // Effect to fetch file name when the download URL changes
   React.useEffect(() => {
     if (props.task?.DownloadURL) {
       fetchFileName(props.task?.DownloadURL)
@@ -115,25 +105,21 @@ const ViewVerifiedActivity = (props) => {
           setFileName(name);
         })
         .catch((error) => {
-          console.error("Error fetching file name:", error);
+          return error;
         });
     }
   }, [props.task?.DownloadURL]);
 
-  // Function to handle file click
   const handleFileClick = () => {
     if (props.task?.DownloadURL) {
-      const storage = getStorage(); // Initialize Firebase Storage
-      const fileRef = ref(storage, props.task.DownloadURL); // Create a reference to the file
-
-      // Get the file download URL
+      const storage = getStorage();
+      const fileRef = ref(storage, props.task.DownloadURL);
       getDownloadURL(fileRef)
         .then((url) => {
-          // Open the file in a new browser window
           window.open(url, "_blank");
         })
         .catch((error) => {
-          console.error("Error opening file in a new window:", error);
+          return error;
         });
     }
   };

@@ -11,32 +11,24 @@ export default function CounselorCreateCaseNote(props) {
 
   const handleSubmitCase = async () => {
     const { currentUser } = getAuth();
-
-    // Check if editorData is empty
     if (!editorData.trim()) {
-      // If empty, show a toast message or any other form of notification to the user
       return toast.error("Please enter a case note before submitting.", {
         autoClose: 2500,
       });
     }
     const caseNote = {
-      // The formatted content from CKEditor
       content: editorData,
       patientUID: props.selectedPatientUID,
       counselorUID: currentUser.uid,
       dateAdded: new Date().toISOString().split("T")[0],
     };
-
-    // Save the case note to Firebase
     const db = getFirestore();
     const caseNotesCollection = collection(db, "CaseNotes");
-
     try {
       await addDoc(caseNotesCollection, caseNote);
-      console.log("Case note saved successfully!");
       toast.success("Successful Submitted", { autoClose: 2500 });
     } catch (error) {
-      console.error("Error saving case note: ", error);
+      return error;
     }
   };
 
@@ -54,7 +46,7 @@ export default function CounselorCreateCaseNote(props) {
             }}
             onChange={(event, editor) => {
               const data = editor.getData();
-              setEditorData(data); // Update the editorData state with the new content
+              setEditorData(data);
             }}
           />
           <ToastContainer />

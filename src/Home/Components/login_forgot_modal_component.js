@@ -20,7 +20,6 @@ export default function ForgotModal(props) {
         success: true,
       });
     } catch (error) {
-      console.error("Password reset error:", error);
       setResetStatus({
         message: "Email is not existing in the system.",
         success: false,

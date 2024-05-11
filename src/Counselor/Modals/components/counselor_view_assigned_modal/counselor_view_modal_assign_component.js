@@ -19,36 +19,24 @@ export default function CounselorViewModalAssign(props) {
 
   const handleSelectTask = async (id) => {
     try {
-      // Fetch the entire document by its ID
-      const selectedTaskRef = doc(firestore, "Tasks", id); // Replace with your Firestore instance
+      const selectedTaskRef = doc(firestore, "Tasks", id);
       const selectedTaskDocSnap = await getDoc(selectedTaskRef);
-
-      // Check if the document exists
       if (selectedTaskDocSnap.exists()) {
-        // Get the data from the document
         const selectedTaskData = selectedTaskDocSnap.data();
-
-        // Include the document ID in the data
         selectedTaskData.id = selectedTaskDocSnap.id;
-        // Set the entire document data to selectedwForm
         setSelectedTask(selectedTaskData);
-        console.log("Fetched Tasks for ID:", id);
-        console.log("Selected form data:", selectedTaskData);
       } else {
-        console.error("Document not found for ID:", id);
-        // Handle the case where the document doesn't exist
+        return "Document not found for ID";
       }
     } catch (error) {
-      console.error("Error fetching form for ID:", id, error);
-      // Handle the error as needed (e.g., display an error message)
+      return error;
     }
   };
 
   React.useEffect(() => {
-    // Create a query to get tasks for the selected patient
     const tasksQuery = query(
       collection(firestore, "Tasks"),
-      where("PatientUID", "==", props.selectedPatientUID) // Replace "PatientUID" with the actual field name in your Firestore data
+      where("PatientUID", "==", props.selectedPatientUID)
     );
 
     const unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
@@ -58,8 +46,6 @@ export default function CounselorViewModalAssign(props) {
       }));
       setTasks(updatedTasks);
     });
-
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, [props.selectedPatientUID]);
 

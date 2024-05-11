@@ -96,30 +96,22 @@ function SupervisorGraphEveryMonth() {
         const usersRef = collection(firestore, "Users");
         const q = query(usersRef, where("Role", "==", "Patient"));
         const querySnapshot = await getDocs(q);
-
-        // Initialize an array to store the monthly counts
         const monthlyCounts = Array(12).fill(0);
-
-        // Loop through the fetched data to count patients per month
         querySnapshot.forEach((doc) => {
           const userData = doc.data();
           const createdAt = userData.dateCreated;
           const monthIndex = parseInt(createdAt.split("-")[1]) - 1;
           monthlyCounts[monthIndex]++;
         });
-
-        // Update the state with the monthly counts
         setPatientData(monthlyCounts);
-        console.log("Data: ", monthlyCounts);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        return error;
       }
     };
 
     fetchData();
   }, []);
 
-  // Update chart data when patientData changes
   useEffect(() => {
     chartConfig.options.xaxis.categories = [
       "Jan",

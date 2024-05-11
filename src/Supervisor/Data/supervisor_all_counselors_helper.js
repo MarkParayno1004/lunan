@@ -6,36 +6,24 @@ import {
   where,
   deleteDoc,
   doc,
-  updateDoc,
   getDoc,
 } from "firebase/firestore";
 import { auth, firestore, storage } from "../../firebase/firebase-config";
 import Swal from "sweetalert2";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  uploadBytes,
-  ref,
-  getDownloadURL,
-  getMetadata,
-} from "firebase/storage";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 
-// Fetch the number of patients for a counselor
 export const fetchCounselorPatientsCount = async (counselorID) => {
   try {
     const querySnapshot = await getDocs(
       query(collection(firestore, "Users"), where("Role", "==", "Patient"))
     );
-
     const patientDocs = querySnapshot.docs;
     let patientsCount = 0;
-
     const counselorDoc = await getDoc(
       doc(collection(firestore, "Users"), counselorID)
     );
-
     if (counselorDoc.exists()) {
-      const counselorData = counselorDoc.data();
-
       for (const patientDoc of patientDocs) {
         const patientData = patientDoc.data();
         if (patientData.counselorID === counselorID) {
@@ -43,19 +31,12 @@ export const fetchCounselorPatientsCount = async (counselorID) => {
         }
       }
     }
-
     return patientsCount;
   } catch (error) {
-    console.error("Error fetching counselor patients count:", error);
     return 0;
   }
 };
-
-// Fetch counselor data and patients count
-export const fetchCounselorData = async (
-  // setCounselorData,
-  setFilteredCounselorData
-) => {
+export const fetchCounselorData = async (setFilteredCounselorData) => {
   try {
     const querySnapshot = await getDocs(
       query(collection(firestore, "Users"), where("Role", "==", "Counselor"))
@@ -71,11 +52,9 @@ export const fetchCounselorData = async (
         };
       })
     );
-
-    // setCounselorData(counselorDataWithPatientsCount);
     setFilteredCounselorData(counselorDataWithPatientsCount);
   } catch (error) {
-    console.error("Error fetching counselor data:", error);
+    return error;
   }
 };
 
@@ -93,10 +72,7 @@ export const handleAddSuccess = (
   setCounselorData,
   setFilteredCounselorData
 ) => {
-  // Update the counselorData state to include the new counselor
   setCounselorData((prevData) => [...prevData, newCounselor]);
-
-  // Update the filteredCounselorData state to include the new counselor
   setFilteredCounselorData((prevData) => [...prevData, newCounselor]);
 };
 
@@ -138,12 +114,8 @@ export const handleRemove = async (
       setFilteredCounselorData((prevData) =>
         prevData.filter((counselor) => counselor.UID !== UID)
       );
-
-      console.log("Counselor removed successfully.", UID);
     }
   } catch (error) {
-    console.error("Error removing counselor:", error);
-
     await Swal.fire({
       title: "Error",
       text: "An error occurred while removing the counselor.",
@@ -174,8 +146,7 @@ export const uploadProfilePicture = async (userId, file) => {
     const imageUrl = await getDownloadURL(snapshot.ref);
     return imageUrl;
   } catch (error) {
-    console.error("Error uploading profile picture:", error);
-    throw error;
+    return error;
   }
 };
 
@@ -193,7 +164,6 @@ export const uploadImage = async (file) => {
 
     return downloadURL;
   } catch (error) {
-    console.error("Error uploading image:", error);
     throw error;
   }
 };
@@ -204,8 +174,6 @@ export const handleSubmitAdd = async (
   localFormData,
   onAddSuccess,
   onHide
-  // setCounselorData,
-  // setFilteredCounselorData
 ) => {
   event.preventDefault();
   setLoading(true);
@@ -238,29 +206,15 @@ export const handleSubmitAdd = async (
     const userAccRef = collection(firestore, "Users");
     await addDoc(userAccRef, newUser);
     setLoading(false);
-
-    // Close the modal after successful addition
     onHide();
-
-    // Send temporary credentials to the counselor's email
     await sendTemporaryCredentialsToEmail(newUser);
-
-    // Update the counselorData state to include the new counselor
-    // setCounselorData((prevData) => [...prevData, newUser]);
-
-    // Update the filteredCounselorData state to include the new counselor
-    // setFilteredCounselorData((prevData) => [...prevData, newUser]);
-
-    // Automatically render the new counselor in the table
     onAddSuccess(newUser);
 
     setLoading(false);
-
-    // Close the modal after successful addition
     onHide();
   } catch (error) {
     setLoading(false);
-    console.error("Error adding new counselor:", error);
+    throw error;
   }
 };
 
@@ -270,27 +224,20 @@ async function sendTemporaryCredentialsToEmail(newUser) {
     subject: "Your Temporary Credentials",
     body: `Username: ${newUser.Email}\nPassword: ${newUser.password}`,
   };
-
-  console.log("Sending email data:", emailData);
-
   try {
     const response = await fetch("http://localhost:3005/send-email", {
-      // Adjust the URL as needed
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(emailData),
     });
-
-    console.log("Email sending response:", response);
-
     if (response.ok) {
-      console.log("Temporary credentials email sent successfully.");
+      return "Temporary credentials email sent successfully.";
     } else {
-      console.error("Failed to send temporary credentials email.");
+      return "Failed to send temporary credentials email.";
     }
   } catch (error) {
-    console.error("An error occurred:", error);
+    return error;
   }
 }
