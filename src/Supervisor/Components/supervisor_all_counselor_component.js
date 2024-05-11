@@ -27,44 +27,33 @@ function SupervisorAllCounselorComponent() {
   const [editData, setEditData] = useState(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
-  const [reloadTable, setReloadTable] = useState(false); // Add reloadTable state
-
+  const [reloadTable, setReloadTable] = useState(false);
   useEffect(() => {
     const counselorQuery = query(
       collection(firestore, "Users"),
       where("Role", "==", "Counselor")
     );
-
-    const unsubscribe = onSnapshot(counselorQuery, async (snapshot) => {
-      // Your existing code for updating counselorData and filteredCounselorData...
-    });
-
+    const unsubscribe = onSnapshot(counselorQuery);
     return () => unsubscribe();
-  }, [reloadTable]); // Add reloadTable as a dependency
+  }, [reloadTable]);
   const handleCounselorSelect = (counselorData) => {
     setSelectedCounselor(counselorData);
     setShowCounselor(true);
-    console.log(counselorData.UID);
   };
-
   useEffect(() => {
     const counselorQuery = query(
       collection(firestore, "Users"),
       where("Role", "==", "Counselor")
     );
-
     const unsubscribe = onSnapshot(counselorQuery, async (snapshot) => {
       const updatedCounselorList = [];
-
       for (const doc of snapshot.docs) {
         const patientsQuery = query(
           collection(firestore, "Users"),
           where("counselorID", "==", doc.id)
         );
-
         const patientsQuerySnapshot = await getDocs(patientsQuery);
         const patientsCount = patientsQuerySnapshot.size;
-
         updatedCounselorList.push({
           ...doc.data(),
           UID: doc.id,
@@ -75,42 +64,28 @@ function SupervisorAllCounselorComponent() {
       setCounselorData(updatedCounselorList);
       setFilteredCounselorData(updatedCounselorList);
     });
-
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, []);
-
   const handleEditSuccess = async (updatedData) => {
     try {
-      // Update the counselorData with the updated data
       const updatedCounselorData = counselorData.map((counselor) =>
         counselor.UID === updatedData.UID ? updatedData : counselor
       );
-
-      // Update the state with the new data
       setCounselorData(updatedCounselorData);
       setFilteredCounselorData(updatedCounselorData);
-
-      // Set the edit success flag and close the edit modal
       setEditSuccess(true);
       setShowEdit(false);
-
-      // Trigger table reload by updating reloadTable key
       setReloadTable(!reloadTable);
-
-      // Fetch updated data from Firestore
       await fetchCounselorData();
     } catch (error) {
-      console.error("Error updating counselor:", error);
+      return error;
     }
   };
-
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
-
     if (query === "") {
-      setFilteredCounselorData(counselorData); // Show all data when query is empty
+      setFilteredCounselorData(counselorData);
     } else {
       const filteredCounselors = counselorData.filter(
         (counselor) =>
@@ -122,33 +97,19 @@ function SupervisorAllCounselorComponent() {
       setFilteredCounselorData(filteredCounselors);
     }
   };
-
   const fetchImageUrl = (imageUrl) => {
     return imageUrl;
   };
-
   const handleShowEdit = (UID) => {
     setEditData(counselorData.find((counselor) => counselor.UID === UID));
     setShowEdit(true);
   };
-
   const handleCloseEdit = () => setShowEdit(false);
-
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseAdd = () => setShowAdd(false);
-
-  //!MODAL BEHAVIOUR
   const [showCouncelor, setShowCounselor] = useState(false);
   const handleShowCounselor = () => setShowCounselor(true);
   const handleCloseCounselor = () => setShowCounselor(false);
-
-  //!Table style
-  const tableStyle = {
-    height: "650px", // Set the desired height
-    overflow: "auto", // Add scrollbars when content overflows
-  };
-
-  //!Pagination
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -158,7 +119,6 @@ function SupervisorAllCounselorComponent() {
     endIndex
   );
   const totalPages = Math.ceil(filteredCounselorData.length / itemsPerPage);
-
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };

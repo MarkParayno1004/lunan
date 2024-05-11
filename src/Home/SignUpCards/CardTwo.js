@@ -35,8 +35,7 @@ export const CardTwo = ({ ButtonBack, ButtonNext, formData }) => {
 
   const handleNext = (event) => {
     event.preventDefault();
-    console.log("Card Two:", localFormData); // Log form data
-    ButtonNext(localFormData); // Call the ButtonNext function with form data
+    ButtonNext(localFormData);
   };
 
   return (

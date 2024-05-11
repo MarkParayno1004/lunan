@@ -12,9 +12,8 @@ export default function CounselorConfirmDeleteDialog(props) {
     try {
       const db = getFirestore();
       await deleteDoc(doc(db, "Tasks", taskId));
-      console.log("Task deleted successfully!");
     } catch (error) {
-      console.error("Error deleting task: ", error);
+      return error;
     }
   };
 

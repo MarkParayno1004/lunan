@@ -34,7 +34,6 @@ export const CardThree = ({ ButtonBack, ButtonSubmit, formData }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log("CardThree localFormData:", localFormData);
     ButtonSubmit(localFormData);
   };
 

@@ -15,11 +15,9 @@ function SupervisorAddCounselorModalComponent(props) {
   });
   const [fileError, setFileError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-
     if (selectedFile && allowedTypes.includes(selectedFile.type)) {
       setLocalFormData({
         ...localFormData,
@@ -53,14 +51,13 @@ function SupervisorAddCounselorModalComponent(props) {
               setLoading,
               localFormData,
               handleAddSuccess,
-              props.onHide, // Pass props.onHide to close the modal
-              props.setCounselorData, // Pass props.setCounselorData
-              props.setFilteredCounselorData, // Pass props.setFilteredCounselorData
+              props.onHide,
+              props.setCounselorData,
+              props.setFilteredCounselorData,
               props.addCounselorToData
             )
           }
         >
-          {/* Name */}
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -76,8 +73,6 @@ function SupervisorAddCounselorModalComponent(props) {
               required
             />
           </Form.Group>
-
-          {/* Picture */}
           <Form.Group className="mt-3">
             <Form.Control
               type="file"
@@ -87,8 +82,6 @@ function SupervisorAddCounselorModalComponent(props) {
             />
             <Form.Text className="text-danger">{fileError}</Form.Text>
           </Form.Group>
-
-          {/* Contact Number */}
           <Form.Group>
             <Form.Label className="mt-2">Contact Number</Form.Label>
             <Form.Control
@@ -104,8 +97,6 @@ function SupervisorAddCounselorModalComponent(props) {
               required
             />
           </Form.Group>
-
-          {/* Email */}
           <Form.Group>
             <Form.Label className="mt-2">Email</Form.Label>
             <Form.Control

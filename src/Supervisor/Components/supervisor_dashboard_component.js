@@ -24,7 +24,7 @@ function SupervisorDashboardComponent() {
           }
         }
       } catch (error) {
-        console.error("Error fetching admin name:", error);
+        return error;
       }
     };
 

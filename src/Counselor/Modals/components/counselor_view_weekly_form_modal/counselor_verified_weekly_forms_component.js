@@ -7,10 +7,9 @@ export default function CounselorVerifiedWeeklyForms(props) {
   const [wForms, setwForms] = React.useState(props.weeklyForms || []);
   const [showWeeklyVerified, setShowWeeklYVerified] = React.useState(false);
   React.useEffect(() => {
-    // Create a query to get tasks for the selected patient
     const wFormsQuery = query(
       collection(firestore, "WeeklyForm"),
-      where("UID", "==", props.selectedPatientUID) // Replace "PatientUID" with the actual field name in your Firestore data
+      where("UID", "==", props.selectedPatientUID)
     );
 
     const unsubscribe = onSnapshot(wFormsQuery, (snapshot) => {
@@ -21,7 +20,6 @@ export default function CounselorVerifiedWeeklyForms(props) {
       setwForms(updatedwForms);
     });
 
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, [props.selectedPatientUID]);
   return (
@@ -56,7 +54,7 @@ export default function CounselorVerifiedWeeklyForms(props) {
                     onClick={() => {
                       props.handleSelectwForm(wForm.id);
                       setShowWeeklYVerified(!showWeeklyVerified);
-                    }} // Pass the form's ID
+                    }}
                   >
                     View Form
                   </button>

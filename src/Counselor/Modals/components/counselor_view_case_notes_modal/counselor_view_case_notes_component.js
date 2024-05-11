@@ -19,37 +19,25 @@ export default function CounselorViewCaseNotes(props) {
   const [cNotes, setcNotes] = React.useState(notesForSelectedPatient || []);
 
   React.useEffect(() => {
-    console.log("Entered Use Effect");
     setcNotes(notesForSelectedPatient || []);
   }, [notesForSelectedPatient]);
 
   React.useEffect(() => {
-    console.log("handleShowAss called with UID:", props.selectedPatientUID);
-
     const fetchData = async () => {
       try {
-        // Fetch notes for the selected patient and set them in state
         const notes = await fetchNotesForPatient(props.selectedPatientUID);
         setNotesForSelectedPatient(notes);
-
-        console.log("Tasks fetched", notes);
       } catch (error) {
-        console.error("Error in handleShowAss:", error);
+        return error;
       }
     };
 
     if (props.selectedPatientUID) {
       fetchData();
     }
-
-    // Cleanup function (if needed)
-    return () => {
-      // Cleanup code (if needed)
-    };
   }, [props.selectedPatientUID]);
 
   const fetchNotesForPatient = async (selectedPatientUID) => {
-    console.log("Fetching notes for ", selectedPatientUID);
     try {
       const q = query(
         collection(firestore, "CaseNotes"),
@@ -60,39 +48,26 @@ export default function CounselorViewCaseNotes(props) {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log("Fetched notes for", selectedPatientUID, notes);
       return notes;
     } catch (error) {
-      console.error("Error fetching tasks:", error);
-      return [];
+      return error;
     }
   };
 
   const handleSelectcNotes = async (id) => {
     try {
-      // Fetch the entire document by its ID
-      const selectedcNotesRef = doc(firestore, "CaseNotes", id); // Replace with your Firestore instance
+      const selectedcNotesRef = doc(firestore, "CaseNotes", id);
       const selectedcNotesDocSnap = await getDoc(selectedcNotesRef);
-
-      // Check if the document exists
       if (selectedcNotesDocSnap.exists()) {
-        // Get the data from the document
         const selectedcNoteData = selectedcNotesDocSnap.data();
-
-        // Include the document ID in the data
         selectedcNoteData.id = selectedcNotesDocSnap.id;
-        // Set the entire document data to selectedwForm
         setSelectedcNotes(selectedcNoteData);
         setShow(!show);
-        console.log("Fetched form for ID:", id);
-        console.log("Selected form data:", selectedcNoteData);
       } else {
-        console.error("Document not found for ID:", id);
-        // Handle the case where the document doesn't exist
+        return "Document not found for ID";
       }
     } catch (error) {
-      console.error("Error fetching form for ID:", id, error);
-      // Handle the error as needed (e.g., display an error message)
+      return error;
     }
   };
   return (
@@ -125,7 +100,7 @@ export default function CounselorViewCaseNotes(props) {
                     onClick={() => {
                       handleSelectcNotes(cNote.id);
                       setShow(!show);
-                    }} // Pass the form's ID
+                    }}
                   >
                     View Note
                   </button>
@@ -146,7 +121,6 @@ export default function CounselorViewCaseNotes(props) {
 }
 
 const PublishCaseNotes = (props) => {
-  // Create a function to decode HTML entities
   const decodeHTML = (html) => {
     const txt = document.createElement("textarea");
     txt.innerHTML = html;

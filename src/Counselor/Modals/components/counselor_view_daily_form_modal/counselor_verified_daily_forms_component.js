@@ -8,28 +8,17 @@ export default function CounselorVerifiedDailyForms(props) {
   const [selectedwellForm, setSelectedwellForm] = React.useState(null);
   const handleSelectwellForm = async (id) => {
     try {
-      // Fetch the entire document by its ID
-      const selectedFormDocRef = doc(firestore, "WellnessForm", id); // Replace with your Firestore instance
+      const selectedFormDocRef = doc(firestore, "WellnessForm", id);
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
-
-      // Check if the document exists
       if (selectedFormDocSnap.exists()) {
-        // Get the data from the document
         const selectedFormData = selectedFormDocSnap.data();
-
-        // Include the document ID in the data
         selectedFormData.id = selectedFormDocSnap.id;
-        // Set the entire document data to selectedwellForm
         setSelectedwellForm(selectedFormData);
-        console.log("Fetched form for ID:", id);
-        console.log("Selected form data:", selectedFormData);
       } else {
-        console.error("Document not found for ID:", id);
-        // Handle the case where the document doesn't exist
+        return "Document not found for ID";
       }
     } catch (error) {
-      console.error("Error fetching form for ID:", id, error);
-      // Handle the error as needed (e.g., display an error message)
+      return error;
     }
   };
   return (
@@ -66,7 +55,7 @@ export default function CounselorVerifiedDailyForms(props) {
                     onClick={() => {
                       handleSelectwellForm(wellForm.id);
                       setShowVerified(!showVerified);
-                    }} // Pass the form's ID
+                    }}
                   >
                     View Form
                   </button>
@@ -121,14 +110,12 @@ const ViewFormWellVerified = (props) => {
   const updatewellFormVerified = async (wellFormId) => {
     const formRef = doc(firestore, "WellnessForm", wellFormId);
     try {
-      // Update the 'Status' field to "Verified"
       await updateDoc(formRef, {
         Status: null,
       });
       props.handleClose();
-      console.log("Form status updated to Verified");
     } catch (error) {
-      console.error("Error updating form status:", error);
+      return error;
     }
   };
 

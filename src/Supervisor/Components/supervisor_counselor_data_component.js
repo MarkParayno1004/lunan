@@ -16,7 +16,7 @@ function SupervisorCounselorDataComponent({
     null,
   ]);
   const [selectedPatientData, setSelectedPatientData] = useState(null);
-  const [filteredPatients, setFilteredPatients] = useState(patients); // Initialize filteredPatients with patients
+  const [filteredPatients, setFilteredPatients] = useState(patients);
 
   const handleSelectPatient = (UID) => {
     setSelectedPatientUID(UID);
@@ -26,56 +26,42 @@ function SupervisorCounselorDataComponent({
   useEffect(() => {
     handleSearch({ target: { value: "" } });
   }, [patients]);
-
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
-
     const filteredPatientsList = patients.filter((patient) => {
       const firstNameMatch =
         patient.firstName && patient.firstName.toLowerCase().includes(query);
       const lastNameMatch =
         patient.lastName && patient.lastName.toLowerCase().includes(query);
-
-      return query === "" || firstNameMatch || lastNameMatch; // Show all patients when query is empty
+      return query === "" || firstNameMatch || lastNameMatch;
     });
 
     setFilteredPatients(filteredPatientsList);
   };
 
   const handleShow = async (UID) => {
-    console.log("Selected Patient UIDssssss:", UID);
-
     try {
       const querySnapshot = await getDocs(collection(firestore, "Users"));
-      console.log("Query Snapshot:", querySnapshot.docs);
-
       const matchingDocument = querySnapshot.docs.find(
         (doc) => doc.data().UID === UID
       );
-
       if (matchingDocument) {
         const patientData = matchingDocument.data();
-        console.log("Selected Patient Data:", patientData);
-
         const intakeFormsQuerySnapshot = await getDocs(
           query(collection(firestore, "IntakeForms"), where("UID", "==", UID))
         );
         const intakeFormsData = intakeFormsQuerySnapshot.docs.map((doc) =>
           doc.data()
         );
-
-        console.log("Intake Forms Data:", intakeFormsData);
-
         setSelectedPatientData(patientData);
         setSelectedIntakeFormsData(intakeFormsData);
-
         setModal(true);
       } else {
-        console.log("Patient document does not exist");
+        return "Patient document does not exist";
       }
     } catch (error) {
-      console.error("Error fetching patient data:", error);
+      return error;
     }
   };
 
@@ -98,7 +84,6 @@ function SupervisorCounselorDataComponent({
           id="colBG"
         >
           <div className="container-fluid patient-text pt-3 pb-3">
-            {/* 1st Row Header */}
             <div className="row">
               <div className="col">
                 <strong className="fs-5">Name: </strong>
@@ -158,7 +143,6 @@ function SupervisorCounselorDataComponent({
         </thead>
         <tbody>
           {filteredPatients.map((patient) => {
-            console.log("Patient First Name:", patient.firstName); // Add this log
             return (
               <tr key={patient.UID}>
                 <td>

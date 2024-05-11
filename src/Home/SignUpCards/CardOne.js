@@ -35,17 +35,12 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
   });
 
   const handleValueChange = (newValue, event) => {
-    // Set endDate to today's date
     const currentDate = new Date();
-
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
     const day = String(currentDate.getDate()).padStart(2, "0");
-
     const endDate = `${year}/${month}/${day}`;
-
     const formattedStartDate = dayjs(newValue.startDate).format("YYYY-MM-DD");
-
     setDateValue({
       startDate: newValue.startDate,
       endDate: endDate,
@@ -63,8 +58,6 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
 
   const handleGenderChange = (event) => {
     const { value } = event.target;
-    console.log("New Gender value:", value);
-
     setLocalFormData({
       ...localFormData,
       Gender: value,
@@ -73,8 +66,6 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
 
   const handlePrefferedGender = (event) => {
     const { value } = event.target;
-    console.log("New Gender value:", value);
-
     setLocalFormData({
       ...localFormData,
       PreferredGender: value,
@@ -86,20 +77,10 @@ export const CardOne = ({ ButtonNext, handleInputChange, formData }) => {
       setLocalFormData({ ...localFormData, Age: age });
     }
   }, [dateValue]);
-
-  useEffect(() => {
-    // Log values after the component re-renders
-    console.log("value.startDate:", dateValue.startDate);
-    console.log("value.endDate:", dateValue.endDate);
-    console.log("newValue:", dateValue);
-  }, [dateValue]); // Only re-run the effect if the 'value' state changes
-
   const handleNext = (event) => {
-    console.log("CardOne localFormData:", localFormData);
     event.preventDefault();
     ButtonNext(localFormData);
   };
-  console.log(`BirthDate : ${localFormData.BirthDate}`);
 
   return (
     <div className="grid justify-items-center text-white">

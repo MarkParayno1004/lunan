@@ -19,13 +19,11 @@ export default function CounselorViewWeeklyForm(props) {
 
   React.useEffect(() => {
     const handleShowWeek = async (selectedPatientUID) => {
-      console.log("handleShowWeek called with UID:", selectedPatientUID);
       try {
         const wForm = await fetchWeeklyForPatient(selectedPatientUID);
         setwFormsForSelectedPatient(wForm);
-        console.log("Weekly Forms fetched", wForm);
       } catch (error) {
-        console.error("Error in handleShowAss:", error);
+        return error;
       }
     };
 
@@ -35,7 +33,6 @@ export default function CounselorViewWeeklyForm(props) {
   }, [props.selectedPatientUID]);
 
   const fetchWeeklyForPatient = async (selectedPatientUID) => {
-    console.log("Fetching weekly forms for ", selectedPatientUID);
     try {
       const q = query(
         collection(firestore, "WeeklyForm"),
@@ -44,8 +41,6 @@ export default function CounselorViewWeeklyForm(props) {
       const querySnapshot = await getDocs(q);
       const wForms = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-
-        // Convert specific number fields to strings
         data.WeeklyQ1 = String(data.WeeklyQ1);
         data.WeeklyQ2 = String(data.WeeklyQ2);
         data.WeeklyQ3 = String(data.WeeklyQ3);
@@ -54,38 +49,25 @@ export default function CounselorViewWeeklyForm(props) {
 
         return { id: doc.id, ...data };
       });
-      console.log("Fetched Weekly Forms for", selectedPatientUID, wForms);
       return wForms;
     } catch (error) {
-      console.error("Error fetching wForms:", error);
-      return [];
+      return error;
     }
   };
 
   const handleSelectwForm = async (id) => {
     try {
-      // Fetch the entire document by its ID
-      const selectedFormDocRef = doc(firestore, "WeeklyForm", id); // Replace with your Firestore instance
+      const selectedFormDocRef = doc(firestore, "WeeklyForm", id);
       const selectedFormDocSnap = await getDoc(selectedFormDocRef);
-
-      // Check if the document exists
       if (selectedFormDocSnap.exists()) {
-        // Get the data from the document
         const selectedFormData = selectedFormDocSnap.data();
-
-        // Include the document ID in the data
         selectedFormData.id = selectedFormDocSnap.id;
-        // Set the entire document data to selectedwForm
         setSelectedwForm(selectedFormData);
-        console.log("Fetched form for ID:", id);
-        console.log("Selected form data:", selectedFormData);
       } else {
-        console.error("Document not found for ID:", id);
-        // Handle the case where the document doesn't exist
+        return "Document not found for ID:";
       }
     } catch (error) {
-      console.error("Error fetching form for ID:", id, error);
-      // Handle the error as needed (e.g., display an error message)
+      return error;
     }
   };
 

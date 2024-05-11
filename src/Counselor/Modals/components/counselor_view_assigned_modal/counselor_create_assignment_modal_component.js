@@ -24,8 +24,6 @@ export default function CounselorCreateAssignment(props) {
   const handleSubmitCreate = () => {
     const db = getFirestore();
     const { currentUser } = getAuth();
-    console.log("currentUser:", currentUser);
-    console.log("selectedPatientUID:", props.selectedPatientUID);
 
     if (currentUser && props.selectedPatientUID) {
       const taskData = {
@@ -37,21 +35,13 @@ export default function CounselorCreateAssignment(props) {
         Status: null,
         TurnedInDate: null,
       };
-
-      console.log("PatientUID:", props.selectedPatientUID);
-      console.log("counselorUID:", currentUser.uid);
-
       addDoc(collection(db, "Tasks"), taskData)
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          // Perform any other actions after successful upload
-          props.handleClose();
-        })
+        .then(() => props.handleClose())
         .catch((error) => {
-          console.error("Error adding document: ", error);
+          return error;
         });
     } else {
-      console.error("currentUser or selectedPatientUID is undefined.");
+      return "currentUser or selectedPatientUID is undefined";
     }
   };
 
