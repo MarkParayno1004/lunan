@@ -42,13 +42,10 @@ export default function CounselorChat() {
           query(collection(firestore, "Users"))
         );
         const patients = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log("Patients Data:", patients);
-
         setPatientsData(patients);
         setFilteredPatientsData(patients);
       } catch (error) {
-        console.error("Error fetching patients data:", error);
+        return error;
       }
     };
 
@@ -62,7 +59,6 @@ export default function CounselorChat() {
       await Promise.all(
         patientsData.map(async (patient) => {
           if (patient.counselorID) {
-            console.log("Fetching counselor name for:", patient.counselorID);
             const counselorName = await fetchCounselorName(patient.counselorID);
             names[patient.counselorID] = counselorName;
           }
@@ -89,8 +85,7 @@ export default function CounselorChat() {
         return "Unknown Counselor";
       }
     } catch (error) {
-      console.error("Error fetching counselor name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -116,18 +111,13 @@ export default function CounselorChat() {
 
   const handleSelectPatient = async (UID) => {
     setSelectedPatientUID(UID);
-
-    // Create a chat room based on the selected patient's UID
     const roomName =
       UID < auth.currentUser.uid
         ? `${UID} and ${auth.currentUser.uid}`
         : `${auth.currentUser.uid} and ${UID}`;
-    console.log("Room Name:", roomName);
-    // Set the chat room name
     setRoom(roomName);
 
     try {
-      // Fetch and set the selected patient's data
       const usersCollection = collection(firestore, "Users");
       const q = query(usersCollection, where("UID", "==", UID));
       const querySnapshot = await getDocs(q);
@@ -135,13 +125,12 @@ export default function CounselorChat() {
       if (!querySnapshot.empty) {
         const doc = querySnapshot.docs[0];
         const patientData = doc.data();
-        console.log("Patient Data:", patientData);
         setSelectedPatientData(patientData);
       } else {
-        console.error("Patient not found");
+        return "Patient not Found";
       }
     } catch (error) {
-      console.error("Error fetching patient data:", error);
+      return error;
     }
   };
 
@@ -155,8 +144,6 @@ export default function CounselorChat() {
     event.preventDefault();
 
     if (newMessage === "") return;
-
-    // Retrieve the user's first name from the 'Users' collection based on their UID
     const userFirstName = await getUserFirstName(auth.currentUser.uid);
     const userRole = await getRoles(auth.currentUser.uid);
 
@@ -186,8 +173,7 @@ export default function CounselorChat() {
         return "Unknown User";
       }
     } catch (error) {
-      console.error("Error fetching user's first name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -198,7 +184,6 @@ export default function CounselorChat() {
         where("UID", "==", uid)
       );
       const userQuerySnapshot = await getDocs(userQuery);
-
       if (!userQuerySnapshot.empty) {
         const userData = userQuerySnapshot.docs[0].data();
         return userData.Role;
@@ -206,8 +191,7 @@ export default function CounselorChat() {
         return "Unknown User";
       }
     } catch (error) {
-      console.error("Error fetching user's first name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -226,7 +210,6 @@ export default function CounselorChat() {
         });
         setMessages(messages);
       });
-
       return () => unsubscribe();
     }
   }, [room]);
@@ -239,7 +222,7 @@ export default function CounselorChat() {
             <div className="flex flex-row items-center justify-start h-12 w-full">
               <div className="flex items-center justify-center rounded-2xl text-primaryOrange bg-white h-10 w-10">
                 <svg
-                  className="w-6 h-6" // Change the color to blue-500
+                  className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

@@ -21,27 +21,20 @@ export default function SignUp() {
     </>
   );
 }
-
 const PrivacyModal = () => {
   const [show, setShow] = useState(false);
-
   const handleClose = () => {
     setShow(false);
   };
-
   const handleShow = () => {
     setShow(true);
   };
-
   useEffect(() => {
-    // Call handleShow when the component mounts to open the modal automatically
     handleShow();
-  }, []); // The empty dependency array ensures that this effect runs once when the component is mounted
-
+  }, []);
   const navigate = useNavigate();
   const handleDecline = () => {
     handleClose();
-    // Navigate to the home page when "Decline" is clicked
     document.body.style.overflow = "auto";
     navigate("/");
   };

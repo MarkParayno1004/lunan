@@ -9,28 +9,24 @@ import SupervisorDashboardComponent from "../Components/supervisor_dashboard_com
 
 function SupervisorDashboardPage() {
   const [activeComponent, setActiveComponent] = useState("DashboardComponent");
-  const navigate = useNavigate(); // Initialize useHistory hook
-
+  const navigate = useNavigate();
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // User is logged out, redirect to login page
         navigate("/login");
       }
     });
-
-    // Clean up subscription
     return () => unsubscribe();
   }, [navigate]);
 
   const handleSignOut = async () => {
     const auth = getAuth();
     try {
-      await signOut(auth); // Sign out the current user
-      navigate("/login"); // Redirect to login page after successful logout
+      await signOut(auth);
+      navigate("/login");
     } catch (error) {
-      console.error("Error signing out:", error);
+      return error;
     }
   };
   return (

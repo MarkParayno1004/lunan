@@ -28,18 +28,14 @@ function SupervisorAllPatientsComponent() {
   useEffect(() => {
     const fetchCounselorNames = async () => {
       const names = {};
-
       await Promise.all(
         patientsData.map(async (patient) => {
           if (patient.counselorID) {
-            console.log("Fetching counselor name for:", patient.counselorID);
             const counselorName = await fetchCounselorName(patient.counselorID);
             names[patient.counselorID] = counselorName;
           }
         })
       );
-
-      console.log("Fetched Counselor Names:", names);
       setCounselorNames(names);
     };
 
@@ -57,8 +53,6 @@ function SupervisorAllPatientsComponent() {
       setPatientsData(updatedPatientList);
       setFilteredPatientsData(updatedPatientList);
     });
-
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -78,8 +72,7 @@ function SupervisorAllPatientsComponent() {
         return "Unknown Counselor";
       }
     } catch (error) {
-      console.error("Error fetching counselor name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -105,45 +98,32 @@ function SupervisorAllPatientsComponent() {
 
   const handleClose = () => setShow(false);
   const handleShow = async (UID) => {
-    console.log("Selected Patient UID:", UID);
-
     try {
-      // Query the collection to find the document with the matching UID
       const querySnapshot = await getDocs(collection(firestore, "Users"));
-      console.log("Query Snapshot:", querySnapshot.docs);
-
       const matchingDocument = querySnapshot.docs.find(
         (doc) => doc.data().UID === UID
       );
 
       if (matchingDocument) {
         const patientData = matchingDocument.data();
-        console.log("Selected Patient Data:", patientData);
-
-        // Fetch additional data from the "IntakeForms" collection
         const intakeFormsQuerySnapshot = await getDocs(
           query(collection(firestore, "IntakeForms"), where("UID", "==", UID))
         );
         const intakeFormsData = intakeFormsQuerySnapshot.docs.map((doc) =>
           doc.data()
         );
-
-        console.log("Intake Forms Data:", intakeFormsData);
-
-        // Set the patient data and intake forms data to state
         setSelectedPatientData(patientData);
         setSelectedIntakeFormsData(intakeFormsData);
 
         setShow(true);
       } else {
-        console.log("Patient document does not exist");
+        return "Patient document does not exist";
       }
     } catch (error) {
-      console.error("Error fetching patient data:", error);
+      return error;
     }
   };
 
-  //!Pagination
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;

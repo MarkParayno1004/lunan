@@ -64,22 +64,17 @@ function SupervisorEditCounselorModalComponent(props) {
             const imageUrl = await uploadProfilePicture(props.userId, file);
             updateData.ProfPic = imageUrl;
           }
-
           await updateDoc(userDocRef, updateData);
-
-          console.log("User data updated successfully.");
-          props.onEditSuccess(updateData); // Call the parent component's callback
-          // Do not close the dialog here
+          props.onEditSuccess(updateData);
         } else {
-          console.log("Document does not exist.");
+          return "Document does not exist.";
         }
       } else {
-        console.log("Invalid userId.");
+        return "Invalid userId";
       }
     } catch (error) {
-      console.error("Firebase Error Code:", error.code);
-      console.error("Error updating user data:", error);
       setError("Error updating user data.");
+      return error;
     }
   };
 
@@ -90,8 +85,7 @@ function SupervisorEditCounselorModalComponent(props) {
       const imageUrl = await getDownloadURL(snapshot.ref);
       return imageUrl;
     } catch (error) {
-      console.error("Error uploading profile picture:", error);
-      throw error;
+      return error;
     }
   };
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));

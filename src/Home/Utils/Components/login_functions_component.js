@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase/firebase-config";
 
 const LoginFunctions = () => {
@@ -14,25 +13,18 @@ const LoginFunctions = () => {
     showModal: false,
     setFirstName: "",
   });
-
-  const navigate = useNavigate();
-
   function HandleEmailChange(event) {
     setState({ email: event.target.value });
   }
-
   function HandlePasswordChange(event) {
     setState({ password: event.target.value });
   }
-
   function HandleModalShow() {
     setState({ showModal: true });
   }
-
   const HandleModalClose = () => {
     setState({ showModal: false });
   };
-
   const HandleLoginSubmit = async () => {
     try {
       const { user } = await signInWithEmailAndPassword(
@@ -40,12 +32,10 @@ const LoginFunctions = () => {
         state.email,
         state.password
       );
-      console.log("User logged in");
       setState({ email: "", password: "", loggedIn: true });
       const userUid = user.uid;
       sessionStorage.setItem("userUid", userUid);
     } catch (error) {
-      console.error("Error logging in:", error.message);
       Swal.fire({
         icon: "error",
         title: "Oops...",

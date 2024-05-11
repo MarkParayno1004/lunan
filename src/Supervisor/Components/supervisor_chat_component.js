@@ -31,10 +31,8 @@ function SupervisorChatComponent() {
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
   const currentAdminUser = auth.currentUser.uid;
-  console.log(`current admin: ${currentAdminUser}`);
 
   useEffect(() => {
-    // Check if messages is not empty before scrolling to the end
     if (messages.length > 0 && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -47,13 +45,10 @@ function SupervisorChatComponent() {
           query(collection(firestore, "Users"))
         );
         const patients = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log("Patients Data:", patients);
-
         setPatientsData(patients);
         setFilteredPatientsData(patients);
       } catch (error) {
-        console.error("Error fetching patients data:", error);
+        return error;
       }
     };
 
@@ -67,14 +62,11 @@ function SupervisorChatComponent() {
       await Promise.all(
         patientsData.map(async (patient) => {
           if (patient.counselorID) {
-            console.log("Fetching counselor name for:", patient.counselorID);
             const counselorName = await fetchCounselorName(patient.counselorID);
             names[patient.counselorID] = counselorName;
           }
         })
       );
-
-      console.log("Fetched Counselor Names:", names);
       setCounselorNames(names);
     };
 
@@ -97,8 +89,7 @@ function SupervisorChatComponent() {
         return "Unknown Counselor";
       }
     } catch (error) {
-      console.error("Error fetching counselor name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -125,18 +116,13 @@ function SupervisorChatComponent() {
   const handleSelectPatient = async (UID) => {
     setSelectedPatientUID(UID);
     setShowPatientInfo(true);
-
-    // Create a chat room based on the selected patient's UID
     const roomName =
       UID < auth.currentUser.uid
         ? `${UID} and ${auth.currentUser.uid}`
         : `${auth.currentUser.uid} and ${UID}`;
-    console.log("Room Name:", roomName);
-    // Set the chat room name
     setRoom(roomName);
 
     try {
-      // Fetch and set the selected patient's data
       const usersCollection = collection(firestore, "Users");
       const q = query(usersCollection, where("UID", "==", UID));
       const querySnapshot = await getDocs(q);
@@ -144,16 +130,13 @@ function SupervisorChatComponent() {
       if (!querySnapshot.empty) {
         const doc = querySnapshot.docs[0];
         const patientData = doc.data();
-        console.log("Patient Data:", patientData);
         setSelectedPatientData(patientData);
       } else {
-        console.error("Patient not found");
+        return "Patient not found";
       }
     } catch (error) {
-      console.error("Error fetching patient data:", error);
+      return error;
     }
-
-    // Show the chat UI
     setShowChat(true);
   };
 
@@ -162,17 +145,12 @@ function SupervisorChatComponent() {
   const totalNumberPatient = patientsData.filter(
     (patient) => patient.UID !== currentAdminUser
   ).length;
-
-  //!
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (newMessage === "") return;
-
-    // Retrieve the user's first name from the 'Users' collection based on their UID
     const userFirstName = await getUserFirstName(auth.currentUser.uid);
     const userRole = await getRoles(auth.currentUser.uid);
-
     await addDoc(messagesRef, {
       text: newMessage,
       createdAt: serverTimestamp(),
@@ -180,10 +158,8 @@ function SupervisorChatComponent() {
       room,
       role: userRole,
     });
-
     setNewMessage("");
   };
-
   const getUserFirstName = async (uid) => {
     try {
       const userQuery = query(
@@ -199,8 +175,7 @@ function SupervisorChatComponent() {
         return "Unknown User";
       }
     } catch (error) {
-      console.error("Error fetching user's first name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -219,8 +194,7 @@ function SupervisorChatComponent() {
         return "Unknown User";
       }
     } catch (error) {
-      console.error("Error fetching user's first name:", error);
-      return "Error Fetching Name";
+      return error;
     }
   };
 
@@ -379,7 +353,6 @@ function SupervisorChatComponent() {
               <div className="flex flex-col h-full overflow-x-auto mb-4">
                 <div className="flex flex-col h-full">
                   <div className="grid grid-cols-7 gap-y-2">
-                    {/* message right side */}
                     {messages.map((message) => (
                       <div
                         key={message.id}
@@ -390,7 +363,6 @@ function SupervisorChatComponent() {
                         <div className="flex flex-col">
                           <div className="flex items-start">
                             {message.role !== "Admin" && (
-                              // icon for non-admin users floating to the left
                               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primaryOrange flex-shrink-0 mr-3">
                                 <div className="font-mono font-semibold text-sm">
                                   {message.role.charAt(0)}
@@ -401,7 +373,6 @@ function SupervisorChatComponent() {
                               <div className="">{message.text}</div>
                             </div>
                             {message.role === "Admin" && (
-                              // icon for admin users floating to the right
                               <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primaryGreen flex-shrink-0 ml-3">
                                 <div className="font-mono font-semibold text-sm">
                                   {message.role.charAt(0)}

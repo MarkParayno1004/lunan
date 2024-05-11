@@ -2,8 +2,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../../../firebase/firebase-config";
 import { Box, Typography, Modal } from "@mui/material";
 export default function CounselorViewFormWeeklyModal(props) {
-  console.log("Selected Weekly Form Data:", props.selectedwForm);
-
   const mapAnswer = (value) => {
     switch (value) {
       case 0:
@@ -62,14 +60,12 @@ export default function CounselorViewFormWeeklyModal(props) {
   const updatewFormVerified = async (wFormId) => {
     const formRef = doc(firestore, "WeeklyForm", wFormId);
     try {
-      // Update the 'Status' field to "Verified"
       await updateDoc(formRef, {
         Status: "Verified",
       });
-      console.log("Form status updated to Verified");
       props.handleClose();
     } catch (error) {
-      console.error("Error updating form status:", error);
+      return error;
     }
   };
 

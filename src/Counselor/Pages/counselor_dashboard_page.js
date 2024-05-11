@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DashboardLogo } from "../../assets/images";
-import { useNavigate } from "react-router-dom"; // Import useHistory hook
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth"; // Import Firebase authentication methods
+import { useNavigate } from "react-router-dom";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 import CounselorChat from "../Components/counselor_chat_component";
 import CounselorPatientList from "../Components/counselor_patient_list_component";
@@ -16,22 +16,19 @@ function CounselorDashboardPage() {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // User is logged out, redirect to login page
         navigate("/login");
       }
     });
-
-    // Clean up subscription
     return () => unsubscribe();
   }, [navigate]);
 
   const handleSignOut = async () => {
     const auth = getAuth();
     try {
-      await signOut(auth); // Sign out the current user
-      navigate("/login"); // Redirect to login page after successful logout
+      await signOut(auth);
+      navigate("/login");
     } catch (error) {
-      console.error("Error signing out:", error);
+      return error;
     }
   };
 

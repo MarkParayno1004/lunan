@@ -18,7 +18,6 @@ export default function CounselorViewWellnessGuide(props) {
   const fetchGuideData = async () => {
     const db = getFirestore();
     const q = query(collection(db, "Guide"));
-
     try {
       const querySnapshot = await getDocs(q);
       const guides = [];
@@ -28,16 +27,14 @@ export default function CounselorViewWellnessGuide(props) {
       });
       setGuideData(guides);
     } catch (error) {
-      console.error("Error fetching guide data: ", error);
+      return error;
     }
   };
-
   React.useEffect(() => {
     if (props.selectedPatientUID) {
       fetchGuideData();
     }
   }, [props.selectedPatientUID]);
-
   const handleVideoClick = (index) => {
     setSelectedVideoIndex(index === selectedVideoIndex ? null : index);
   };
@@ -179,16 +176,13 @@ const AddGuide = (props) => {
   };
 
   function extractSrcFromIframe(iframeString) {
-    // Use regular expressions to extract the src attribute
     const srcRegex = /src=["'](https:\/\/www\.youtube\.com\/embed\/[^"']+)/;
     const match = iframeString.match(srcRegex);
-    return match ? match[1] : ""; // Return the extracted src or an empty string if not found
+    return match ? match[1] : "";
   }
   const handleAddGuide = () => {
     const db = getFirestore();
     const { currentUser } = getAuth();
-    console.log("currentUser:", currentUser.uid);
-    console.log("selectedPatientUID:", props.selectedPatientUID);
 
     if (currentUser && props.selectedPatientUID) {
       const guideData = {
@@ -199,20 +193,13 @@ const AddGuide = (props) => {
         PatientUID: props.selectedPatientUID,
       };
 
-      console.log("PatientUID:", props.selectedPatientUID);
-      console.log("counselorUID:", currentUser.uid);
-
       addDoc(collection(db, "Guide"), guideData)
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          // Perform any other actions after successful upload
-          props.handleClose();
-        })
+        .then(() => props.handleClose())
         .catch((error) => {
-          console.error("Error adding document: ", error);
+          return error;
         });
     } else {
-      console.error("currentUser or selectedPatientUID is undefined.");
+      return "currentUser or selectedPatientUID is undefined.";
     }
   };
 
